@@ -6,7 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 import HomeScreen from './src/HomeScreen';
 import StatScreen from './src/StatScreen';
-import GroupScreen from './src/GroupScreen';
+import OnboardingScreen from './src/OnboardingScreen';
+// import GroupScreen from './src/GroupScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +40,7 @@ export default function App() {
       >
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Stats" component={StatScreen}/>
-        <Tab.Screen name="Groups" component={GroupScreen}/>
+        <Tab.Screen name="Groups" component={OnboardingScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
