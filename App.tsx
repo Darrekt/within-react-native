@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { OnboardContext } from "./src/state/context";
 
-import HomeScreen from './src/screens/HomeScreen';
+import TodoScreen from './src/screens/TodoScreen';
 import StatScreen from './src/screens/StatScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import GroupScreen from './src/screens/GroupScreen';
@@ -55,7 +55,7 @@ export default function App() {
           :
           <>
             <Tab.Navigator
-              initialRouteName="Home"
+              initialRouteName="Todos"
               screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
@@ -67,7 +67,7 @@ export default function App() {
                       iconName = 'ios-chatboxes';
                       break;
                     default:
-                      iconName = 'ios-home';
+                      iconName = 'ios-checkbox';
                       break;
                   }
                   return <Ionicons name={iconName} size={size} color={color} />
@@ -78,7 +78,7 @@ export default function App() {
                 inactiveTintColor: 'gray',
               }}
             >
-              <Tab.Screen name="Home" component={HomeScreen} />
+              <Tab.Screen name="Todos" component={TodoScreen} />
               <Tab.Screen name="Stats" component={StatScreen} />
               <Tab.Screen name="Groups" component={GroupScreen} />
             </Tab.Navigator>
