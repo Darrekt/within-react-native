@@ -4,7 +4,7 @@ import { styles } from '../../styles';
 
 export const StatScreen = () =>
   <View style={styles.container}>
-    <Text>Statistics</Text>
+    <Text>Stats Coming Soon</Text>
   </View>
 
 export default StatScreen;
