@@ -1,21 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { Entypo } from '@expo/vector-icons';
+import { globalStyles } from '../../../styles';
 
 type IProps = {
-    isOpen: boolean,
-    taskIsRunning?: boolean,
+  isOpen: boolean,
+  taskIsRunning?: boolean,
 }
 
 const TodoListHeader = ({ isOpen, taskIsRunning }: IProps) => {
-return <Text style={styles.modalHeaderText}>{isOpen ? 'Your Todos' : '0 tasks remaining'}</Text> 
+  return <View style={isOpen ? styles.headerRow : globalStyles.centered}>
+    <Text style={ styles.modalHeaderText }>
+      {isOpen ? 'Your Todos' : '0 tasks remaining'}
+    </Text>
+    {
+      isOpen && <Pressable onPress={() => { console.log("pressed add item") }}>
+        <Entypo name="add-to-list" size={20} color="black" />
+      </Pressable>
+    }
+  </View>
+
 }
 
 const styles = StyleSheet.create({
-    modalHeaderText: {
-        textAlign: 'center',
-        fontSize: 24,
-        fontWeight: '500',
-    }
+  headerRow: {
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  modalHeaderText: {
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: '500',
+  }
 });
 
 export default TodoListHeader;

@@ -3,20 +3,9 @@ import { StyleSheet, Image, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { Modalize } from 'react-native-modalize';
 import TodoListHeader from '../components/todo/TodoListHeader'
+import { globalStyles } from '../../styles';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  centered: {
-    height: '100%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   modalContainer: {
     width: '100%',
     backgroundColor: 'transparent',
@@ -31,7 +20,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const listEmptyDisplay = <View style={styles.centered}>
+const listEmptyDisplay = <View style={globalStyles.centered}>
   <Text>You have no todos!</Text>
 </View>
 
@@ -41,9 +30,10 @@ const TodoScreen = () => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const modalizeRef = React.useRef<Modalize>(null);
-  const openModal = () => modalizeRef.current?.open();
+  const openModal = () => modalizeRef.current?.open("top");
+  const closeModal = () => modalizeRef.current?.close("alwaysOpen");
 
-  return <View style={styles.container}>
+  return <View style={globalStyles.container}>
     <Image source={require('../../assets/old_mascot/logo.png')} />
     <View>
       <Text>Task List</Text>
@@ -54,10 +44,10 @@ const TodoScreen = () => {
         clearTextOnFocus
         // onSubmitEditing
         onFocus={openModal}
+        onBlur={closeModal}
       />
     </View>
     <View>
-      <Text>Create your first task here!</Text>
       <Image source={require('../../assets/old_mascot/attention.png')} />
     </View>
     <Modalize
@@ -72,7 +62,7 @@ const TodoScreen = () => {
       sectionListProps={{
         ListHeaderComponent: <TodoListHeader isOpen={isOpen} />,
         sections: [],
-        ListEmptyComponent: listEmptyDisplay
+        ListEmptyComponent: isOpen ? listEmptyDisplay : undefined
       }}
     />
   </View>
