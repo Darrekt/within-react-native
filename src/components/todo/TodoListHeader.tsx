@@ -1,6 +1,5 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { TouchableHighlight } from 'react-native-gesture-handler';
 import { Entypo } from '@expo/vector-icons';
 import { globalStyles } from '../../../styles';
 
