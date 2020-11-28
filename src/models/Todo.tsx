@@ -1,18 +1,18 @@
 export default class Todo {
   id: string;
   name: string;
-  due: Date;
   notes: string;
   disableNotifications: boolean;
   isRunning: boolean;
+  due?: Date;
 
   constructor(
     id: string,
     name: string,
-    due: Date,
     notes: string,
     disableNotifications: boolean,
-    isRunning: boolean
+    isRunning: boolean,
+    due?: Date,
   ) {
     this.id = id;
     this.name = name;
@@ -22,7 +22,7 @@ export default class Todo {
     this.isRunning = isRunning;
   }
 
-  fromFirestore = (doc: any) =>
+  public fromFirestore = (doc: any) =>
     new Todo(
       doc.id,
       doc.name,
