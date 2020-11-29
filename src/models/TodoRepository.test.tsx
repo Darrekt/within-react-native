@@ -1,5 +1,6 @@
 import TodoRepository from "./TodoRepository";
 import Immutable, { List } from "immutable";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Todo from "./Todo";
 
 /**
@@ -8,16 +9,37 @@ import Todo from "./Todo";
  */
 
 const exampleTodoList = List<Todo>([
-  new Todo("0", "first task", "", false, false),
-  new Todo("1", "second task", "I am important", true, false),
-  new Todo("2", "third task", "I got some notes", false, false),
+  new Todo({ id: "0", name: "first task" }),
+  new Todo({
+    id: "1",
+    name: "second task",
+    notes: "I am important",
+    disableNotifications: true,
+  }),
+  new Todo({ id: "2", name: "third task", notes: "I got some notes" }),
 ]);
 
-test("Repository should be initialised empty", () => {
+test("Repository should be initialised empty if no arguments given", () => {
   const testRepo = new TodoRepository();
   expect(testRepo.todos.size).toBe(0);
+  expect(AsyncStorage.setItem).toBeCalledWith(
+    "todos",
+    JSON.stringify([])
+    // JSON.stringify(List<Todo>().map((e) => e.toEntity()).toJSON())
+  );
 });
 
-test("Serialisation should restore original shape of data", () => {
+test("Writing should only write entities", async () => {
   const testRepo = new TodoRepository(exampleTodoList);
+  expect(AsyncStorage.setItem).toBeCalledWith(
+    "todos",
+    JSON.stringify(exampleTodoList.map((e) => e.toEntity()).toJSON())
+  );
+});
+
+// Turn this into a snapshot test
+test("Serialisation should restore original shape of data", async () => {
+  const testRepo = new TodoRepository(exampleTodoList);
+  const result = await testRepo.readTodos();
+  expect(exampleTodoList.size).toEqual(result?.size);
 });

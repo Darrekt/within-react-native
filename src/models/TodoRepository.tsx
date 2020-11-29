@@ -7,15 +7,20 @@ export default class TodoRepository {
 
   constructor(todos: List<Todo> = List()) {
     this.todos = todos;
+    this.writeTodos();
   }
 
-  private readTodos = async () => {
+  readTodos = async () => {
     try {
       const tempLstStr = await AsyncStorage.getItem("todos");
       if (tempLstStr !== null)
         // TODO: Will the types on this work out?
         // Write tests
-        this.todos = Immutable.fromJS(tempLstStr);
+        return (this.todos = List(
+          (JSON.parse(tempLstStr) as Array<Object>).map(
+            (item) => new Todo(item)
+          )
+        ));
     } catch (error) {
       console.log("Error reading todos");
     }
@@ -23,20 +28,30 @@ export default class TodoRepository {
 
   private writeTodos = async () => {
     try {
-      await AsyncStorage.setItem("todos", JSON.stringify(this.todos.toJSON()));
+      await AsyncStorage.setItem(
+        "todos",
+        JSON.stringify(this.todos.map((item) => item.toEntity()).toJSON())
+      );
     } catch (error) {
       console.log("Error in saving todos");
     }
   };
 
-  addTodo = (curr: Todo) => (this.todos = this.todos.concat([curr]));
+  addTodo = async (curr: Todo) => {
+    this.todos = this.todos.concat([curr]);
+    await this.writeTodos();
+  };
 
-  updateTodo = (curr: Todo) =>
-    (this.todos = this.todos.update(
+  updateTodo = (curr: Todo) => {
+    this.todos = this.todos.update(
       this.todos.findIndex((item) => item.id == curr.id),
       (item) => (item = curr)
-    ));
+    );
+    this.writeTodos();
+  };
 
-  deleteTodo = (curr: Todo) =>
-    (this.todos = this.todos.filter((item) => item.id !== curr.id));
+  deleteTodo = (curr: Todo) => {
+    this.todos = this.todos.filter((item) => item.id !== curr.id);
+    this.writeTodos();
+  };
 }

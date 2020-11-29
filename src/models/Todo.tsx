@@ -1,36 +1,27 @@
 export default class Todo {
-  id: string;
-  name: string;
-  notes: string;
-  disableNotifications: boolean;
-  isRunning: boolean;
+  id: string = "";
+  name: string = "";
+  notes: string = "";
+  disableNotifications: boolean = false;
+  isRunning: boolean = false;
   due?: Date;
 
-  constructor(
-    id: string,
-    name: string,
-    notes: string,
-    disableNotifications: boolean,
-    isRunning: boolean,
-    due?: Date,
-  ) {
-    this.id = id;
-    this.name = name;
-    this.due = due;
-    this.notes = notes;
-    this.disableNotifications = disableNotifications;
-    this.isRunning = isRunning;
+  constructor(data: Partial<Todo>) {
+    Object.assign(this, data);
   }
 
-  public fromFirestore = (doc: any) =>
-    new Todo(
-      doc.id,
-      doc.name,
-      doc.due,
-      doc.notes,
-      doc.disableNotifications,
-      doc.isRunning
-    );
+  toEntity = () => {
+    return {
+      id: this.id,
+      name: this.name,
+      notes: this.notes,
+      disableNotifications: this.disableNotifications,
+      isRunning: this.isRunning,
+      due: this.due,
+    };
+  };
+
+  fromFirestore = (doc: any) => new Todo({ ...doc });
 
   // TODO
   toFirestore() {}
