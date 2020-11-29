@@ -19,7 +19,7 @@ const exampleTodoList = List<Todo>([
   new Todo({ id: "2", name: "third task", notes: "I got some notes" }),
 ]);
 
-test("Repository should be initialised empty if no arguments given", () => {
+test("Repository should read from AsyncStore on initialisation", () => {
   const testRepo = new TodoRepository();
   expect(testRepo.todos.size).toBe(0);
   expect(AsyncStorage.setItem).toBeCalledWith(
@@ -30,7 +30,7 @@ test("Repository should be initialised empty if no arguments given", () => {
 });
 
 test("Writing should only write entities", async () => {
-  const testRepo = new TodoRepository(exampleTodoList);
+  const testRepo = new TodoRepository();
   expect(AsyncStorage.setItem).toBeCalledWith(
     "todos",
     JSON.stringify(exampleTodoList.map((e) => e.toEntity()).toJSON())
@@ -39,7 +39,7 @@ test("Writing should only write entities", async () => {
 
 // Turn this into a snapshot test
 test("Serialisation should restore original shape of data", async () => {
-  const testRepo = new TodoRepository(exampleTodoList);
+  const testRepo = new TodoRepository();
   const result = await testRepo.readTodos();
-  expect(exampleTodoList.size).toEqual(result?.size);
+  expect(0).toEqual(result?.size);
 });

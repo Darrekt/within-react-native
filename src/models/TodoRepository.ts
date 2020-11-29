@@ -1,26 +1,25 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Immutable, { List } from "immutable";
+import { List } from "immutable";
 import Todo from "./Todo";
 
 export default class TodoRepository {
   todos: List<Todo>;
 
-  constructor(todos: List<Todo> = List()) {
-    this.todos = todos;
-    this.writeTodos();
+  constructor() {
+    this.todos = List<Todo>();
+    this.readTodos();
   }
 
   readTodos = async () => {
     try {
       const tempLstStr = await AsyncStorage.getItem("todos");
       if (tempLstStr !== null)
-        // TODO: Will the types on this work out?
-        // Write tests
         return (this.todos = List(
           (JSON.parse(tempLstStr) as Array<Object>).map(
             (item) => new Todo(item)
           )
         ));
+      else return (this.todos = List<Todo>());
     } catch (error) {
       console.log("Error reading todos");
     }
