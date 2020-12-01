@@ -15,7 +15,7 @@ export default class TodoRepository implements Repository<Todo> {
     return this._todos.toArray();
   }
 
-  readItems = async () => {
+  async readItems() {
     try {
       const tempLstStr = await AsyncStorage.getItem("todos");
       if (tempLstStr !== null)
@@ -24,13 +24,12 @@ export default class TodoRepository implements Repository<Todo> {
             (item) => new Todo(item)
           )
         );
-      else this._todos = List<Todo>();
     } catch (error) {
       console.log("Error reading todos");
     }
-  };
+  }
 
-  writeItems = async () => {
+  async writeItems() {
     try {
       await AsyncStorage.setItem(
         "todos",
@@ -39,25 +38,23 @@ export default class TodoRepository implements Repository<Todo> {
     } catch (error) {
       console.log("Error in saving todos");
     }
-  };
+  }
 
-  addItem = async (curr: Todo) => {
-    console.log("Before:", this.todos.length)
-    this._todos = this._todos.concat(curr);
-    console.log("After:", this.todos.length)
-    await this.writeItems();
-  };
+  addItem(curr: Todo) {
+    this._todos = this._todos.push(curr);
+    this.writeItems();
+  }
 
-  updateItem = async (curr: Todo) => {
+  updateItem(curr: Todo) {
     this._todos = this._todos.update(
       this.todos.findIndex((item) => item.id == curr.id),
       (item) => (item = curr)
     );
-    await this.writeItems();
-  };
+    this.writeItems();
+  }
 
-  deleteItem = async (curr: Todo) => {
+  deleteItem(curr: Todo) {
     this._todos = this._todos.filter((item) => item.id !== curr.id);
-    await this.writeItems();
-  };
+    this.writeItems();
+  }
 }

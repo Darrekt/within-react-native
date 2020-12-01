@@ -26,15 +26,29 @@ test("Repository should read from AsyncStore on initialisation", () => {
   expect(AsyncStorage.getItem).toBeCalledWith("todos");
 });
 
-test("Writing should only write entities", async () => {
+test("addItem() should write to storage and add appropriately", () => {
   const testRepo = new TodoRepository();
   expect(testRepo.todos.length).toEqual(0);
-  await testRepo.addItem(exampleTodoList.toArray()[0]);
+
+  testRepo.addItem(exampleTodoList.toArray()[0]);
   expect(testRepo.todos.length).toEqual(1);
   expect(AsyncStorage.setItem).toBeCalledWith(
     "todos",
     JSON.stringify([exampleTodoList.toArray()[0].toEntity()])
-    // JSON.stringify(exampleTodoList.map((e) => e.toEntity()).toJSON())
+  );
+
+  testRepo.addItem(exampleTodoList.toArray()[1]);
+  expect(testRepo.todos.length).toEqual(2);
+
+  expect(AsyncStorage.setItem).toHaveBeenCalledTimes(2);
+  expect(AsyncStorage.setItem).toHaveBeenLastCalledWith(
+    "todos",
+    JSON.stringify(
+      exampleTodoList
+        .toArray()
+        .slice(0, 2)
+        .map((item) => item.toEntity())
+    )
   );
 });
 
