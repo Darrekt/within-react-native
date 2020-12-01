@@ -1,56 +1,63 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { List } from "immutable";
+import Repository from "./Repository";
 import Todo from "./Todo";
 
-export default class TodoRepository {
-  todos: List<Todo>;
+export default class TodoRepository implements Repository<Todo> {
+  private _todos: List<Todo>;
 
   constructor() {
-    this.todos = List<Todo>();
-    this.readTodos();
+    this._todos = List<Todo>();
+    this.readItems();
   }
 
-  readTodos = async () => {
+  get todos() {
+    return this._todos.toArray();
+  }
+
+  readItems = async () => {
     try {
       const tempLstStr = await AsyncStorage.getItem("todos");
       if (tempLstStr !== null)
-        return (this.todos = List(
+        this._todos = List(
           (JSON.parse(tempLstStr) as Array<Object>).map(
             (item) => new Todo(item)
           )
-        ));
-      else return (this.todos = List<Todo>());
+        );
+      else this._todos = List<Todo>();
     } catch (error) {
       console.log("Error reading todos");
     }
   };
 
-  private writeTodos = async () => {
+  writeItems = async () => {
     try {
       await AsyncStorage.setItem(
         "todos",
-        JSON.stringify(this.todos.map((item) => item.toEntity()).toJSON())
+        JSON.stringify(this._todos.map((item) => item.toEntity()).toJSON())
       );
     } catch (error) {
       console.log("Error in saving todos");
     }
   };
 
-  addTodo = async (curr: Todo) => {
-    this.todos = this.todos.concat([curr]);
-    await this.writeTodos();
+  addItem = async (curr: Todo) => {
+    console.log("Before:", this.todos.length)
+    this._todos = this._todos.concat(curr);
+    console.log("After:", this.todos.length)
+    await this.writeItems();
   };
 
-  updateTodo = (curr: Todo) => {
-    this.todos = this.todos.update(
+  updateItem = async (curr: Todo) => {
+    this._todos = this._todos.update(
       this.todos.findIndex((item) => item.id == curr.id),
       (item) => (item = curr)
     );
-    this.writeTodos();
+    await this.writeItems();
   };
 
-  deleteTodo = (curr: Todo) => {
-    this.todos = this.todos.filter((item) => item.id !== curr.id);
-    this.writeTodos();
+  deleteItem = async (curr: Todo) => {
+    this._todos = this._todos.filter((item) => item.id !== curr.id);
+    await this.writeItems();
   };
 }

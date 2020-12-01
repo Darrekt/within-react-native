@@ -2,23 +2,25 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { globalStyles } from "../../../styles";
+import { List } from "immutable";
+import Todo from "../../models/Todo";
 
 type IProps = {
+  todos: Array<Todo>;
+  addTodo: (item: Todo) => void;
   isOpen: boolean;
   taskIsRunning?: boolean;
 };
 
-const TodoListHeader = ({ isOpen, taskIsRunning }: IProps) => {
+const TodoListHeader = ({ todos, addTodo, isOpen, taskIsRunning }: IProps) => {
   return (
     <View style={isOpen ? styles.headerRow : globalStyles.centered}>
       <Text style={styles.modalHeaderText}>
-        {isOpen ? "Your Todos" : "0 tasks remaining"}
+        {isOpen ? "Your Todos" : `${todos.length} tasks remaining`}
       </Text>
       {isOpen && (
         <Pressable
-          onPress={() => {
-            console.log("pressed add item");
-          }}
+          onPress={() => addTodo(new Todo({ id: "0", name: "first task" }))}
         >
           <Entypo name="add-to-list" size={20} color="black" />
         </Pressable>

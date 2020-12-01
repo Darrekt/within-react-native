@@ -1,11 +1,11 @@
 import React from "react";
-import { List } from "immutable";
 import { StyleSheet, Image, Text, View } from "react-native";
 import { Modalize } from "react-native-modalize";
 import TodoListHeader from "../components/todo/TodoListHeader";
 import { globalStyles } from "../../styles";
 import Todo from "../models/Todo";
-import TodoRepository from "../models/TodoRepository";
+
+import useTodoRepository from "../hooks/useRepository";
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -29,9 +29,12 @@ const listEmptyDisplay = (
 );
 
 const TodoScreen = () => {
-  const todoRepo = new TodoRepository();
-  const [todoList, setTodoList] = React.useState<List<Todo>>(List());
-  React.useEffect(() => {})
+  const [todos, dispatch] = useTodoRepository();
+  const addTodo = (item: Todo) => dispatch({ name: "add", payload: item });
+  const deleteTodo = (item: Todo) =>
+    dispatch({ name: "delete", payload: item });
+  const updateTodo = (item: Todo) =>
+    dispatch({ name: "update", payload: item });
 
   //TODO: Implement taskIsRunning
   const [taskIsRunning, setTaskIsRunning] = React.useState(false);
@@ -59,8 +62,11 @@ const TodoScreen = () => {
         panGestureEnabled={!taskIsRunning}
         HeaderComponent={<View style={styles.spacer}></View>}
         sectionListProps={{
-          ListHeaderComponent: <TodoListHeader isOpen={isOpen} />,
-          sections: [],
+          ListHeaderComponent: (
+            <TodoListHeader todos={todos} addTodo={addTodo} isOpen={isOpen} />
+          ),
+          sections: [{ title: "Urgent", data: todos }],
+          renderItem: (info) => <Text>{info.item.name}</Text>,
           ListEmptyComponent: isOpen ? listEmptyDisplay : undefined,
         }}
       />
