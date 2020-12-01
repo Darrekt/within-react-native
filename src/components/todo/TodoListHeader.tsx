@@ -20,7 +20,10 @@ const TodoListHeader = ({ todos, addTodo, isOpen, taskIsRunning }: IProps) => {
       </Text>
       {isOpen && (
         <Pressable
-          onPress={() => addTodo(new Todo({ id: "0", name: "first task" }))}
+          onPress={() => {
+            console.log("pressed once");
+            addTodo(new Todo({ name: "first task" }));
+          }}
         >
           <Entypo name="add-to-list" size={20} color="black" />
         </Pressable>

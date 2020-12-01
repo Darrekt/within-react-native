@@ -29,7 +29,7 @@ const listEmptyDisplay = (
 );
 
 const TodoScreen = () => {
-  const [todos, dispatch] = useTodoRepository();
+  const [repo, dispatch] = useTodoRepository();
   const addTodo = (item: Todo) => dispatch({ name: "add", payload: item });
   const deleteTodo = (item: Todo) =>
     dispatch({ name: "delete", payload: item });
@@ -63,9 +63,9 @@ const TodoScreen = () => {
         HeaderComponent={<View style={styles.spacer}></View>}
         sectionListProps={{
           ListHeaderComponent: (
-            <TodoListHeader todos={todos} addTodo={addTodo} isOpen={isOpen} />
+            <TodoListHeader todos={repo.todos} addTodo={addTodo} isOpen={isOpen} />
           ),
-          sections: [{ title: "Urgent", data: todos }],
+          sections: [{ title: "Urgent", data: repo.todos }],
           renderItem: (info) => <Text>{info.item.name}</Text>,
           ListEmptyComponent: isOpen ? listEmptyDisplay : undefined,
         }}

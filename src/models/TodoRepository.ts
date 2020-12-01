@@ -8,7 +8,7 @@ export default class TodoRepository implements Repository<Todo> {
 
   constructor() {
     this._todos = List<Todo>();
-    this.readItems();
+    // this.readItems();
   }
 
   get todos() {
@@ -26,6 +26,7 @@ export default class TodoRepository implements Repository<Todo> {
         );
     } catch (error) {
       console.log("Error reading todos");
+
     }
   }
 

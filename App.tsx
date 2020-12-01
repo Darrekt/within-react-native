@@ -1,3 +1,4 @@
+import 'react-native-get-random-values'
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
