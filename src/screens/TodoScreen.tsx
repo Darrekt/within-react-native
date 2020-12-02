@@ -61,12 +61,13 @@ const TodoScreen = () => {
         }}
         panGestureEnabled={!taskIsRunning}
         HeaderComponent={<View style={styles.spacer}></View>}
-        sectionListProps={{
+        flatListProps={{
           ListHeaderComponent: (
-            <TodoListHeader todos={repo.todos} addTodo={addTodo} isOpen={isOpen} />
+            <TodoListHeader todos={repo.toArray()} addTodo={addTodo} isOpen={isOpen} />
           ),
-          sections: [{ title: "Urgent", data: repo.todos }],
-          renderItem: (info) => <Text>{info.item.name}</Text>,
+          data: isOpen ? repo.toArray() : [],
+          keyExtractor: (item) => item.id,
+          renderItem: ({item}) => <Text>{item.name}</Text>,
           ListEmptyComponent: isOpen ? listEmptyDisplay : undefined,
         }}
       />

@@ -1,32 +1,33 @@
 import { useReducer } from "react";
+import { List } from "immutable";
 import Todo from "../models/Todo";
-import TodoRepository from "../models/TodoRepository";
 
 export type TodoRepoAction = {
   name: "add" | "update" | "delete";
   payload: Todo;
 };
 
-const useAsyncTodoRepository = () => {
-  const repo = new TodoRepository();
-  const reducer = (state: TodoRepository, action: TodoRepoAction) => {
+const useTodoReducer = () => {
+  const reducer = (state: List<Todo>, action: TodoRepoAction) => {
     switch (action.name) {
       case "add":
-        state.addItem(action.payload);
+        return state.push(action.payload);
         break;
       case "update":
-        state.updateItem(action.payload);
+        return state.update(
+          state.findIndex((item) => item.id == action.payload.id),
+          (item) => (item = action.payload)
+        );
         break;
       case "delete":
-        state.deleteItem(action.payload);
+        return state.filter((item) => item.id !== action.payload.id);
         break;
       default:
-        throw new Error("Invalid TodoRepoAction");
+        throw new Error("Invalid Todo Action");
         break;
     }
-    return state;
   };
-  return useReducer(reducer, repo);
+  return useReducer(reducer, List<Todo>());
 };
 
-export default useAsyncTodoRepository;
+export default useTodoReducer;
