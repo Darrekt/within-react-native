@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useReducer } from "react";
 import { List } from "immutable";
 import Todo from "../models/Todo";
@@ -8,6 +9,7 @@ export type TodoRepoAction = {
 };
 
 const useTodoReducer = () => {
+  // TODO: Add the async storage effect into here
   const reducer = (state: List<Todo>, action: TodoRepoAction) => {
     switch (action.name) {
       case "add":
@@ -29,5 +31,28 @@ const useTodoReducer = () => {
   };
   return useReducer(reducer, List<Todo>());
 };
+
+async function readItems() {
+  try {
+    const tempLstStr = await AsyncStorage.getItem("todos");
+    if (tempLstStr !== null)
+      return List(
+        (JSON.parse(tempLstStr) as Array<Object>).map((item) => new Todo(item))
+      );
+  } catch (error) {
+    console.log("Error reading todos");
+  }
+}
+
+async function writeItems(state: List<Todo>) {
+  try {
+    await AsyncStorage.setItem(
+      "todos",
+      JSON.stringify(state.map((item) => item.toEntity()).toJSON())
+    );
+  } catch (error) {
+    console.log("Error in saving todos");
+  }
+}
 
 export default useTodoReducer;
