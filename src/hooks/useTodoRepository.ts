@@ -8,30 +8,6 @@ export type TodoRepoAction = {
   payload: Todo;
 };
 
-const useTodoReducer = () => {
-  // TODO: Add the async storage effect into here
-  const reducer = (state: List<Todo>, action: TodoRepoAction) => {
-    switch (action.name) {
-      case "add":
-        return state.push(action.payload);
-        break;
-      case "update":
-        return state.update(
-          state.findIndex((item) => item.id == action.payload.id),
-          (item) => (item = action.payload)
-        );
-        break;
-      case "delete":
-        return state.filter((item) => item.id !== action.payload.id);
-        break;
-      default:
-        throw new Error("Invalid Todo Action");
-        break;
-    }
-  };
-  return useReducer(reducer, List<Todo>());
-};
-
 async function readItems() {
   try {
     const tempLstStr = await AsyncStorage.getItem("todos");
@@ -55,4 +31,29 @@ async function writeItems(state: List<Todo>) {
   }
 }
 
-export default useTodoReducer;
+const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
+  switch (action.name) {
+    case "add":
+      return state.push(action.payload);
+      break;
+    case "update":
+      return state.update(
+        state.findIndex((item) => item.id == action.payload.id),
+        (item) => (item = action.payload)
+      );
+      break;
+    case "delete":
+      return state.filter((item) => item.id !== action.payload.id);
+      break;
+    default:
+      throw new Error("Invalid Todo Action");
+      break;
+  }
+};
+
+const useTodoRepository = () => {
+  // TODO: Add the async storage effect into here
+  return useReducer(todoReducer, List<Todo>());
+};
+
+export default useTodoRepository;

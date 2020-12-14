@@ -44,9 +44,13 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@testing-library/jest-native": "^3.4.3",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/react-native": "^7.1.0",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
+    "@types/react-test-renderer": "^17.0.0",
     "@types/uuid": "^8.3.0",
     "jest-expo": "^39.0.0",
     "react-test-renderer": "^17.0.1",

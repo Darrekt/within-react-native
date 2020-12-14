@@ -5,7 +5,7 @@ import TodoListHeader from "../components/todo/TodoListHeader";
 import { globalStyles } from "../../styles";
 import Todo from "../models/Todo";
 
-import useTodoRepository from "../hooks/useRepository";
+import useTodoRepository from "../hooks/useTodoRepository";
 
 const styles = StyleSheet.create({
   modalContainer: {
