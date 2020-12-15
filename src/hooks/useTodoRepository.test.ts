@@ -33,11 +33,15 @@ test("Repository should be empty on init", () => {
   expect(result.current[0].size).toBe(0);
 });
 
-test("Repository should read from AsyncStore on initialisation", () => {
+test("Repository should read from AsyncStore on initialisation", async () => {
   AsyncStorage.setItem(
     "todos",
     JSON.stringify(exampleTodoList.map((item) => item.toEntity()).toJSON())
   );
+  const { result, waitForNextUpdate } = renderHook(() => useTodoRepository());
+  expect(result.current[0].size).toBe(0);
+  await waitForNextUpdate();
+  expect(result.current[0].size).toBe(exampleTodoList.size);
 });
 
 // Turn this into a snapshot test
