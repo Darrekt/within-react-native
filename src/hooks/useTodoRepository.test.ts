@@ -1,9 +1,14 @@
-
 import { List } from "immutable";
+import { renderHook } from "@testing-library/react-hooks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useTodoRepository from "./useTodoRepository";
 import Todo from "../models/Todo";
-import renderer from "react-test-renderer";
+
+// test('should use counter', () =>
+//   const { result } = renderHook(() => useCounter())
+//   expect(result.current.count).toBe(0)
+//   expect(typeof result.current.increment).toBe('function')
+// })
 
 /**
  * TodoRepository uses AsyncStorage and cannot run alone in a test. For more information,
@@ -21,10 +26,18 @@ const exampleTodoList = List<Todo>([
   new Todo({ id: "2", name: "third task", notes: "I got some notes" }),
   new Todo({ id: "3", name: "fourth task" }),
 ]);
-it
+it;
+
+test("Repository should be empty on init", () => {
+  const { result } = renderHook(() => useTodoRepository());
+  expect(result.current[0].size).toBe(0);
+});
 
 test("Repository should read from AsyncStore on initialisation", () => {
-
+  AsyncStorage.setItem(
+    "todos",
+    JSON.stringify(exampleTodoList.map((item) => item.toEntity()).toJSON())
+  );
 });
 
 // Turn this into a snapshot test

@@ -1,9 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { List } from "immutable";
 import Todo from "../models/Todo";
 
-export type TodoRepoAction = {
+export type TodoRepoAction = TodoRepoCRUDAction | TodoRepoAsyncAction;
+
+export type TodoRepoAsyncAction = {
+  name: "hydrate" | "flush";
+  payload: List<Todo>;
+};
+
+export type TodoRepoCRUDAction = {
   name: "add" | "update" | "delete";
   payload: Todo;
 };
@@ -32,28 +39,47 @@ async function writeItems(state: List<Todo>) {
 }
 
 const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
+  let newState: List<Todo>;
   switch (action.name) {
     case "add":
-      return state.push(action.payload);
+      newState = state.push(action.payload);
       break;
     case "update":
-      return state.update(
+      newState = state.update(
         state.findIndex((item) => item.id == action.payload.id),
         (item) => (item = action.payload)
       );
       break;
     case "delete":
-      return state.filter((item) => item.id !== action.payload.id);
+      newState = state.filter((item) => item.id !== action.payload.id);
       break;
+    case "hydrate":
+      newState = action.payload;
+      break;
+    case "flush":
+      newState = List<Todo>();
     default:
       throw new Error("Invalid Todo Action");
       break;
   }
+  writeItems(newState);
+  return newState;
 };
 
-const useTodoRepository = () => {
+const useTodoRepository: () => [
+  List<Todo>,
+  React.Dispatch<TodoRepoAction>
+] = () => {
+  const [todos, dispatch] = useReducer(todoReducer, List<Todo>());
   // TODO: Add the async storage effect into here
-  return useReducer(todoReducer, List<Todo>());
+  useEffect(() => {
+    const asyncTodos = readItems().then((asyncStorageTodos) => {
+      if (asyncStorageTodos && asyncStorageTodos != todos)
+        dispatch({ name: "hydrate", payload: asyncStorageTodos });
+    });
+  }, []);
+
+  return [todos, dispatch];
 };
 
 export default useTodoRepository;
