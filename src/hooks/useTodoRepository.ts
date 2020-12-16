@@ -7,7 +7,7 @@ export type TodoRepoAction = TodoRepoCRUDAction | TodoRepoAsyncAction;
 
 export type TodoRepoAsyncAction = {
   name: "hydrate" | "flush";
-  payload: List<Todo>;
+  payload?: List<Todo>;
 };
 
 export type TodoRepoCRUDAction = {
@@ -54,10 +54,11 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
       newState = state.filter((item) => item.id !== action.payload.id);
       break;
     case "hydrate":
-      newState = action.payload;
+      newState = action.payload ?? List<Todo>();
       break;
     case "flush":
       newState = List<Todo>();
+      break;
     default:
       throw new Error("Invalid Todo Action");
       break;

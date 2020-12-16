@@ -1,32 +1,71 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../../../styles";
-import { List } from "immutable";
 import Todo from "../../models/Todo";
+import { TodoRepoAction } from "../../hooks/useTodoRepository";
+
+const styles = StyleSheet.create({
+  modalHeaderText: {
+    textAlign: "center",
+    fontSize: 24,
+    fontWeight: "500",
+  },
+  openHeader: {
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  openHeaderTitle: {
+    flex: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  openHeaderButtonRow: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+});
 
 type IProps = {
   todos: Array<Todo>;
-  addTodo: (item: Todo) => void;
+  dispatch: React.Dispatch<TodoRepoAction>;
   isOpen: boolean;
   taskIsRunning?: boolean;
 };
 
-const TodoListHeader = ({ todos, addTodo, isOpen, taskIsRunning }: IProps) => {
+const TodoListHeader = ({ todos, dispatch, isOpen, taskIsRunning }: IProps) => {
   return (
-    <View style={isOpen ? styles.headerRow : globalStyles.centered}>
-      <Text style={styles.modalHeaderText}>
-        {isOpen ? "Your Todos" : `${todos.length} tasks remaining`}
-      </Text>
+    <View style={isOpen ? styles.openHeader : globalStyles.centered}>
+      <View style={styles.openHeaderTitle}>
+        <Text style={styles.modalHeaderText}>
+          {isOpen ? "Your Todos" : `${todos.length} tasks remaining`}
+        </Text>
+      </View>
       {isOpen && (
-        <Pressable
-          onPress={() => {
-            console.log("pressed once");
-            addTodo(new Todo({ name: "first task" }));
-          }}
-        >
-          <Entypo name="add-to-list" size={20} color="black" />
-        </Pressable>
+        <View style={styles.openHeaderButtonRow}>
+          <Pressable
+            onPress={() => {
+              dispatch({
+                name: "flush",
+              });
+            }}
+          >
+            <MaterialIcons name="clear-all" size={24} color="black" />
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              dispatch({
+                name: "add",
+                payload: new Todo({ name: "New Task" }),
+              });
+            }}
+          >
+            <Entypo name="add-to-list" size={20} color="black" />
+          </Pressable>
+        </View>
       )}
     </View>
   );
@@ -44,18 +83,5 @@ const TodoListHeader = ({ todos, addTodo, isOpen, taskIsRunning }: IProps) => {
   //   />
   // </View>
 };
-
-const styles = StyleSheet.create({
-  headerRow: {
-    padding: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  modalHeaderText: {
-    textAlign: "center",
-    fontSize: 24,
-    fontWeight: "500",
-  },
-});
 
 export default TodoListHeader;

@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet, Image, Text, View } from "react-native";
 import { Modalize } from "react-native-modalize";
-import TodoListHeader from "../components/todo/TodoListHeader";
 import { globalStyles } from "../../styles";
 import Todo from "../models/Todo";
+import TodoListHeader from "../components/todo/TodoListHeader";
+import TodoItemTile from "../components/todo/TodoItemTile"
 
 import useTodoRepository from "../hooks/useTodoRepository";
 
@@ -30,11 +31,6 @@ const listEmptyDisplay = (
 
 const TodoScreen = () => {
   const [repo, dispatch] = useTodoRepository();
-  const addTodo = (item: Todo) => dispatch({ name: "add", payload: item });
-  const deleteTodo = (item: Todo) =>
-    dispatch({ name: "delete", payload: item });
-  const updateTodo = (item: Todo) =>
-    dispatch({ name: "update", payload: item });
 
   //TODO: Implement taskIsRunning
   const [taskIsRunning, setTaskIsRunning] = React.useState(false);
@@ -63,11 +59,11 @@ const TodoScreen = () => {
         HeaderComponent={<View style={styles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
-            <TodoListHeader todos={repo.toArray()} addTodo={addTodo} isOpen={isOpen} />
+            <TodoListHeader todos={repo.toArray()} dispatch={dispatch} isOpen={isOpen} />
           ),
           data: isOpen ? repo.toArray() : [],
           keyExtractor: (item) => item.id,
-          renderItem: ({item}) => <Text>{item.name}</Text>,
+          renderItem: ({item}) => <TodoItemTile todo={item}/>,
           ListEmptyComponent: isOpen ? listEmptyDisplay : undefined,
         }}
       />

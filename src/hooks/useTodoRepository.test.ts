@@ -26,7 +26,6 @@ const exampleTodoList = List<Todo>([
   new Todo({ id: "2", name: "third task", notes: "I got some notes" }),
   new Todo({ id: "3", name: "fourth task" }),
 ]);
-it;
 
 test("Repository should be empty on init", () => {
   const { result } = renderHook(() => useTodoRepository());
@@ -45,7 +44,7 @@ test("Repository should read from AsyncStore on initialisation", async () => {
 });
 
 // Turn this into a snapshot test
-test("Serialisation should restore original shape of data", async () => {
+test("Consistent type check of recovered data from AsyncStore", async () => {
   // const result = await testRepo.readTodos();
   // expect(0).toEqual(result?.size);
 });
