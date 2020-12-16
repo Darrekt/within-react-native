@@ -6,6 +6,7 @@ export default class Todo {
   notes: string = "";
   disableNotifications: boolean = false;
   isRunning: boolean = false;
+  completed: boolean = false;
   due?: Date;
 
   constructor(data: Partial<Todo>) {
@@ -19,6 +20,7 @@ export default class Todo {
       notes: this.notes,
       disableNotifications: this.disableNotifications,
       isRunning: this.isRunning,
+      completed: this.completed,
       due: this.due,
     };
   };

@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Image, Text, View } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../styles";
-import Todo from "../models/Todo";
 import TodoListHeader from "../components/todo/TodoListHeader";
 import TodoItemTile from "../components/todo/TodoItemTile"
 
@@ -63,7 +62,7 @@ const TodoScreen = () => {
           ),
           data: isOpen ? repo.toArray() : [],
           keyExtractor: (item) => item.id,
-          renderItem: ({item}) => <TodoItemTile todo={item}/>,
+          renderItem: ({item}) => <TodoItemTile todo={item} dispatch={dispatch}/>,
           ListEmptyComponent: isOpen ? listEmptyDisplay : undefined,
         }}
       />

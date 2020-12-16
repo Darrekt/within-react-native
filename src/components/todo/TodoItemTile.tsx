@@ -3,6 +3,7 @@ import { StyleSheet, View, Pressable, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import Todo from "../../models/Todo";
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
+import { TodoRepoAction } from "../../hooks/useTodoRepository";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -21,6 +22,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "400",
   },
+  completedTileTitleTextStyle: {
+    flex: 6,
+    fontSize: 20,
+    fontWeight: "400",
+    textDecorationLine: "line-through",
+    textDecorationStyle: "solid",
+  },
   tileActions: {
     flex: 2,
     flexDirection: "row",
@@ -33,32 +41,47 @@ const styles = StyleSheet.create({
   },
 });
 
-const TodoItemTile = ({ todo }: { todo: Todo }) => {
+const TodoItemTile = ({
+  todo,
+  dispatch,
+}: {
+  todo: Todo;
+  dispatch: React.Dispatch<TodoRepoAction>;
+}) => {
   return (
     <ListItem topDivider>
       <ListItem.Content style={styles.tileRow}>
         <Text style={styles.tileIconStyle}></Text>
-        <ListItem.Title style={styles.tileTitleTextStyle}>
+        <ListItem.Title
+          style={
+            todo.completed
+              ? styles.completedTileTitleTextStyle
+              : styles.tileTitleTextStyle
+          }
+        >
           {todo.name}
         </ListItem.Title>
         <View style={styles.tileActions}>
           <Pressable
             onPress={() => {
-              //   addTodo(new Todo({ name: "first task" }));
+              dispatch({
+                name: "update",
+                payload: new Todo({ ...todo, completed: true }),
+              });
             }}
           >
             <AntDesign name="check" size={24} color="black" />
           </Pressable>
           <Pressable
             onPress={() => {
-              //   addTodo(new Todo({ name: "first task" }));
+              dispatch({ name: "delete", payload: todo });
             }}
           >
             <Entypo name="cross" size={24} color="black" />
           </Pressable>
           <Pressable
             onPress={() => {
-              //   addTodo(new Todo({ name: "first task" }));
+              console.log("Implement sort");
             }}
           >
             <FontAwesome name="sort" size={24} color="black" />
