@@ -33,7 +33,7 @@ const TodoScreen = () =>
       component={TodoScreenContents}
       options={{ headerShown: false }}
     />
-    <Stack.Screen name="AddTodoScreen" component={AddTodoScreen} />
+    <Stack.Screen name="AddTodoScreen" component={AddTodoScreen} options={{ title: "Add a task" }} />
   </Stack.Navigator>
 
 const TodoScreenContents = () => {
