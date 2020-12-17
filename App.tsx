@@ -5,10 +5,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-
 import { OnboardContext } from "./src/state/context";
 
-import TodoScreen from './src/screens/TodoScreen';
+import TodoScreen from './src/screens/Todo/TodoScreen';
 import StatScreen from './src/screens/StatScreen';
 import OnboardingScreen from './src/screens/OnboardingScreen';
 import GroupScreen from './src/screens/GroupScreen';
