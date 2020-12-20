@@ -5,6 +5,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { TodoContext } from "./../../state/context";
 import { globalStyles, textStyles } from "../../../styles";
 import Todo from "../../models/Todo";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 const styles = StyleSheet.create({
   stringEntry: {
@@ -18,14 +19,23 @@ const styles = StyleSheet.create({
   inputBox: {},
 });
 
-const AddTodoScreen = () => {
+type TodoScreenNavigationProp = StackNavigationProp<
+  { AddTodoScreen: undefined },
+  "AddTodoScreen"
+>;
+
+const AddTodoScreen = ({
+  navigation,
+}: {
+  navigation: TodoScreenNavigationProp;
+}) => {
   const { dispatch } = React.useContext(TodoContext);
   return (
     <View>
       <Formik
         initialValues={{ name: "", notes: "", disableNotifications: false }}
         validate={(values) => {}}
-        onSubmit={(values) =>
+        onSubmit={(values) => {
           dispatch({
             name: "add",
             payload: new Todo({
@@ -33,8 +43,9 @@ const AddTodoScreen = () => {
               notes: values.notes,
               disableNotifications: values.disableNotifications,
             }),
-          })
-        }
+          });
+          navigation.goBack();
+        }}
       >
         {({
           handleChange,
