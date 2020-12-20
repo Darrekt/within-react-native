@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Switch, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
+import { TodoContext } from "./../../state/context";
 import { globalStyles, textStyles } from "../../../styles";
 import Todo from "../../models/Todo";
 
@@ -17,14 +18,15 @@ const styles = StyleSheet.create({
   inputBox: {},
 });
 
-const AddTodoScreen = ({ route, navigation }: any) => {
+const AddTodoScreen = () => {
+  const { dispatch } = React.useContext(TodoContext);
   return (
     <View>
       <Formik
         initialValues={{ name: "", notes: "", disableNotifications: false }}
         validate={(values) => {}}
         onSubmit={(values) =>
-          route.dispatch({
+          dispatch({
             name: "add",
             payload: new Todo({
               name: values.name,

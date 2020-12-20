@@ -1,11 +1,12 @@
 import React from "react";
 import { StyleSheet, Image, View } from "react-native";
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from "@react-navigation/stack";
 import { Modalize } from "react-native-modalize";
+import { TodoContext } from "./../../state/context";
 import { globalStyles } from "../../../styles";
 import ListEmptyDisplay from "../../components/todo/ListEmptyDisplay";
 import TodoListHeader from "../../components/todo/TodoListHeader";
-import TodoItemTile from "../../components/todo/TodoItemTile"
+import TodoItemTile from "../../components/todo/TodoItemTile";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import AddTodoScreen from "./AddTodoScreen";
 
@@ -26,19 +27,30 @@ const styles = StyleSheet.create({
 
 const Stack = createStackNavigator();
 
-const TodoScreen = () =>
-  <Stack.Navigator mode="modal">
-    <Stack.Screen
-      name="TodoScreenHome"
-      component={TodoScreenContents}
-      options={{ headerShown: false }}
-    />
-    <Stack.Screen name="AddTodoScreen" component={AddTodoScreen} options={{ title: "Add a task" }} />
-  </Stack.Navigator>
+const TodoScreen = () => {
+  const [repo, dispatch] = useTodoRepository();
+
+  return (
+    <TodoContext.Provider value={{todos: repo, dispatch: dispatch}}>
+      <Stack.Navigator mode="modal">
+        <Stack.Screen
+          name="TodoScreenHome"
+          component={TodoScreenContents}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="AddTodoScreen"
+          component={AddTodoScreen}
+          options={{ title: "Add a task" }}
+        />
+      </Stack.Navigator>
+    </TodoContext.Provider>
+  );
+};
 
 const TodoScreenContents = () => {
-  const [repo, dispatch] = useTodoRepository();
   const [taskIsRunning, setTaskIsRunning] = React.useState(false);
+  const { todos, dispatch } = React.useContext(TodoContext);
   const modalizeRef = React.useRef<Modalize>(null);
   const [isOpen, setIsOpen] = React.useState(false);
   // const openModal = () => modalizeRef.current?.open("top");
@@ -63,11 +75,17 @@ const TodoScreenContents = () => {
         HeaderComponent={<View style={styles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
-            <TodoListHeader todos={repo.toArray()} dispatch={dispatch} isOpen={isOpen} />
+            <TodoListHeader
+              todos={todos.toArray()}
+              dispatch={dispatch}
+              isOpen={isOpen}
+            />
           ),
-          data: isOpen ? repo.toArray() : [],
+          data: isOpen ? todos.toArray() : [],
           keyExtractor: (item) => item.id,
-          renderItem: ({ item }) => <TodoItemTile todo={item} dispatch={dispatch} />,
+          renderItem: ({ item }) => (
+            <TodoItemTile todo={item} dispatch={dispatch} />
+          ),
           ListEmptyComponent: isOpen ? ListEmptyDisplay : undefined,
         }}
       />
