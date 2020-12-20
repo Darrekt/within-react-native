@@ -4,7 +4,7 @@ import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../../../styles";
 import Todo from "../../models/Todo";
 import { TodoRepoAction } from "../../hooks/useTodoRepository";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   modalHeaderText: {
@@ -59,7 +59,7 @@ const TodoListHeader = ({ todos, dispatch, isOpen, taskIsRunning }: IProps) => {
           </Pressable>
           <Pressable
             onPress={() => {
-              navigation.navigate("AddTodoScreen")
+              navigation.navigate("AddTodoScreen");
             }}
           >
             <Entypo name="add-to-list" size={20} color="black" />
@@ -68,19 +68,6 @@ const TodoListHeader = ({ todos, dispatch, isOpen, taskIsRunning }: IProps) => {
       )}
     </View>
   );
-
-  // <View>
-  //   <Text>Task List</Text>
-  //   <TextInput
-  //     style={{ height: 40, width: 200, borderColor: 'gray', borderWidth: 1 }}
-  //     onChangeText={text => { }}
-  //     placeholder="Create a task"
-  //     clearTextOnFocus
-  //     // onSubmitEditing
-  //     onFocus={openModal}
-  //     onBlur={closeModal}
-  //   />
-  // </View>
 };
 
 export default TodoListHeader;

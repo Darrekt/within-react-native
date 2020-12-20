@@ -21,3 +21,19 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export const textStyles = StyleSheet.create({
+  header: {
+    fontSize: 20,
+    fontWeight: "400"
+  },
+  column: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  centered: {
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
