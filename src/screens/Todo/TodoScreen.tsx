@@ -4,22 +4,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Modalize } from "react-native-modalize";
 import { TodoContext } from "./../../state/context";
 import { globalStyles } from "../../../styles";
-import * as TodoComponents from "../../components/todo/TodoComponents"
+import * as TodoComponents from "../../components/todo/TodoComponents";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import AddTodoScreen from "./AddTodoScreen";
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    width: "100%",
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   spacer: {
     height: 30,
-  },
-  modalHeaderText: {
-    fontSize: 24,
   },
 });
 
@@ -56,8 +47,11 @@ const TodoScreenContents = () => {
 
   return (
     <View style={globalStyles.container}>
-      {isOpen ? <TodoComponents.TimerDisplay/> : <TodoComponents.HomeDisplay/> }
-      <Image source={require("../../../assets/old_mascot/attention.png")} />
+      {isOpen ? (
+        <TodoComponents.TimerDisplay />
+      ) : (
+        <TodoComponents.HomeDisplay />
+      )}
       <Modalize
         ref={modalizeRef}
         modalHeight={450}
@@ -82,7 +76,9 @@ const TodoScreenContents = () => {
           renderItem: ({ item }) => (
             <TodoComponents.ItemTile todo={item} dispatch={dispatch} />
           ),
-          ListEmptyComponent: isOpen ? TodoComponents.ListEmptyDisplay : undefined,
+          ListEmptyComponent: isOpen
+            ? TodoComponents.ListEmptyDisplay
+            : undefined,
         }}
       />
     </View>

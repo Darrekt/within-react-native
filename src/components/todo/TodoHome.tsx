@@ -1,8 +1,12 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 
 const HomeDisplay = () => {
-  return <View></View>;
+  return (
+    <View>
+      <Image source={require("../../../assets/old_mascot/logo.png")} />
+    </View>
+  );
 };
 
 export default HomeDisplay;

@@ -1,42 +1,35 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../../../styles";
-import Todo from "../../models/Todo";
 
 const styles = StyleSheet.create({
+  positionedLogo: {
+    height: "30%",
+    position: "absolute",
+    top: "10%",
+  },
+  img: {
+    resizeMode: "contain",
+  },
   modalHeaderText: {
     textAlign: "center",
-    fontSize: 24,
-    fontWeight: "500",
-  },
-  openHeader: {
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  openHeaderTitle: {
-    flex: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  openHeaderButtonRow: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    fontSize: 18,
   },
 });
 
-type Props = {
-};
+type Props = {};
 
-const TodoTimer = ({ }: Props) => {
+const TodoTimer = ({}: Props) => {
   return (
-    <View style={globalStyles.centered}>
-      <View style={styles.openHeaderTitle}>
-          <Image source={require("../../../assets/old_mascot/logo.png")} />
-          <Text style={styles.modalHeaderText}></Text>
+    <View style={styles.positionedLogo}>
+      <View style={globalStyles.column}>
+        <Image
+          style={styles.img}
+          source={require("../../../assets/old_mascot/attention.png")}
+        />
+        <Text style={styles.modalHeaderText}>
+          Select a task to get started on!
+        </Text>
       </View>
     </View>
   );
