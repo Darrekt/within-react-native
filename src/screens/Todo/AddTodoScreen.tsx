@@ -16,7 +16,21 @@ const styles = StyleSheet.create({
     ...globalStyles.row,
     padding: 10,
   },
-  inputBox: {},
+  inputBox: {
+    margin: 15,
+    height: 40,
+    borderColor: "#7a42f4",
+    borderWidth: 1,
+  },
+  submitButton: {
+    backgroundColor: "#7a42f4",
+    padding: 10,
+    margin: 15,
+    height: 40,
+  },
+  submitButtonText: {
+    color: "white",
+  },
 });
 
 type TodoScreenNavigationProp = StackNavigationProp<
@@ -34,7 +48,9 @@ const AddTodoScreen = ({
     <View>
       <Formik
         initialValues={{ name: "", notes: "", disableNotifications: false }}
-        validate={(values) => {}}
+        validate={(values) => {
+          let errors = {};
+        }}
         onSubmit={(values) => {
           dispatch({
             name: "add",
@@ -56,20 +72,22 @@ const AddTodoScreen = ({
         }) => (
           <View style={globalStyles.column}>
             <View style={styles.stringEntry}>
-              <Text style={textStyles.header}>Task name</Text>
+              <Text style={textStyles.header}>What are you doing?</Text>
               <TextInput
                 style={styles.inputBox}
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
+                placeholder="Task name"
                 value={values.name}
               />
             </View>
             <View style={styles.stringEntry}>
-              <Text style={textStyles.header}>Notes</Text>
+              <Text style={textStyles.header}>Additional details</Text>
               <TextInput
                 style={styles.inputBox}
                 onChangeText={handleChange("notes")}
                 onBlur={handleBlur("notes")}
+                placeholder="Notes"
                 value={values.notes}
               />
             </View>
@@ -90,7 +108,11 @@ const AddTodoScreen = ({
                 }
               />
             </View>
-            <Button onPress={() => handleSubmit()} title="Add Task" />
+            <Button
+              color={styles.submitButton.backgroundColor}
+              onPress={() => handleSubmit()}
+              title="Add Task"
+            />
           </View>
         )}
       </Formik>

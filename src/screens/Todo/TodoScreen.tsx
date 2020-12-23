@@ -4,9 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Modalize } from "react-native-modalize";
 import { TodoContext } from "./../../state/context";
 import { globalStyles } from "../../../styles";
-import ListEmptyDisplay from "../../components/todo/ListEmptyDisplay";
-import TodoListHeader from "../../components/todo/TodoListHeader";
-import TodoItemTile from "../../components/todo/TodoItemTile";
+import * as TodoComponents from "../../components/todo/TodoComponents"
 import useTodoRepository from "../../hooks/useTodoRepository";
 import AddTodoScreen from "./AddTodoScreen";
 
@@ -31,7 +29,7 @@ const TodoScreen = () => {
   const [repo, dispatch] = useTodoRepository();
 
   return (
-    <TodoContext.Provider value={{todos: repo, dispatch: dispatch}}>
+    <TodoContext.Provider value={{ todos: repo, dispatch: dispatch }}>
       <Stack.Navigator mode="modal">
         <Stack.Screen
           name="TodoScreenHome"
@@ -58,13 +56,11 @@ const TodoScreenContents = () => {
 
   return (
     <View style={globalStyles.container}>
-      <Image source={require("../../../assets/old_mascot/logo.png")} />
-      <View>
-        <Image source={require("../../../assets/old_mascot/attention.png")} />
-      </View>
+      {isOpen ? <TodoComponents.TimerDisplay/> : <TodoComponents.HomeDisplay/> }
+      <Image source={require("../../../assets/old_mascot/attention.png")} />
       <Modalize
         ref={modalizeRef}
-        modalHeight={400}
+        modalHeight={450}
         alwaysOpen={100}
         handlePosition={"inside"}
         withOverlay={false}
@@ -75,7 +71,7 @@ const TodoScreenContents = () => {
         HeaderComponent={<View style={styles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
-            <TodoListHeader
+            <TodoComponents.ListHeader
               todos={todos.toArray()}
               dispatch={dispatch}
               isOpen={isOpen}
@@ -84,9 +80,9 @@ const TodoScreenContents = () => {
           data: isOpen ? todos.toArray() : [],
           keyExtractor: (item) => item.id,
           renderItem: ({ item }) => (
-            <TodoItemTile todo={item} dispatch={dispatch} />
+            <TodoComponents.ItemTile todo={item} dispatch={dispatch} />
           ),
-          ListEmptyComponent: isOpen ? ListEmptyDisplay : undefined,
+          ListEmptyComponent: isOpen ? TodoComponents.ListEmptyDisplay : undefined,
         }}
       />
     </View>
