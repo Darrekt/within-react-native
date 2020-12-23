@@ -27,13 +27,4 @@ export const textStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "400"
   },
-  column: {
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  centered: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });

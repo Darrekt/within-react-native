@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleSheet, Image, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Modalize } from "react-native-modalize";
-import { TodoContext } from "./../../state/context";
 import { globalStyles } from "../../../styles";
-import * as TodoComponents from "../../components/todo/TodoComponents";
+import { TodoContext } from "./../../state/context";
 import useTodoRepository from "../../hooks/useTodoRepository";
+import * as TodoComponents from "../../components/todo/TodoComponents";
 import AddTodoScreen from "./AddTodoScreen";
 
 const styles = StyleSheet.create({
