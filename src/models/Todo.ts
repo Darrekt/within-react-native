@@ -5,23 +5,26 @@ export default class Todo {
   name: string = "";
   notes: string = "";
   disableNotifications: boolean = false;
-  isRunning: boolean = false;
+  laps: number = 0;
   completed: boolean = false;
-  due?: Date;
+  selected: boolean = false;
+  finishingTime?: Date;
 
   constructor(data: Partial<Todo>) {
     Object.assign(this, data);
   }
 
+  // WARNING: Make sure you update toEntity if you change the shape of the Todo object!
   toEntity = () => {
     return {
       id: this.id,
       name: this.name,
       notes: this.notes,
       disableNotifications: this.disableNotifications,
-      isRunning: this.isRunning,
+      laps: this.laps,
       completed: this.completed,
-      due: this.due,
+      selected: this.selected,
+      finishingTime: this.finishingTime,
     };
   };
 

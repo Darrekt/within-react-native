@@ -1,12 +1,18 @@
 import React from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
-import { globalStyles } from "../../../styles";
+import Todo from "../../models/Todo";
 
 const styles = StyleSheet.create({
   positionedLogo: {
     height: "30%",
     position: "absolute",
     top: "8%",
+    flex: 1,
+    justifyContent: "center",
+  },
+  timerFont: {
+    fontSize: 64,
+    fontWeight: "400",
   },
   img: {
     flex: 8,
@@ -20,10 +26,21 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {};
+type Props = {
+  selectedTask?: Todo;
+};
 
-const TodoTimer = ({}: Props) => {
-  return (
+const TodoTimer = ({ selectedTask }: Props) => {
+  return selectedTask ? (
+    <View style={styles.positionedLogo}>
+      <Text style={styles.timerFont}>
+        {/* TODO: Make a proper implementation of the time setting */}
+        {selectedTask.finishingTime
+          ? selectedTask.finishingTime.getMinutes() - new Date().getMinutes()
+          : "25:00"}
+      </Text>
+    </View>
+  ) : (
     <View style={styles.positionedLogo}>
       <Image
         style={styles.img}

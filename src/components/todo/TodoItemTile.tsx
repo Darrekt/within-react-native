@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Pressable, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { ListItem } from "react-native-elements";
 import Todo from "../../models/Todo";
 import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -50,47 +56,57 @@ const TodoItemTile = ({
 }) => {
   return (
     <ListItem topDivider>
-      <ListItem.Content style={styles.tileRow}>
-        <Text style={styles.tileIconStyle}></Text>
-        <ListItem.Title
-          style={
-            todo.completed
-              ? styles.completedTileTitleTextStyle
-              : styles.tileTitleTextStyle
-          }
-        >
-          {todo.name}
-        </ListItem.Title>
-        <View style={styles.tileActions}>
-          <Pressable
-            onPress={() => {
-              dispatch({
-                name: "update",
-                payload: new Todo({ ...todo, completed: !todo.completed }),
-              });
-            }}
-          >
-            {todo.completed
-              ? <Ionicons name="ios-refresh" size={20} color="black" />
-              : <AntDesign name="check" size={20} color="black" />
+      <TouchableOpacity
+        onPress={() => {
+          dispatch({
+            type: "selected",
+            target: todo.id,
+          });
+        }}
+      >
+        <ListItem.Content style={styles.tileRow}>
+          <Text style={styles.tileIconStyle}></Text>
+          <ListItem.Title
+            style={
+              todo.completed
+                ? styles.completedTileTitleTextStyle
+                : styles.tileTitleTextStyle
             }
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              dispatch({ name: "delete", payload: todo });
-            }}
           >
-            <Entypo name="cross" size={20} color="black" />
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              console.log("Implement sort");
-            }}
-          >
-            <FontAwesome name="sort" size={20} color="black" />
-          </Pressable>
-        </View>
-      </ListItem.Content>
+            {todo.name}
+          </ListItem.Title>
+          <View style={styles.tileActions}>
+            <Pressable
+              onPress={() => {
+                dispatch({
+                  type: "completed",
+                  target: todo.id,
+                });
+              }}
+            >
+              {todo.completed ? (
+                <Ionicons name="ios-refresh" size={20} color="black" />
+              ) : (
+                <AntDesign name="check" size={20} color="black" />
+              )}
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                dispatch({ name: "delete", payload: todo });
+              }}
+            >
+              <Entypo name="cross" size={20} color="black" />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                console.log("Implement sort");
+              }}
+            >
+              <FontAwesome name="sort" size={20} color="black" />
+            </Pressable>
+          </View>
+        </ListItem.Content>
+      </TouchableOpacity>
     </ListItem>
   );
 };

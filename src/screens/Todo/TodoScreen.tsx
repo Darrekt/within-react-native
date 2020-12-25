@@ -7,6 +7,7 @@ import { TodoContext } from "./../../state/context";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import AddTodoScreen from "./AddTodoScreen";
+import Todo from "../../models/Todo";
 
 const styles = StyleSheet.create({
   spacer: {
@@ -45,10 +46,15 @@ const TodoScreenContents = () => {
   // const openModal = () => modalizeRef.current?.open("top");
   // const closeModal = () => modalizeRef.current?.close("alwaysOpen");
 
+  // FIXME: Unsafe implementation, improve later
+  const selected = todos.find((todo) => todo.selected);
+
   return (
     <View style={globalStyles.container}>
       {isOpen ? (
-        <TodoComponents.TimerDisplay />
+        <TodoComponents.TimerDisplay
+          selectedTask={selected}
+        />
       ) : (
         <TodoComponents.HomeDisplay />
       )}

@@ -3,16 +3,30 @@ import { useEffect, useReducer } from "react";
 import { List } from "immutable";
 import Todo from "../models/Todo";
 
-export type TodoRepoAction = TodoRepoCRUDAction | TodoRepoAsyncAction;
+export type TodoRepoAction =
+  | TodoAsyncStorageAction
+  | TodoCRUDAction
+  | TodoProductivityAction
+  | TodoTimerAction;
 
-export type TodoRepoAsyncAction = {
-  name: "hydrate" | "flush";
+export type TodoAsyncStorageAction = {
+  type: "hydrate" | "flush";
   payload?: List<Todo>;
 };
 
-export type TodoRepoCRUDAction = {
-  name: "add" | "update" | "delete";
+export type TodoCRUDAction = {
+  type: "add" | "update" | "delete";
   payload: Todo;
+};
+
+export type TodoProductivityAction = {
+  type: "selected" | "completed";
+  target: Todo["id"];
+};
+
+export type TodoTimerAction = {
+  type: "start" | "pause" | "reset" | "finished";
+  target: Todo["id"];
 };
 
 async function readItems() {
@@ -40,19 +54,58 @@ async function writeItems(state: List<Todo>) {
 
 const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
   let newState: List<Todo>;
-  switch (action.name) {
-    case "add":
-      newState = state.push(action.payload);
+  switch (action.type) {
+    // TodoTimerActions
+    case "start":
+      newState = state.update(
+        state.findIndex((item) => item.id == action.target),
+        (item) => {
+          let in25mins = new Date();
+          in25mins.setMinutes(in25mins.getMinutes() + 25);
+          return new Todo({ ...item, finishingTime: in25mins });
+        }
+      );
       break;
+    case "pause":
+    case "reset":
+    case "finished":
+      newState = state.update(
+        state.findIndex((item) => item.id == action.target),
+        (item) => {
+          return new Todo({ ...item, finishingTime: undefined });
+        }
+      );
+      break;
+
+    // TodoProductivityActions
+    case "selected":
+      newState = state.update(
+        state.findIndex((item) => item.id == action.target),
+        (item) => new Todo({ ...item, selected: !item.selected })
+      );
+      break;
+    case "completed":
+      newState = state.update(
+        state.findIndex((item) => item.id == action.target),
+        (item) => new Todo({ ...item, completed: !item.completed })
+      );
+      break;
+
+    // TodoCRUDActions
     case "update":
       newState = state.update(
         state.findIndex((item) => item.id == action.payload.id),
         (item) => (item = action.payload)
       );
       break;
+    case "add":
+      newState = state.push(action.payload);
+      break;
     case "delete":
       newState = state.filter((item) => item.id !== action.payload.id);
       break;
+
+    // TodoAsyncStorageActions
     case "hydrate":
       newState = action.payload ?? List<Todo>();
       break;
@@ -76,7 +129,7 @@ const useTodoRepository: () => [
   useEffect(() => {
     const asyncTodos = readItems().then((asyncStorageTodos) => {
       if (asyncStorageTodos && asyncStorageTodos != todos)
-        dispatch({ name: "hydrate", payload: asyncStorageTodos });
+        dispatch({ type: "hydrate", payload: asyncStorageTodos });
     });
   }, []);
 
