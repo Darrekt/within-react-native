@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useDebugValue } from "react";
+import { StyleSheet, View, useWindowDimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
@@ -7,7 +7,6 @@ import { TodoContext } from "./../../state/context";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import AddTodoScreen from "./AddTodoScreen";
-import Todo from "../../models/Todo";
 
 const styles = StyleSheet.create({
   spacer: {
@@ -48,19 +47,21 @@ const TodoScreenContents = () => {
 
   // FIXME: Unsafe implementation, improve later
   const selected = todos.find((todo) => todo.selected);
+  const windowHeight = useWindowDimensions().height;
 
   return (
     <View style={globalStyles.container}>
       {isOpen ? (
         <TodoComponents.TimerDisplay
           selectedTask={selected}
+          dispatch={dispatch}
         />
       ) : (
         <TodoComponents.HomeDisplay />
       )}
       <Modalize
         ref={modalizeRef}
-        modalHeight={450}
+        modalHeight={windowHeight * 0.45}
         alwaysOpen={100}
         handlePosition={"inside"}
         withOverlay={false}
