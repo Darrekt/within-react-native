@@ -1,14 +1,9 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Pressable,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { ListItem } from "react-native-elements";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Icon, ListItem } from "react-native-elements";
 import Todo from "../../models/Todo";
-import { AntDesign, Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
+import CircleButtonGroup from "../CircleButtonGroup";
 import { TodoRepoAction } from "../../hooks/useTodoRepository";
 
 const styles = StyleSheet.create({
@@ -29,31 +24,48 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   completedTileTitleTextStyle: {
-    flex: 6,
-    fontSize: 20,
-    fontWeight: "400",
     textDecorationLine: "line-through",
     textDecorationStyle: "solid",
   },
-  tileActions: {
-    flex: 2,
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  modalHeaderText: {
-    fontSize: 24,
-  },
 });
 
-const TodoItemTile = ({
-  todo,
-  dispatch,
-}: {
+type Props = {
   todo: Todo;
   dispatch: React.Dispatch<TodoRepoAction>;
-}) => {
+};
+
+const TodoItemTile = ({ todo, dispatch }: Props) => {
+  const itemTitleTextStyle = todo.completed
+    ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
+    : styles.tileTitleTextStyle ;
+  const buttons: { action: TodoRepoAction; icon: JSX.Element }[] = [
+    {
+      action: {
+        type: "completed",
+        target: todo.id,
+      } as TodoRepoAction,
+      icon: todo.completed ? (
+        <Icon name="ios-refresh" type="ionicon" color="black" />
+      ) : (
+        <AntDesign name="check" size={20} color="black" />
+      ),
+    },
+    {
+      action: {
+        type: "delete",
+        payload: todo,
+      },
+      icon: <Entypo name="cross" size={20} color="black" />,
+    },
+    {
+      action: {
+        type: "completed",
+        target: todo.id,
+      },
+      icon: <FontAwesome name="sort" size={20} color="black" />,
+    },
+  ];
+
   return (
     <ListItem topDivider>
       <TouchableOpacity
@@ -66,45 +78,10 @@ const TodoItemTile = ({
       >
         <ListItem.Content style={styles.tileRow}>
           <Text style={styles.tileIconStyle}></Text>
-          <ListItem.Title
-            style={
-              todo.completed
-                ? styles.completedTileTitleTextStyle
-                : styles.tileTitleTextStyle
-            }
-          >
+          <ListItem.Title style={itemTitleTextStyle}>
             {todo.name}
           </ListItem.Title>
-          <View style={styles.tileActions}>
-            <Pressable
-              onPress={() => {
-                dispatch({
-                  type: "completed",
-                  target: todo.id,
-                });
-              }}
-            >
-              {todo.completed ? (
-                <Ionicons name="ios-refresh" size={20} color="black" />
-              ) : (
-                <AntDesign name="check" size={20} color="black" />
-              )}
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                dispatch({ name: "delete", payload: todo });
-              }}
-            >
-              <Entypo name="cross" size={20} color="black" />
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                console.log("Implement sort");
-              }}
-            >
-              <FontAwesome name="sort" size={20} color="black" />
-            </Pressable>
-          </View>
+          <CircleButtonGroup dispatch={dispatch} actions={buttons} />
         </ListItem.Content>
       </TouchableOpacity>
     </ListItem>

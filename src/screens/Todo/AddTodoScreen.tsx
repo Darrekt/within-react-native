@@ -53,7 +53,7 @@ const AddTodoScreen = ({
         }}
         onSubmit={(values) => {
           dispatch({
-            name: "add",
+            type: "add",
             payload: new Todo({
               name: values.name,
               notes: values.notes,

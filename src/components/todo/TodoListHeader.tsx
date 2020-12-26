@@ -51,7 +51,7 @@ const TodoListHeader = ({ todos, dispatch, isOpen, taskIsRunning }: IProps) => {
           <Pressable
             onPress={() => {
               dispatch({
-                name: "flush",
+                type: "flush",
               });
             }}
           >
