@@ -21,7 +21,7 @@ type Props<A> = {
 export default function CircleButtonGroup<A>({ actions, dispatch }: Props<A>) {
   return (
     <View style={styles.tileActions}>
-      {actions.map((action) => (
+      {actions.map((action, i) => (
         <TouchableOpacity
           style={styles.actionButtons}
           onPress={() => {

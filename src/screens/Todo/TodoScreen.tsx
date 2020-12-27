@@ -1,4 +1,4 @@
-import React, { useDebugValue } from "react";
+import React from "react";
 import { StyleSheet, View, useWindowDimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Modalize } from "react-native-modalize";

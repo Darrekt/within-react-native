@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { TodoTimerAction } from "../../hooks/useTodoRepository";
 import Todo from "../../models/Todo";
@@ -29,12 +29,30 @@ const styles = StyleSheet.create({
   },
 });
 
+const getTimeLeft = (todo: Todo | undefined) => {
+  if (todo?.finishingTime) {
+    const now = new Date();
+    const difference = (todo.finishingTime.valueOf() - now.valueOf()) / 1000;
+    const minutes = Math.floor(difference / 60);
+    const seconds = Math.floor(difference % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  } else return "00:00";
+};
+
 type Props = {
   selectedTask?: Todo;
   dispatch: React.Dispatch<TodoTimerAction>;
 };
 
 const TodoTimer = ({ selectedTask, dispatch }: Props) => {
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
+
+  useEffect(() => {
+    if (selectedTask?.finishingTime) {
+      setTimeout(() => setTimeLeft(getTimeLeft(selectedTask)), 1000);
+    } else setTimeLeft(getTimeLeft(selectedTask));
+  });
+
   if (selectedTask) {
     const timerActions: { action: TodoTimerAction; icon: JSX.Element }[] = [
       {
@@ -45,7 +63,7 @@ const TodoTimer = ({ selectedTask, dispatch }: Props) => {
         icon: (
           <Icon
             reverse
-            name={selectedTask.finishingTime ? "caretright" : "pause"}
+            name={selectedTask.finishingTime ? "pause" : "caretright"}
             type="antdesign"
           />
         ),
@@ -57,13 +75,8 @@ const TodoTimer = ({ selectedTask, dispatch }: Props) => {
     ];
     return (
       <View style={styles.positionedLogo}>
-        <Text style={styles.timerFont}>
-          {/* TODO: Make a proper implementation of the time setting */}
-          {selectedTask.finishingTime
-            ? selectedTask.finishingTime.getMinutes() - new Date().getMinutes()
-            : "25:00"}
-        </Text>
-          <CircleButtonGroup actions={timerActions} dispatch={dispatch} />
+        <Text style={styles.timerFont}>{timeLeft}</Text>
+        <CircleButtonGroup actions={timerActions} dispatch={dispatch} />
       </View>
     );
   } else {
