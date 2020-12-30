@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 type Props<A> = {
-  actions: { action: A; icon: JSX.Element }[];
+  actions: { key: string, action: A; icon: JSX.Element }[];
   dispatch: React.Dispatch<A>;
 };
 
@@ -23,6 +23,7 @@ export default function CircleButtonGroup<A>({ actions, dispatch }: Props<A>) {
     <View style={styles.tileActions}>
       {actions.map((action, i) => (
         <TouchableOpacity
+          key={action.key}
           style={styles.actionButtons}
           onPress={() => {
             dispatch(action.action);

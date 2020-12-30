@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 });
 
 const getTimeLeft = (todo: Todo | undefined) => {
+  // FIXME: Have a global time setting instead of 00:00
   if (todo?.finishingTime) {
     const now = new Date();
     const difference = (todo.finishingTime.valueOf() - now.valueOf()) / 1000;
@@ -47,15 +48,26 @@ type Props = {
 const TodoTimer = ({ selectedTask, dispatch }: Props) => {
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
 
+  // FIXME: Misses the first tick of the timer
   useEffect(() => {
-    if (selectedTask?.finishingTime) {
-      setTimeout(() => setTimeLeft(getTimeLeft(selectedTask)), 1000);
-    } else setTimeLeft(getTimeLeft(selectedTask));
+    const timer = setTimeout(
+      () => setTimeLeft(getTimeLeft(selectedTask)),
+      selectedTask?.finishingTime ? 1000 : 0
+    );
+    return () => {
+      setTimeLeft(getTimeLeft(selectedTask));
+      clearTimeout(timer);
+    };
   });
 
   if (selectedTask) {
-    const timerActions: { action: TodoTimerAction; icon: JSX.Element }[] = [
+    const timerActions: {
+      key: string;
+      action: TodoTimerAction;
+      icon: JSX.Element;
+    }[] = [
       {
+        key: "timerControl",
         action: {
           type: selectedTask.finishingTime ? "pause" : "start",
           target: selectedTask.id,
@@ -69,6 +81,7 @@ const TodoTimer = ({ selectedTask, dispatch }: Props) => {
         ),
       },
       {
+        key: "timerReset",
         action: { type: "reset", target: selectedTask.id },
         icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
       },

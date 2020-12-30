@@ -38,31 +38,34 @@ const TodoItemTile = ({ todo, dispatch }: Props) => {
   const itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
     : styles.tileTitleTextStyle ;
-  const buttons: { action: TodoRepoAction; icon: JSX.Element }[] = [
+  const buttons: { key: string, action: TodoRepoAction; icon: JSX.Element }[] = [
     {
+      key: todo.id + "complete",
       action: {
         type: "completed",
         target: todo.id,
       } as TodoRepoAction,
       icon: todo.completed ? (
-        <Icon name="ios-refresh" type="ionicon" color="black" />
+        <Icon  name="ios-refresh" type="ionicon" color="black" />
       ) : (
-        <AntDesign name="check" size={20} color="black" />
+        <AntDesign key={todo.id+"complete"} name="check" size={20} color="black" />
       ),
     },
     {
+      key: todo.id + "delete",
       action: {
         type: "delete",
         payload: todo,
       },
-      icon: <Entypo name="cross" size={20} color="black" />,
+      icon: <Entypo key={todo.id+"delete"} name="cross" size={20} color="black" />,
     },
     {
+      key: todo.id + "rearrange",
       action: {
         type: "completed",
         target: todo.id,
       },
-      icon: <FontAwesome name="sort" size={20} color="black" />,
+      icon: <FontAwesome key={todo.id+"sort"} name="sort" size={20} color="black" />,
     },
   ];
 

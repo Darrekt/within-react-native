@@ -38,7 +38,6 @@ const TodoScreen = () => {
 };
 
 const TodoScreenContents = () => {
-  const [taskIsRunning, setTaskIsRunning] = React.useState(false);
   const { todos, dispatch } = React.useContext(TodoContext);
   const modalizeRef = React.useRef<Modalize>(null);
   const [isOpen, setIsOpen] = React.useState(false);
@@ -68,7 +67,7 @@ const TodoScreenContents = () => {
         onPositionChange={(position) => {
           position == "top" ? setIsOpen(true) : setIsOpen(false);
         }}
-        panGestureEnabled={!taskIsRunning}
+        panGestureEnabled={!selected?.finishingTime}
         HeaderComponent={<View style={styles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
