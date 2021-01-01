@@ -31,14 +31,19 @@ const styles = StyleSheet.create({
 
 type Props = {
   todo: Todo;
+  running: boolean;
   dispatch: React.Dispatch<TodoRepoAction>;
 };
 
-const TodoItemTile = ({ todo, dispatch }: Props) => {
+const TodoItemTile = ({ todo, running, dispatch }: Props) => {
   const itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
-    : styles.tileTitleTextStyle ;
-  const buttons: { key: string, action: TodoRepoAction; icon: JSX.Element }[] = [
+    : styles.tileTitleTextStyle;
+  const buttons: {
+    key: string;
+    action: TodoRepoAction;
+    icon: JSX.Element;
+  }[] = [
     {
       key: todo.id + "complete",
       action: {
@@ -46,9 +51,14 @@ const TodoItemTile = ({ todo, dispatch }: Props) => {
         target: todo.id,
       } as TodoRepoAction,
       icon: todo.completed ? (
-        <Icon  name="ios-refresh" type="ionicon" color="black" />
+        <Icon name="ios-refresh" type="ionicon" color="black" />
       ) : (
-        <AntDesign key={todo.id+"complete"} name="check" size={20} color="black" />
+        <AntDesign
+          key={todo.id + "complete"}
+          name="check"
+          size={20}
+          color="black"
+        />
       ),
     },
     {
@@ -57,7 +67,9 @@ const TodoItemTile = ({ todo, dispatch }: Props) => {
         type: "delete",
         payload: todo,
       },
-      icon: <Entypo key={todo.id+"delete"} name="cross" size={20} color="black" />,
+      icon: (
+        <Entypo key={todo.id + "delete"} name="cross" size={20} color="black" />
+      ),
     },
     {
       key: todo.id + "rearrange",
@@ -65,7 +77,14 @@ const TodoItemTile = ({ todo, dispatch }: Props) => {
         type: "completed",
         target: todo.id,
       },
-      icon: <FontAwesome key={todo.id+"sort"} name="sort" size={20} color="black" />,
+      icon: (
+        <FontAwesome
+          key={todo.id + "sort"}
+          name="sort"
+          size={20}
+          color="black"
+        />
+      ),
     },
   ];
 
@@ -73,10 +92,12 @@ const TodoItemTile = ({ todo, dispatch }: Props) => {
     <ListItem topDivider>
       <TouchableOpacity
         onPress={() => {
-          dispatch({
-            type: "selected",
-            target: todo.id,
-          });
+          !running
+            ? dispatch({
+                type: "selected",
+                target: todo.id,
+              })
+            : undefined;
         }}
       >
         <ListItem.Content style={styles.tileRow}>

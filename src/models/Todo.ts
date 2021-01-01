@@ -16,7 +16,7 @@ export default class Todo {
   }
 
   // WARNING: Make sure you update toEntity if you change the shape of the Todo object!
-  toEntity = () => {
+  toEntity() {
     return {
       id: this.id,
       name: this.name,
@@ -28,9 +28,11 @@ export default class Todo {
       remaining: this.remaining,
       finishingTime: this.finishingTime,
     };
-  };
+  }
 
-  fromFirestore = (doc: any) => new Todo({ ...doc });
+  fromFirestore(doc: any) {
+    new Todo({ ...doc });
+  }
 
   // TODO
   toFirestore() {}

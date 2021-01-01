@@ -17,10 +17,17 @@ const styles = StyleSheet.create({
 const Stack = createStackNavigator();
 
 const TodoScreen = () => {
-  const [repo, dispatch] = useTodoRepository();
+  const [repo, dispatch, selected, running] = useTodoRepository();
 
   return (
-    <TodoContext.Provider value={{ todos: repo, dispatch: dispatch }}>
+    <TodoContext.Provider
+      value={{
+        todos: repo,
+        dispatch: dispatch,
+        selected: selected,
+        running: running,
+      }}
+    >
       <Stack.Navigator mode="modal">
         <Stack.Screen
           name="TodoScreenHome"
@@ -38,14 +45,9 @@ const TodoScreen = () => {
 };
 
 const TodoScreenContents = () => {
-  const { todos, dispatch } = React.useContext(TodoContext);
+  const { todos, dispatch, selected, running } = React.useContext(TodoContext);
   const modalizeRef = React.useRef<Modalize>(null);
   const [isOpen, setIsOpen] = React.useState(false);
-  // const openModal = () => modalizeRef.current?.open("top");
-  // const closeModal = () => modalizeRef.current?.close("alwaysOpen");
-
-  // FIXME: Unsafe implementation, improve later
-  const selected = todos.find((todo) => todo.selected);
   const windowHeight = useWindowDimensions().height;
 
   return (
@@ -67,7 +69,7 @@ const TodoScreenContents = () => {
         onPositionChange={(position) => {
           position == "top" ? setIsOpen(true) : setIsOpen(false);
         }}
-        panGestureEnabled={!selected?.finishingTime}
+        panGestureEnabled={!running}
         HeaderComponent={<View style={styles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
@@ -80,7 +82,11 @@ const TodoScreenContents = () => {
           data: isOpen ? todos.toArray() : [],
           keyExtractor: (item) => item.id,
           renderItem: ({ item }) => (
-            <TodoComponents.ItemTile todo={item} dispatch={dispatch} />
+            <TodoComponents.ItemTile
+              todo={item}
+              running={running}
+              dispatch={dispatch}
+            />
           ),
           ListEmptyComponent: isOpen
             ? TodoComponents.ListEmptyDisplay

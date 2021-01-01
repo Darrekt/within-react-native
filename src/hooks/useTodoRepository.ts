@@ -33,8 +33,10 @@ export type TodoTimerAction = {
 async function readItems() {
   try {
     const tempLstStr = await AsyncStorage.getItem("todos");
+    console.log(`Read: ${tempLstStr}`);
     if (tempLstStr !== null)
       return List(
+        //CHECK ME
         (JSON.parse(tempLstStr) as Array<Object>).map((item) => new Todo(item))
       );
   } catch (error) {
@@ -43,11 +45,13 @@ async function readItems() {
 }
 
 async function writeItems(state: List<Todo>) {
+  console.log("Serialising: ", state)
   try {
     await AsyncStorage.setItem(
       "todos",
       JSON.stringify(state.map((item) => item.toEntity()).toJSON())
     );
+    console.log("Saving:", JSON.stringify(state.map((item) => item.toEntity()).toJSON()));
   } catch (error) {
     console.log("Error in saving todos");
   }
@@ -97,9 +101,12 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
 
     // TodoProductivityActions
     case "selected":
-      newState = state.update(
-        state.findIndex((item) => item.id == action.target),
-        (item) => new Todo({ ...item, selected: !item.selected })
+      newState = state.map(
+        (item) =>
+          new Todo({
+            ...item,
+            selected: item.id == action.target ? !item.selected : false,
+          })
       );
       break;
     case "completed":
@@ -126,6 +133,7 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
     // TodoAsyncStorageActions
     case "hydrate":
       newState = action.payload ?? List<Todo>();
+      console.log(newState);
       break;
     case "flush":
       newState = List<Todo>();
@@ -140,10 +148,14 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
 
 const useTodoRepository: () => [
   List<Todo>,
-  React.Dispatch<TodoRepoAction>
+  React.Dispatch<TodoRepoAction>,
+  Todo | undefined,
+  boolean
 ] = () => {
   const [todos, dispatch] = useReducer(todoReducer, List<Todo>());
-  // TODO: Add the async storage effect into here
+  const selected = todos.find((todo) => todo.selected);
+  const running = selected?.finishingTime ? true : false;
+
   useEffect(() => {
     const asyncTodos = readItems().then((asyncStorageTodos) => {
       if (asyncStorageTodos && asyncStorageTodos != todos)
@@ -151,7 +163,7 @@ const useTodoRepository: () => [
     });
   }, []);
 
-  return [todos, dispatch];
+  return [todos, dispatch, selected, running];
 };
 
 export default useTodoRepository;
