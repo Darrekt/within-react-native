@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { TodoTimerAction } from "../../hooks/useTodoRepository";
+import { getTimeLeft, printTimeLeft } from "../../util/timer"
 import Todo from "../../models/Todo";
 import CircleButtonGroup from "../CircleButtonGroup";
 import { Icon } from "react-native-elements";
@@ -52,26 +53,6 @@ const TodoTimerDisplay = ({ selectedTask, dispatch }: DisplayProps) => {
       </View>
     );
   }
-};
-
-const getTimeLeft = (todo: Todo | undefined) => {
-  // FIXME: Have a global time setting instead of 25:00
-  if (todo?.finishingTime) {
-    const now = new Date();
-    return Math.max(
-      0,
-      Math.floor((todo.finishingTime.valueOf() - now.valueOf()) / 1000)
-    );
-  } else return 25 * 60;
-};
-
-const printTimeLeft = (secondsLeft: number) => {
-  const hours = Math.floor(secondsLeft / 3600);
-  const minutes = Math.floor((secondsLeft / 60) % 60);
-  const seconds = Math.floor(secondsLeft % 60);
-  return `${hours ? `${hours}:` : ""}${minutes}:${
-    seconds < 10 ? "0" : ""
-  }${seconds}`;
 };
 
 type TimerProps = {

@@ -8,6 +8,7 @@ export default class Todo {
   laps: number = 0;
   completed: boolean = false;
   selected: boolean = false;
+  remaining?: number;
   finishingTime?: Date;
 
   constructor(data: Partial<Todo>) {
@@ -24,6 +25,7 @@ export default class Todo {
       laps: this.laps,
       completed: this.completed,
       selected: this.selected,
+      remaining: this.remaining,
       finishingTime: this.finishingTime,
     };
   };

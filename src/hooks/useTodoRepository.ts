@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useReducer } from "react";
 import { List } from "immutable";
 import Todo from "../models/Todo";
+import { getTimeLeft } from "../util/timer";
 
 export type TodoRepoAction =
   | TodoAsyncStorageAction
@@ -61,11 +62,20 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
         state.findIndex((item) => item.id == action.target),
         (item) => {
           // TODO: Let this be a setting variable.
-          let in25mins = new Date();
-          in25mins.setMinutes(in25mins.getMinutes() + 25);
+          const finishAt = new Date();
+          if (item.remaining) {
+            finishAt.setSeconds(finishAt.getSeconds() + item.remaining);
+          } else {
+            finishAt.setMinutes(finishAt.getMinutes() + 25);
+          }
+
           // Padding to offset re-render delays
-          in25mins.setMilliseconds(in25mins.getMilliseconds() + 500);
-          return new Todo({ ...item, finishingTime: in25mins });
+          finishAt.setMilliseconds(finishAt.getMilliseconds() + 500);
+          return new Todo({
+            ...item,
+            remaining: undefined,
+            finishingTime: finishAt,
+          });
         }
       );
       break;
@@ -78,6 +88,7 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
           return new Todo({
             ...item,
             laps: item.laps + (action.type === "finished" ? 1 : 0),
+            remaining: action.type === "pause" ? getTimeLeft(item) : undefined,
             finishingTime: undefined,
           });
         }
