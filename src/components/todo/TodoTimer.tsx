@@ -29,68 +29,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const getTimeLeft = (todo: Todo | undefined) => {
-  // FIXME: Have a global time setting instead of 00:00
-  if (todo?.finishingTime) {
-    const now = new Date();
-    const difference = (todo.finishingTime.valueOf() - now.valueOf()) / 1000;
-    const minutes = Math.floor(difference / 60);
-    const seconds = Math.floor(difference % 60);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  } else return "00:00";
-};
-
-type Props = {
+type DisplayProps = {
   selectedTask?: Todo;
   dispatch: React.Dispatch<TodoTimerAction>;
 };
 
-const TodoTimer = ({ selectedTask, dispatch }: Props) => {
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
-
-  // FIXME: Misses the first tick of the timer
-  useEffect(() => {
-    const timer = setTimeout(
-      () => setTimeLeft(getTimeLeft(selectedTask)),
-      selectedTask?.finishingTime ? 1000 : 0
-    );
-    return () => {
-      setTimeLeft(getTimeLeft(selectedTask));
-      clearTimeout(timer);
-    };
-  });
-
+const TodoTimerDisplay = ({ selectedTask, dispatch }: DisplayProps) => {
   if (selectedTask) {
-    const timerActions: {
-      key: string;
-      action: TodoTimerAction;
-      icon: JSX.Element;
-    }[] = [
-      {
-        key: "timerControl",
-        action: {
-          type: selectedTask.finishingTime ? "pause" : "start",
-          target: selectedTask.id,
-        },
-        icon: (
-          <Icon
-            reverse
-            name={selectedTask.finishingTime ? "pause" : "caretright"}
-            type="antdesign"
-          />
-        ),
-      },
-      {
-        key: "timerReset",
-        action: { type: "reset", target: selectedTask.id },
-        icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
-      },
-    ];
     return (
-      <View style={styles.positionedLogo}>
-        <Text style={styles.timerFont}>{timeLeft}</Text>
-        <CircleButtonGroup actions={timerActions} dispatch={dispatch} />
-      </View>
+      <TodoTimer selectedTask={selectedTask} dispatch={dispatch}></TodoTimer>
     );
   } else {
     return (
@@ -107,4 +54,79 @@ const TodoTimer = ({ selectedTask, dispatch }: Props) => {
   }
 };
 
-export default TodoTimer;
+const getTimeLeft = (todo: Todo | undefined) => {
+  // FIXME: Have a global time setting instead of 25:00
+  if (todo?.finishingTime) {
+    const now = new Date();
+    return Math.max(
+      0,
+      Math.floor((todo.finishingTime.valueOf() - now.valueOf()) / 1000)
+    );
+  } else return 25 * 60;
+};
+
+const printTimeLeft = (secondsLeft: number) => {
+  const hours = Math.floor(secondsLeft / 3600);
+  const minutes = Math.floor((secondsLeft / 60) % 60);
+  const seconds = Math.floor(secondsLeft % 60);
+  return `${hours ? `${hours}:` : ""}${minutes}:${
+    seconds < 10 ? "0" : ""
+  }${seconds}`;
+};
+
+type TimerProps = {
+  selectedTask: Todo;
+  dispatch: React.Dispatch<TodoTimerAction>;
+};
+
+const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
+
+  useEffect(() => {
+    const timer = setTimeout(
+      () =>
+        timeLeft === 0
+          ? dispatch({ type: "finished", target: selectedTask.id })
+          : setTimeLeft(getTimeLeft(selectedTask)),
+      selectedTask.finishingTime ? 1000 : 0
+    );
+    return () => {
+      setTimeLeft(getTimeLeft(selectedTask));
+      clearTimeout(timer);
+    };
+  });
+
+  const timerActions: {
+    key: string;
+    action: TodoTimerAction;
+    icon: JSX.Element;
+  }[] = [
+    {
+      key: "timerControl",
+      action: {
+        type: selectedTask.finishingTime ? "pause" : "start",
+        target: selectedTask.id,
+      },
+      icon: (
+        <Icon
+          reverse
+          name={selectedTask.finishingTime ? "pause" : "caretright"}
+          type="antdesign"
+        />
+      ),
+    },
+    {
+      key: "timerReset",
+      action: { type: "reset", target: selectedTask.id },
+      icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
+    },
+  ];
+  return (
+    <View style={styles.positionedLogo}>
+      <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
+      <CircleButtonGroup actions={timerActions} dispatch={dispatch} />
+    </View>
+  );
+};
+
+export default TodoTimerDisplay;

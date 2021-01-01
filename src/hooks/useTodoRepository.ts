@@ -63,6 +63,8 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
           // TODO: Let this be a setting variable.
           let in25mins = new Date();
           in25mins.setMinutes(in25mins.getMinutes() + 25);
+          // Padding to offset re-render delays
+          in25mins.setMilliseconds(in25mins.getMilliseconds() + 500);
           return new Todo({ ...item, finishingTime: in25mins });
         }
       );
@@ -73,7 +75,11 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
       newState = state.update(
         state.findIndex((item) => item.id == action.target),
         (item) => {
-          return new Todo({ ...item, finishingTime: undefined });
+          return new Todo({
+            ...item,
+            laps: item.laps + (action.type === "finished" ? 1 : 0),
+            finishingTime: undefined,
+          });
         }
       );
       break;
