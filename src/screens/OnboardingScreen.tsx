@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import Onboarding from "react-native-onboarding-swiper";
 
-import { OnboardContext } from '../state/context';
+import { SettingsContext } from '../state/context';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 });
 
 const OnboardingScreen = () => {
-  const onboardStatus = useContext(OnboardContext);
+  const onboardStatus = useContext(SettingsContext);
   return <Onboarding
     containerStyles={styles.container}
     onSkip={onboardStatus.finishOnboarding}

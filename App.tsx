@@ -1,58 +1,38 @@
-import 'react-native-get-random-values'
-import React, { useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import { OnboardContext } from "./src/state/context";
+import "react-native-get-random-values";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons } from "@expo/vector-icons";
+import { SettingsContext } from "./src/state/context";
+import useSettingsRepository from "./src/hooks/useSettings";
 
-import TodoScreen from './src/screens/Todo/TodoScreen';
-import StatScreen from './src/screens/StatScreen';
-import OnboardingScreen from './src/screens/OnboardingScreen';
-import GroupScreen from './src/screens/GroupScreen';
+import TodoScreen from "./src/screens/Todo/TodoScreen";
+import StatScreen from "./src/screens/StatScreen";
+import OnboardingScreen from "./src/screens/OnboardingScreen";
+import GroupScreen from "./src/screens/GroupScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [onboardStatus, setOnboardStatus] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [settings, dispatch] = useSettingsRepository();
 
-  // TODO: show splash screen until onboarding is resolved.
-  // TODO: Add jest testing for onboarding flow
-  const getAsyncStorageOnboardStatus = async () => {
-    try {
-      const value = await AsyncStorage.getItem('onboardStatus');
-      setOnboardStatus(value == null ? false : JSON.parse(value));
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  const setAsyncStorageOnboardStatus = async (value: boolean) => {
-    try {
-      await AsyncStorage.setItem('onboardStatus', JSON.stringify(value));
-      setOnboardStatus(value);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  getAsyncStorageOnboardStatus();
   return (
-    <OnboardContext.Provider value={{
-      finishOnboarding: () => setAsyncStorageOnboardStatus(true),
-    }}>
-
+    <SettingsContext.Provider
+      value={{
+        settings: settings,
+        finishOnboarding: () => dispatch({key: "onboarding"}),
+      }}
+    >
       <NavigationContainer>
-        {!onboardStatus ?
+        {!settings.onboarding ? (
           <>
             <Stack.Navigator>
               <Stack.Screen name="Onboarding" component={OnboardingScreen} />
             </Stack.Navigator>
           </>
-          :
+        ) : (
           <>
             <Tab.Navigator
               initialRouteName="Todos"
@@ -60,22 +40,22 @@ export default function App() {
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
                   switch (route.name) {
-                    case 'Stats':
-                      iconName = 'md-stats';
+                    case "Stats":
+                      iconName = "md-stats";
                       break;
-                    case 'Groups':
-                      iconName = 'ios-chatboxes';
+                    case "Groups":
+                      iconName = "md-chatboxes";
                       break;
                     default:
-                      iconName = 'ios-checkbox';
+                      iconName = "ios-checkbox";
                       break;
                   }
-                  return <Ionicons name={iconName} size={size} color={color} />
-                }
+                  return <Ionicons name={iconName} size={size} color={color} />;
+                },
               })}
               tabBarOptions={{
-                activeTintColor: 'tomato',
-                inactiveTintColor: 'gray',
+                activeTintColor: "tomato",
+                inactiveTintColor: "gray",
               }}
             >
               <Tab.Screen name="Todos" component={TodoScreen} />
@@ -83,8 +63,8 @@ export default function App() {
               <Tab.Screen name="Groups" component={GroupScreen} />
             </Tab.Navigator>
           </>
-        }
+        )}
       </NavigationContainer>
-    </OnboardContext.Provider>
+    </SettingsContext.Provider>
   );
 }

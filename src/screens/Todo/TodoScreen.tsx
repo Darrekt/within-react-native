@@ -64,12 +64,12 @@ const TodoScreenContents = () => {
         ref={modalizeRef}
         modalHeight={windowHeight * 0.45}
         alwaysOpen={100}
-        handlePosition={"inside"}
+        handlePosition="inside"
         withOverlay={false}
         onPositionChange={(position) => {
           position == "top" ? setIsOpen(true) : setIsOpen(false);
         }}
-        panGestureEnabled={!running}
+        panGestureEnabled={!running || !isOpen}
         HeaderComponent={<View style={styles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (

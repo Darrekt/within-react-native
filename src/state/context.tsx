@@ -1,17 +1,23 @@
 import React from "react";
 import { List } from "immutable";
+import { SageSettings, sageDefaultSettings } from "../hooks/useSettings";
 import Todo from "../models/Todo";
 import { TodoRepoAction } from "../hooks/useTodoRepository";
 
-export const OnboardContext = React.createContext({
+// TODO: Change to a generic dispatch
+export const SettingsContext = React.createContext<{
+  settings: SageSettings;
+  finishOnboarding: () => void;
+}>({
+  settings: sageDefaultSettings,
   finishOnboarding: () => {},
 });
 
 export const TodoContext = React.createContext<{
   todos: List<Todo>;
   dispatch: React.Dispatch<TodoRepoAction>;
-  selected: Todo | undefined,
-  running: boolean,
+  selected: Todo | undefined;
+  running: boolean;
 }>({
   todos: List<Todo>(),
   dispatch: () => null,
