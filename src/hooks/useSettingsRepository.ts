@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useReducer } from "react";
+import firestore from "@react-native-firebase/firestore";
 // Note: Might be good to use native settings API for iOS users.
 // import { Settings } from "react-native";
 
@@ -9,7 +10,7 @@ export type SageSettings = {
   defaultInterval: number;
 };
 
-export const sageDefaultSettings : SageSettings = {
+export const sageDefaultSettings: SageSettings = {
   onboarding: false,
   theme: "light",
   defaultInterval: 25 * 60,
@@ -67,8 +68,6 @@ const useSettingsRepository: () => [
 ] = () => {
   const [settings, dispatch] = useReducer(settingsReducer, sageDefaultSettings);
 
-  // TODO: show splash screen until onboarding is resolved.
-  // TODO: Add jest testing for onboarding flow
   let onBoardingStatus = false;
   useEffect(() => {
     AsyncStorage.getItem(settingsAyncStoreKey)

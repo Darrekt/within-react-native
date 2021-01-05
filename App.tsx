@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { SettingsContext } from "./src/state/context";
-import useSettingsRepository from "./src/hooks/useSettings";
+import useSettingsRepository from "./src/hooks/useSettingsRepository";
 
 import TodoScreen from "./src/screens/Todo/TodoScreen";
 import StatScreen from "./src/screens/StatScreen";

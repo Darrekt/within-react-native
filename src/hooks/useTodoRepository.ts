@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useReducer } from "react";
 import { List } from "immutable";
 import Todo from "../models/Todo";
+import firestore from "@react-native-firebase/firestore";
 import { getTimeLeft } from "../util/timer";
 
 export type TodoRepoAction =
