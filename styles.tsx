@@ -4,7 +4,7 @@ export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
   },
   row: {
     flexDirection: "row",
@@ -14,9 +14,10 @@ export const globalStyles = StyleSheet.create({
   column: {
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
   },
   centered: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },

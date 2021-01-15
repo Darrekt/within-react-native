@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
   stringEntry: {
     ...globalStyles.column,
     padding: 10,
+    flex: 0,
+    justifyContent: "center"
   },
   boolEntry: {
     ...globalStyles.row,
@@ -45,7 +47,6 @@ const AddTodoScreen = ({
 }) => {
   const { dispatch } = React.useContext(TodoContext);
   return (
-    <View>
       <Formik
         initialValues={{ name: "", notes: "", disableNotifications: false }}
         validate={(values) => {
@@ -116,7 +117,6 @@ const AddTodoScreen = ({
           </View>
         )}
       </Formik>
-    </View>
   );
 };
 export default AddTodoScreen;

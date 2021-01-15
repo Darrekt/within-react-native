@@ -2,8 +2,8 @@ import "react-native-get-random-values";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Icon } from "react-native-elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
 import { SettingsContext } from "./src/state/context";
 import useSettingsRepository from "./src/hooks/useSettingsRepository";
 
@@ -22,7 +22,7 @@ export default function App() {
     <SettingsContext.Provider
       value={{
         settings: settings,
-        finishOnboarding: () => dispatch({key: "onboarding"}),
+        dispatch: dispatch,
       }}
     >
       <NavigationContainer>
@@ -44,13 +44,13 @@ export default function App() {
                       iconName = "md-stats";
                       break;
                     case "Groups":
-                      iconName = "md-chatboxes";
+                      iconName = "ios-chatboxes";
                       break;
                     default:
                       iconName = "ios-checkbox";
                       break;
                   }
-                  return <Ionicons name={iconName} size={size} color={color} />;
+                  return <Icon name={iconName} type="ionicon" size={size} color={color} />;
                 },
               })}
               tabBarOptions={{

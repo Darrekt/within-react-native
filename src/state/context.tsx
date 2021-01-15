@@ -12,11 +12,9 @@ import { TodoRepoAction } from "../hooks/useTodoRepository";
 export const SettingsContext = React.createContext<{
   settings: SageSettings;
   dispatch: React.Dispatch<SettingsAction>,
-  finishOnboarding: () => void;
 }>({
   settings: sageDefaultSettings,
   dispatch: () => null,
-  finishOnboarding: () => {},
 });
 
 export const TodoContext = React.createContext<{

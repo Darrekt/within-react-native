@@ -1,12 +1,15 @@
 import React from "react";
 import { StyleSheet, View, useWindowDimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
 import { TodoContext } from "./../../state/context";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import AddTodoScreen from "./AddTodoScreen";
+import SettingsButton from "../../components/SettingsButton"
+import SettingsScreen from "../SettingsScreen"
 
 const styles = StyleSheet.create({
   spacer: {
@@ -35,6 +38,11 @@ const TodoScreen = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="SettingsScreen"
+          component={SettingsScreen}
+          options={{ title: "Settings", headerBackTitle:"Back" }}
+        />
+        <Stack.Screen
           name="AddTodoScreen"
           component={AddTodoScreen}
           options={{ title: "Add a task" }}
@@ -52,6 +60,14 @@ const TodoScreenContents = () => {
 
   return (
     <View style={globalStyles.container}>
+      {!isOpen && (
+        <Header
+          placement="left"
+          backgroundColor="transparent"
+          leftComponent={{ icon: "menu", color: "#000" }}
+          rightComponent={SettingsButton()}
+        />
+      )}
       {isOpen ? (
         <TodoComponents.TimerDisplay
           selectedTask={selected}
