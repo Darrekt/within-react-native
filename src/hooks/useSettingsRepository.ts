@@ -18,6 +18,11 @@ export const sageDefaultSettings: SageSettings = {
 
 export type SettingsAction = AsyncSettingsAction | ToggleSetting | SetSetting;
 
+// type SettingsAuthAction = {
+//   type: "signin" | "signout"
+//   userID: string,
+// }
+
 type AsyncSettingsAction = {
   key: "hydrate" | "reset";
   value: SageSettings;

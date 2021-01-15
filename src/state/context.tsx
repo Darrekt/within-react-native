@@ -4,15 +4,18 @@ import Todo from "../models/Todo";
 import {
   SageSettings,
   sageDefaultSettings,
+  SettingsAction,
 } from "../hooks/useSettingsRepository";
 import { TodoRepoAction } from "../hooks/useTodoRepository";
 
 // TODO: Change to a generic dispatch
 export const SettingsContext = React.createContext<{
   settings: SageSettings;
+  dispatch: React.Dispatch<SettingsAction>,
   finishOnboarding: () => void;
 }>({
   settings: sageDefaultSettings,
+  dispatch: () => null,
   finishOnboarding: () => {},
 });
 
