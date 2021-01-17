@@ -8,7 +8,7 @@ export const globalStyles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "stretch",
     justifyContent: "space-around",
   },
   column: {
@@ -26,6 +26,13 @@ export const globalStyles = StyleSheet.create({
 export const textStyles = StyleSheet.create({
   header: {
     fontSize: 20,
-    fontWeight: "400"
+    fontWeight: "400",
+  },
+  groupHeader: {
+    flex: 1,
+    marginBottom: 10,
+    marginLeft: 20,
+    fontSize: 20,
+    fontWeight: "400",
   },
 });

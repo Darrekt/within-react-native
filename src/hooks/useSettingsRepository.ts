@@ -6,6 +6,7 @@ import firestore from "@react-native-firebase/firestore";
 
 export type SageSettings = {
   onboarding: boolean;
+  signedIn?: string;
   theme: "light" | "dark";
   defaultInterval: number;
 };
