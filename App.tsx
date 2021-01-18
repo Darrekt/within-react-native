@@ -11,6 +11,8 @@ import TodoScreen from "./src/screens/Todo/TodoScreen";
 import StatScreen from "./src/screens/StatScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
 import GroupScreen from "./src/screens/GroupScreen";
+import SettingsScreen from "./src/screens/SettingsScreen";
+import AddTodoScreen from "./src/screens/Todo/AddTodoScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,37 +36,59 @@ export default function App() {
           </>
         ) : (
           <>
-            <Tab.Navigator
-              initialRouteName="Todos"
-              screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
-                  switch (route.name) {
-                    case "Stats":
-                      iconName = "md-stats";
-                      break;
-                    case "Groups":
-                      iconName = "ios-chatboxes";
-                      break;
-                    default:
-                      iconName = "ios-checkbox";
-                      break;
-                  }
-                  return <Icon name={iconName} type="ionicon" size={size} color={color} />;
-                },
-              })}
-              tabBarOptions={{
-                activeTintColor: "tomato",
-                inactiveTintColor: "gray",
-              }}
-            >
-              <Tab.Screen name="Todos" component={TodoScreen} />
-              <Tab.Screen name="Stats" component={StatScreen} />
-              <Tab.Screen name="Groups" component={GroupScreen} />
-            </Tab.Navigator>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="AppHome"
+                component={appTabNav}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="SettingsScreen"
+                component={SettingsScreen}
+                options={{ title: "Settings", headerBackTitle: "Back" }}
+              />
+              <Stack.Screen
+                name="AddTodoScreen"
+                component={AddTodoScreen}
+                options={{ title: "Add a task" }}
+              />
+            </Stack.Navigator>
           </>
         )}
       </NavigationContainer>
     </SettingsContext.Provider>
   );
 }
+
+const appTabNav = () => (
+  <Tab.Navigator
+    initialRouteName="Todos"
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        switch (route.name) {
+          case "Stats":
+            iconName = "md-stats";
+            break;
+          case "Groups":
+            iconName = "ios-chatboxes";
+            break;
+          default:
+            iconName = "ios-checkbox";
+            break;
+        }
+        return (
+          <Icon name={iconName} type="ionicon" size={size} color={color} />
+        );
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: "tomato",
+      inactiveTintColor: "gray",
+    }}
+  >
+    <Tab.Screen name="Todos" component={TodoScreen} />
+    <Tab.Screen name="Stats" component={StatScreen} />
+    <Tab.Screen name="Groups" component={GroupScreen} />
+  </Tab.Navigator>
+);

@@ -7,7 +7,7 @@ import SettingsGroup from "../components/settings/SettingsGroup";
 import { SettingsContext } from "../state/context";
 
 const SettingsScreen = () => {
-  const { dispatch } = useContext(SettingsContext);
+  const { settings, dispatch } = useContext(SettingsContext);
 
   const generalSettings = [
     {
@@ -45,7 +45,7 @@ const SettingsScreen = () => {
         margin: 20,
       }}
     >
-      <AuthStateDisplay />
+      <AuthStateDisplay settings={settings} dispatch={dispatch}/>
       <SettingsGroup name="General" items={generalSettings} />
       <SettingsGroup name="Todo" items={productivitySettings} />
     </View>
