@@ -1,24 +1,16 @@
 import React from "react";
-import { StyleSheet, View, Text, Switch, Button } from "react-native";
+import { StyleSheet, View, Text, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { SettingsContext } from "./../../state/context";
-import { globalStyles, textStyles } from "../../../styles";
-import Todo from "../../models/Todo";
+import { globalStyles } from "../../../styles";
 import { StackNavigationProp } from "@react-navigation/stack";
+import auth from "@react-native-firebase/auth";
 
 const styles = StyleSheet.create({
-  stringEntry: {
-    ...globalStyles.column,
-    padding: 10,
-  },
-  boolEntry: {
-    ...globalStyles.row,
-    padding: 10,
-  },
   inputBox: {
     margin: 15,
     height: 40,
+    width: "70%",
     borderColor: "#7a42f4",
     borderWidth: 1,
   },
@@ -43,7 +35,6 @@ const AddTodoScreen = ({
 }: {
   navigation: TodoScreenNavigationProp;
 }) => {
-  const { dispatch } = React.useContext(SettingsContext);
   return (
     <View>
       <Formik
@@ -51,13 +42,24 @@ const AddTodoScreen = ({
         validate={(values) => {
           let errors = {};
         }}
-        onSubmit={(values) => {
-          dispatch({
-            // type: "signin",
-            // userID: "",
-            key: "onboarding"
-          });
-          navigation.goBack();
+        onSubmit={async (values) => {
+          auth()
+            .signInWithEmailAndPassword(values.email, values.password)
+            .then(() => {
+              console.log("User account created & signed in!");
+              navigation.goBack();
+            })
+            .catch((error) => {
+              if (error.code === "auth/email-already-in-use") {
+                console.log("That email address is already in use!");
+              }
+
+              if (error.code === "auth/invalid-email") {
+                console.log("That email address is invalid!");
+              }
+
+              console.error(error);
+            });
         }}
       >
         {({
@@ -68,30 +70,29 @@ const AddTodoScreen = ({
           values,
         }) => (
           <View style={globalStyles.column}>
-            <View style={styles.stringEntry}>
-              <Text style={textStyles.header}>What are you doing?</Text>
-              <TextInput
-                style={styles.inputBox}
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                placeholder="Task email"
-                value={values.email}
-              />
-            </View>
-            <View style={styles.stringEntry}>
-              <Text style={textStyles.header}>Additional details</Text>
-              <TextInput
-                style={styles.inputBox}
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
-                placeholder="Notes"
-                value={values.password}
-              />
-            </View>
+            <TextInput
+              style={styles.inputBox}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              placeholder="Email"
+              value={values.email}
+            />
+            <TextInput
+              style={styles.inputBox}
+              autoCapitalize="none"
+              autoCompleteType="password"
+              secureTextEntry
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              placeholder="Password"
+              value={values.password}
+            />
             <Button
               color={styles.submitButton.backgroundColor}
               onPress={() => handleSubmit()}
-              title="Add Task"
+              title="Sign In"
             />
           </View>
         )}

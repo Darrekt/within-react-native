@@ -1,8 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useReducer } from "react";
+import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
-// Note: Might be good to use native settings API for iOS users.
-// import { Settings } from "react-native";
 
 export type SageSettings = {
   onboarding: boolean;
@@ -17,23 +16,27 @@ export const sageDefaultSettings: SageSettings = {
   defaultInterval: 25 * 60,
 };
 
-export type SettingsAction = AsyncSettingsAction | ToggleSetting | SetSetting;
+export type SettingsAction =
+  | AsyncSettingsAction
+  | SettingsAuthAction
+  | ToggleSetting
+  | SetSetting;
 
-// type SettingsAuthAction = {
-//   type: "signin" | "signout"
-//   userID: string,
-// }
+type SettingsAuthAction = {
+  type: "auth";
+  userID?: string;
+};
 
 type AsyncSettingsAction = {
-  key: "hydrate" | "reset";
+  type: "hydrate" | "reset";
   value: SageSettings;
 };
 
 type ToggleSetting = {
-  key: "onboarding" | "theme";
+  type: "onboarding" | "theme";
 };
 
-type SetSetting = { key: "defaultInterval"; value: number };
+type SetSetting = { type: "defaultInterval"; value: number };
 
 const settingsAyncStoreKey = "settings";
 
@@ -49,7 +52,7 @@ const setAsyncStorageSettings = async (settings: SageSettings) => {
 const settingsReducer = (state: SageSettings, action: SettingsAction) => {
   let newState: SageSettings;
 
-  switch (action.key) {
+  switch (action.type) {
     case "hydrate":
       newState = action.value;
       break;
@@ -58,10 +61,13 @@ const settingsReducer = (state: SageSettings, action: SettingsAction) => {
       break;
     case "theme":
     case "onboarding":
-      newState = { ...state, [action.key]: !state[action.key] };
+      newState = { ...state, [action.type]: !state[action.type] };
+      break;
+    case "auth":
+      newState = { ...state, signedIn: action.userID };
       break;
     default:
-      newState = { ...state, [action.key]: action.value };
+      newState = { ...state, [action.type]: action.value };
       break;
   }
   setAsyncStorageSettings(newState);
@@ -74,15 +80,18 @@ const useSettingsRepository: () => [
 ] = () => {
   const [settings, dispatch] = useReducer(settingsReducer, sageDefaultSettings);
 
-  let onBoardingStatus = false;
   useEffect(() => {
     AsyncStorage.getItem(settingsAyncStoreKey)
       .then((settingsStr) => {
         if (settingsStr)
-          dispatch({ key: "hydrate", value: JSON.parse(settingsStr) });
+          dispatch({ type: "hydrate", value: JSON.parse(settingsStr) });
       })
-
       .catch((e) => console.log(e));
+
+    const subscriber = auth().onAuthStateChanged((user) =>
+      dispatch({ type: "auth", userID: user?.uid })
+    );
+    return subscriber; // unsubscribe on unmount
   }, []);
 
   return [settings, dispatch];

@@ -1,11 +1,14 @@
+import auth from "@react-native-firebase/auth";
 import React, { useContext } from "react";
 import { View, Text, Button, useWindowDimensions } from "react-native";
 import { Avatar, SocialIcon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 import { globalStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 
 const AuthManagementScreen = () => {
   const { settings, dispatch } = useContext(SettingsContext);
+  const navigation = useNavigation();
   const width = useWindowDimensions().width * 0.7;
 
   return (
@@ -21,7 +24,7 @@ const AuthManagementScreen = () => {
       {settings.signedIn ? (
         <Button
           color={globalStyles.submitButton.backgroundColor}
-          onPress={() => {}}
+          onPress={() => {auth().signOut()}}
           title="Sign Out"
         />
       ) : (
@@ -49,7 +52,9 @@ const AuthManagementScreen = () => {
           />
           <Button
             color={globalStyles.submitButton.backgroundColor}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate("EmailSignInScreen");
+            }}
             title="Sign in with Email"
           />
         </View>
