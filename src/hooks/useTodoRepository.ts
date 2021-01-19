@@ -37,7 +37,6 @@ async function readItems() {
     console.log(`Read: ${tempLstStr}`);
     if (tempLstStr !== null)
       return List(
-        //CHECK ME
         (JSON.parse(tempLstStr) as Array<Object>).map((item) => new Todo(item))
       );
   } catch (error) {
@@ -52,7 +51,6 @@ async function writeItems(state: List<Todo>) {
       "todos",
       JSON.stringify(state.map((item) => item.toEntity()).toJSON())
     );
-    console.log("Saving:", JSON.stringify(state.map((item) => item.toEntity()).toJSON()));
   } catch (error) {
     console.log("Error in saving todos");
   }
@@ -134,7 +132,6 @@ const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
     // TodoAsyncStorageActions
     case "hydrate":
       newState = action.payload ?? List<Todo>();
-      console.log(newState);
       break;
     case "flush":
       newState = List<Todo>();

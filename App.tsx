@@ -13,6 +13,7 @@ import OnboardingScreen from "./src/screens/OnboardingScreen";
 import GroupScreen from "./src/screens/GroupScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import AddTodoScreen from "./src/screens/Todo/AddTodoScreen";
+import AuthManagementScreen from "./src/screens/Onboarding/AuthManagementScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,6 +47,11 @@ export default function App() {
                 name="SettingsScreen"
                 component={SettingsScreen}
                 options={{ title: "Settings", headerBackTitle: "Back" }}
+              />
+              <Stack.Screen
+                name="AuthScreen"
+                component={AuthManagementScreen}
+                options={{ title: "Account Management", headerBackTitle: "Back" }}
               />
               <Stack.Screen
                 name="AddTodoScreen"
