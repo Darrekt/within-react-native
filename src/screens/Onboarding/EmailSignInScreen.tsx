@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
@@ -46,7 +46,6 @@ const AddTodoScreen = ({
           auth()
             .signInWithEmailAndPassword(values.email, values.password)
             .then(() => {
-              console.log("User account created & signed in!");
               navigation.goBack();
             })
             .catch((error) => {

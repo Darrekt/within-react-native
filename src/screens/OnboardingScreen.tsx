@@ -20,8 +20,8 @@ const OnboardingScreen = () => {
   return (
     <Onboarding
       containerStyles={styles.container}
-      onSkip={() => settings.dispatch({key: "onboarding"})}
-      onDone={() => settings.dispatch({key: "onboarding"})}
+      onSkip={() => settings.dispatch({type: "onboarding"})}
+      onDone={() => settings.dispatch({type: "onboarding"})}
       pages={[
         {
           backgroundColor: "#ffffff",

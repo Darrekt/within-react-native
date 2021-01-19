@@ -1,10 +1,11 @@
 import auth from "@react-native-firebase/auth";
 import React, { useContext } from "react";
 import { View, Text, Button, useWindowDimensions } from "react-native";
-import { Avatar, SocialIcon } from "react-native-elements";
+import { Avatar, SocialIcon, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
+import SettingsGroup from "../../components/settings/SettingsGroup";
 
 const AuthManagementScreen = () => {
   const { settings, dispatch } = useContext(SettingsContext);
@@ -21,12 +22,32 @@ const AuthManagementScreen = () => {
     >
       <Avatar></Avatar>
       <Text></Text>
-      {settings.signedIn ? (
-        <Button
-          color={globalStyles.submitButton.backgroundColor}
-          onPress={() => {auth().signOut()}}
-          title="Sign Out"
-        />
+      {settings.user ? (
+        <View>
+          <SettingsGroup
+            name="Personal"
+            items={[
+              {
+                name: "Name",
+                subtitle: "Change your display name",
+                icon: <Icon name="person-outline" />,
+                action: () => dispatch({ type: "onboarding" }),
+              },
+              {
+                name: "Email",
+                icon: <Icon name="email" type="fontisto" />,
+                action: () => dispatch({ type: "onboarding" }),
+              },
+            ]}
+          />
+          <Button
+            color={globalStyles.submitButton.backgroundColor}
+            onPress={() => {
+              auth().signOut();
+            }}
+            title="Sign Out"
+          />
+        </View>
       ) : (
         <View style={globalStyles.column}>
           <SocialIcon

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     flexShrink: 150,
     fontSize: 18,
     fontFamily: "Gill Sans",
-    textAlign: "justify",
+    textAlign: "left",
     margin: 10,
     color: "#ffffff",
     backgroundColor: "transparent",
@@ -59,9 +59,11 @@ const AuthStateDisplay = ({
             size="large"
             source={{ uri: "https://i.pravatar.cc/200" }}
           />
-          {settings.signedIn ? (
+          {settings.user ? (
             <Text style={styles.buttonText}>
-              Signed in as {settings.signedIn}
+              Signed in as{" "}
+              {settings.user.displayName ??
+                "a mysterious entity. Set a display name here!"}
             </Text>
           ) : (
             <Text style={styles.buttonText}>

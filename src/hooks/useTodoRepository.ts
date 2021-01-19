@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useContext } from "react";
 import { List } from "immutable";
 import Todo from "../models/Todo";
 import firestore from "@react-native-firebase/firestore";
 import { getTimeLeft } from "../util/timer";
+import { SettingsContext } from "../state/context";
 
 export type TodoRepoAction =
   | TodoAsyncStorageAction
@@ -45,7 +46,7 @@ async function readItems() {
 }
 
 async function writeItems(state: List<Todo>) {
-  console.log("Serialising: ", state)
+  console.log("Serialising: ", state);
   try {
     await AsyncStorage.setItem(
       "todos",
@@ -151,15 +152,28 @@ const useTodoRepository: () => [
   boolean
 ] = () => {
   const [todos, dispatch] = useReducer(todoReducer, List<Todo>());
+  const { settings } = useContext(SettingsContext);
   const selected = todos.find((todo) => todo.selected);
   const running = selected?.finishingTime ? true : false;
 
+  // If user is signed in, use Firebase as the source of truth and update AsyncStorage
+  // Otherwise, use only AsyncStorage and update FireStore once you're signed in.
   useEffect(() => {
-    const asyncTodos = readItems().then((asyncStorageTodos) => {
-      if (asyncStorageTodos && asyncStorageTodos != todos)
-        dispatch({ type: "hydrate", payload: asyncStorageTodos });
-    });
-  }, []);
+    if (settings.user == null)
+      readItems().then((asyncStorageTodos) => {
+        if (asyncStorageTodos && asyncStorageTodos != todos)
+          dispatch({ type: "hydrate", payload: asyncStorageTodos });
+      });
+    else {
+      return firestore()
+        .collection("Users")
+        .doc(settings.user.uid)
+        .collection("Tasks")
+        .onSnapshot((documentSnapshot) => {
+          console.log("Todo data: ", documentSnapshot.docs);
+        });
+    }
+  }, [settings.user]);
 
   return [todos, dispatch, selected, running];
 };

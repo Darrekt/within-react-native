@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { View, Button } from "react-native";
 import { Icon } from "react-native-elements";
 import { globalStyles } from "../../styles";
 import AuthStateDisplay from "../components/settings/AuthStateDisplay";
@@ -14,13 +14,13 @@ const SettingsScreen = () => {
       name: "Onboarding",
       subtitle: "Reset your onboarding status",
       icon: <Icon name="handshake-o" type="font-awesome" />,
-      action: () => dispatch({ key: "onboarding" }),
+      action: () => dispatch({ type: "onboarding" }),
     },
     {
       name: "Theme",
       subtitle: "Change or customise your theme",
       icon: <Icon name="palette" type="materialIcon" />,
-      action: () => dispatch({ key: "theme" }),
+      action: () => dispatch({ type: "theme" }),
     },
   ];
 
@@ -28,12 +28,12 @@ const SettingsScreen = () => {
     {
       name: "Max tasks",
       icon: <Icon name="list" />,
-      action: () => dispatch({ key: "onboarding" }),
+      action: () => dispatch({ type: "onboarding" }),
     },
     {
       name: "Timer duration",
       icon: <Icon name="timer" />,
-      action: () => dispatch({ key: "theme" }),
+      action: () => dispatch({ type: "theme" }),
     },
   ];
 
@@ -45,9 +45,14 @@ const SettingsScreen = () => {
         margin: 20,
       }}
     >
-      <AuthStateDisplay settings={settings} dispatch={dispatch}/>
+      <AuthStateDisplay settings={settings} dispatch={dispatch} />
       <SettingsGroup name="General" items={generalSettings} />
       <SettingsGroup name="Todo" items={productivitySettings} />
+      <Button
+        color={globalStyles.submitButton.backgroundColor}
+        onPress={() => dispatch({ type: "reset", value: settings })}
+        title="Reset Settings"
+      />
     </View>
   );
 };
