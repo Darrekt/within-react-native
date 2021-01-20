@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { View, Text, Button, useWindowDimensions } from "react-native";
 import { Avatar, SocialIcon, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 
@@ -20,8 +20,16 @@ const AuthManagementScreen = () => {
         margin: 20,
       }}
     >
-      <Avatar></Avatar>
-      <Text></Text>
+      <View style={{ ...globalStyles.column }}>
+        <Avatar
+          rounded
+          size="large"
+          source={{ uri: "https://i.pravatar.cc/200" }}
+        />
+        <Text style={textStyles.header}>
+          {settings.user?.displayName ?? "Add a display name!"}
+        </Text>
+      </View>
       {settings.user ? (
         <View>
           <SettingsGroup
@@ -31,13 +39,21 @@ const AuthManagementScreen = () => {
                 name: "Name",
                 subtitle: "Change your display name",
                 icon: <Icon name="person-outline" />,
-                action: () => dispatch({ type: "onboarding" }),
+                action: () => navigation.navigate("EditNameScreen"),
+              },
+              {
+                name: "Password",
+                icon: <Icon name="key" type="feather"/>,
+                subtitle: "Change your password",
+                action: () => navigation.navigate("EditPasswordScreen"),
               },
               {
                 name: "Email",
                 icon: <Icon name="email" type="fontisto" />,
-                subtitle: settings.user.emailVerified ? "Verified!" : "Not yet verified!",
-                action: () => dispatch({ type: "onboarding" }),
+                subtitle: settings.user.emailVerified
+                  ? "Verified!"
+                  : "Not yet verified!",
+                action: () => navigation.navigate("EditEmailScreen"),
               },
             ]}
           />

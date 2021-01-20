@@ -11,10 +11,11 @@ import TodoScreen from "./src/screens/Todo/TodoScreen";
 import StatScreen from "./src/screens/StatScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
 import GroupScreen from "./src/screens/GroupScreen";
-import SettingsScreen from "./src/screens/SettingsScreen";
+import SettingsScreen from "./src/screens/Settings/SettingsScreen";
 import AddTodoScreen from "./src/screens/Todo/AddTodoScreen";
 import AuthManagementScreen from "./src/screens/Onboarding/AuthManagementScreen";
 import EmailSignInScreen from "./src/screens/Onboarding/EmailSignInScreen";
+import EditEmailScreen from "./src/screens/Settings/EditEmailScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -58,6 +59,11 @@ export default function App() {
                 name="EmailSignInScreen"
                 component={EmailSignInScreen}
                 options={{ title: "Sign-in with Email", headerBackTitle: "Back" }}
+              />
+              <Stack.Screen
+                name="EditEmailScreen"
+                component={EditEmailScreen}
+                options={{ title: "Change email settings", headerBackTitle: "Back" }}
               />
               <Stack.Screen
                 name="AddTodoScreen"

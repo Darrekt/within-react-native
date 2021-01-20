@@ -21,6 +21,13 @@ export const globalStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  inputBox: {
+    margin: 15,
+    height: 40,
+    width: "70%",
+    borderColor: "#7a42f4",
+    borderWidth: 1,
+  },
   submitButton: {
     backgroundColor: "#7a42f4",
     padding: 10,
@@ -37,6 +44,7 @@ export const textStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "400",
   },
+  avatarCaption: { fontSize: 18, fontWeight: "500", marginVertical: 20 },
   groupHeader: {
     flex: 1,
     marginBottom: 10,

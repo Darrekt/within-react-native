@@ -1,13 +1,15 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useContext } from "react";
 import { View, Button } from "react-native";
 import { Icon } from "react-native-elements";
-import { globalStyles } from "../../styles";
-import AuthStateDisplay from "../components/settings/AuthStateDisplay";
-import SettingsGroup from "../components/settings/SettingsGroup";
-import { SettingsContext } from "../state/context";
+import { globalStyles } from "../../../styles";
+import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
+import SettingsGroup from "../../components/settings/SettingsGroup";
+import { SettingsContext } from "../../state/context";
 
 const SettingsScreen = () => {
   const { settings, dispatch } = useContext(SettingsContext);
+  const navigation = useNavigation();
 
   const generalSettings = [
     {
