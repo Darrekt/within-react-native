@@ -33,7 +33,7 @@ const EditPasswordScreen = () => {
               secureTextEntry
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
-              placeholder="Password"
+              placeholder="Old Password"
               value={values.password}
               onSubmitEditing={() => handleSubmit()}
             />
@@ -44,7 +44,7 @@ const EditPasswordScreen = () => {
               secureTextEntry
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
-              placeholder="Password"
+              placeholder="New password"
               value={values.password}
               onSubmitEditing={() => handleSubmit()}
             />
@@ -55,14 +55,14 @@ const EditPasswordScreen = () => {
               secureTextEntry
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
-              placeholder="Password"
+              placeholder="Confirm new password"
               value={values.password}
               onSubmitEditing={() => handleSubmit()}
             />
             <Button
               color={globalStyles.submitButton.backgroundColor}
               onPress={() => handleSubmit()}
-              title="Sign In"
+              title="Change password"
             />
           </View>
         )}

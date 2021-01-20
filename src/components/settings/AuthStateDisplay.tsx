@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     flexShrink: 150,
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: "Gill Sans",
     textAlign: "left",
     margin: 10,
@@ -53,7 +53,13 @@ const AuthStateDisplay = ({
         colors={["#4c669f", "#3b5998", "#192f6a"]}
         style={{ ...styles.linearGradient, width: width }}
       >
-        <View style={{ ...globalStyles.row, paddingHorizontal: 20 }}>
+        <View
+          style={{
+            ...globalStyles.row,
+            justifyContent: "space-between",
+            paddingHorizontal: 10,
+          }}
+        >
           <Avatar
             rounded
             size="large"
@@ -61,9 +67,10 @@ const AuthStateDisplay = ({
           />
           {settings.user ? (
             <Text style={styles.buttonText}>
-              Signed in as{" "}
-              {settings.user.displayName ??
-                "a mysterious entity. Set a display name here!"}
+              {`Signed in as ${
+                settings.user.displayName ??
+                "a mysterious entity. Set a display name here!"
+              }`}
             </Text>
           ) : (
             <Text style={styles.buttonText}>

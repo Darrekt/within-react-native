@@ -50,37 +50,58 @@ export default function App() {
               <Stack.Screen
                 name="SettingsScreen"
                 component={SettingsScreen}
-                options={{ title: "Settings", headerBackTitle: "Back" }}
+                options={{
+                  title: "Settings",
+                  headerBackTitleVisible: false,
+                }}
               />
               <Stack.Screen
                 name="AuthScreen"
                 component={AuthManagementScreen}
-                options={{ title: "Account Management", headerBackTitle: "Back" }}
+                options={{
+                  title: "Account Management",
+                  headerBackTitleVisible: false,
+                }}
               />
               <Stack.Screen
                 name="EditNameScreen"
                 component={EditNameScreen}
-                options={{ title: "Change display name", headerBackTitle: "Back" }}
+                options={{
+                  title: "Change display name",
+                  headerBackTitleVisible: false,
+                }}
               />
               <Stack.Screen
                 name="EditPasswordScreen"
                 component={EditPasswordScreen}
-                options={{ title: "Change Password", headerBackTitle: "Back" }}
+                options={{
+                  title: "Change Password",
+                  headerBackTitleVisible: false,
+                }}
               />
               <Stack.Screen
                 name="EmailSignInScreen"
                 component={EmailSignInScreen}
-                options={{ title: "Sign-in with Email", headerBackTitle: "Back" }}
+                options={{
+                  title: "Sign-in with Email",
+                  headerBackTitleVisible: false,
+                }}
               />
               <Stack.Screen
                 name="EditEmailScreen"
                 component={EditEmailScreen}
-                options={{ title: "Change email settings", headerBackTitle: "Back" }}
+                options={{
+                  title: "Change email settings",
+                  headerBackTitleVisible: false,
+                }}
               />
               <Stack.Screen
                 name="AddTodoScreen"
                 component={AddTodoScreen}
-                options={{ title: "Add a task" }}
+                options={{
+                  title: "Add a task",
+                  headerBackTitleVisible: false,
+                }}
               />
             </Stack.Navigator>
           </>

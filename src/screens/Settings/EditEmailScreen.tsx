@@ -49,7 +49,7 @@ const EditEmailScreen = () => {
               placeholder="Email"
               value={values.email}
             />
-            {settings.user && (
+            {!settings.user?.emailVerified && (
               <Button
                 color={globalStyles.submitButton.backgroundColor}
                 onPress={() => settings.user?.sendEmailVerification()}

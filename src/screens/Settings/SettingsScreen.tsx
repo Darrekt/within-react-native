@@ -49,7 +49,7 @@ const SettingsScreen = () => {
     >
       <AuthStateDisplay settings={settings} dispatch={dispatch} />
       <SettingsGroup name="General" items={generalSettings} />
-      <SettingsGroup name="Todo" items={productivitySettings} />
+      <SettingsGroup name="Productivity" items={productivitySettings} />
       <Button
         color={globalStyles.submitButton.backgroundColor}
         onPress={() => dispatch({ type: "reset", value: settings })}

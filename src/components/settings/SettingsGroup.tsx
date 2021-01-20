@@ -26,7 +26,6 @@ const SettingsGroup = ({ name, items }: Props) => {
     <View style={{ ...globalStyles.column, marginVertical: 15 }}>
       <View style={globalStyles.row}>
         <Text style={textStyles.groupHeader}>{name}</Text>
-        <View style={{ flex: 3 }}></View>
       </View>
       <View>
         {items.map((item, index) => {
