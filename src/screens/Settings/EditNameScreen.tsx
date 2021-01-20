@@ -1,29 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
-import { StackNavigationProp } from "@react-navigation/stack";
-import auth from "@react-native-firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+import { SettingsContext } from "../../state/context";
 
-type ChangePWNavigationProp = StackNavigationProp<
-  { EditPasswordScreen: undefined },
-  "EditPasswordScreen"
->;
-
-const EditPasswordScreen = ({
-  navigation,
-}: {
-  navigation: ChangePWNavigationProp;
-}) => {
+const EditNameScreen = () => {
+  const { settings } = useContext(SettingsContext);
+  const navigation = useNavigation();
   return (
     <View>
       <Formik
-        initialValues={{ password: "" }}
+        initialValues={{ newName: "" }}
         validate={(values) => {
           let errors = {};
         }}
-        onSubmit={async (values) => {}}
+        onSubmit={async (values) => {
+          settings.user
+            ?.updateProfile({ displayName: values.newName })
+            .then(navigation.goBack)
+            .catch((error) => console.log(error));
+        }}
       >
         {({
           handleChange,
@@ -35,41 +33,17 @@ const EditPasswordScreen = ({
           <View style={globalStyles.column}>
             <TextInput
               style={globalStyles.inputBox}
-              autoCapitalize="none"
-              autoCompleteType="password"
-              secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              placeholder="Password"
-              value={values.password}
-              onSubmitEditing={() => handleSubmit()}
-            />
-            <TextInput
-              style={globalStyles.inputBox}
-              autoCapitalize="none"
-              autoCompleteType="password"
-              secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              placeholder="Password"
-              value={values.password}
-              onSubmitEditing={() => handleSubmit()}
-            />
-            <TextInput
-              style={globalStyles.inputBox}
-              autoCapitalize="none"
-              autoCompleteType="password"
-              secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              placeholder="Password"
-              value={values.password}
+              autoCompleteType="name"
+              onChangeText={handleChange("newName")}
+              onBlur={handleBlur("newName")}
+              placeholder="Your snazzy new name here!"
+              value={values.newName}
               onSubmitEditing={() => handleSubmit()}
             />
             <Button
               color={globalStyles.submitButton.backgroundColor}
               onPress={() => handleSubmit()}
-              title="Sign In"
+              title="Change my name!"
             />
           </View>
         )}
@@ -77,4 +51,4 @@ const EditPasswordScreen = ({
     </View>
   );
 };
-export default EditPasswordScreen;
+export default EditNameScreen;

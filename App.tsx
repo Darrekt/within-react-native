@@ -16,6 +16,8 @@ import AddTodoScreen from "./src/screens/Todo/AddTodoScreen";
 import AuthManagementScreen from "./src/screens/Onboarding/AuthManagementScreen";
 import EmailSignInScreen from "./src/screens/Onboarding/EmailSignInScreen";
 import EditEmailScreen from "./src/screens/Settings/EditEmailScreen";
+import EditPasswordScreen from "./src/screens/Settings/EditPasswordScreen";
+import EditNameScreen from "./src/screens/Settings/EditNameScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +56,16 @@ export default function App() {
                 name="AuthScreen"
                 component={AuthManagementScreen}
                 options={{ title: "Account Management", headerBackTitle: "Back" }}
+              />
+              <Stack.Screen
+                name="EditNameScreen"
+                component={EditNameScreen}
+                options={{ title: "Change display name", headerBackTitle: "Back" }}
+              />
+              <Stack.Screen
+                name="EditPasswordScreen"
+                component={EditPasswordScreen}
+                options={{ title: "Change Password", headerBackTitle: "Back" }}
               />
               <Stack.Screen
                 name="EmailSignInScreen"

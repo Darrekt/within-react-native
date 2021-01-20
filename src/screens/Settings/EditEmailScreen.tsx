@@ -3,20 +3,12 @@ import { View, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { SettingsContext } from "../../state/context";
+import { useNavigation } from "@react-navigation/native";
 
-type EditEmailScreenNavigationProp = StackNavigationProp<
-  { EditEmailScreen: undefined },
-  "EditEmailScreen"
->;
-
-const EditEmailScreen = ({
-  navigation,
-}: {
-  navigation: EditEmailScreenNavigationProp;
-}) => {
+const EditEmailScreen = () => {
   const { settings } = useContext(SettingsContext);
+  const navigation = useNavigation();
   return (
     <View>
       <Formik

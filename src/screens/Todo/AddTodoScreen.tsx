@@ -5,14 +5,14 @@ import { TextInput } from "react-native-gesture-handler";
 import { TodoContext } from "./../../state/context";
 import { globalStyles, textStyles } from "../../../styles";
 import Todo from "../../models/Todo";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
   stringEntry: {
     ...globalStyles.column,
     padding: 10,
     flex: 0,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   boolEntry: {
     ...globalStyles.row,
@@ -35,88 +35,74 @@ const styles = StyleSheet.create({
   },
 });
 
-type TodoScreenNavigationProp = StackNavigationProp<
-  { AddTodoScreen: undefined },
-  "AddTodoScreen"
->;
-
-const AddTodoScreen = ({
-  navigation,
-}: {
-  navigation: TodoScreenNavigationProp;
-}) => {
+const AddTodoScreen = () => {
   const { dispatch } = React.useContext(TodoContext);
+  const navigation = useNavigation();
   return (
-      <Formik
-        initialValues={{ name: "", notes: "", disableNotifications: false }}
-        validate={(values) => {
-          let errors = {};
-        }}
-        onSubmit={(values) => {
-          dispatch({
-            type: "add",
-            payload: new Todo({
-              name: values.name,
-              notes: values.notes,
-              disableNotifications: values.disableNotifications,
-            }),
-          });
-          navigation.goBack();
-        }}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-          values,
-        }) => (
-          <View style={globalStyles.column}>
-            <View style={styles.stringEntry}>
-              <Text style={textStyles.header}>What are you doing?</Text>
-              <TextInput
-                style={styles.inputBox}
-                onChangeText={handleChange("name")}
-                onBlur={handleBlur("name")}
-                placeholder="Task name"
-                value={values.name}
-              />
-            </View>
-            <View style={styles.stringEntry}>
-              <Text style={textStyles.header}>Additional details</Text>
-              <TextInput
-                style={styles.inputBox}
-                onChangeText={handleChange("notes")}
-                onBlur={handleBlur("notes")}
-                placeholder="Notes"
-                value={values.notes}
-              />
-            </View>
-            <View style={styles.boolEntry}>
-              <Text style={textStyles.header}>
-                Silence incoming notifications
-              </Text>
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={values.disableNotifications ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                value={values.disableNotifications}
-                onValueChange={() =>
-                  setFieldValue(
-                    "disableNotifications",
-                    !values.disableNotifications
-                  )
-                }
-              />
-            </View>
-            <Button
-              color={styles.submitButton.backgroundColor}
-              onPress={() => handleSubmit()}
-              title="Add Task"
+    <Formik
+      initialValues={{ name: "", notes: "", disableNotifications: false }}
+      validate={(values) => {
+        let errors = {};
+      }}
+      onSubmit={(values) => {
+        dispatch({
+          type: "add",
+          payload: new Todo({
+            name: values.name,
+            notes: values.notes,
+            disableNotifications: values.disableNotifications,
+          }),
+        });
+        navigation.goBack();
+      }}
+    >
+      {({ handleChange, handleBlur, handleSubmit, setFieldValue, values }) => (
+        <View style={globalStyles.column}>
+          <View style={styles.stringEntry}>
+            <Text style={textStyles.header}>What are you doing?</Text>
+            <TextInput
+              style={styles.inputBox}
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              placeholder="Task name"
+              value={values.name}
             />
           </View>
-        )}
-      </Formik>
+          <View style={styles.stringEntry}>
+            <Text style={textStyles.header}>Additional details</Text>
+            <TextInput
+              style={styles.inputBox}
+              onChangeText={handleChange("notes")}
+              onBlur={handleBlur("notes")}
+              placeholder="Notes"
+              value={values.notes}
+            />
+          </View>
+          <View style={styles.boolEntry}>
+            <Text style={textStyles.header}>
+              Silence incoming notifications
+            </Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={values.disableNotifications ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              value={values.disableNotifications}
+              onValueChange={() =>
+                setFieldValue(
+                  "disableNotifications",
+                  !values.disableNotifications
+                )
+              }
+            />
+          </View>
+          <Button
+            color={styles.submitButton.backgroundColor}
+            onPress={() => handleSubmit()}
+            title="Add Task"
+          />
+        </View>
+      )}
+    </Formik>
   );
 };
 export default AddTodoScreen;

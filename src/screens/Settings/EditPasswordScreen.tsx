@@ -3,19 +3,10 @@ import { View, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
-import { StackNavigationProp } from "@react-navigation/stack";
-import auth from "@react-native-firebase/auth";
+import { useNavigation } from "@react-navigation/native";
 
-type ChangePWNavigationProp = StackNavigationProp<
-  { EditPasswordScreen: undefined },
-  "EditPasswordScreen"
->;
-
-const EditPasswordScreen = ({
-  navigation,
-}: {
-  navigation: ChangePWNavigationProp;
-}) => {
+const EditPasswordScreen = () => {
+  const navigation = useNavigation();
   return (
     <View>
       <Formik
@@ -23,7 +14,9 @@ const EditPasswordScreen = ({
         validate={(values) => {
           let errors = {};
         }}
-        onSubmit={async (values) => {}}
+        onSubmit={async (values) => {
+          navigation.goBack()
+        }}
       >
         {({
           handleChange,
