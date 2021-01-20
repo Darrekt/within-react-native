@@ -8,7 +8,6 @@ import {
 } from "../hooks/useSettingsRepository";
 import { TodoRepoAction } from "../hooks/useTodoRepository";
 
-// TODO: Change to a generic dispatch
 export const SettingsContext = React.createContext<{
   settings: SageSettings;
   dispatch: React.Dispatch<SettingsAction>,

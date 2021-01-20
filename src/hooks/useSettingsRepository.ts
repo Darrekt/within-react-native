@@ -95,7 +95,7 @@ const useSettingsRepository: () => [
   );
 
   useEffect(() => {
-    if (settings.user !== null) {
+    if (settings.user) {
       firestore()
         .collection("Users")
         .doc(settings.user.uid)
