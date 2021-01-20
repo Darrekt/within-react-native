@@ -3,6 +3,7 @@ import { View, Text, useWindowDimensions } from "react-native";
 import { ListItem } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
+import { v5 as uuidv5 } from "uuid";
 
 type SettingModel = {
   name: string;
@@ -15,6 +16,8 @@ type Props = {
   name: string;
   items: SettingModel[];
 };
+
+const SETTINGS_UUID_NAMESPACE = "f17ffb01-995d-4af8-929b-50a512c93a7f";
 
 const SettingsGroup = ({ name, items }: Props) => {
   const width = useWindowDimensions().width * 0.85;
@@ -41,7 +44,10 @@ const SettingsGroup = ({ name, items }: Props) => {
           else roundedCornerStyle = {};
           return (
             // TODO: Make unique keys
-            <TouchableOpacity key={item.subtitle} onPress={item.action}>
+            <TouchableOpacity
+              key={uuidv5(item.name, SETTINGS_UUID_NAMESPACE)}
+              onPress={item.action}
+            >
               <ListItem
                 bottomDivider={index !== items.length - 1}
                 containerStyle={roundedCornerStyle}

@@ -87,6 +87,7 @@ const AddTodoScreen = ({
               onBlur={handleBlur("password")}
               placeholder="Password"
               value={values.password}
+              onSubmitEditing={() => handleSubmit()}
             />
             <Button
               color={styles.submitButton.backgroundColor}

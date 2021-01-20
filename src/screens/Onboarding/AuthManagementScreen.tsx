@@ -36,6 +36,7 @@ const AuthManagementScreen = () => {
               {
                 name: "Email",
                 icon: <Icon name="email" type="fontisto" />,
+                subtitle: settings.user.emailVerified ? "Verified!" : "Not yet verified!",
                 action: () => dispatch({ type: "onboarding" }),
               },
             ]}
