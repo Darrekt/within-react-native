@@ -105,7 +105,6 @@ const useSettingsRepository: () => [
             "user"
           >;
           if (snapshot) {
-            console.log("hydrating");
             dispatch({ type: "hydrate", value: snapshot });
           }
         });

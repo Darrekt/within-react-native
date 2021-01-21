@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useReducer, useContext } from "react";
 import { List } from "immutable";
-import Todo from "../models/Todo";
+import Todo, { fromFirestore } from "../models/Todo";
 import firestore from "@react-native-firebase/firestore";
 import { getTimeLeft } from "../util/timer";
 import { SettingsContext } from "../state/context";
@@ -173,7 +173,7 @@ const useTodoRepository: () => [
           const storedData = JSON.parse(
             documentSnapshot.get("current")
           ) as Array<Object>;
-          const storedTodos = List(storedData).map((item) => new Todo(item));
+          const storedTodos = List(storedData).map((item) => fromFirestore(item));
           dispatch({ type: "hydrate", payload: storedTodos });
         });
     } else {

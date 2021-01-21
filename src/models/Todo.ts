@@ -26,14 +26,31 @@ export default class Todo {
       completed: this.completed,
       selected: this.selected,
       remaining: this.remaining,
-      finishingTime: this.finishingTime,
+      finishingTime: this.finishingTime?.getTime(),
     };
   }
 
-  fromFirestore(doc: any) {
-    new Todo({ ...doc });
+  toFirestore() {
+    return {
+      id: this.id,
+      name: this.name,
+      notes: this.notes,
+      disableNotifications: this.disableNotifications,
+      laps: this.laps,
+      completed: this.completed,
+      selected: this.selected,
+      remaining: this.remaining,
+      finishingTime: this.finishingTime?.getTime(),
+      // finishingTime: this.finishingTime
+      //   ? firestore.Timestamp.fromDate(this.finishingTime)
+      //   : undefined,
+    };
   }
+}
 
-  // TODO
-  toFirestore() {}
+export function fromFirestore(doc: any) {
+  return new Todo({
+    ...doc,
+    finishingTime: doc.finishingTime ? new Date(doc.finishingTime) : undefined,
+  });
 }

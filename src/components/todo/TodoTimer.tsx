@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import { TodoTimerAction } from "../../hooks/useTodoRepository";
-import { getTimeLeft, printTimeLeft } from "../../util/timer"
+import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import Todo from "../../models/Todo";
 import CircleButtonGroup from "../CircleButtonGroup";
 import { Icon } from "react-native-elements";
@@ -71,6 +71,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
           : setTimeLeft(getTimeLeft(selectedTask)),
       selectedTask.finishingTime ? 1000 : 0
     );
+
     return () => {
       setTimeLeft(getTimeLeft(selectedTask));
       clearTimeout(timer);
