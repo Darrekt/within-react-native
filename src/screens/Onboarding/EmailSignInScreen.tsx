@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { View, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
@@ -38,7 +38,6 @@ const AddTodoScreen = () => {
           handleChange,
           handleBlur,
           handleSubmit,
-          setFieldValue,
           values,
         }) => (
           <View style={globalStyles.column}>

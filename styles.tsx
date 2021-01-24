@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
+  spacer: {
+    height: 30,
+  },
   container: {
     flex: 1,
     alignItems: "center",

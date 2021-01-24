@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, useWindowDimensions } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
@@ -9,12 +9,6 @@ import useTodoRepository from "../../hooks/useTodoRepository";
 import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/SettingsButton";
-
-const styles = StyleSheet.create({
-  spacer: {
-    height: 30,
-  },
-});
 
 const Stack = createStackNavigator();
 
@@ -51,7 +45,7 @@ const TodoScreen = () => {
           position == "top" ? setIsOpen(true) : setIsOpen(false);
         }}
         panGestureEnabled={!running || !isOpen}
-        HeaderComponent={<View style={styles.spacer}></View>}
+        HeaderComponent={<View style={globalStyles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
             <TodoComponents.ListHeader

@@ -8,30 +8,9 @@ import Todo from "../../models/Todo";
 import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
-  stringEntry: {
-    ...globalStyles.column,
-    padding: 10,
-    flex: 0,
-    justifyContent: "center",
-  },
   boolEntry: {
     ...globalStyles.row,
     padding: 10,
-  },
-  inputBox: {
-    margin: 15,
-    height: 40,
-    borderColor: "#7a42f4",
-    borderWidth: 1,
-  },
-  submitButton: {
-    backgroundColor: "#7a42f4",
-    padding: 10,
-    margin: 15,
-    height: 40,
-  },
-  submitButtonText: {
-    color: "white",
   },
 });
 
@@ -58,26 +37,23 @@ const AddTodoScreen = () => {
     >
       {({ handleChange, handleBlur, handleSubmit, setFieldValue, values }) => (
         <View style={globalStyles.column}>
-          <View style={styles.stringEntry}>
-            <Text style={textStyles.header}>What are you doing?</Text>
-            <TextInput
-              style={styles.inputBox}
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              placeholder="Task name"
-              value={values.name}
-            />
-          </View>
-          <View style={styles.stringEntry}>
-            <Text style={textStyles.header}>Additional details</Text>
-            <TextInput
-              style={styles.inputBox}
-              onChangeText={handleChange("notes")}
-              onBlur={handleBlur("notes")}
-              placeholder="Notes"
-              value={values.notes}
-            />
-          </View>
+          <View style={globalStyles.spacer}></View>
+          <Text style={textStyles.header}>What are you doing?</Text>
+          <TextInput
+            style={globalStyles.inputBox}
+            onChangeText={handleChange("name")}
+            onBlur={handleBlur("name")}
+            placeholder="Task name"
+            value={values.name}
+          />
+          <Text style={textStyles.header}>Additional details</Text>
+          <TextInput
+            style={globalStyles.inputBox}
+            onChangeText={handleChange("notes")}
+            onBlur={handleBlur("notes")}
+            placeholder="Notes"
+            value={values.notes}
+          />
           <View style={styles.boolEntry}>
             <Text style={textStyles.header}>
               Silence incoming notifications
@@ -96,7 +72,7 @@ const AddTodoScreen = () => {
             />
           </View>
           <Button
-            color={styles.submitButton.backgroundColor}
+            color={globalStyles.submitButton.backgroundColor}
             onPress={() => handleSubmit()}
             title="Add Task"
           />
