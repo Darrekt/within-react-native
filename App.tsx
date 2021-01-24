@@ -12,7 +12,6 @@ import StatScreen from "./src/screens/StatScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
 import GroupScreen from "./src/screens/GroupScreen";
 import SettingsScreen from "./src/screens/Settings/SettingsScreen";
-import AddTodoScreen from "./src/screens/Todo/AddTodoScreen";
 import AuthManagementScreen from "./src/screens/Onboarding/AuthManagementScreen";
 import EmailSignInScreen from "./src/screens/Onboarding/EmailSignInScreen";
 import EditEmailScreen from "./src/screens/Settings/EditEmailScreen";
@@ -92,14 +91,6 @@ export default function App() {
                 component={EditEmailScreen}
                 options={{
                   title: "Change email settings",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="AddTodoScreen"
-                component={AddTodoScreen}
-                options={{
-                  title: "Add a task",
                   headerBackTitleVisible: false,
                 }}
               />

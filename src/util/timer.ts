@@ -5,7 +5,6 @@ export function getTimeLeft(todo: Todo) {
   if (todo?.remaining) {
     return todo.remaining;
   } else if (todo?.finishingTime) {
-    console.log(typeof todo.finishingTime, todo.finishingTime);
     const now = new Date();
     return Math.max(
       0,

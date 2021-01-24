@@ -32,7 +32,7 @@ export type TodoTimerAction = {
   target: Todo["id"];
 };
 
-async function writeItems(state: List<Todo>, uid?: string) {
+async function writeItems(state: List<Todo>, uid?: string | null) {
   try {
     if (uid) {
       const tempLstStr = await AsyncStorage.getItem("todos");
@@ -66,7 +66,6 @@ const useTodoRepository: () => [
   boolean
 ] = () => {
   const { settings } = useContext(SettingsContext);
-
   const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
     let newState: List<Todo>;
     switch (action.type) {
@@ -131,7 +130,7 @@ const useTodoRepository: () => [
       case "update":
         newState = state.update(
           state.findIndex((item) => item.id == action.payload.id),
-          (item) => (item = action.payload)
+          () => action.payload
         );
         break;
       case "add":
@@ -173,7 +172,9 @@ const useTodoRepository: () => [
           const storedData = JSON.parse(
             documentSnapshot.get("current")
           ) as Array<Object>;
-          const storedTodos = List(storedData).map((item) => fromFirestore(item));
+          const storedTodos = List(storedData).map((item) =>
+            fromFirestore(item)
+          );
           dispatch({ type: "hydrate", payload: storedTodos });
         });
     } else {
