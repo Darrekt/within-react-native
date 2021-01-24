@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View, Text, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { globalStyles } from "../../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 
 const EditPasswordScreen = () => {
@@ -10,58 +10,84 @@ const EditPasswordScreen = () => {
   return (
     <View>
       <Formik
-        initialValues={{ password: "" }}
-        validate={(values) => {
-          let errors = {};
+        initialValues={{
+          oldPassword: "",
+          newPassword: "",
+          confirmNewPassword: "",
         }}
-        onSubmit={async (values) => {
-          navigation.goBack()
+        validate={(values) => {
+          const errors: {
+            oldPassword?: string;
+            newPassword?: string;
+            confirmNewPassword?: string;
+          } = {};
+
+          if (!values.oldPassword) {
+            errors.oldPassword = "Please enter a password.";
+          }
+
+          if (!values.newPassword) {
+            errors.oldPassword = "Please enter a new password.";
+          }
+
+          errors.confirmNewPassword =
+            values.newPassword !== values.confirmNewPassword
+              ? "Passwords do not match"
+              : undefined;
+
+          return errors;
+        }}
+        onSubmit={(values) => {
+          navigation.goBack();
         }}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-          values,
-        }) => (
+        {(formik) => (
           <View style={globalStyles.column}>
             <TextInput
               style={globalStyles.inputBox}
               autoCapitalize="none"
               autoCompleteType="password"
               secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
+              onChangeText={formik.handleChange("oldPassword")}
+              onBlur={formik.handleBlur("oldPassword")}
               placeholder="Old Password"
-              value={values.password}
-              onSubmitEditing={() => handleSubmit()}
+              value={formik.values.oldPassword}
+              onSubmitEditing={() => formik.handleSubmit()}
             />
+            {formik.touched.oldPassword && formik.errors.oldPassword && (
+              <Text style={textStyles.validationMessage}>{formik.errors.oldPassword}</Text>
+            )}
             <TextInput
               style={globalStyles.inputBox}
               autoCapitalize="none"
               autoCompleteType="password"
               secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
+              onChangeText={formik.handleChange("newPassword")}
+              onBlur={formik.handleBlur("newPassword")}
               placeholder="New password"
-              value={values.password}
-              onSubmitEditing={() => handleSubmit()}
+              value={formik.values.newPassword}
+              onSubmitEditing={() => formik.handleSubmit()}
             />
+            {formik.touched.newPassword && formik.errors.newPassword && (
+              <Text style={textStyles.validationMessage}>{formik.errors.newPassword}</Text>
+            )}
             <TextInput
               style={globalStyles.inputBox}
               autoCapitalize="none"
               autoCompleteType="password"
               secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
+              onChangeText={formik.handleChange("confirmNewPassword")}
+              onBlur={formik.handleBlur("confirmNewPassword")}
               placeholder="Confirm new password"
-              value={values.password}
-              onSubmitEditing={() => handleSubmit()}
+              value={formik.values.confirmNewPassword}
+              onSubmitEditing={() => formik.handleSubmit()}
             />
+            {formik.touched.confirmNewPassword && formik.errors.confirmNewPassword && (
+              <Text style={textStyles.validationMessage}>{formik.errors.confirmNewPassword}</Text>
+            )}
             <Button
               color={globalStyles.submitButton.backgroundColor}
-              onPress={() => handleSubmit()}
+              onPress={() => formik.handleSubmit()}
               title="Change password"
             />
           </View>

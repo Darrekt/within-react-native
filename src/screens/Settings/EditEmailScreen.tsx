@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { View, Button } from "react-native";
+import { View, Text, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { globalStyles } from "../../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import { useNavigation } from "@react-navigation/native";
 
@@ -12,13 +12,29 @@ const EditEmailScreen = () => {
   return (
     <View>
       <Formik
-        initialValues={{ email: settings.user?.email ?? "" }}
-        validate={(values) => {
-          let errors = {};
+        initialValues={{
+          newEmail: settings.user?.email ?? "",
+          confirmNewEmail: "",
         }}
-        onSubmit={async (values) => {
+        validate={(values) => {
+          const errors: { newEmail?: string; confirmNewEmail?: string } = {};
+
+          if (!values.newEmail) {
+            errors.newEmail = "Required";
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.newEmail)
+          ) {
+            errors.newEmail = "Invalid email address";
+          }
+
+          if (values.newEmail !== values.confirmNewEmail) {
+            errors.confirmNewEmail = "E-mails do not match";
+          }
+          return errors;
+        }}
+        onSubmit={(values) => {
           settings.user
-            ?.updateEmail(values.email)
+            ?.updateEmail(values.newEmail)
             .then(navigation.goBack)
             .catch((error) => {
               if (error.code === "auth/email-already-in-use") {
@@ -32,23 +48,37 @@ const EditEmailScreen = () => {
             });
         }}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-          values,
-        }) => (
+        {(formik) => (
           <View style={globalStyles.column}>
             <TextInput
               style={globalStyles.inputBox}
               autoCapitalize="none"
               autoCompleteType="email"
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              placeholder="Email"
-              value={values.email}
+              onChangeText={formik.handleChange("newEmail")}
+              onBlur={formik.handleBlur("newEmail")}
+              placeholder="New email"
+              value={formik.values.newEmail}
             />
+            {formik.touched.newEmail && formik.errors.newEmail && (
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.newEmail}
+              </Text>
+            )}
+            <TextInput
+              style={globalStyles.inputBox}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              onChangeText={formik.handleChange("confirmNewEmail")}
+              onBlur={formik.handleBlur("confirmNewEmail")}
+              placeholder="Confirm new email"
+              value={formik.values.confirmNewEmail}
+            />
+            {formik.touched.confirmNewEmail &&
+              formik.errors.confirmNewEmail && (
+                <Text style={textStyles.validationMessage}>
+                  {formik.errors.confirmNewEmail}
+                </Text>
+              )}
             {!settings.user?.emailVerified && (
               <Button
                 color={globalStyles.submitButton.backgroundColor}
@@ -58,7 +88,7 @@ const EditEmailScreen = () => {
             )}
             <Button
               color={globalStyles.submitButton.backgroundColor}
-              onPress={() => handleSubmit()}
+              onPress={() => formik.handleSubmit()}
               title="Change email"
             />
           </View>

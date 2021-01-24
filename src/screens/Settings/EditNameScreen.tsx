@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
-import { View, Button } from "react-native";
+import { View, Text, Button } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { globalStyles } from "../../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { SettingsContext } from "../../state/context";
 
@@ -12,9 +12,14 @@ const EditNameScreen = () => {
   return (
     <View>
       <Formik
-        initialValues={{ newName: "" }}
+        initialValues={{ newName: settings.user?.displayName ?? "" }}
         validate={(values) => {
-          let errors = {};
+          const errors: { newName?: string } = {};
+
+          if (!values.newName) {
+            errors.newName = "Your name can't be empty!";
+          }
+          return errors;
         }}
         onSubmit={async (values) => {
           settings.user
@@ -23,26 +28,25 @@ const EditNameScreen = () => {
             .catch((error) => console.log(error));
         }}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          setFieldValue,
-          values,
-        }) => (
+        {(formik) => (
           <View style={globalStyles.column}>
             <TextInput
               style={globalStyles.inputBox}
               autoCompleteType="name"
-              onChangeText={handleChange("newName")}
-              onBlur={handleBlur("newName")}
+              onChangeText={formik.handleChange("newName")}
+              onBlur={formik.handleBlur("newName")}
               placeholder="Your snazzy new name here!"
-              value={values.newName}
-              onSubmitEditing={() => handleSubmit()}
+              value={formik.values.newName}
+              onSubmitEditing={() => formik.handleSubmit()}
             />
+            {formik.touched.newName && formik.errors.newName && (
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.newName}
+              </Text>
+            )}
             <Button
               color={globalStyles.submitButton.backgroundColor}
-              onPress={() => handleSubmit()}
+              onPress={() => formik.handleSubmit()}
               title="Change my name!"
             />
           </View>

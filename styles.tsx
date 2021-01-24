@@ -55,4 +55,8 @@ export const textStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "400",
   },
+  validationMessage: {
+    width: "70%",
+    color: "red"
+  },
 });
