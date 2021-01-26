@@ -14,20 +14,23 @@ const styles = StyleSheet.create({
 });
 
 type Props<A> = {
-  actions: { key: string, action: A; icon: JSX.Element }[];
+  actions: { key: string; action: A; icon: JSX.Element }[];
   dispatch: React.Dispatch<A>;
+  active: boolean;
 };
 
-export default function CircleButtonGroup<A>({ actions, dispatch }: Props<A>) {
+export default function CircleButtonGroup<A>({
+  actions,
+  dispatch,
+  active,
+}: Props<A>) {
   return (
     <View style={styles.tileActions}>
       {actions.map((action, i) => (
         <TouchableOpacity
           key={action.key}
           style={styles.actionButtons}
-          onPress={() => {
-            dispatch(action.action);
-          }}
+          onPress={() => active && dispatch(action.action)}
         >
           {action.icon}
         </TouchableOpacity>

@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default class Todo {
   id: string = uuidv4();
+  emoji: string = "✏️";
   name: string = "";
   notes: string = "";
   disableNotifications: boolean = false;
@@ -19,6 +20,7 @@ export default class Todo {
   toEntity() {
     return {
       id: this.id,
+      emoji: this.emoji,
       name: this.name,
       notes: this.notes,
       disableNotifications: this.disableNotifications,
@@ -33,6 +35,7 @@ export default class Todo {
   toFirestore() {
     return {
       id: this.id,
+      emoji: this.emoji,
       name: this.name,
       notes: this.notes,
       disableNotifications: this.disableNotifications,
@@ -41,9 +44,6 @@ export default class Todo {
       selected: this.selected,
       remaining: this.remaining,
       finishingTime: this.finishingTime?.getTime(),
-      // finishingTime: this.finishingTime
-      //   ? firestore.Timestamp.fromDate(this.finishingTime)
-      //   : undefined,
     };
   }
 }

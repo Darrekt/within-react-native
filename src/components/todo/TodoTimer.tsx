@@ -106,7 +106,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
   return (
     <View style={styles.positionedLogo}>
       <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
-      <CircleButtonGroup actions={timerActions} dispatch={dispatch} />
+      <CircleButtonGroup actions={timerActions} dispatch={dispatch} active />
     </View>
   );
 };

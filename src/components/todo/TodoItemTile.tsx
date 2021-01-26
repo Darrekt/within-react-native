@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Icon, ListItem } from "react-native-elements";
+import { Icon, ListItem, Badge, withBadge } from "react-native-elements";
 import Todo from "../../models/Todo";
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
 import CircleButtonGroup from "../CircleButtonGroup";
@@ -16,12 +16,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   tileIconStyle: {
-    flex: 1,
+    marginRight: 20,
+    fontSize: 20,
+  },
+  selectedTileStyle: {
+    backgroundColor: "aqua",
   },
   tileTitleTextStyle: {
     flex: 6,
     fontSize: 20,
     fontWeight: "400",
+  },
+  unselectedTileText: {
+    textDecorationStyle: "solid",
+    color: "grey",
   },
   completedTileTitleTextStyle: {
     textDecorationLine: "line-through",
@@ -36,9 +44,15 @@ type Props = {
 };
 
 const TodoItemTile = ({ todo, running, dispatch }: Props) => {
-  const itemTitleTextStyle = todo.completed
+  let itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
     : styles.tileTitleTextStyle;
+
+  itemTitleTextStyle =
+    !todo.selected && running
+      ? { ...itemTitleTextStyle, ...styles.unselectedTileText }
+      : itemTitleTextStyle;
+
   const buttons: {
     key: string;
     action: TodoRepoAction;
@@ -88,8 +102,18 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
     },
   ];
 
+  const BadgedText = withBadge(todo.laps, {
+    badgeStyle: { position: "absolute", top: -10, right: 15 },
+    status: "success",
+    right: 10,
+    hidden: todo.laps === 0,
+  })(Text);
+
   return (
-    <ListItem topDivider>
+    <ListItem
+      topDivider
+      containerStyle={todo.selected ? styles.selectedTileStyle : undefined}
+    >
       <TouchableOpacity
         onPress={() => {
           !running
@@ -101,11 +125,15 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
         }}
       >
         <ListItem.Content style={styles.tileRow}>
-          <Text style={styles.tileIconStyle}></Text>
+          <BadgedText style={styles.tileIconStyle}>{todo.emoji}</BadgedText>
           <ListItem.Title style={itemTitleTextStyle}>
             {todo.name}
           </ListItem.Title>
-          <CircleButtonGroup dispatch={dispatch} actions={buttons} />
+          <CircleButtonGroup
+            dispatch={dispatch}
+            actions={buttons}
+            active={todo.selected}
+          />
         </ListItem.Content>
       </TouchableOpacity>
     </ListItem>
