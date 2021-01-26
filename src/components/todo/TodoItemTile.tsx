@@ -103,7 +103,7 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
   ];
 
   const BadgedText = withBadge(todo.laps, {
-    badgeStyle: { position: "absolute", top: -10, right: 15 },
+    badgeStyle: { position: "absolute", top: -8, right: 8 },
     status: "success",
     right: 10,
     hidden: todo.laps === 0,
@@ -132,7 +132,7 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
           <CircleButtonGroup
             dispatch={dispatch}
             actions={buttons}
-            active={todo.selected}
+            active={!running || todo.selected}
           />
         </ListItem.Content>
       </TouchableOpacity>
