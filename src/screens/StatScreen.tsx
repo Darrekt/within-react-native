@@ -1,10 +1,17 @@
-import React from 'react';
-import {  Text, View } from 'react-native';
-import { globalStyles } from '../../styles';
+import React from "react";
+import { NativeModules, View, Button } from "react-native";
+import { globalStyles } from "../../styles";
 
-export const StatScreen = () =>
-  <View style={globalStyles.container}>
-    <Text>Stats Coming Soon</Text>
+const { DnDMode } = NativeModules;
+
+export const StatScreen = () => (
+  <View style={globalStyles.centered}>
+    <Button
+      color={globalStyles.submitButton.backgroundColor}
+      onPress={() => DnDMode.turnOnDND()}
+      title="Silence Notifications"
+    />
   </View>
+);
 
 export default StatScreen;
