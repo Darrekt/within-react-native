@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+// https://paletton.com/#uid=13l0u0kl1Wx1x+IcEXDsUWkWEVB
+
 export const globalStyles = StyleSheet.create({
   spacer: {
     height: 30,
@@ -25,14 +27,17 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
   },
   inputBox: {
-    margin: 15,
-    height: 40,
+    margin: 8,
+    height: 45,
     width: "70%",
-    borderColor: "#7a42f4",
+    padding: 10,
+    borderColor: "#56DEF1",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 5,
     borderWidth: 1,
   },
   submitButton: {
-    backgroundColor: "#7a42f4",
+    backgroundColor: "#01D1EE",
     padding: 10,
     margin: 15,
     height: 40,
@@ -47,7 +52,7 @@ export const textStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "400",
   },
-  avatarCaption: { fontSize: 18, fontWeight: "500", marginVertical: 20 },
+  avatarName: { fontSize: 25, fontWeight: "400", marginVertical: 20 },
   groupHeader: {
     flex: 1,
     marginBottom: 10,

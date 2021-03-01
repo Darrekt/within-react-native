@@ -8,7 +8,7 @@ import { SettingsContext } from "../../state/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 
 const AuthManagementScreen = () => {
-  const { settings, dispatch } = useContext(SettingsContext);
+  const { settings } = useContext(SettingsContext);
   const navigation = useNavigation();
   const width = useWindowDimensions().width * 0.7;
 
@@ -20,20 +20,21 @@ const AuthManagementScreen = () => {
         margin: 20,
       }}
     >
-      <View style={{ ...globalStyles.column }}>
+      <View style={{ ...globalStyles.column, marginTop: 30 }}>
         <Avatar
           rounded
-          size="large"
-          source={{ uri: "https://i.pravatar.cc/200" }}
+          size="xlarge"
+          title="D"
+          overlayContainerStyle={{ backgroundColor: "#73eeff" }}
         />
-        <Text style={textStyles.header}>
+        <Text style={textStyles.avatarName}>
           {settings.user?.displayName ?? "Add a display name!"}
         </Text>
       </View>
       {settings.user ? (
         <View>
           <SettingsGroup
-            name="Personal"
+            name=""
             items={[
               {
                 name: "Name",
@@ -43,7 +44,7 @@ const AuthManagementScreen = () => {
               },
               {
                 name: "Password",
-                icon: <Icon name="key" type="feather"/>,
+                icon: <Icon name="key" type="feather" />,
                 subtitle: "Change your password",
                 action: () => navigation.navigate("EditPasswordScreen"),
               },

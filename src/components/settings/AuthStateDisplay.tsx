@@ -26,10 +26,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     flexShrink: 150,
-    fontSize: 20,
+    fontSize: 22,
+    marginLeft: 25,
     fontFamily: "Gill Sans",
-    textAlign: "left",
-    margin: 10,
     color: "#ffffff",
     backgroundColor: "transparent",
   },
@@ -49,21 +48,23 @@ const AuthStateDisplay = ({
     <TouchableOpacity onPress={() => navigation.navigate("AuthScreen")}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        colors={["#4c669f", "#3b5998", "#192f6a"]}
+        end={{ x: 1, y: 0.5 }}
+        colors={["#01D1EE", "#96E9F5"]}
         style={{ ...styles.linearGradient, width: width }}
       >
         <View
           style={{
             ...globalStyles.row,
             justifyContent: "space-between",
+            alignItems: "center",
             paddingHorizontal: 10,
           }}
         >
           <Avatar
             rounded
             size="large"
-            source={{ uri: "https://i.pravatar.cc/200" }}
+            title="D"
+            overlayContainerStyle={{ backgroundColor: "#73EEFF" }}
           />
           {settings.user ? (
             <Text style={styles.buttonText}>

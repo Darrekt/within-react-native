@@ -13,7 +13,7 @@ const EditEmailScreen = () => {
     <View>
       <Formik
         initialValues={{
-          newEmail: settings.user?.email ?? "",
+          newEmail: "",
           confirmNewEmail: "",
         }}
         validate={(values) => {
