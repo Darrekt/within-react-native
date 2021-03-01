@@ -5,9 +5,9 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 ## TODOS
 - Onboarding screen, add sign-in
 - Beautify text forms, submission
-- Fix promise rejections
 - Confirmation dialog for sensitive actions
   - Toasts for some actions
+- Fix promise rejections
 - Terms of use, indemnity, loss of profit etc
 - Fix DnD
 

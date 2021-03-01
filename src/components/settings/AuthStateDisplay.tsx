@@ -14,6 +14,7 @@ import {
   SageSettings,
   SettingsAction,
 } from "../../hooks/useSettingsRepository";
+import SettingsButton from "../SettingsButton";
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -63,7 +64,7 @@ const AuthStateDisplay = ({
           <Avatar
             rounded
             size="large"
-            title="D"
+            title={settings.user?.displayName?.charAt(0) ?? ""}
             overlayContainerStyle={{ backgroundColor: "#73EEFF" }}
           />
           {settings.user ? (

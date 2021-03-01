@@ -107,25 +107,29 @@ const appTabNav = () => (
     initialRouteName="Todos"
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
         switch (route.name) {
           case "Stats":
-            iconName = "md-stats";
-            break;
+            return (
+              <Icon
+                name="md-stats-chart"
+                type="ionicon"
+                size={size}
+                color={color}
+              />
+            );
           case "Groups":
-            iconName = "ios-chatboxes";
-            break;
+            return (
+              <Icon name="message" type="material" size={size} color={color} />
+            );
           default:
-            iconName = "ios-checkbox";
-            break;
+            return (
+              <Icon name="checkbox" type="ionicon" size={size} color={color} />
+            );
         }
-        return (
-          <Icon name={iconName} type="ionicon" size={size} color={color} />
-        );
       },
     })}
     tabBarOptions={{
-      activeTintColor: "tomato",
+      activeTintColor: "#01D1EE",
       inactiveTintColor: "gray",
     }}
   >

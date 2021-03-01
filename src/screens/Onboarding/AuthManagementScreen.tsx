@@ -24,7 +24,7 @@ const AuthManagementScreen = () => {
         <Avatar
           rounded
           size="xlarge"
-          title="D"
+          title={settings.user?.displayName?.charAt(0) ?? ""}
           overlayContainerStyle={{ backgroundColor: "#73eeff" }}
         />
         <Text style={textStyles.avatarName}>
