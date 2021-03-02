@@ -5,12 +5,17 @@ import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-simple-toast";
 
 const EditEmailScreen = () => {
   const { settings } = useContext(SettingsContext);
   const navigation = useNavigation();
   return (
     <View>
+      <View style={{ ...globalStyles.column, marginVertical: 15 }}>
+        <Text style={textStyles.avatarName}>Current Email:</Text>
+        <Text style={textStyles.header}>{settings.user?.email}</Text>
+      </View>
       <Formik
         initialValues={{
           newEmail: "",
@@ -35,7 +40,10 @@ const EditEmailScreen = () => {
         onSubmit={(values) => {
           settings.user
             ?.updateEmail(values.newEmail)
-            .then(navigation.goBack)
+            .then(() => {
+              navigation.goBack();
+              Toast.show("Email updated!");
+            })
             .catch((error) => {
               if (error.code === "auth/email-already-in-use") {
                 console.log("That email address is already in use!");

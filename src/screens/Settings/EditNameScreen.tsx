@@ -5,9 +5,11 @@ import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { SettingsContext } from "../../state/context";
+import { firebase } from "@react-native-firebase/auth";
+import Toast from "react-native-simple-toast";
 
 const EditNameScreen = () => {
-  const { settings } = useContext(SettingsContext);
+  const { settings, dispatch } = useContext(SettingsContext);
   const navigation = useNavigation();
   return (
     <View>
@@ -24,7 +26,11 @@ const EditNameScreen = () => {
         onSubmit={async (values) => {
           settings.user
             ?.updateProfile({ displayName: values.newName })
-            .then(navigation.goBack)
+            .then(() => {
+              dispatch({ type: "auth", user: firebase.auth().currentUser });
+              navigation.goBack();
+              Toast.show("Name changed!");
+            })
             .catch((error) => console.log(error));
         }}
       >

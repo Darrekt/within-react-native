@@ -3,10 +3,9 @@
 A well-being app that helps users focus and remain productive. Shipped as a PWA on web, with React Native implementations for iOS and Android.
 
 ## TODOS
+
 - Onboarding screen, add sign-in
-- Beautify text forms, submission
 - Confirmation dialog for sensitive actions
-  - Toasts for some actions
 - Fix promise rejections
 - Terms of use, indemnity, loss of profit etc
 - Fix DnD
