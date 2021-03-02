@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
+import SubmitButton from "../../components/SubmitButton";
 
 const EditPasswordScreen = () => {
   const navigation = useNavigation();
@@ -85,10 +86,9 @@ const EditPasswordScreen = () => {
             {formik.touched.confirmNewPassword && formik.errors.confirmNewPassword && (
               <Text style={textStyles.validationMessage}>{formik.errors.confirmNewPassword}</Text>
             )}
-            <Button
-              color={globalStyles.submitButton.backgroundColor}
+            <SubmitButton
               onPress={() => formik.handleSubmit()}
-              title="Change password"
+              text="Change password"
             />
           </View>
         )}

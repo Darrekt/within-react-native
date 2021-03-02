@@ -20,6 +20,7 @@ export const globalStyles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
+    alignSelf: "stretch"
   },
   centered: {
     flex: 1,
@@ -37,13 +38,17 @@ export const globalStyles = StyleSheet.create({
     borderWidth: 1,
   },
   submitButton: {
-    backgroundColor: "#01D1EE",
-    padding: 10,
-    margin: 15,
     height: 40,
-  },
-  submitButtonText: {
-    color: "white",
+    width: "70%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical:10,
+    paddingVertical: 15,
+    marginHorizontal:30,
+    borderRadius:10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    backgroundColor: "#01D1EE",
   },
 });
 
@@ -59,6 +64,10 @@ export const textStyles = StyleSheet.create({
     marginLeft: 20,
     fontSize: 20,
     fontWeight: "400",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "200",
   },
   validationMessage: {
     width: "70%",

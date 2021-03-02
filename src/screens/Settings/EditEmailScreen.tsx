@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-simple-toast";
+import SubmitButton from "../../components/SubmitButton";
 
 const EditEmailScreen = () => {
   const { settings } = useContext(SettingsContext);
@@ -89,16 +90,14 @@ const EditEmailScreen = () => {
                 </Text>
               )}
             {!settings.user?.emailVerified && (
-              <Button
-                color={globalStyles.submitButton.backgroundColor}
+              <SubmitButton
                 onPress={() => settings.user?.sendEmailVerification()}
-                title="Send verification email"
+                text="Send verification email"
               />
             )}
-            <Button
-              color={globalStyles.submitButton.backgroundColor}
+            <SubmitButton
               onPress={() => formik.handleSubmit()}
-              title="Change email"
+              text="Change email"
             />
           </View>
         )}

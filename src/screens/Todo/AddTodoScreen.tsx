@@ -7,6 +7,7 @@ import { globalStyles, textStyles } from "../../../styles";
 import Todo from "../../models/Todo";
 import { useNavigation } from "@react-navigation/native";
 import EmojiRegex from "emoji-regex";
+import SubmitButton from "../../components/SubmitButton";
 
 const styles = StyleSheet.create({
   emojiInput: { ...globalStyles.inputBox, width: "20%" },
@@ -113,10 +114,9 @@ const AddTodoScreen = () => {
               }
             />
           </View>
-          <Button
-            color={globalStyles.submitButton.backgroundColor}
+          <SubmitButton
             onPress={() => formik.handleSubmit()}
-            title="Add Task"
+            text="Add Task"
           />
         </View>
       )}

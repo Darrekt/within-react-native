@@ -5,6 +5,7 @@ import { Icon } from "react-native-elements";
 import { globalStyles } from "../../../styles";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
+import SubmitButton from "../../components/SubmitButton";
 import { SettingsContext } from "../../state/context";
 
 const SettingsScreen = () => {
@@ -50,9 +51,8 @@ const SettingsScreen = () => {
       <AuthStateDisplay settings={settings} dispatch={dispatch} />
       <SettingsGroup name="General" items={generalSettings} />
       <SettingsGroup name="Productivity" items={productivitySettings} />
-      <Button
-        color={globalStyles.submitButton.backgroundColor}
-        onPress={() => {
+      <SubmitButton text="Reset Settings" onPress={
+        () => {
           Alert.alert(
             "Reset Warning!",
             "This action signs you out and restores all settings to default.",
@@ -68,9 +68,8 @@ const SettingsScreen = () => {
               },
             ]
           );
-        }}
-        title="Reset Settings"
-      />
+        }
+      } />
     </View>
   );
 };

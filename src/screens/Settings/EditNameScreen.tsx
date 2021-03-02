@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SettingsContext } from "../../state/context";
 import { firebase } from "@react-native-firebase/auth";
 import Toast from "react-native-simple-toast";
+import SubmitButton from "../../components/SubmitButton";
 
 const EditNameScreen = () => {
   const { settings, dispatch } = useContext(SettingsContext);
@@ -50,10 +51,9 @@ const EditNameScreen = () => {
                 {formik.errors.newName}
               </Text>
             )}
-            <Button
-              color={globalStyles.submitButton.backgroundColor}
+            <SubmitButton
+              text="Change my name!"
               onPress={() => formik.handleSubmit()}
-              title="Change my name!"
             />
           </View>
         )}

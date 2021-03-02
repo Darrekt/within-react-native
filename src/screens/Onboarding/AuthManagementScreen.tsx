@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
+import SubmitButton from "../../components/SubmitButton";
 
 const AuthManagementScreen = () => {
   const { settings } = useContext(SettingsContext);
@@ -32,7 +33,7 @@ const AuthManagementScreen = () => {
         </Text>
       </View>
       {settings.user ? (
-        <View>
+        <View style={globalStyles.column}>
           <SettingsGroup
             name=""
             items={[
@@ -58,46 +59,45 @@ const AuthManagementScreen = () => {
               },
             ]}
           />
-          <Button
-            color={globalStyles.submitButton.backgroundColor}
+          <SubmitButton
             onPress={() => {
               auth().signOut();
             }}
-            title="Sign Out"
+            text="Sign Out"
           />
         </View>
       ) : (
-        <View style={globalStyles.column}>
-          <SocialIcon
-            title="Sign In With Google"
-            button
-            style={{ width: width }}
-            type="google"
-            onPress={() => {}}
-          />
-          <SocialIcon
-            title="Sign In With Facebook"
-            button
-            style={{ width: width }}
-            type="facebook"
-            onPress={() => {}}
-          />
-          <SocialIcon
-            title="Sign In With Twitter"
-            button
-            style={{ width: width }}
-            type="twitter"
-            onPress={() => {}}
-          />
-          <Button
-            color={globalStyles.submitButton.backgroundColor}
-            onPress={() => {
-              navigation.navigate("EmailSignInScreen");
-            }}
-            title="Sign in with Email"
-          />
-        </View>
-      )}
+          <View style={globalStyles.column}>
+            <SocialIcon
+              title="Sign In With Google"
+              button
+              style={{ width: width }}
+              type="google"
+              onPress={() => { }}
+            />
+            <SocialIcon
+              title="Sign In With Facebook"
+              button
+              style={{ width: width }}
+              type="facebook"
+              onPress={() => { }}
+            />
+            <SocialIcon
+              title="Sign In With Twitter"
+              button
+              style={{ width: width }}
+              type="twitter"
+              onPress={() => { }}
+            />
+            <SubmitButton
+              text="Sign in with Email"
+              onPress={() => {
+                navigation.navigate("EmailSignInScreen");
+              }}
+              width={width}
+            />
+          </View>
+        )}
     </View>
   );
 };
