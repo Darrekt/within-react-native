@@ -35,6 +35,7 @@ const EditEmailScreen = () => {
           if (values.newEmail !== values.confirmNewEmail) {
             errors.confirmNewEmail = "E-mails do not match";
           }
+
           return errors;
         }}
         onSubmit={(values) => {

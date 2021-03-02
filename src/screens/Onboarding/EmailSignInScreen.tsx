@@ -1,19 +1,28 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View, Text, Button, Alert } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { globalStyles } from "../../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import auth from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 
-const AddTodoScreen = () => {
+const EmailSignInScreen = () => {
   const navigation = useNavigation();
   return (
     <View>
       <Formik
         initialValues={{ email: "", password: "" }}
         validate={(values) => {
-          let errors = {};
+          const errors: { email?: string; password?: string } = {};
+          if (!values.email) errors.email = "Required";
+          else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+          )
+            errors.email = "Invalid email address";
+
+          if (!values.password) errors.password = "Required";
+
+          return errors;
         }}
         onSubmit={async (values) => {
           auth()
@@ -22,48 +31,73 @@ const AddTodoScreen = () => {
               navigation.goBack();
             })
             .catch((error) => {
-              if (error.code === "auth/email-already-in-use") {
-                console.log("That email address is already in use!");
+              if (error.code === "auth/user-disabled") {
+                Alert.alert(
+                  "User disabled!",
+                  "This user has been disabled. Please contact us for help!",
+                  [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "OK",
+                    },
+                  ]
+                );
+              } else {
+                Alert.alert(
+                  "Sign-in error",
+                  "The user either does not exist, or you have entered an invalid sign-in.",
+                  [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "OK",
+                    },
+                  ]
+                );
               }
-
-              if (error.code === "auth/invalid-email") {
-                console.log("That email address is invalid!");
-              }
-
-              console.error(error);
             });
         }}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-        }) => (
+        {(formik) => (
           <View style={globalStyles.column}>
             <TextInput
               style={globalStyles.inputBox}
               autoCapitalize="none"
               autoCompleteType="email"
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
+              onChangeText={formik.handleChange("email")}
+              onBlur={formik.handleBlur("email")}
               placeholder="Email"
-              value={values.email}
+              value={formik.values.email}
             />
+            {formik.touched.email && formik.errors.email && (
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.email}
+              </Text>
+            )}
             <TextInput
               style={globalStyles.inputBox}
               autoCapitalize="none"
               autoCompleteType="password"
               secureTextEntry
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
+              onChangeText={formik.handleChange("password")}
+              onBlur={formik.handleBlur("password")}
               placeholder="Password"
-              value={values.password}
-              onSubmitEditing={() => handleSubmit()}
+              value={formik.values.password}
+              onSubmitEditing={() => formik.handleSubmit()}
             />
+            {formik.touched.password && formik.errors.password && (
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.password}
+              </Text>
+            )}
             <Button
               color={globalStyles.submitButton.backgroundColor}
-              onPress={() => handleSubmit()}
+              onPress={() => formik.handleSubmit()}
               title="Sign In"
             />
           </View>
@@ -72,4 +106,4 @@ const AddTodoScreen = () => {
     </View>
   );
 };
-export default AddTodoScreen;
+export default EmailSignInScreen;

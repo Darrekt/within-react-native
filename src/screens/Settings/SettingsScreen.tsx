@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext } from "react";
-import { View, Button } from "react-native";
+import { View, Button, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import { globalStyles } from "../../../styles";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
@@ -52,7 +52,23 @@ const SettingsScreen = () => {
       <SettingsGroup name="Productivity" items={productivitySettings} />
       <Button
         color={globalStyles.submitButton.backgroundColor}
-        onPress={() => dispatch({ type: "reset", value: settings })}
+        onPress={() => {
+          Alert.alert(
+            "Reset Warning!",
+            "This action signs you out and restores all settings to default.",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
+              },
+              {
+                text: "OK",
+                onPress: () => dispatch({ type: "reset", value: settings }),
+              },
+            ]
+          );
+        }}
         title="Reset Settings"
       />
     </View>
