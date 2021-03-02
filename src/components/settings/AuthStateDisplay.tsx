@@ -14,7 +14,6 @@ import {
   SageSettings,
   SettingsAction,
 } from "../../hooks/useSettingsRepository";
-import SettingsButton from "../SettingsButton";
 
 const styles = StyleSheet.create({
   linearGradient: {

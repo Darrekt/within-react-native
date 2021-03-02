@@ -42,7 +42,6 @@ const SettingsGroup = ({ name, items }: Props) => {
             };
           else roundedCornerStyle = {};
           return (
-            // TODO: Make unique keys
             <TouchableOpacity
               key={uuidv5(item.name, SETTINGS_UUID_NAMESPACE)}
               onPress={item.action}

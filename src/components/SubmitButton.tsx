@@ -1,18 +1,36 @@
-import React from 'react'
+import React from "react";
 import { globalStyles, textStyles } from "../../styles";
-import { Text, TouchableOpacity } from 'react-native'
+import { Text, TouchableOpacity } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 
-function SubmitButton({ text, onPress, width }: { text: string, onPress: () => void, width?: number | string, }) {
-    return (
-        <TouchableOpacity
-            style={{ ...globalStyles.submitButton, width: width ?? globalStyles.submitButton.width }}
-            activeOpacity={.5}
-            onPress={onPress}
-        >
+type SubmitButtonProps = {
+  text: string;
+  onPress: () => void;
+  width?: number | string;
+};
 
-            <Text style={textStyles.buttonText}>{text}</Text>
-        </TouchableOpacity >
-    )
+function SubmitButton({ text, onPress, width }: SubmitButtonProps) {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.5}
+      onPress={onPress}
+      style={{
+        width: width ?? globalStyles.submitButton.width,
+      }}
+    >
+      <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0.5 }}
+        colors={["#01D1EE", "#96E9F5"]}
+        style={{
+          ...globalStyles.submitButton,
+          width: "100%",
+        }}
+      >
+        <Text style={textStyles.buttonText}>{text}</Text>
+      </LinearGradient>
+    </TouchableOpacity>
+  );
 }
 
 export default SubmitButton;

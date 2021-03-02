@@ -39,12 +39,10 @@ export const globalStyles = StyleSheet.create({
   },
   submitButton: {
     height: 40,
-    width: "70%",
+    width: "60%",
     justifyContent: "center",
     alignItems: "center",
     marginVertical:10,
-    paddingVertical: 15,
-    marginHorizontal:30,
     borderRadius:10,
     borderWidth: 1,
     borderColor: '#fff',
@@ -67,7 +65,8 @@ export const textStyles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontWeight: "200",
+    fontSize: 16,
+    fontWeight: "500"
   },
   validationMessage: {
     width: "70%",

@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Icon, ListItem, Badge, withBadge } from "react-native-elements";
+import { Icon, ListItem, withBadge } from "react-native-elements";
 import Todo from "../../models/Todo";
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
 import CircleButtonGroup from "../CircleButtonGroup";
@@ -116,12 +116,11 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
     >
       <TouchableOpacity
         onPress={() => {
-          !running
-            ? dispatch({
-                type: "selected",
-                target: todo.id,
-              })
-            : undefined;
+          if (!running)
+            dispatch({
+              type: "selected",
+              target: todo.id,
+            });
         }}
       >
         <ListItem.Content style={styles.tileRow}>
