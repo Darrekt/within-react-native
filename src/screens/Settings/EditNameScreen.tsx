@@ -13,7 +13,7 @@ const EditNameScreen = () => {
   const { settings, dispatch } = useContext(SettingsContext);
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={globalStyles.centered}>
       <Formik
         initialValues={{ newName: settings.user?.displayName ?? "" }}
         validate={(values) => {

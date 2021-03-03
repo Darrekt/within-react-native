@@ -8,6 +8,7 @@ type CardProps = {
   elevation?: number;
   opacity?: number;
   cornerRadius?: number;
+  noShadow?: boolean;
 };
 
 const Card = ({
@@ -16,6 +17,7 @@ const Card = ({
   elevation = 2,
   opacity = 0.5,
   cornerRadius = 10,
+  noShadow = false,
 }: CardProps) => {
   const cardStyle = StyleSheet.create({
     container: {
@@ -26,18 +28,19 @@ const Card = ({
       backgroundColor: "white",
       borderRadius: cornerRadius,
       marginVertical: 10,
-      ...Platform.select({
-        ios: {
-          shadowOffset: { width: 1, height: elevation },
-          shadowRadius: elevation + 3,
-          shadowOpacity: opacity,
-        },
-        android: {
-          elevation: elevation,
-          shadowRadius: 5,
-          shadowOpacity: opacity,
-        },
-      }),
+      ...(!noShadow &&
+        Platform.select({
+          ios: {
+            shadowOffset: { width: 1, height: elevation },
+            shadowRadius: elevation + 3,
+            shadowOpacity: opacity,
+          },
+          android: {
+            elevation: elevation,
+            shadowRadius: 5,
+            shadowOpacity: opacity,
+          },
+        })),
     },
   });
 

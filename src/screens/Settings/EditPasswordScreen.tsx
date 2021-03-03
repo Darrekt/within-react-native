@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -9,7 +9,7 @@ import SubmitButton from "../../components/util/SubmitButton";
 const EditPasswordScreen = () => {
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={globalStyles.centered}>
       <Formik
         initialValues={{
           oldPassword: "",
@@ -56,7 +56,9 @@ const EditPasswordScreen = () => {
               onSubmitEditing={() => formik.handleSubmit()}
             />
             {formik.touched.oldPassword && formik.errors.oldPassword && (
-              <Text style={textStyles.validationMessage}>{formik.errors.oldPassword}</Text>
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.oldPassword}
+              </Text>
             )}
             <TextInput
               style={globalStyles.inputBox}
@@ -70,7 +72,9 @@ const EditPasswordScreen = () => {
               onSubmitEditing={() => formik.handleSubmit()}
             />
             {formik.touched.newPassword && formik.errors.newPassword && (
-              <Text style={textStyles.validationMessage}>{formik.errors.newPassword}</Text>
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.newPassword}
+              </Text>
             )}
             <TextInput
               style={globalStyles.inputBox}
@@ -83,9 +87,12 @@ const EditPasswordScreen = () => {
               value={formik.values.confirmNewPassword}
               onSubmitEditing={() => formik.handleSubmit()}
             />
-            {formik.touched.confirmNewPassword && formik.errors.confirmNewPassword && (
-              <Text style={textStyles.validationMessage}>{formik.errors.confirmNewPassword}</Text>
-            )}
+            {formik.touched.confirmNewPassword &&
+              formik.errors.confirmNewPassword && (
+                <Text style={textStyles.validationMessage}>
+                  {formik.errors.confirmNewPassword}
+                </Text>
+              )}
             <SubmitButton
               onPress={() => formik.handleSubmit()}
               text="Change password"

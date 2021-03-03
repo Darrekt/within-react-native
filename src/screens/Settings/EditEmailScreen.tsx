@@ -12,7 +12,7 @@ const EditEmailScreen = () => {
   const { settings } = useContext(SettingsContext);
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={globalStyles.centered}>
       <View style={{ ...globalStyles.column, marginVertical: 15 }}>
         <Text style={textStyles.avatarName}>Current Email:</Text>
         <Text style={textStyles.header}>{settings.user?.email}</Text>
