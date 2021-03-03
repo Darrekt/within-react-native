@@ -1,5 +1,5 @@
 import React from "react";
-import { globalStyles, textStyles } from "../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import { Text, TouchableOpacity } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 

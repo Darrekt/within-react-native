@@ -8,7 +8,7 @@ import { TodoContext } from "./../../state/context";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
 import * as TodoComponents from "../../components/todo/TodoComponents";
-import SettingsButton from "../../components/SettingsButton";
+import SettingsButton from "../../components/settings/SettingsButton";
 
 const Stack = createStackNavigator();
 

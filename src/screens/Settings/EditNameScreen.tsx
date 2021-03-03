@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SettingsContext } from "../../state/context";
 import { firebase } from "@react-native-firebase/auth";
 import Toast from "react-native-simple-toast";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "../../components/util/SubmitButton";
 
 const EditNameScreen = () => {
   const { settings, dispatch } = useContext(SettingsContext);

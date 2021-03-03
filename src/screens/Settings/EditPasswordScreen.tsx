@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "../../components/util/SubmitButton";
 
 const EditPasswordScreen = () => {
   const navigation = useNavigation();

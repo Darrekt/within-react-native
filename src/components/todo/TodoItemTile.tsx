@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Icon, ListItem, withBadge } from "react-native-elements";
 import Todo from "../../models/Todo";
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
-import CircleButtonGroup from "../CircleButtonGroup";
+import CircleButtonGroup from "../util/CircleButtonGroup";
 import { TodoRepoAction } from "../../hooks/useTodoRepository";
 
 const styles = StyleSheet.create({

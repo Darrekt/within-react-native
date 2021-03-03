@@ -7,7 +7,7 @@ import { globalStyles, textStyles } from "../../../styles";
 import Todo from "../../models/Todo";
 import { useNavigation } from "@react-navigation/native";
 import EmojiRegex from "emoji-regex";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "../../components/util/SubmitButton";
 
 const styles = StyleSheet.create({
   emojiInput: { ...globalStyles.inputBox, width: "20%" },

@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "../../components/util/SubmitButton";
 
 const AuthManagementScreen = () => {
   const { settings } = useContext(SettingsContext);

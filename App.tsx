@@ -94,6 +94,22 @@ export default function App() {
                   headerBackTitleVisible: false,
                 }}
               />
+              <Stack.Screen
+                name="MaxTasksScreen"
+                component={EditEmailScreen}
+                options={{
+                  title: "Change max tasks",
+                  headerBackTitleVisible: false,
+                }}
+              />
+              <Stack.Screen
+                name="TimerDurationScreen"
+                component={EditEmailScreen}
+                options={{
+                  title: "Adjust timer duration",
+                  headerBackTitleVisible: false,
+                }}
+              />
             </Stack.Navigator>
           </>
         )}

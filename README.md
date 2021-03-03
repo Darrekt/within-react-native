@@ -5,10 +5,9 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 ## TODOS
 
 - Onboarding screen, add sign-in
-- Confirmation dialog for sensitive actions
-- Fix promise rejections
-- Terms of use, indemnity, loss of profit etc
 - Fix DnD
+- Terms of use, indemnity, loss of profit etc
+- Changing color pallettes
 
 ## Proposed Features
 
@@ -16,6 +15,21 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 - Breaking down large tasks (by time) into smaller periods
 - Measurement? Is the user over/underestimating?
 - Goals: Distinguishing Todo lists and Success lists
+
+## Misc
+
+- Landing page
+  - Goal and progress visualised right away
+  - Consistent and timed reinforcement
+  - "Source" Trigger
+
+- Success-built progression to task and goal completion
+
+- Entrepreneurial Operating System
+  - Fraction
+
+- Feature map
+  - Justifications and neuroscientific grounding
 
 ## Books and resources
 

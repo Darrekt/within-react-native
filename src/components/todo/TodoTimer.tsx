@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image } from "react-native";
 import { TodoTimerAction } from "../../hooks/useTodoRepository";
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import Todo from "../../models/Todo";
-import CircleButtonGroup from "../CircleButtonGroup";
+import CircleButtonGroup from "../util/CircleButtonGroup";
 import { Icon } from "react-native-elements";
 
 const styles = StyleSheet.create({

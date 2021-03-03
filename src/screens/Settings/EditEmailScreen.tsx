@@ -6,7 +6,7 @@ import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-simple-toast";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "../../components/util/SubmitButton";
 
 const EditEmailScreen = () => {
   const { settings } = useContext(SettingsContext);

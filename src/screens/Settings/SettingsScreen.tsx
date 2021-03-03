@@ -5,7 +5,7 @@ import { Icon } from "react-native-elements";
 import { globalStyles } from "../../../styles";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "../../components/util/SubmitButton";
 import { SettingsContext } from "../../state/context";
 
 const SettingsScreen = () => {

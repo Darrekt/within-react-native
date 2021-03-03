@@ -6,7 +6,7 @@ import { globalStyles, textStyles } from "../../../styles";
 import { v5 as uuidv5 } from "uuid";
 
 type SettingModel = {
-  name: string;
+  name: string
   subtitle?: string;
   icon: JSX.Element;
   action: () => void;
@@ -25,7 +25,7 @@ const SettingsGroup = ({ name, items }: Props) => {
   return (
     <View style={{ ...globalStyles.column, marginVertical: 15 }}>
       <View style={globalStyles.row}>
-        <Text style={textStyles.groupHeader}>{name}</Text>
+        <Text style={textStyles.header}>{name}</Text>
       </View>
       <View>
         {items.map((item, index) => {

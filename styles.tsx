@@ -1,6 +1,5 @@
-import { StyleSheet } from "react-native";
-
 // https://paletton.com/#uid=13l0u0kl1Wx1x+IcEXDsUWkWEVB
+import { StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   spacer: {
@@ -20,7 +19,7 @@ export const globalStyles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
-    alignSelf: "stretch"
+    alignSelf: "stretch",
   },
   centered: {
     flex: 1,
@@ -42,18 +41,21 @@ export const globalStyles = StyleSheet.create({
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    marginVertical:10,
-    borderRadius:10,
+    marginVertical: 10,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#fff',
+    borderColor: "#fff",
     backgroundColor: "#01D1EE",
   },
 });
 
 export const textStyles = StyleSheet.create({
   header: {
-    fontSize: 20,
-    fontWeight: "400",
+    flex: 4,
+    marginVertical: 5,
+    marginHorizontal: 18,
+    fontSize: 18,
+    fontWeight: "500",
   },
   avatarName: { fontSize: 25, fontWeight: "400", marginVertical: 20 },
   groupHeader: {
@@ -66,10 +68,10 @@ export const textStyles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "500"
+    fontWeight: "500",
   },
   validationMessage: {
     width: "70%",
-    color: "red"
+    color: "red",
   },
 });
