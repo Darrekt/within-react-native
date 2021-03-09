@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Dimensions } from "react-native";
+import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import Card from "../layout/Card";
@@ -12,20 +12,18 @@ import TodayInsights from "./TodayInsights";
 const HomeDisplay = () => {
   return (
     <View style={{ ...globalStyles.column }}>
-      <ScrollView>
-        <HeadingDropDown header="Insights">
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <TodayInsights></TodayInsights>
-            <ShortTermInsights></ShortTermInsights>
-            <LongTermInsights></LongTermInsights>
-          </ScrollView>
-        </HeadingDropDown>
-        <HeadingDropDown header="Goals">
-          <Card elevation={0}>
-            <View></View>
-          </Card>
-        </HeadingDropDown>
-      </ScrollView>
+      <HeadingDropDown header="Projects">
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <TodayInsights></TodayInsights>
+          <ShortTermInsights></ShortTermInsights>
+          <LongTermInsights></LongTermInsights>
+        </ScrollView>
+      </HeadingDropDown>
+      <HeadingDropDown header="Insights">
+        <Card elevation={0}>
+          <View></View>
+        </Card>
+      </HeadingDropDown>
     </View>
   );
 };

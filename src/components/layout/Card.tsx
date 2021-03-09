@@ -16,7 +16,7 @@ const Card = ({
   style,
   elevation = 2,
   opacity = 0.5,
-  cornerRadius = 10,
+  cornerRadius = 20,
   noShadow = false,
 }: CardProps) => {
   const cardStyle = StyleSheet.create({

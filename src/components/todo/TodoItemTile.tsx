@@ -103,8 +103,7 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
   ];
 
   const BadgedText = withBadge(todo.laps, {
-    badgeStyle: { position: "absolute", top: -8, right: 8 },
-    status: "success",
+    badgeStyle: { backgroundColor:"#00C0DA" , position: "absolute", top: -8, right: 8 },
     right: 10,
     hidden: todo.laps === 0,
   })(Text);

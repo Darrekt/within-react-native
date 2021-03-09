@@ -5,6 +5,7 @@ import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
 import { TodoContext } from "./../../state/context";
+import LinearGradient from "react-native-linear-gradient";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
 import * as TodoComponents from "../../components/todo/TodoComponents";
@@ -20,11 +21,24 @@ const TodoScreen = () => {
 
   return (
     <View style={globalStyles.container}>
+      {!isOpen && <LinearGradient
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0.5 }}
+        colors={["#01D1EE", "#96E9F5"]}
+        style={{
+          position: "absolute",
+          height: "33%",
+          width: "100%",
+          top: 0,
+          borderBottomStartRadius: 20,
+          borderBottomEndRadius: 20,
+        }}
+      />}
       {!isOpen && (
         <Header
-          placement="left"
           backgroundColor="transparent"
           rightComponent={SettingsButton()}
+          containerStyle={{ borderBottomWidth: 0 }}
         />
       )}
       {isOpen ? (
