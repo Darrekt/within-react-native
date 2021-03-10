@@ -14,7 +14,7 @@ export default function HeadingDropDown({
   children,
 }: HeadingDropDownProps) {
   return (
-    <View style={globalStyles.column}>
+    <View style={{...globalStyles.column, justifyContent:"flex-start"}}>
       <View
         style={{
           ...globalStyles.row,

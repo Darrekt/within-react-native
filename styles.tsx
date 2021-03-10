@@ -12,6 +12,7 @@ export const globalStyles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
+    alignSelf: "stretch",
     alignItems: "stretch",
     justifyContent: "space-around",
   },
@@ -54,7 +55,7 @@ export const textStyles = StyleSheet.create({
     flex: 4,
     marginVertical: 5,
     marginHorizontal: 18,
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "500",
   },
   avatarName: { fontSize: 25, fontWeight: "400", marginVertical: 20 },

@@ -27,11 +27,11 @@ const TodoScreen = () => {
         colors={["#01D1EE", "#96E9F5"]}
         style={{
           position: "absolute",
-          height: "33%",
+          height: "42%",
           width: "100%",
           top: 0,
-          borderBottomStartRadius: 20,
-          borderBottomEndRadius: 20,
+          // borderBottomStartRadius: 20,
+          // borderBottomEndRadius: 20,
         }}
       />}
       {!isOpen && (
@@ -52,7 +52,7 @@ const TodoScreen = () => {
       <Modalize
         ref={modalizeRef}
         modalHeight={windowHeight * 0.45}
-        alwaysOpen={100}
+        alwaysOpen={80}
         handlePosition="inside"
         withOverlay={false}
         onPositionChange={(position) => {

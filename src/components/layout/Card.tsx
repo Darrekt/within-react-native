@@ -3,7 +3,7 @@ import { ViewStyle } from "react-native";
 import { Platform, View, StyleSheet, Dimensions } from "react-native";
 
 type CardProps = {
-  children: ReactNode;
+  children?: ReactNode;
   style?: ViewStyle;
   elevation?: number;
   opacity?: number;
@@ -21,7 +21,7 @@ const Card = ({
 }: CardProps) => {
   const cardStyle = StyleSheet.create({
     container: {
-      minHeight: Dimensions.get("window").height * 0.2,
+      height: Dimensions.get("window").height * 0.2,
       width: Dimensions.get("window").width - 40,
       justifyContent: "center",
       alignItems: "center",
@@ -32,12 +32,12 @@ const Card = ({
         Platform.select({
           ios: {
             shadowOffset: { width: 1, height: elevation },
-            shadowRadius: elevation + 3,
+            shadowRadius: elevation ? elevation + 2 : 0,
             shadowOpacity: opacity,
           },
           android: {
             elevation: elevation,
-            shadowRadius: 5,
+            shadowRadius: elevation ? elevation + 2 : 0,
             shadowOpacity: opacity,
           },
         })),
