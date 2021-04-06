@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
+import Project from "../../models/Project";
 
-export default function ProjectCard() {
+export default function ProjectCard({ project }: { project: Project }) {
   return (
     <Card
       style={{
@@ -24,7 +25,7 @@ export default function ProjectCard() {
             fontWeight: "500",
           }}
         >
-          Project Title
+          {project.name}
         </Text>
         <View
           style={{ ...globalStyles.row, alignContent: "center", height: "50%" }}

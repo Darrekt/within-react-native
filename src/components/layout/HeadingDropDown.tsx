@@ -14,16 +14,16 @@ export default function HeadingDropDown({
   children,
 }: HeadingDropDownProps) {
   return (
-    <View style={{...globalStyles.column, justifyContent:"flex-start"}}>
+    <View style={{ ...globalStyles.column, justifyContent: "flex-start" }}>
       <View
         style={{
           ...globalStyles.row,
-          alignItems: "flex-start",
+          alignItems: "center",
           alignSelf: "stretch",
         }}
       >
         <Text style={textStyles.header}>{header}</Text>
-        <View style={{ flex: 1 }}>{dropdown}</View>
+        <View style={{marginRight: 15}}>{dropdown}</View>
       </View>
       {children}
     </View>

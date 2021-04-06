@@ -4,12 +4,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
-import { TodoContext } from "./../../state/context";
+import { ProjContext, TodoContext } from "./../../state/context";
 import LinearGradient from "react-native-linear-gradient";
 import useTodoRepository from "../../hooks/useTodoRepository";
+import AddProjectScreen from "./../../screens/Todo/AddProjectScreen";
 import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
+import useProjectRepository from "../../hooks/useProjectRepository";
 
 const Stack = createStackNavigator();
 
@@ -21,19 +23,21 @@ const TodoScreen = () => {
 
   return (
     <View style={globalStyles.container}>
-      {!isOpen && <LinearGradient
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0.5 }}
-        colors={["#01D1EE", "#96E9F5"]}
-        style={{
-          position: "absolute",
-          height: "42%",
-          width: "100%",
-          top: 0,
-          // borderBottomStartRadius: 20,
-          // borderBottomEndRadius: 20,
-        }}
-      />}
+      {!isOpen && (
+        <LinearGradient
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0.5 }}
+          colors={["#01D1EE", "#96E9F5"]}
+          style={{
+            position: "absolute",
+            height: "37%",
+            width: "100%",
+            top: 0,
+            // borderBottomStartRadius: 20,
+            // borderBottomEndRadius: 20,
+          }}
+        />
+      )}
       {!isOpen && (
         <Header
           backgroundColor="transparent"
@@ -85,33 +89,48 @@ const TodoScreen = () => {
     </View>
   );
 };
+
 const TodoNavigator = () => {
   const [todos, dispatch, selected, running] = useTodoRepository();
+  const [projects, proj_dispatch] = useProjectRepository();
+
   return (
-    <TodoContext.Provider
-      value={{
-        todos: todos,
-        dispatch: dispatch,
-        selected: selected,
-        running: running,
-      }}
+    <ProjContext.Provider
+      value={{ projects: projects, dispatch: proj_dispatch }}
     >
-      <Stack.Navigator>
-        <Stack.Screen
-          name="AppHome"
-          component={TodoScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="AddTodoScreen"
-          component={AddTodoScreen}
-          options={{
-            title: "Add a task",
-            headerBackTitleVisible: false,
-          }}
-        />
-      </Stack.Navigator>
-    </TodoContext.Provider>
+      <TodoContext.Provider
+        value={{
+          todos: todos,
+          dispatch: dispatch,
+          selected: selected,
+          running: running,
+        }}
+      >
+        <Stack.Navigator>
+          <Stack.Screen
+            name="AppHome"
+            component={TodoScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AddProjScreen"
+            component={AddProjectScreen}
+            options={{
+              title: "Add a Project",
+              headerBackTitleVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="AddTodoScreen"
+            component={AddTodoScreen}
+            options={{
+              title: "Add a task",
+              headerBackTitleVisible: false,
+            }}
+          />
+        </Stack.Navigator>
+      </TodoContext.Provider>
+    </ProjContext.Provider>
   );
 };
 

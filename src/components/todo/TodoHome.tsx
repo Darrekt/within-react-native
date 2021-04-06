@@ -1,10 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
+import { ProjContext } from "../../state/context";
 import Card from "../layout/Card";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
+import { useNavigation } from "@react-navigation/native";
+import { Entypo } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -21,13 +24,26 @@ const styles = StyleSheet.create({
 
 // TODO: Make height and alignments responsive; all heights are hard coded currently.
 const HomeDisplay = () => {
+  const projContext = React.useContext(ProjContext);
+  const navigation = useNavigation();
+
+  const addProjButton = (
+    <Pressable
+      onPress={() => {
+        navigation.navigate("AddProjScreen");
+      }}
+    >
+      <Entypo name="plus" size={20} color="black" />
+    </Pressable>
+  );
+
   return (
     <View style={{ ...globalStyles.column }}>
-      <HeadingDropDown header="Projects">
+      <HeadingDropDown header="Projects" dropdown={addProjButton}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <ProjectCard></ProjectCard>
-          <ProjectCard></ProjectCard>
-          <ProjectCard></ProjectCard>
+          {projContext.projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
         </ScrollView>
       </HeadingDropDown>
       <HeadingDropDown header="Insights">

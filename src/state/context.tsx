@@ -1,5 +1,6 @@
 import React from "react";
 import { List } from "immutable";
+import Project from "../models/Project";
 import Todo from "../models/Todo";
 import {
   SageSettings,
@@ -7,12 +8,21 @@ import {
   SettingsAction,
 } from "../hooks/useSettingsRepository";
 import { TodoRepoAction } from "../hooks/useTodoRepository";
+import { ProjectRepoAction } from "../hooks/useProjectRepository";
 
 export const SettingsContext = React.createContext<{
   settings: SageSettings;
-  dispatch: React.Dispatch<SettingsAction>,
+  dispatch: React.Dispatch<SettingsAction>;
 }>({
   settings: sageDefaultSettings,
+  dispatch: () => null,
+});
+
+export const ProjContext = React.createContext<{
+  projects: List<Project>;
+  dispatch: React.Dispatch<ProjectRepoAction>;
+}>({
+  projects: List<Project>(),
   dispatch: () => null,
 });
 

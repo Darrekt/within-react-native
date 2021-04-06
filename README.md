@@ -3,6 +3,16 @@
 A well-being app that helps users focus and remain productive. Shipped as a PWA on web, with React Native implementations for iOS and Android.
 
 ## TODOS
+- Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
+- Admin re-organisation, chart? SCREEN FLOW
+- Implement UI and data model for projects and data model
+
+- Teach them to chop projects up into subtasks?
+- How many tasks do you successfully set and complete?
+
+- Socialisation
+
+self talk: the voices within
 
 - Onboarding screen, add sign-in
 - Fix DnD
