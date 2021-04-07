@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import { ProjContext } from "../../state/context";
@@ -12,12 +12,12 @@ import { Entypo } from "@expo/vector-icons";
 const styles = StyleSheet.create({
   wellnessCard: {
     height: "100%",
-    width: "40%",
+    width: 0.4 * Dimensions.get("window").width,
     marginVertical: 10,
   },
   // TODO:  This card is floating above the two above it for some reason...
   insightsCard: {
-    height: "33%",
+    height: 0.2 * Dimensions.get("window").height,
     marginVertical: 30,
   },
 });
@@ -41,6 +41,7 @@ const HomeDisplay = () => {
     <View style={{ ...globalStyles.column }}>
       <HeadingDropDown header="Projects" dropdown={addProjButton}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {/* TODO: Add unique keys */}
           {projContext.projects.map((project) => (
             <ProjectCard project={project} />
           ))}

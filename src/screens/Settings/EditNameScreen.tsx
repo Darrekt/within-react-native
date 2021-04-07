@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";

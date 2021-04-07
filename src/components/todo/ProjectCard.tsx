@@ -1,14 +1,14 @@
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
 import Project from "../../models/Project";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function ProjectCard({ project }: { project: Project }) {
   return (
     <Card
       style={{
-        height: Dimensions.get("window").height * 0.2,
         width: Dimensions.get("window").width * 0.7,
         marginHorizontal: 15,
         paddingVertical: 10,
@@ -16,24 +16,49 @@ export default function ProjectCard({ project }: { project: Project }) {
       }}
     >
       <View style={globalStyles.column}>
-        <Text
+        <View
           style={{
-            height: "50%",
-            alignSelf: "stretch",
-            justifyContent: "center",
-            fontSize: 18,
-            fontWeight: "500",
+            ...globalStyles.row,
+            justifyContent: "flex-start",
+            paddingHorizontal: 10,
           }}
         >
-          {project.name}
-        </Text>
-        <View
-          style={{ ...globalStyles.row, alignContent: "center", height: "50%" }}
-        >
-          <Text>Due in N days</Text>
-          <View>
-            <Text>Subtasks</Text>
+          <Text style={{ fontSize: 25, margin: 5 }}>{project.emoji}</Text>
+          <View style={globalStyles.column}>
+            <Text
+              style={{
+                alignSelf: "stretch",
+                justifyContent: "center",
+                fontSize: 20,
+                fontWeight: "500",
+                marginHorizontal: 10,
+              }}
+            >
+              {project.name}
+            </Text>
+            {project.due && <Text>No due date!</Text>}
           </View>
+        </View>
+        <View
+          style={{
+            borderBottomColor: "black",
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            alignSelf: "stretch",
+          }}
+        />
+        <View
+          style={{ ...globalStyles.row, justifyContent: "center", alignContent: "center", height: "35%" }}
+        >
+          <AntDesign name="calendar" size={30} color="black" />
+          <View style={{...globalStyles.column, marginHorizontal: 20}}>
+            <Text>{project.due ? "DATE" : "Set a due date!"}</Text>
+            <Text>
+              {project.todos.isEmpty()
+                ? "Done for today!"
+                : `${project.todos.size} tasks left`}
+            </Text>
+          </View>
+          {/* TODO: Project TAG HERE */}
         </View>
       </View>
     </Card>

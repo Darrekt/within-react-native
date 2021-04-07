@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { ViewStyle } from "react-native";
+import { ViewStyle, TouchableOpacity } from "react-native";
 import { Platform, View, StyleSheet, Dimensions } from "react-native";
 
 type CardProps = {
@@ -9,6 +9,8 @@ type CardProps = {
   opacity?: number;
   cornerRadius?: number;
   noShadow?: boolean;
+  onPress?: () => void;
+  onLongPress?: () => void;
 };
 
 const Card = ({
@@ -18,6 +20,8 @@ const Card = ({
   opacity = 0.5,
   cornerRadius = 20,
   noShadow = false,
+  onPress,
+  onLongPress,
 }: CardProps) => {
   const cardStyle = StyleSheet.create({
     container: {
@@ -44,7 +48,15 @@ const Card = ({
     },
   });
 
-  return <View style={{ ...cardStyle.container, ...style }}>{children}</View>;
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      onLongPress={onLongPress}
+      activeOpacity={0.6}
+    >
+      <View style={{ ...cardStyle.container, ...style }}>{children}</View>
+    </TouchableOpacity>
+  );
 };
 
 export default Card;

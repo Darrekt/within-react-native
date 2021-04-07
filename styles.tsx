@@ -13,7 +13,7 @@ export const globalStyles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignSelf: "stretch",
-    alignItems: "stretch",
+    alignItems: "center",
     justifyContent: "space-around",
   },
   column: {

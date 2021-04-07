@@ -3,6 +3,8 @@
 A well-being app that helps users focus and remain productive. Shipped as a PWA on web, with React Native implementations for iOS and Android.
 
 ## TODOS
+
+- TORQUE?
 - Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
 - Admin re-organisation, chart? SCREEN FLOW
 - Implement UI and data model for projects and data model
@@ -29,6 +31,7 @@ self talk: the voices within
 ## Misc
 
 - Landing page
+
   - Goal and progress visualised right away
   - Consistent and timed reinforcement
   - "Source" Trigger
@@ -36,6 +39,7 @@ self talk: the voices within
 - Success-built progression to task and goal completion
 
 - Entrepreneurial Operating System
+
   - Fraction
 
 - Feature map

@@ -7,6 +7,7 @@ import { globalStyles } from "../../../styles";
 import { ProjContext, TodoContext } from "./../../state/context";
 import LinearGradient from "react-native-linear-gradient";
 import useTodoRepository from "../../hooks/useTodoRepository";
+import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
 import AddProjectScreen from "./../../screens/Todo/AddProjectScreen";
 import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
 import * as TodoComponents from "../../components/todo/TodoComponents";
@@ -111,6 +112,13 @@ const TodoNavigator = () => {
             name="AppHome"
             component={TodoScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ViewProjScreen"
+            component={ViewProjectScreen}
+            options={{
+              headerBackTitleVisible: false,
+            }}
           />
           <Stack.Screen
             name="AddProjScreen"
