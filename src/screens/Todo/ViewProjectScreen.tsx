@@ -149,46 +149,35 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
             </View>
             <LineChart
               data={{
-                labels: [
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                ],
+                labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
                 datasets: [
                   {
                     data: [
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
+                      Math.random() * 10,
+                      Math.random() * 10,
+                      Math.random() * 10,
+                      Math.random() * 10,
+                      Math.random() * 10,
+                      Math.random() * 10,
                     ],
                   },
                 ],
               }}
               width={0.85 * Dimensions.get("window").width} // from react-native
               height={0.2 * Dimensions.get("window").height}
-              yAxisLabel="$"
-              yAxisSuffix="k"
-              yAxisInterval={1} // optional, defaults to 1
               chartConfig={{
-                backgroundColor: "#e26a00",
-                backgroundGradientFrom: "#fb8c00",
-                backgroundGradientTo: "#ffa726",
-                decimalPlaces: 2, // optional, defaults to 2dp
+                backgroundGradientFrom: "#01C2EF",
+                backgroundGradientTo: "#56DEF1",
+                decimalPlaces: 0, // optional, defaults to 2dp
                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                 style: {
                   borderRadius: 15,
                 },
                 propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
-                  stroke: "#ffa726",
+                  r: "5",
+                  strokeWidth: "1",
+                  stroke: "#FFAE5E",
                 },
               }}
               bezier
