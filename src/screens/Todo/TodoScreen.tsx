@@ -7,12 +7,14 @@ import { globalStyles } from "../../../styles";
 import { ProjContext, TodoContext } from "./../../state/context";
 import LinearGradient from "react-native-linear-gradient";
 import useTodoRepository from "../../hooks/useTodoRepository";
-import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
-import AddProjectScreen from "./../../screens/Todo/AddProjectScreen";
-import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
 import useProjectRepository from "../../hooks/useProjectRepository";
+
+import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
+import AddProjectScreen from "./../../screens/Todo/AddProjectScreen";
+import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
+import EditTodoScreen from "./../../screens/Todo/EditTodoScreen";
 
 const Stack = createStackNavigator();
 
@@ -117,7 +119,7 @@ const TodoNavigator = () => {
             name="ViewProjScreen"
             component={ViewProjectScreen}
             options={{
-              title: "",
+              title: "View Project",
               headerBackTitleVisible: false,
             }}
           />
@@ -134,6 +136,14 @@ const TodoNavigator = () => {
             component={AddTodoScreen}
             options={{
               title: "Add a task",
+              headerBackTitleVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="EditTodoScreen"
+            component={EditTodoScreen}
+            options={{
+              title: "Edit task",
               headerBackTitleVisible: false,
             }}
           />

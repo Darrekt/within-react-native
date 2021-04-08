@@ -5,6 +5,7 @@ import Todo from "../../models/Todo";
 import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { TodoRepoAction } from "../../hooks/useTodoRepository";
+import { useNavigation } from "@react-navigation/core";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -44,6 +45,7 @@ type Props = {
 };
 
 const TodoItemTile = ({ todo, running, dispatch }: Props) => {
+  const navigation = useNavigation();
   let itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
     : styles.tileTitleTextStyle;
@@ -103,7 +105,12 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
   ];
 
   const BadgedText = withBadge(todo.laps, {
-    badgeStyle: { backgroundColor:"#00C0DA" , position: "absolute", top: -8, right: 8 },
+    badgeStyle: {
+      backgroundColor: "#00C0DA",
+      position: "absolute",
+      top: -8,
+      right: 8,
+    },
     right: 10,
     hidden: todo.laps === 0,
   })(Text);
@@ -120,6 +127,9 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
               type: "selected",
               target: todo.id,
             });
+        }}
+        onLongPress={() => {
+          navigation.navigate("EditTodoScreen", { id: todo.id });
         }}
       >
         <ListItem.Content style={styles.tileRow}>

@@ -1,22 +1,14 @@
 import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, Switch } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { ProjContext } from "../../state/context";
+import { TodoContext } from "../../state/context";
 import { globalStyles, textStyles } from "../../../styles";
-import Project from "../../models/Project";
+import Todo from "../../models/Todo";
 import EmojiRegex from "emoji-regex";
 import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import {
-  LineChart,
-  BarChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -25,18 +17,19 @@ type RootStackParamList = {
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
-  "ViewProjScreen"
+  "EditTodoScreen"
 >;
 
 type ViewProjectScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "ViewProjScreen"
+  "EditTodoScreen"
 >;
 
 type Props = {
   route: ViewProjectScreenRouteProp;
   navigation: ViewProjectScreenNavigationProp;
 };
+
 
 const styles = StyleSheet.create({
   emojiInput: { ...globalStyles.inputBox, width: "20%" },
@@ -47,21 +40,17 @@ const styles = StyleSheet.create({
   },
 });
 
-// TODO: View a due date selector
-
-const ViewProjectScreen = ({ route, navigation }: Props) => {
-  const { projects, dispatch } = React.useContext(ProjContext);
-  const project = projects.find((proj) => proj.id === route.params.id);
-
+const EditTodoScreen = ({route, navigation} : Props) => {
+  const { todos, dispatch } = React.useContext(TodoContext);
+  const todo = todos.find((item) => item.id === route.params.id);
   return (
-    <View style={globalStyles.column}>
+    <View style={globalStyles.centered}>
       <Formik
         initialValues={{
-          emoji: project?.emoji,
-          name: project?.name,
-          notes: project?.notes,
-          due: project?.due ?? new Date(),
-          disableNotifications: false,
+          emoji: todo?.emoji,
+          name: todo?.name,
+          notes: todo?.notes,
+          disableNotifications: todo?.disableNotifications,
         }}
         validate={(values) => {
           const errors: {
@@ -79,12 +68,11 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
         onSubmit={(values) => {
           dispatch({
             type: "update",
-            payload: new Project({
-              id: project?.id,
+            payload: new Todo({
               emoji: values.emoji,
               name: values.name,
               notes: values.notes,
-              due: values.due,
+              disableNotifications: values.disableNotifications,
             }),
           });
           navigation.goBack();
@@ -106,7 +94,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 style={styles.nameInput}
                 onChangeText={formik.handleChange("name")}
                 onBlur={formik.handleBlur("name")}
-                placeholder="Project name"
+                placeholder="Task name"
                 value={formik.values.name}
               />
             </View>
@@ -122,7 +110,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 </Text>
               )}
             </View>
-            <Text style={textStyles.header}>Additional details</Text>
+            <Text style={textStyles.header}>Edititional details</Text>
             <TextInput
               style={globalStyles.inputBox}
               onChangeText={formik.handleChange("notes")}
@@ -130,76 +118,28 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               placeholder="Notes"
               value={formik.values.notes}
             />
-            <View style={globalStyles.row}>
-              <Text
-                style={{
-                  textAlign: "right",
-                }}
-              >
-                Due date:
+            <View style={styles.boolEntry}>
+              <Text style={textStyles.header}>
+                Silence incoming notifications
               </Text>
-              <DateTimePicker
-                style={{ minWidth: 0.3 * Dimensions.get("window").width }}
-                value={formik.values.due}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={(event, date) => formik.setFieldValue("due", date)}
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={
+                  formik.values.disableNotifications ? "#f5dd4b" : "#f4f3f4"
+                }
+                ios_backgroundColor="#3e3e3e"
+                value={formik.values.disableNotifications}
+                onValueChange={() =>
+                  formik.setFieldValue(
+                    "disableNotifications",
+                    !formik.values.disableNotifications
+                  )
+                }
               />
             </View>
-            <LineChart
-              data={{
-                labels: [
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                ],
-                datasets: [
-                  {
-                    data: [
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                      Math.random() * 100,
-                    ],
-                  },
-                ],
-              }}
-              width={0.85 * Dimensions.get("window").width} // from react-native
-              height={0.2 * Dimensions.get("window").height}
-              yAxisLabel="$"
-              yAxisSuffix="k"
-              yAxisInterval={1} // optional, defaults to 1
-              chartConfig={{
-                backgroundColor: "#e26a00",
-                backgroundGradientFrom: "#fb8c00",
-                backgroundGradientTo: "#ffa726",
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 15,
-                },
-                propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
-                  stroke: "#ffa726",
-                },
-              }}
-              bezier
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-            />
             <SubmitButton
               onPress={() => formik.handleSubmit()}
-              text="Save Changes"
+              text="Edit Task"
             />
           </View>
         )}
@@ -207,4 +147,4 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
     </View>
   );
 };
-export default ViewProjectScreen;
+export default EditTodoScreen;
