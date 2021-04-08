@@ -52,8 +52,8 @@ const useProjectRepository: () => [
       // ProjectCRUDActions
       case "update":
         newState = state.update(
-          state.findIndex((item) => item.id == action.payload.id),
-          () => action.payload
+          state.findIndex((item) => item.id === action.payload.id),
+          (proj) => action.payload
         );
         break;
       case "add":

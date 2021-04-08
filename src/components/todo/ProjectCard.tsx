@@ -4,8 +4,11 @@ import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
 import Project from "../../models/Project";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const navigation = useNavigation();
+
   return (
     <Card
       style={{
@@ -14,6 +17,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         paddingVertical: 10,
         paddingHorizontal: 25,
       }}
+      onPress={() => navigation.navigate("ViewProjScreen", { id: project.id })}
     >
       <View style={globalStyles.column}>
         <View
@@ -36,7 +40,6 @@ export default function ProjectCard({ project }: { project: Project }) {
             >
               {project.name}
             </Text>
-            {project.due && <Text>No due date!</Text>}
           </View>
         </View>
         <View
@@ -47,11 +50,18 @@ export default function ProjectCard({ project }: { project: Project }) {
           }}
         />
         <View
-          style={{ ...globalStyles.row, justifyContent: "center", alignContent: "center", height: "35%" }}
+          style={{
+            ...globalStyles.row,
+            justifyContent: "center",
+            alignContent: "center",
+            height: "35%",
+          }}
         >
           <AntDesign name="calendar" size={30} color="black" />
-          <View style={{...globalStyles.column, marginHorizontal: 20}}>
-            <Text>{project.due ? "DATE" : "Set a due date!"}</Text>
+          <View style={{ ...globalStyles.column, marginHorizontal: 20 }}>
+            <Text>
+              {project.due ? project.due.toDateString() : "No due date!"}
+            </Text>
             <Text>
               {project.todos.isEmpty()
                 ? "Done for today!"

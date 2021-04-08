@@ -9,6 +9,7 @@ export default class Todo {
   laps: number = 0;
   completed: boolean = false;
   selected: boolean = false;
+  project?: string;
   remaining?: number;
   finishingTime?: Date;
 

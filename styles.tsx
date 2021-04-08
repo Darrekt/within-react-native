@@ -10,6 +10,9 @@ export const globalStyles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
   },
+  centerInCol: {
+    width: "30%",
+  },
   row: {
     flexDirection: "row",
     alignSelf: "stretch",

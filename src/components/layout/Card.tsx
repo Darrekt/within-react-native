@@ -9,8 +9,8 @@ type CardProps = {
   opacity?: number;
   cornerRadius?: number;
   noShadow?: boolean;
-  onPress?: () => void;
-  onLongPress?: () => void;
+  onPress?: () => void | undefined;
+  onLongPress?: () => void | undefined;
 };
 
 const Card = ({

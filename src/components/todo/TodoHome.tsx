@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Pressable, Dimensions } from "react-native";
+import { StyleSheet, View, TouchableHighlight, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import { ProjContext } from "../../state/context";
@@ -28,13 +28,13 @@ const HomeDisplay = () => {
   const navigation = useNavigation();
 
   const addProjButton = (
-    <Pressable
+    <TouchableHighlight
       onPress={() => {
         navigation.navigate("AddProjScreen");
       }}
     >
       <Entypo name="plus" size={20} color="black" />
-    </Pressable>
+    </TouchableHighlight>
   );
 
   return (

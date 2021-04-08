@@ -117,6 +117,7 @@ const TodoNavigator = () => {
             name="ViewProjScreen"
             component={ViewProjectScreen}
             options={{
+              title: "",
               headerBackTitleVisible: false,
             }}
           />

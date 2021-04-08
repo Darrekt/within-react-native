@@ -43,6 +43,6 @@ export function fromFirestore(doc: any) {
   console.log(doc)
   return new Project({
     ...doc,
-    finishingTime: doc.finishingTime ? new Date(doc.finishingTime) : undefined,
+    due: doc.due ? new Date(doc.due) : undefined,
   });
 }
