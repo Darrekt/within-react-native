@@ -10,6 +10,7 @@ import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 import {
   LineChart,
   BarChart,
@@ -51,17 +52,18 @@ const styles = StyleSheet.create({
 
 const ViewProjectScreen = ({ route, navigation }: Props) => {
   const { projects, dispatch } = React.useContext(ProjContext);
-  const project = projects.find((proj) => proj.id === route.params.id);
+  const project = route.params?.id
+    ? projects.find((proj) => proj.id === route.params.id)
+    : undefined;
 
   return (
     <View style={globalStyles.column}>
       <Formik
         initialValues={{
-          emoji: project?.emoji,
-          name: project?.name,
-          notes: project?.notes,
+          emoji: project?.emoji ?? "",
+          name: project?.name ?? "",
+          notes: project?.notes ?? "",
           due: project?.due ?? new Date(),
-          disableNotifications: false,
         }}
         validate={(values) => {
           const errors: {
@@ -72,13 +74,13 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
           if (values.emoji && !EmojiRegex().test(values.emoji))
             errors.emoji = "Invalid emoji";
 
-          if (!values.name) errors.name = "Please enter a task name.";
+          if (!values.name) errors.name = "Please enter a project name.";
 
           return errors;
         }}
         onSubmit={(values) => {
           dispatch({
-            type: "update",
+            type: project ? "update" : "add",
             payload: new Project({
               id: project?.id,
               emoji: values.emoji,
@@ -147,48 +149,51 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 onChange={(event, date) => formik.setFieldValue("due", date)}
               />
             </View>
-            <LineChart
-              data={{
-                labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
-                datasets: [
-                  {
-                    data: [
-                      Math.random() * 10,
-                      Math.random() * 10,
-                      Math.random() * 10,
-                      Math.random() * 10,
-                      Math.random() * 10,
-                      Math.random() * 10,
-                    ],
+            {project && (
+              <LineChart
+                data={{
+                  labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
+                  datasets: [
+                    {
+                      data: [
+                        Math.random() * 10,
+                        Math.random() * 10,
+                        Math.random() * 10,
+                        Math.random() * 10,
+                        Math.random() * 10,
+                        Math.random() * 10,
+                      ],
+                    },
+                  ],
+                }}
+                width={0.85 * Dimensions.get("window").width} // from react-native
+                height={0.2 * Dimensions.get("window").height}
+                chartConfig={{
+                  backgroundGradientFrom: "#01C2EF",
+                  backgroundGradientTo: "#56DEF1",
+                  decimalPlaces: 0, // optional, defaults to 2dp
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 15,
                   },
-                ],
-              }}
-              width={0.85 * Dimensions.get("window").width} // from react-native
-              height={0.2 * Dimensions.get("window").height}
-              chartConfig={{
-                backgroundGradientFrom: "#01C2EF",
-                backgroundGradientTo: "#56DEF1",
-                decimalPlaces: 0, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 15,
-                },
-                propsForDots: {
-                  r: "5",
-                  strokeWidth: "1",
-                  stroke: "#FFAE5E",
-                },
-              }}
-              bezier
-              style={{
-                marginVertical: 8,
-                borderRadius: 16,
-              }}
-            />
+                  propsForDots: {
+                    r: "5",
+                    strokeWidth: "1",
+                    stroke: "#FFAE5E",
+                  },
+                }}
+                bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 16,
+                }}
+              />
+            )}
             <SubmitButton
               onPress={() => formik.handleSubmit()}
-              text="Save Changes"
+              text={project ? "Save Changes" : "Add Project"}
             />
           </View>
         )}

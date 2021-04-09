@@ -149,7 +149,6 @@ const useTodoRepository: () => [
         break;
       default:
         throw new Error("Invalid Todo Action");
-        break;
     }
     if (action.type !== "hydrate") writeItems(newState, settings.user?.uid);
     return newState;

@@ -12,9 +12,7 @@ import SettingsButton from "../../components/settings/SettingsButton";
 import useProjectRepository from "../../hooks/useProjectRepository";
 
 import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
-import AddProjectScreen from "./../../screens/Todo/AddProjectScreen";
-import AddTodoScreen from "./../../screens/Todo/AddTodoScreen";
-import EditTodoScreen from "./../../screens/Todo/EditTodoScreen";
+import ViewTodoScreen from "./ViewTodoScreen";
 
 const Stack = createStackNavigator();
 
@@ -125,25 +123,25 @@ const TodoNavigator = () => {
           />
           <Stack.Screen
             name="AddProjScreen"
-            component={AddProjectScreen}
+            component={ViewProjectScreen}
             options={{
               title: "Add a Project",
               headerBackTitleVisible: false,
             }}
           />
           <Stack.Screen
-            name="AddTodoScreen"
-            component={AddTodoScreen}
+            name="EditTodoScreen"
+            component={ViewTodoScreen}
             options={{
-              title: "Add a task",
+              title: "Edit task",
               headerBackTitleVisible: false,
             }}
           />
           <Stack.Screen
-            name="EditTodoScreen"
-            component={EditTodoScreen}
+            name="AddTodoScreen"
+            component={ViewTodoScreen}
             options={{
-              title: "Edit task",
+              title: "Add task",
               headerBackTitleVisible: false,
             }}
           />

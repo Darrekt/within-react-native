@@ -28,6 +28,7 @@ export default class Todo {
       laps: this.laps,
       completed: this.completed,
       selected: this.selected,
+      project: this.project,
       remaining: this.remaining,
       finishingTime: this.finishingTime?.getTime(),
     };
@@ -43,6 +44,7 @@ export default class Todo {
       laps: this.laps,
       completed: this.completed,
       selected: this.selected,
+      project: this.project,
       remaining: this.remaining,
       finishingTime: this.finishingTime?.getTime(),
     };
