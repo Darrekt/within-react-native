@@ -41,9 +41,8 @@ const HomeDisplay = () => {
     <View style={{ ...globalStyles.column }}>
       <HeadingDropDown header="Projects" dropdown={addProjButton}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {/* TODO: Add unique keys */}
           {projContext.projects.map((project) => (
-            <ProjectCard project={project} />
+            <ProjectCard key={project.id} project={project} />
           ))}
         </ScrollView>
       </HeadingDropDown>

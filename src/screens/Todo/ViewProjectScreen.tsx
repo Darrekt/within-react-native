@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// TODO: View a due date selector
-
 const ViewProjectScreen = ({ route, navigation }: Props) => {
   const { projects, dispatch } = React.useContext(ProjContext);
   const project = route.params?.id

@@ -40,7 +40,6 @@ export default class Project {
 }
 
 export function fromFirestore(doc: any) {
-  console.log(doc)
   return new Project({
     ...doc,
     due: doc.due ? new Date(doc.due) : undefined,
