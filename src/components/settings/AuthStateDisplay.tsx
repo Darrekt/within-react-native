@@ -56,7 +56,7 @@ const AuthStateDisplay = ({
         <View
           style={{
             ...globalStyles.row,
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
             paddingHorizontal: 10,
           }}

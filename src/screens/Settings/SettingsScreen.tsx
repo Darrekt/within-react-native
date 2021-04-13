@@ -11,6 +11,7 @@ import { SettingsContext } from "../../state/context";
 
 const SettingsScreen = () => {
   const { settings, dispatch } = useContext(SettingsContext);
+  const navigation = useNavigation();
 
   const generalSettings = [
     {
@@ -27,16 +28,22 @@ const SettingsScreen = () => {
     },
   ];
 
+  // TODO: Change to simple modals, or a minimal editing interface with ListItem
   const productivitySettings = [
     {
+      name: "Maximum Projects",
+      icon: <Icon name="clipboard" type="feather" />,
+      action: () => navigation.navigate("EditProductivitySettingScreen"),
+    },
+    {
       name: "Maximum tasks",
-      icon: <Icon name="list" />,
-      action: () => dispatch({ type: "onboarding" }),
+      icon: <Icon name="tasks" type="font-awesome-5" />,
+      action: () => navigation.navigate("EditProductivitySettingScreen"),
     },
     {
       name: "Timer duration",
       icon: <Icon name="timer" />,
-      action: () => dispatch({ type: "theme" }),
+      action: () => navigation.navigate("EditProductivitySettingScreen"),
     },
   ];
 

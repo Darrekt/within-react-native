@@ -133,6 +133,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
               onChange={(option) => {
                 formik.setFieldValue("project", option.key);
               }}
+              cancelText="Cancel"
             />
             <TextInput
               style={globalStyles.inputBox}

@@ -40,6 +40,13 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
   },
+  lightInput: {
+    margin: 4,
+    height: 45,
+    padding: 6,
+    borderColor: "#56DEF1",
+    borderBottomWidth: 2
+  },
   submitButton: {
     height: 40,
     width: "60%",

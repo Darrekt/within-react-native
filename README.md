@@ -2,12 +2,25 @@
 
 A well-being app that helps users focus and remain productive. Shipped as a PWA on web, with React Native implementations for iOS and Android.
 
+## KNOWN ISSUES:
+
+- Timer shifts oddly at the 11th second of single digit minutes
+- Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
+- Completion adds 2 laps and not 1
+
 ## TODOS
 
-- TORQUE?
+- GLASSMORPHIC STYLING
+- NEUMORPHIC STYLING
+- DARK MODE
+- Archive completed todos
+- Disable notifications
+- Onboarding sign in
+- Settings: max tasks and intervals
+- Re-arrangeable lists?
+
 - Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
 - Admin re-organisation, chart? SCREEN FLOW
-- Implement UI and data model for projects and data model
 
 - Teach them to chop projects up into subtasks?
 - How many tasks do you successfully set and complete?
@@ -44,8 +57,3 @@ self talk: the voices within
 
 - Feature map
   - Justifications and neuroscientific grounding
-
-## Books and resources
-
-start with why
-the one thing

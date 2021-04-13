@@ -8,6 +8,13 @@ import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
+import {
+  LineChart,
+  BarChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart,
+} from "react-native-chart-kit";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -18,7 +25,8 @@ const styles = StyleSheet.create({
   // TODO:  This card is floating above the two above it for some reason...
   insightsCard: {
     height: 0.2 * Dimensions.get("window").height,
-    marginVertical: 30,
+    marginVertical: 10,
+    borderRadius: 16,
   },
 });
 
@@ -41,22 +49,52 @@ const HomeDisplay = () => {
     <View style={{ ...globalStyles.column }}>
       <HeadingDropDown header="Projects" dropdown={addProjButton}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {projContext.projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+          {projContext.projects
+            .sortBy((value) => value.due)
+            .map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
         </ScrollView>
       </HeadingDropDown>
-      <HeadingDropDown header="Insights">
-        <View
-          style={{
-            ...globalStyles.row,
-            height: "20%",
+      {/* TODO: Hacky fix */}
+      <View style={{height:15}}></View>
+      <HeadingDropDown header="Today's Progress">
+        <LineChart
+          data={{
+            labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
+            datasets: [
+              {
+                data: [
+                  Math.random() * 10,
+                  Math.random() * 10,
+                  Math.random() * 10,
+                  Math.random() * 10,
+                  Math.random() * 10,
+                  Math.random() * 10,
+                ],
+              },
+            ],
           }}
-        >
-          <Card elevation={1} opacity={0.3} style={styles.wellnessCard}></Card>
-          <Card elevation={1} opacity={0.3} style={styles.wellnessCard}></Card>
-        </View>
-        <Card elevation={1} style={styles.insightsCard}></Card>
+          width={0.85 * Dimensions.get("window").width} // from react-native
+          height={0.2 * Dimensions.get("window").height}
+          chartConfig={{
+            backgroundGradientFrom: "#01C2EF",
+            backgroundGradientTo: "#56DEF1",
+            decimalPlaces: 0, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 15,
+            },
+            propsForDots: {
+              r: "5",
+              strokeWidth: "1",
+              stroke: "#FFAE5E",
+            },
+          }}
+          bezier
+          style={styles.insightsCard}
+        />
       </HeadingDropDown>
     </View>
   );

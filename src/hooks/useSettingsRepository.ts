@@ -7,6 +7,8 @@ export type SageSettings = {
   onboarding: boolean;
   user: FirebaseAuthTypes.User | null;
   theme: boolean;
+  maxProjects: number;
+  maxTasks: number;
   defaultInterval: number;
 };
 
@@ -14,6 +16,8 @@ export const sageDefaultSettings: SageSettings = {
   onboarding: false,
   user: null,
   theme: true,
+  maxProjects: 4,
+  maxTasks: 3,
   defaultInterval: 25 * 60,
 };
 
@@ -37,7 +41,10 @@ type ToggleSetting = {
   type: "onboarding" | "theme";
 };
 
-type SetSetting = { type: "defaultInterval"; value: number };
+type SetSetting = {
+  type: "defaultInterval" | "maxTasks" | "maxProjects";
+  value: number;
+};
 
 const settingsAyncStoreKey = "settings";
 const settingsTimeStamp = "settingsTimeStamp";

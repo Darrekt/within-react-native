@@ -17,6 +17,7 @@ import EmailSignInScreen from "./src/screens/Onboarding/EmailSignInScreen";
 import EditEmailScreen from "./src/screens/Settings/EditEmailScreen";
 import EditPasswordScreen from "./src/screens/Settings/EditPasswordScreen";
 import EditNameScreen from "./src/screens/Settings/EditNameScreen";
+import EditProductivitySettingScreen from "./src/screens/Settings/EditSettingScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,18 +96,10 @@ export default function App() {
                 }}
               />
               <Stack.Screen
-                name="MaxTasksScreen"
-                component={EditEmailScreen}
+                name="EditProductivitySettingScreen"
+                component={EditProductivitySettingScreen}
                 options={{
-                  title: "Change max tasks",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="TimerDurationScreen"
-                component={EditEmailScreen}
-                options={{
-                  title: "Adjust timer duration",
+                  title: "Change Productivity Settings",
                   headerBackTitleVisible: false,
                 }}
               />
