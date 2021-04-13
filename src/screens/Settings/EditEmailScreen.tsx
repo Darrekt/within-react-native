@@ -5,7 +5,6 @@ import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { SettingsContext } from "../../state/context";
 import { useNavigation } from "@react-navigation/native";
-import Toast from "react-native-simple-toast";
 import SubmitButton from "../../components/util/SubmitButton";
 
 const EditEmailScreen = () => {
@@ -44,7 +43,6 @@ const EditEmailScreen = () => {
             ?.updateEmail(values.newEmail)
             .then(() => {
               navigation.goBack();
-              Toast.show("Email updated!");
             })
             .catch((error) => {
               if (error.code === "auth/email-already-in-use") {

@@ -6,6 +6,7 @@ import { Icon } from "react-native-elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SettingsContext } from "./src/state/context";
 import useSettingsRepository from "./src/hooks/useSettingsRepository";
+import Toast from "react-native-toast-message";
 
 import TodoScreen from "./src/screens/Todo/TodoScreen";
 import StatScreen from "./src/screens/StatScreen";
@@ -107,6 +108,7 @@ export default function App() {
           </>
         )}
       </NavigationContainer>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </SettingsContext.Provider>
   );
 }

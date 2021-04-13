@@ -6,7 +6,7 @@ import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { SettingsContext } from "../../state/context";
 import { firebase } from "@react-native-firebase/auth";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-toast-message";
 import SubmitButton from "../../components/util/SubmitButton";
 
 const EditNameScreen = () => {
@@ -30,7 +30,6 @@ const EditNameScreen = () => {
             .then(() => {
               dispatch({ type: "auth", user: firebase.auth().currentUser });
               navigation.goBack();
-              Toast.show("Name changed!");
             })
             .catch((error) => console.log(error));
         }}

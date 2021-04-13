@@ -74,6 +74,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
           dispatch({
             type: todo ? "update" : "add",
             payload: new Todo({
+              ...todo,
               emoji: values.emoji,
               name: values.name,
               notes: values.notes,

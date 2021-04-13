@@ -5,7 +5,6 @@ import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { SettingsContext } from "../../state/context";
-import Toast from "react-native-simple-toast";
 import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
 import { printTimeLeft } from "../../util/timer";

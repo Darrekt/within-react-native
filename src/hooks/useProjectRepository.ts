@@ -4,6 +4,7 @@ import { List } from "immutable";
 import Project, { fromFirestore } from "../models/Project";
 import firestore from "@react-native-firebase/firestore";
 import { SettingsContext } from "../state/context";
+import Toast from "react-native-toast-message";
 
 export type ProjectRepoAction = ProjectAsyncStorageAction | ProjectCRUDAction;
 
@@ -55,9 +56,23 @@ const useProjectRepository: () => [
           state.findIndex((item) => item.id === action.payload.id),
           (proj) => action.payload
         );
+        Toast.show({
+          type: "success",
+          position: "bottom",
+          text1: "Updated Project!",
+          text2: "",
+        });
         break;
       case "add":
-        newState = state.push(action.payload);
+        newState =
+          state.size < settings.maxProjects
+            ? state.push(action.payload)
+            : state;
+        Toast.show({
+          type: "success",
+          text1: "Added Project:",
+          text2: action.payload.name,
+        });
         break;
       case "delete":
         newState = state.filter((item) => item.id !== action.payload.id);

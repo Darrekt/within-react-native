@@ -13,6 +13,7 @@ import useProjectRepository from "../../hooks/useProjectRepository";
 
 import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
+import Todo from "../../models/Todo";
 
 const Stack = createStackNavigator();
 
@@ -74,7 +75,7 @@ const TodoScreen = () => {
             />
           ),
           data: isOpen ? todos.toArray() : [],
-          keyExtractor: (item) => item.id,
+          keyExtractor: (item: Todo) => item.id,
           renderItem: ({ item }) => (
             <TodoComponents.ItemTile
               todo={item}

@@ -129,12 +129,13 @@ const useTodoRepository: () => [
       // TodoCRUDActions
       case "update":
         newState = state.update(
-          state.findIndex((item) => item.id == action.payload.id),
+          state.findIndex((item) => item.id === action.payload.id),
           () => action.payload
         );
         break;
       case "add":
-        newState = state.push(action.payload);
+        newState =
+          state.size < settings.maxTasks ? state.push(action.payload) : state;
         break;
       case "delete":
         newState = state.filter((item) => item.id !== action.payload.id);
