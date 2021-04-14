@@ -63,6 +63,7 @@ type TimerProps = {
 const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
 
+  // TODO: This implementation completes a task twice.
   useEffect(() => {
     const timer = setTimeout(
       () =>

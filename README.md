@@ -7,38 +7,34 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 - Timer shifts oddly at the 11th second of single digit minutes
 - Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
 - Completion adds 2 laps and not 1
+- View and update pages don't work perfectly: may need unit testing
 
 ## TODOS
 
-- GLASSMORPHIC STYLING
-- NEUMORPHIC STYLING
-- DARK MODE
-- Archive completed todos
-- Disable notifications
-- Onboarding sign in
-- Settings: max tasks and intervals
-- Re-arrangeable lists?
+- Styling
 
-- Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
-- Admin re-organisation, chart? SCREEN FLOW
+  - GLASS / NEUMORPHIC STYLING
+  - DARK MODE
+  - Changing color pallettes
 
-- Teach them to chop projects up into subtasks?
-- How many tasks do you successfully set and complete?
+- Features
 
-- Socialisation
+  - Archive completed todos
+  - Disable notifications
 
-self talk: the voices within
+- Backend
 
-- Onboarding screen, add sign-in
-- Fix DnD
-- Terms of use, indemnity, loss of profit etc
-- Changing color pallettes
+  - Onboarding sign in
+  - Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
+  - Terms of use, indemnity, loss of profit etc
 
 ## Proposed Features
 
 - Fitting to individual users maximum attention
 - Breaking down large tasks (by time) into smaller periods
+  - Teach them to chop projects up into subtasks
 - Measurement? Is the user over/underestimating?
+  - How many tasks do you successfully set and complete?
 - Goals: Distinguishing Todo lists and Success lists
 
 ## Misc
@@ -50,10 +46,3 @@ self talk: the voices within
   - "Source" Trigger
 
 - Success-built progression to task and goal completion
-
-- Entrepreneurial Operating System
-
-  - Fraction
-
-- Feature map
-  - Justifications and neuroscientific grounding

@@ -10,6 +10,8 @@ import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
+import Toast from "react-native-toast-message";
+import wrapAsync from "../../util/dispatchAsync";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -70,17 +72,25 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
 
           return errors;
         }}
-        onSubmit={(values) => {
-          dispatch({
-            type: todo ? "update" : "add",
-            payload: new Todo({
-              ...todo,
-              emoji: values.emoji,
-              name: values.name,
-              notes: values.notes,
-              project: values.project,
-              disableNotifications: values.disableNotifications,
-            }),
+        onSubmit={async (values) => {
+          await wrapAsync(() =>
+            dispatch({
+              type: todo ? "update" : "add",
+              payload: new Todo({
+                ...todo,
+                emoji: values.emoji,
+                name: values.name,
+                notes: values.notes,
+                project: values.project,
+                disableNotifications: values.disableNotifications,
+              }),
+            })
+          );
+          Toast.show({
+            type: "success",
+            position: "bottom",
+            text1: `${todo ? "Updated" : "Added"} todo!`,
+            text2: values.name,
           });
           navigation.goBack();
         }}

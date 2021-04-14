@@ -87,21 +87,21 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
         <Entypo key={todo.id + "delete"} name="cross" size={20} color="black" />
       ),
     },
-    {
-      key: todo.id + "rearrange",
-      action: {
-        type: "completed",
-        target: todo.id,
-      },
-      icon: (
-        <FontAwesome
-          key={todo.id + "sort"}
-          name="sort"
-          size={20}
-          color="black"
-        />
-      ),
-    },
+    // {
+    //   key: todo.id + "rearrange",
+    //   action: {
+    //     type: "completed",
+    //     target: todo.id,
+    //   },
+    //   icon: (
+    //     <FontAwesome
+    //       key={todo.id + "sort"}
+    //       name="sort"
+    //       size={20}
+    //       color="black"
+    //     />
+    //   ),
+    // },
   ];
 
   const BadgedText = withBadge(todo.laps, {
