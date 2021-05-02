@@ -5,7 +5,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest"
+    "test": "jest",
+    "clean": "react-native-clean-project"
   },
   "jest": {
     "preset": "jest-expo",
@@ -38,7 +39,7 @@
     "immutable": "^4.0.0-rc.12",
     "react": "17.0.1",
     "react-dom": "16.13.1",
-    "react-native": "0.64.0",
+    "react-native": "facebook/react-native#cf8a364767df830d7255339741350bb53ab1a68a",
     "react-native-chart-kit": "^6.11.0",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "~1.8.0",
@@ -70,6 +71,7 @@
     "babel-jest": "~25.2.6",
     "jest": "~25.2.6",
     "jest-expo": "^40.0.0",
+    "react-native-clean-project": "^3.6.3",
     "react-test-renderer": "^17.0.1",
     "typescript": "~4.0.0"
   },

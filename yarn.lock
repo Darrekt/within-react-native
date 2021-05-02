@@ -7331,6 +7331,11 @@ react-native-chart-kit@^6.11.0:
     paths-js "^0.4.10"
     point-in-polygon "^1.0.1"
 
+react-native-clean-project@^3.6.3:
+  version "3.6.3"
+  resolved "https://registry.yarnpkg.com/react-native-clean-project/-/react-native-clean-project-3.6.3.tgz#ad43b8e1491512f285b7f455ac56db3328b5a65f"
+  integrity sha512-sBbv+Zl05O9LfQqamLu2Crb//W/d8+l59TICF8nKxQ0nJsvear06a1CB2+FaO3rCrPNHiSjDDNXZ/D6muHTUkw==
+
 react-native-codegen@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/react-native-codegen/-/react-native-codegen-0.0.6.tgz#b3173faa879cf71bfade8d030f9c4698388f6909"
@@ -7485,10 +7490,9 @@ react-native-web@~0.13.12:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.4"
 
-react-native@0.64.0:
+react-native@facebook/react-native#cf8a364767df830d7255339741350bb53ab1a68a:
   version "0.64.0"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.64.0.tgz#c3bde5b638bf8bcf12bae6e094930d39cb942ab7"
-  integrity sha512-8dhSHBthgGwAjU+OjqUEA49229ThPMQH7URH0u8L0xoQFCnZO2sZ9Wc6KcbxI0x9KSmjCMFFZqRe3w3QsRv64g==
+  resolved "https://codeload.github.com/facebook/react-native/tar.gz/cf8a364767df830d7255339741350bb53ab1a68a"
   dependencies:
     "@jest/create-cache-key-function" "^26.5.0"
     "@react-native-community/cli" "^5.0.1-alpha.0"
