@@ -39,7 +39,7 @@
     "immutable": "^4.0.0-rc.12",
     "react": "17.0.1",
     "react-dom": "16.13.1",
-    "react-native": "facebook/react-native#cf8a364767df830d7255339741350bb53ab1a68a",
+    "react-native": "0.63",
     "react-native-chart-kit": "^6.11.0",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "~1.8.0",
