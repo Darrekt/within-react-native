@@ -1,5 +1,7 @@
-name: iOS
+name: Build iOS
 on: [push, pull_request]
+  branches: 
+    - ios
 jobs:
   build:
     runs-on: macos-latest
@@ -14,13 +16,13 @@ jobs:
       - run: pod install
         working-directory: ios
         name: Install pod dependencies
-      # - name: Build iOS (debug)
-      #   run: "xcodebuild \
-      #     -workspace ios/HelloReactNative.xcworkspace \
-      #     -scheme HelloReactNative \
-      #     clean archive \
-      #     -sdk iphoneos \
-      #     -configuration Debug \
-      #     -UseModernBuildSystem=NO \
-      #     -archivePath $PWD/HelloReactNative \
-      #     CODE_SIGNING_ALLOWED=NO"
+      - name: Build iOS (debug)
+        run: "xcodebuild \
+          -workspace ios/HelloReactNative.xcworkspace \
+          -scheme HelloReactNative \
+          clean archive \
+          -sdk iphoneos \
+          -configuration Debug \
+          -UseModernBuildSystem=NO \
+          -archivePath $PWD/HelloReactNative \
+          CODE_SIGNING_ALLOWED=NO"
