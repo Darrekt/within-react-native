@@ -1,7 +1,9 @@
 name: Build iOS
 on: [push, pull_request]
-  branches: 
-    - ios
+  push:
+    branches: [ios, main]
+  pull_request:
+    branches: [ios, main]
 jobs:
   build:
     runs-on: macos-latest

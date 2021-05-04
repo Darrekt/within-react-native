@@ -11,7 +11,6 @@ target 'Sage' do
   use_react_native!(:path => config["reactNativePath"])
 
   # Enables Flipper.
-  #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
   use_flipper!('Flipper' => '0.75.1', 'Flipper-Folly' => '2.5.3')
