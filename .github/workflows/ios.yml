@@ -1,5 +1,5 @@
 name: Build iOS
-on: [push, pull_request]
+on:
   push:
     branches: [ios, main]
   pull_request:
