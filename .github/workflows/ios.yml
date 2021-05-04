@@ -22,9 +22,4 @@ jobs:
         run: "xcodebuild \
           -workspace ios/Sage.xcworkspace \
           -scheme Sage \
-          clean archive \
-          -sdk iphoneos \
-          -configuration Debug \
-          -UseModernBuildSystem=NO \
-          -archivePath $PWD/Sage \
           CODE_SIGNING_ALLOWED=NO"
