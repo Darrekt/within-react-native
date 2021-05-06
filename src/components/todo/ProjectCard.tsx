@@ -5,7 +5,6 @@ import { globalStyles } from "../../../styles";
 import Project from "../../models/Project";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import TodoTimerDisplay from "./TodoTimer";
 
 const styles = StyleSheet.create({
   blackFont: {

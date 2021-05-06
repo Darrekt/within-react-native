@@ -13,6 +13,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import { LineChart } from "react-native-chart-kit";
+import HeadingDropDown from "../../components/layout/HeadingDropDown";
+import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -75,17 +77,19 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
 
         return errors;
       }}
-      onSubmit={(values) => {
-        dispatch({
-          type: project ? "update" : "add",
-          payload: new Project({
-            id: project?.id,
-            emoji: values.emoji,
-            name: values.name,
-            notes: values.notes,
-            due: values.due,
-          }),
-        });
+      onSubmit={async (values) => {
+        await wrapAsync(() =>
+          dispatch({
+            type: project ? "update" : "add",
+            payload: new Project({
+              ...project,
+              emoji: values.emoji,
+              name: values.name,
+              notes: values.notes,
+              due: values.due,
+            }),
+          })
+        );
         navigation.goBack();
         Toast.show({
           type: "success",
@@ -136,23 +140,26 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               value={formik.values.notes}
             />
             {/* DATE DISPLAY */}
-            <View style={globalStyles.row}>
-              <Text
-                style={{
-                  textAlign: "right",
-                }}
-              >
-                Due date:
-              </Text>
-              <DateTimePicker
-                style={{ minWidth: 0.3 * Dimensions.get("window").width }}
-                value={formik.values.due}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={(event, date) => formik.setFieldValue("due", date)}
-              />
-            </View>
+            <HeadingDropDown header="Deadlines">
+              <DeadlineDisplay></DeadlineDisplay>
+              <View style={globalStyles.row}>
+                <Text
+                  style={{
+                    textAlign: "right",
+                  }}
+                >
+                  Due date:
+                </Text>
+                <DateTimePicker
+                  style={{ minWidth: 0.3 * Dimensions.get("window").width }}
+                  value={formik.values.due}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={(event, date) => formik.setFieldValue("due", date)}
+                />
+              </View>
+            </HeadingDropDown>
             {project && (
               <LineChart
                 data={{

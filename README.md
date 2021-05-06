@@ -21,7 +21,7 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
   - Changing color pallettes
 
 - Features
-
+  - Add test suite for projects and todo data models
   - Complete projects
   - Complete todos
   - Deadlines

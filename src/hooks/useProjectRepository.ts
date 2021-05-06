@@ -59,7 +59,7 @@ const useProjectRepository: () => [
         break;
       case "add":
         newState =
-          state.size < settings.maxProjects
+          state.filterNot((project) => project.completed).size < settings.maxProjects
             ? state.push(action.payload)
             : state;
         Toast.show({

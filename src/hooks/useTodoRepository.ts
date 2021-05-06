@@ -135,7 +135,9 @@ const useTodoRepository: () => [
         break;
       case "add":
         newState =
-          state.size < settings.maxTasks ? state.push(action.payload) : state;
+          state.filter((todo) => !todo.completed).size < settings.maxTasks
+            ? state.push(action.payload)
+            : state;
         break;
       case "delete":
         newState = state.filter((item) => item.id !== action.payload.id);

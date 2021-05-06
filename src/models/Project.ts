@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import { List } from "immutable";
-import Todo from "./Todo";
 
 export default class Project {
   id: string = uuidv4();
@@ -24,8 +23,8 @@ export default class Project {
       name: this.name,
       notes: this.notes,
       completed: this.completed,
-      todos: this.todos,
-      deadlines: this.deadlines,
+      todos: this.todos.toArray(),
+      deadlines: this.deadlines.map((deadline) => deadline.getTime()).toArray(),
       due: this.due?.getTime(),
     };
   }
@@ -37,14 +36,19 @@ export default class Project {
       name: this.name,
       notes: this.notes,
       completed: this.completed,
+      todos: this.todos.toArray(),
+      deadlines: this.deadlines.map((deadline) => deadline.getTime()).toArray(),
       due: this.due?.getTime(),
     };
   }
 }
 
 export function fromFirestore(doc: any) {
+  const deadlines: string[] = doc.deadlines;
   return new Project({
     ...doc,
+    todos: List(doc.todos),
+    deadlines: List(deadlines).map((deadline) => new Date(deadline)),
     due: doc.due ? new Date(doc.due) : undefined,
   });
 }
