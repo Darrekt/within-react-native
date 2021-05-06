@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { TodoTimerAction } from "../../hooks/useTodoRepository";
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import Todo from "../../models/Todo";
@@ -41,17 +41,7 @@ const TodoTimerDisplay = ({ selectedTask, dispatch }: DisplayProps) => {
       <TodoTimer selectedTask={selectedTask} dispatch={dispatch}></TodoTimer>
     );
   } else {
-    return (
-      <View style={styles.positionedLogo}>
-        <Image
-          style={styles.img}
-          source={require("../../../assets/old_mascot/attention.png")}
-        />
-        <Text style={styles.modalHeaderText}>
-          Select a task to get started on!
-        </Text>
-      </View>
-    );
+    return <View style={styles.positionedLogo}></View>;
   }
 };
 

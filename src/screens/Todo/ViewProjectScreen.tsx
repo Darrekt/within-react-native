@@ -12,7 +12,6 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
-
 import { LineChart } from "react-native-chart-kit";
 
 type RootStackParamList = {
@@ -35,12 +34,17 @@ type Props = {
   navigation: ViewProjectScreenNavigationProp;
 };
 
+const bottomButtonWidth = "85%";
 const styles = StyleSheet.create({
   emojiInput: { ...globalStyles.inputBox, width: "20%" },
   nameInput: { ...globalStyles.inputBox, width: "50%" },
   boolEntry: {
     ...globalStyles.row,
     padding: 10,
+  },
+  chart: {
+    marginVertical: 8,
+    borderRadius: 16,
   },
 });
 
@@ -51,51 +55,50 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
     : undefined;
 
   return (
-    <View style={globalStyles.column}>
-      <Formik
-        initialValues={{
-          emoji: project?.emoji ?? "",
-          name: project?.name ?? "",
-          notes: project?.notes ?? "",
-          due: project?.due ?? new Date(),
-        }}
-        validate={(values) => {
-          const errors: {
-            emoji?: string;
-            name?: string;
-          } = {};
+    <Formik
+      initialValues={{
+        emoji: project?.emoji ?? "",
+        name: project?.name ?? "",
+        notes: project?.notes ?? "",
+        due: project?.due ?? new Date(),
+      }}
+      validate={(values) => {
+        const errors: {
+          emoji?: string;
+          name?: string;
+        } = {};
 
-          if (values.emoji && !EmojiRegex().test(values.emoji))
-            errors.emoji = "Invalid emoji";
+        if (values.emoji && !EmojiRegex().test(values.emoji))
+          errors.emoji = "Invalid emoji";
 
-          if (!values.name) errors.name = "Please enter a project name.";
+        if (!values.name) errors.name = "Please enter a project name.";
 
-          return errors;
-        }}
-        onSubmit={(values) => {
-          dispatch({
-            type: project ? "update" : "add",
-            payload: new Project({
-              id: project?.id,
-              emoji: values.emoji,
-              name: values.name,
-              notes: values.notes,
-              due: values.due,
-            }),
-          });
-          navigation.goBack();
-          Toast.show({
-            type: "success",
-            position: "bottom",
-            text1: `${project ? "Updated" : "Added"} Project:`,
-            text2: values.name,
-          });
-        }}
-      >
-        {(formik) => (
+        return errors;
+      }}
+      onSubmit={(values) => {
+        dispatch({
+          type: project ? "update" : "add",
+          payload: new Project({
+            id: project?.id,
+            emoji: values.emoji,
+            name: values.name,
+            notes: values.notes,
+            due: values.due,
+          }),
+        });
+        navigation.goBack();
+        Toast.show({
+          type: "success",
+          position: "bottom",
+          text1: `${project ? "Updated" : "Added"} Project:`,
+          text2: values.name,
+        });
+      }}
+    >
+      {(formik) => (
+        <View style={globalStyles.form}>
           <View style={globalStyles.column}>
             <View style={globalStyles.spacer}></View>
-            <Text style={textStyles.header}>What are you doing?</Text>
             <View style={globalStyles.row}>
               <TextInput
                 style={styles.emojiInput}
@@ -132,6 +135,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               placeholder="Notes"
               value={formik.values.notes}
             />
+            {/* DATE DISPLAY */}
             <View style={globalStyles.row}>
               <Text
                 style={{
@@ -185,14 +189,14 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                   },
                 }}
                 bezier
-                style={{
-                  marginVertical: 8,
-                  borderRadius: 16,
-                }}
+                style={styles.chart}
               />
             )}
+          </View>
+          <View style={globalStyles.bottomButtons}>
             {project && (
               <SubmitButton
+                width={bottomButtonWidth}
                 onPress={async () => {
                   await wrapAsync(() =>
                     dispatch({
@@ -213,13 +217,14 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               />
             )}
             <SubmitButton
+              width={bottomButtonWidth}
               onPress={() => formik.handleSubmit()}
               text={project ? "Save Changes" : "Add Project"}
             />
           </View>
-        )}
-      </Formik>
-    </View>
+        </View>
+      )}
+    </Formik>
   );
 };
 export default ViewProjectScreen;

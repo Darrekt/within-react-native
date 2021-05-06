@@ -8,7 +8,8 @@ export default class Project {
   name: string = "";
   notes: string = "";
   completed: boolean = false;
-  todos: List<Todo> = List([]);
+  todos: List<string> = List([]);
+  deadlines: List<Date> = List([]);
   due?: Date;
 
   constructor(data: Partial<Project>) {
@@ -23,6 +24,8 @@ export default class Project {
       name: this.name,
       notes: this.notes,
       completed: this.completed,
+      todos: this.todos,
+      deadlines: this.deadlines,
       due: this.due?.getTime(),
     };
   }
