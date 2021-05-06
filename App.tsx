@@ -146,6 +146,6 @@ const appTabNav = () => (
   >
     <Tab.Screen name="Todos" component={TodoScreen} />
     <Tab.Screen name="Stats" component={StatScreen} />
-    <Tab.Screen name="Groups" component={GroupScreen} />
+    {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
   </Tab.Navigator>
 );

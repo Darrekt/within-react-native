@@ -58,8 +58,8 @@ const HomeDisplay = () => {
       </HeadingDropDown>
       {/* TODO: Hacky fix */}
       <View style={{height:15}}></View>
-      <HeadingDropDown header="Today's Progress">
-        <LineChart
+      <HeadingDropDown header="Deadlines">
+        {/* <LineChart
           data={{
             labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
             datasets: [
@@ -94,7 +94,7 @@ const HomeDisplay = () => {
           }}
           bezier
           style={styles.insightsCard}
-        />
+        /> */}
       </HeadingDropDown>
     </View>
   );

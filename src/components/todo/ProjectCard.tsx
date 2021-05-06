@@ -5,9 +5,23 @@ import { globalStyles } from "../../../styles";
 import Project from "../../models/Project";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import TodoTimerDisplay from "./TodoTimer";
+
+const styles = StyleSheet.create({
+  blackFont: {
+    color: "black",
+  },
+  redFont: {
+    color: "red",
+  },
+});
 
 export default function ProjectCard({ project }: { project: Project }) {
   const navigation = useNavigation();
+
+  const now = new Date().valueOf();
+  const dueDateFont =
+    (project.due?.valueOf() ?? 0) > now ? styles.blackFont : styles.redFont;
 
   return (
     <Card
@@ -59,7 +73,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         >
           <AntDesign name="calendar" size={30} color="black" />
           <View style={{ ...globalStyles.column, marginHorizontal: 20 }}>
-            <Text>
+            <Text style={dueDateFont}>
               {project.due ? project.due.toDateString() : "No due date!"}
             </Text>
             <Text>

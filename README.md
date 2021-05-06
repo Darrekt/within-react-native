@@ -10,6 +10,9 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 - View and update pages don't work perfectly: may need unit testing
 
 ## TODOS
+usability
+retention
+efficacy
 
 - Styling
 
