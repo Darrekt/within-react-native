@@ -41,6 +41,7 @@
     "react-dom": "16.13.1",
     "react-native": "0.63",
     "react-native-chart-kit": "^6.11.0",
+    "react-native-confetti-cannon": "^1.5.2",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-get-random-values": "^1.5.0",

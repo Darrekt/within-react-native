@@ -52,7 +52,7 @@ export const globalStyles = StyleSheet.create({
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 5,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#fff",

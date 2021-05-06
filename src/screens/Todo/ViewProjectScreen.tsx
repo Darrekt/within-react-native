@@ -10,14 +10,10 @@ import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import Toast from "react-native-toast-message";
+import wrapAsync from "../../util/dispatchAsync";
 
-import {
-  LineChart,
-  BarChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { LineChart } from "react-native-chart-kit";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -88,6 +84,12 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
             }),
           });
           navigation.goBack();
+          Toast.show({
+            type: "success",
+            position: "bottom",
+            text1: `${project ? "Updated" : "Added"} Project:`,
+            text2: values.name,
+          });
         }}
       >
         {(formik) => (
@@ -187,6 +189,27 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                   marginVertical: 8,
                   borderRadius: 16,
                 }}
+              />
+            )}
+            {project && (
+              <SubmitButton
+                onPress={async () => {
+                  await wrapAsync(() =>
+                    dispatch({
+                      type: "update",
+                      payload: new Project({ ...project, completed: true }),
+                    })
+                  );
+
+                  navigation.goBack();
+                  Toast.show({
+                    type: "success",
+                    position: "bottom",
+                    text1: "Completed Project!",
+                    text2: project.name,
+                  });
+                }}
+                text="Complete Project"
               />
             )}
             <SubmitButton

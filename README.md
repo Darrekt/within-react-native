@@ -2,17 +2,17 @@
 
 A well-being app that helps users focus and remain productive. Shipped as a PWA on web, with React Native implementations for iOS and Android.
 
-## KNOWN ISSUES:
+## KNOWN ISSUES
 
 - Timer shifts oddly at the 11th second of single digit minutes
 - Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
 - Completion adds 2 laps and not 1
 - View and update pages don't work perfectly: may need unit testing
+- Usability
+- Retention
+- Efficacy
 
 ## TODOS
-usability
-retention
-efficacy
 
 - Styling
 
@@ -22,7 +22,9 @@ efficacy
 
 - Features
 
-  - Archive completed todos
+  - Complete projects
+  - Complete todos
+  - Deadlines
   - Disable notifications
 
 - Backend

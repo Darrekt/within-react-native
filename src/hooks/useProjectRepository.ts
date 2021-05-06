@@ -56,12 +56,6 @@ const useProjectRepository: () => [
           state.findIndex((item) => item.id === action.payload.id),
           (proj) => action.payload
         );
-        Toast.show({
-          type: "success",
-          position: "bottom",
-          text1: "Updated Project!",
-          text2: "",
-        });
         break;
       case "add":
         newState =

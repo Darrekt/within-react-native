@@ -3,18 +3,11 @@ import { StyleSheet, View, TouchableHighlight, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import { ProjContext } from "../../state/context";
-import Card from "../layout/Card";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
-import {
-  LineChart,
-  BarChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import ConfettiCannon from "react-native-confetti-cannon";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -47,17 +40,23 @@ const HomeDisplay = () => {
 
   return (
     <View style={{ ...globalStyles.column }}>
+      {/* <ConfettiCannon count={100} origin={{ x: 0, y: 0 }} fadeOut autoStart={true}/> */}
       <HeadingDropDown header="Projects" dropdown={addProjButton}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          style={{ width: "100%" }}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
           {projContext.projects
             .sortBy((value) => value.due)
+            .filter((value) => !value.completed)
             .map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
         </ScrollView>
       </HeadingDropDown>
       {/* TODO: Hacky fix */}
-      <View style={{height:15}}></View>
+      <View style={{ height: 15 }}></View>
       <HeadingDropDown header="Deadlines">
         {/* <LineChart
           data={{
