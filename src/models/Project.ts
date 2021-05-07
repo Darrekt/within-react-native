@@ -9,10 +9,18 @@ export default class Project {
   completed: boolean = false;
   todos: List<string> = List([]);
   deadlines: List<Date> = List([]);
-  due?: Date;
 
   constructor(data: Partial<Project>) {
+    if (!data.id) delete data.id;
     Object.assign(this, data);
+  }
+
+  // Returns the first deadline that has not passed, or the most recently passed one.
+  // If no deadlines exist, returns undefined.
+  closestDeadline() {
+    return this.deadlines.find(
+      (deadline) => deadline.getTime() < new Date().getTime()
+    );
   }
 
   // WARNING: Make sure you update toEntity if you change the shape of the Project object!
@@ -25,7 +33,6 @@ export default class Project {
       completed: this.completed,
       todos: this.todos.toArray(),
       deadlines: this.deadlines.map((deadline) => deadline.getTime()).toArray(),
-      due: this.due?.getTime(),
     };
   }
 
@@ -38,7 +45,6 @@ export default class Project {
       completed: this.completed,
       todos: this.todos.toArray(),
       deadlines: this.deadlines.map((deadline) => deadline.getTime()).toArray(),
-      due: this.due?.getTime(),
     };
   }
 }
@@ -49,6 +55,5 @@ export function fromFirestore(doc: any) {
     ...doc,
     todos: List(doc.todos),
     deadlines: List(deadlines).map((deadline) => new Date(deadline)),
-    due: doc.due ? new Date(doc.due) : undefined,
   });
 }

@@ -5,6 +5,7 @@ import Todo, { fromFirestore } from "../models/Todo";
 import firestore from "@react-native-firebase/firestore";
 import { getTimeLeft } from "../util/timer";
 import { SettingsContext } from "../state/context";
+import { SageSettings } from "./useSettingsRepository";
 
 export type TodoRepoAction =
   | TodoAsyncStorageAction
@@ -58,15 +59,8 @@ async function writeItems(state: List<Todo>, uid?: string | null) {
     console.log("Error saving todos:", error);
   }
 }
-
-const useTodoRepository: () => [
-  List<Todo>,
-  React.Dispatch<TodoRepoAction>,
-  Todo | undefined,
-  boolean
-] = () => {
-  const { settings } = useContext(SettingsContext);
-  const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
+export const todoReducer = (settings: SageSettings) => {
+  return (state: List<Todo>, action: TodoRepoAction) => {
     let newState: List<Todo>;
     switch (action.type) {
       // TodoTimerActions
@@ -156,8 +150,16 @@ const useTodoRepository: () => [
     if (action.type !== "hydrate") writeItems(newState, settings.user?.uid);
     return newState;
   };
+};
 
-  const [todos, dispatch] = useReducer(todoReducer, List<Todo>());
+const useTodoRepository: () => [
+  List<Todo>,
+  React.Dispatch<TodoRepoAction>,
+  Todo | undefined,
+  boolean
+] = () => {
+  const { settings } = useContext(SettingsContext);
+  const [todos, dispatch] = useReducer(todoReducer(settings), List<Todo>());
   const selected = todos.find((todo) => todo.selected);
   const running = selected?.finishingTime ? true : false;
 

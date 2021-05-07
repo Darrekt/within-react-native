@@ -20,7 +20,7 @@ export default function ProjectCard({ project }: { project: Project }) {
 
   const now = new Date().valueOf();
   const dueDateFont =
-    (project.due?.valueOf() ?? 0) > now ? styles.blackFont : styles.redFont;
+    (project.deadlines.first(0).valueOf()) > now ? styles.blackFont : styles.redFont;
 
   return (
     <Card
@@ -73,7 +73,7 @@ export default function ProjectCard({ project }: { project: Project }) {
           <AntDesign name="calendar" size={30} color="black" />
           <View style={{ ...globalStyles.column, marginHorizontal: 20 }}>
             <Text style={dueDateFont}>
-              {project.due ? project.due.toDateString() : "No due date!"}
+              {project.closestDeadline()?.toDateString() ?? "No due date!"}
             </Text>
             <Text>
               {project.todos.isEmpty()

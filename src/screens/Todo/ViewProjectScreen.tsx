@@ -62,7 +62,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
         emoji: project?.emoji ?? "",
         name: project?.name ?? "",
         notes: project?.notes ?? "",
-        due: project?.due ?? new Date(),
+        deadlines: project?.deadlines ?? [],
       }}
       validate={(values) => {
         const errors: {
@@ -86,7 +86,8 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               emoji: values.emoji,
               name: values.name,
               notes: values.notes,
-              due: values.due,
+              // TODO
+              // deadlines: List(values.deadlines),
             }),
           })
         );
@@ -103,103 +104,105 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
         <View style={globalStyles.form}>
           <View style={globalStyles.column}>
             <View style={globalStyles.spacer}></View>
-            <View style={globalStyles.row}>
-              <TextInput
-                style={styles.emojiInput}
-                onChangeText={formik.handleChange("emoji")}
-                onBlur={formik.handleBlur("emoji")}
-                placeholder="Emoji"
-                value={formik.values.emoji}
-              />
-              <TextInput
-                style={styles.nameInput}
-                onChangeText={formik.handleChange("name")}
-                onBlur={formik.handleBlur("name")}
-                placeholder="Project name"
-                value={formik.values.name}
-              />
-            </View>
-            <View style={globalStyles.row}>
-              {formik.touched.emoji && formik.errors.emoji && (
-                <Text style={textStyles.validationMessage}>
-                  {formik.errors.emoji}
-                </Text>
-              )}
-              {formik.touched.name && formik.errors.name && (
-                <Text style={textStyles.validationMessage}>
-                  {formik.errors.name}
-                </Text>
-              )}
-            </View>
-            <Text style={textStyles.header}>Additional details</Text>
-            <TextInput
-              style={globalStyles.inputBox}
-              onChangeText={formik.handleChange("notes")}
-              onBlur={formik.handleBlur("notes")}
-              placeholder="Notes"
-              value={formik.values.notes}
-            />
-            {/* DATE DISPLAY */}
-            <HeadingDropDown header="Deadlines">
-              <DeadlineDisplay></DeadlineDisplay>
+            <HeadingDropDown header="Project Info">
               <View style={globalStyles.row}>
-                <Text
-                  style={{
-                    textAlign: "right",
+                <TextInput
+                  style={styles.emojiInput}
+                  onChangeText={formik.handleChange("emoji")}
+                  onBlur={formik.handleBlur("emoji")}
+                  placeholder="Emoji"
+                  value={formik.values.emoji}
+                />
+                <TextInput
+                  style={styles.nameInput}
+                  onChangeText={formik.handleChange("name")}
+                  onBlur={formik.handleBlur("name")}
+                  placeholder="Project name"
+                  value={formik.values.name}
+                />
+              </View>
+              <View style={globalStyles.row}>
+                {formik.touched.emoji && formik.errors.emoji && (
+                  <Text style={textStyles.validationMessage}>
+                    {formik.errors.emoji}
+                  </Text>
+                )}
+                {formik.touched.name && formik.errors.name && (
+                  <Text style={textStyles.validationMessage}>
+                    {formik.errors.name}
+                  </Text>
+                )}
+              </View>
+              <TextInput
+                style={globalStyles.inputBox}
+                onChangeText={formik.handleChange("notes")}
+                onBlur={formik.handleBlur("notes")}
+                placeholder="Notes"
+                value={formik.values.notes}
+              />
+            </HeadingDropDown>
+            {/* DATE DISPLAY */}
+            {project && (
+              <HeadingDropDown header="Progress">
+                <LineChart
+                  data={{
+                    labels: [
+                      "Sun",
+                      "Mon",
+                      "Tues",
+                      "Wed",
+                      "Thurs",
+                      "Fri",
+                      "Sat",
+                    ],
+                    datasets: [
+                      {
+                        data: [
+                          Math.random() * 10,
+                          Math.random() * 10,
+                          Math.random() * 10,
+                          Math.random() * 10,
+                          Math.random() * 10,
+                          Math.random() * 10,
+                        ],
+                      },
+                    ],
                   }}
-                >
-                  Due date:
-                </Text>
-                <DateTimePicker
+                  width={0.85 * Dimensions.get("window").width} // from react-native
+                  height={0.2 * Dimensions.get("window").height}
+                  chartConfig={{
+                    backgroundGradientFrom: "#01C2EF",
+                    backgroundGradientTo: "#56DEF1",
+                    decimalPlaces: 0, // optional, defaults to 2dp
+                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    labelColor: (opacity = 1) =>
+                      `rgba(255, 255, 255, ${opacity})`,
+                    style: {
+                      borderRadius: 15,
+                    },
+                    propsForDots: {
+                      r: "5",
+                      strokeWidth: "1",
+                      stroke: "#FFAE5E",
+                    },
+                  }}
+                  bezier
+                  style={styles.chart}
+                />
+              </HeadingDropDown>
+            )}
+          </View>
+          <HeadingDropDown header="Deadlines">
+            <DeadlineDisplay></DeadlineDisplay>
+            {/* <DateTimePicker
                   style={{ minWidth: 0.3 * Dimensions.get("window").width }}
                   value={formik.values.due}
                   mode="date"
                   is24Hour={true}
                   display="default"
                   onChange={(event, date) => formik.setFieldValue("due", date)}
-                />
-              </View>
-            </HeadingDropDown>
-            {project && (
-              <LineChart
-                data={{
-                  labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
-                  datasets: [
-                    {
-                      data: [
-                        Math.random() * 10,
-                        Math.random() * 10,
-                        Math.random() * 10,
-                        Math.random() * 10,
-                        Math.random() * 10,
-                        Math.random() * 10,
-                      ],
-                    },
-                  ],
-                }}
-                width={0.85 * Dimensions.get("window").width} // from react-native
-                height={0.2 * Dimensions.get("window").height}
-                chartConfig={{
-                  backgroundGradientFrom: "#01C2EF",
-                  backgroundGradientTo: "#56DEF1",
-                  decimalPlaces: 0, // optional, defaults to 2dp
-                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                  labelColor: (opacity = 1) =>
-                    `rgba(255, 255, 255, ${opacity})`,
-                  style: {
-                    borderRadius: 15,
-                  },
-                  propsForDots: {
-                    r: "5",
-                    strokeWidth: "1",
-                    stroke: "#FFAE5E",
-                  },
-                }}
-                bezier
-                style={styles.chart}
-              />
-            )}
-          </View>
+                /> */}
+          </HeadingDropDown>
           <View style={globalStyles.bottomButtons}>
             {project && (
               <SubmitButton

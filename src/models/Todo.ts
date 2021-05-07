@@ -14,6 +14,7 @@ export default class Todo {
   finishingTime?: Date;
 
   constructor(data: Partial<Todo>) {
+    if (!data.id) delete data.id;
     Object.assign(this, data);
   }
 
