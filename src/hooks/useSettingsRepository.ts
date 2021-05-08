@@ -52,7 +52,10 @@ const settingsTimeStamp = "settingsTimeStamp";
 const setAsyncStorageSettings = async (settings: SageSettings) => {
   if (settings.user !== null) {
     const { user, ...settingsEntity } = settings;
-    firestore().collection("Users").doc(settings.user.uid).set(settingsEntity);
+    firestore()
+      .collection("Users")
+      .doc(settings.user.uid)
+      .set(settingsEntity, { merge: true });
   }
   try {
     await AsyncStorage.setItem(settingsTimeStamp, JSON.stringify(Date.now()));

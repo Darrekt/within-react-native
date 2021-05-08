@@ -6,10 +6,11 @@ export default class Todo {
   name: string = "";
   notes: string = "";
   disableNotifications: boolean = false;
+  project?: string;
+  deadline?: string;
   laps: number = 0;
   completed: boolean = false;
   selected: boolean = false;
-  project?: string;
   remaining?: number;
   finishingTime?: Date;
 

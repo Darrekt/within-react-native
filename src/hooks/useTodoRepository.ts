@@ -36,19 +36,18 @@ export type TodoTimerAction = {
 async function writeItems(state: List<Todo>, uid?: string | null) {
   try {
     if (uid) {
-      const tempLstStr = await AsyncStorage.getItem("todos");
-      if (tempLstStr !== null) {
-        await firestore()
-          .collection("Users")
-          .doc(uid)
-          .collection("todos")
-          .doc("current")
-          .set({
-            current: JSON.stringify(
+      console.log("Writing to firebase");
+      await firestore()
+        .collection("Users")
+        .doc(uid)
+        .set(
+          {
+            todos: JSON.stringify(
               state.map((item) => item.toEntity()).toJSON()
             ),
-          });
-      }
+          },
+          { merge: true }
+        );
     } else {
       await AsyncStorage.setItem(
         "todos",
@@ -170,11 +169,9 @@ const useTodoRepository: () => [
       return firestore()
         .collection("Users")
         .doc(settings.user.uid)
-        .collection("todos")
-        .doc("current")
         .onSnapshot((documentSnapshot) => {
           const storedData = JSON.parse(
-            documentSnapshot.get("current")
+            documentSnapshot.get("todos")
           ) as Array<Object>;
           const storedTodos = List(storedData).map((item) =>
             fromFirestore(item)
