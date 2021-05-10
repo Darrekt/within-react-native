@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { List } from "immutable";
+import Deadline, { fromFirestore as dlFromFireStore } from "./Deadline";
+import Todo, { fromFirestore as todoFromFireStore } from "./Todo";
 
 export default class Project {
   id: string = uuidv4();
@@ -7,8 +9,8 @@ export default class Project {
   name: string = "";
   notes: string = "";
   completed: boolean = false;
-  todos: List<string> = List([]);
-  deadlines: List<Date> = List([]);
+  deadlines: List<Deadline> = List([]);
+  todos: List<Todo> = List([]);
 
   constructor(data: Partial<Project>) {
     if (!data.id) delete data.id;
@@ -19,7 +21,7 @@ export default class Project {
   // If no deadlines exist, returns undefined.
   closestDeadline() {
     return this.deadlines.find(
-      (deadline) => deadline.getTime() < new Date().getTime()
+      (deadline) => deadline.due.getTime() < new Date().getTime()
     );
   }
 
@@ -32,7 +34,9 @@ export default class Project {
       notes: this.notes,
       completed: this.completed,
       todos: this.todos.toArray(),
-      deadlines: this.deadlines.map((deadline) => deadline.getTime()).toArray(),
+      deadlines: this.deadlines
+        .map((deadline) => deadline.due.getTime())
+        .toArray(),
     };
   }
 
@@ -44,16 +48,21 @@ export default class Project {
       notes: this.notes,
       completed: this.completed,
       todos: this.todos.toArray(),
-      deadlines: this.deadlines.map((deadline) => deadline.getTime()).toArray(),
+      deadlines: this.deadlines
+        .map((deadline) => deadline.toEntity())
+        .toArray(),
     };
   }
 }
 
 export function fromFirestore(doc: any) {
-  const deadlines: string[] = doc.deadlines;
   return new Project({
     ...doc,
-    todos: List(doc.todos),
-    deadlines: List(deadlines).map((deadline) => new Date(deadline)),
+    todos: List(doc.todos).map((todoStr) =>
+      todoFromFireStore(JSON.parse(todoStr as string))
+    ),
+    deadlines: List(doc.deadlines).map((deadlineStr) =>
+      dlFromFireStore(JSON.parse(deadlineStr as string))
+    ),
   });
 }

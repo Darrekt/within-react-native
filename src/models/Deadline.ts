@@ -24,4 +24,4 @@ export default class Deadline {
 }
 
 export const fromFirestore = (doc: any) =>
-  new Deadline(doc.name, new Date(doc.due));
+  new Deadline(doc.name, new Date(doc.due), doc.id);

@@ -4,14 +4,13 @@ export default class Todo {
   id: string = uuidv4();
   emoji: string = "✏️";
   name: string = "";
-  notes: string = "";
-  disableNotifications: boolean = false;
   project?: string;
   deadline?: string;
   laps: number = 0;
   completed: boolean = false;
-  selected: boolean = false;
   remaining?: number;
+
+  /// finishingTime is a Date that specifies the end of the current interval. If the task is not running, this is undefined. There should only be one globally running task.
   finishingTime?: Date;
 
   constructor(data: Partial<Todo>) {
@@ -25,11 +24,8 @@ export default class Todo {
       id: this.id,
       emoji: this.emoji,
       name: this.name,
-      notes: this.notes,
-      disableNotifications: this.disableNotifications,
       laps: this.laps,
       completed: this.completed,
-      selected: this.selected,
       project: this.project,
       remaining: this.remaining,
       finishingTime: this.finishingTime?.getTime(),
@@ -41,11 +37,8 @@ export default class Todo {
       id: this.id,
       emoji: this.emoji,
       name: this.name,
-      notes: this.notes,
-      disableNotifications: this.disableNotifications,
       laps: this.laps,
       completed: this.completed,
-      selected: this.selected,
       project: this.project,
       remaining: this.remaining,
       finishingTime: this.finishingTime?.getTime(),
