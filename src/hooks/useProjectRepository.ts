@@ -59,7 +59,8 @@ const useProjectRepository: () => [
         break;
       case "add":
         newState =
-          state.filterNot((project) => project.completed).size < settings.maxProjects
+          state.filterNot((project) => project.completed).size <
+          settings.maxProjects
             ? state.push(action.payload)
             : state;
         Toast.show({
@@ -109,7 +110,7 @@ const useProjectRepository: () => [
         .then((tempLstStr) => {
           if (tempLstStr) {
             const asyncProjects = List(
-              (JSON.parse(tempLstStr) as Array<Object>).map(
+              (JSON.parse(tempLstStr) as Array<any>).map(
                 (item) => new Project(item)
               )
             );

@@ -1,11 +1,14 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useReducer, useContext } from "react";
+import { useEffect, useReducer, useContext, useState } from "react";
 import { List } from "immutable";
-import Todo, { fromFirestore } from "../models/Todo";
-import firestore from "@react-native-firebase/firestore";
+import Todo, {
+  findTodoDeadline,
+  findTodoProj,
+  UNCATEGORISED_TODO_PROJID,
+} from "../models/Todo";
 import { getTimeLeft } from "../util/timer";
-import { SettingsContext } from "../state/context";
-import { SageSettings } from "./useSettingsRepository";
+import { ProjContext, SettingsContext } from "../state/context";
+import Project from "../models/Project";
+import Deadline from "../models/Deadline";
 
 export type TodoRepoAction =
   | TodoAsyncStorageAction
@@ -14,8 +17,8 @@ export type TodoRepoAction =
   | TodoTimerAction;
 
 export type TodoAsyncStorageAction = {
-  type: "hydrate" | "flush";
-  payload?: List<Todo>;
+  type: "hydrate";
+  payload: List<Todo>;
 };
 
 export type TodoCRUDAction = {
@@ -24,7 +27,7 @@ export type TodoCRUDAction = {
 };
 
 export type TodoProductivityAction = {
-  type: "selected" | "completed";
+  type: "toggleComplete" | "assign" | "de-assign";
   target: Todo["id"];
 };
 
@@ -33,38 +36,39 @@ export type TodoTimerAction = {
   target: Todo["id"];
 };
 
-async function writeItems(state: List<Todo>, uid?: string | null) {
-  try {
-    if (uid) {
-      console.log("Writing to firebase");
-      await firestore()
-        .collection("Users")
-        .doc(uid)
-        .set(
-          {
-            todos: JSON.stringify(
-              state.map((item) => item.toEntity()).toJSON()
-            ),
-          },
-          { merge: true }
-        );
-    } else {
-      await AsyncStorage.setItem(
-        "todos",
-        JSON.stringify(state.map((item) => item.toEntity()).toJSON())
-      );
-    }
-  } catch (error) {
-    console.log("Error saving todos:", error);
+const useTodoRepository: () => [
+  List<Todo>,
+  React.Dispatch<TodoRepoAction>
+  // Todo | undefined,
+  // boolean
+] = () => {
+  const { projects, dispatch } = useContext(ProjContext);
+  const { settings } = useContext(SettingsContext);
+  // const [selected, setSelected] = useState("");
+
+  // Each action should result in at most a single call using this function, which batches all relevant updates in a single action, and thus a single database operation.
+  function writeToProjectRepo(todo: Todo, ddl?: Deadline) {
+    const [project, todoIndex] = findTodoProj(projects, todo);
+    const [_, deadlineIndex] = findTodoDeadline(project, todo);
+
+    dispatch({
+      type: "update",
+      payload: new Project({
+        ...project,
+        deadlines: ddl
+          ? project.deadlines.set(deadlineIndex, ddl)
+          : project.deadlines,
+        todos: project?.todos.set(todoIndex, todo),
+      }),
+    });
   }
-}
-export const todoReducer = (settings: SageSettings) => {
-  return (state: List<Todo>, action: TodoRepoAction) => {
-    let newState: List<Todo>;
+
+  const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
+    let updatedEntry: Todo;
     switch (action.type) {
       // TodoTimerActions
       case "start":
-        newState = state.update(
+        state.update(
           state.findIndex((item) => item.id == action.target),
           (item) => {
             const finishAt = new Date();
@@ -88,7 +92,7 @@ export const todoReducer = (settings: SageSettings) => {
       case "pause":
       case "reset":
       case "finished":
-        newState = state.update(
+        state.update(
           state.findIndex((item) => item.id == action.target),
           (item) => {
             return new Todo({
@@ -103,100 +107,57 @@ export const todoReducer = (settings: SageSettings) => {
         break;
 
       // TodoProductivityActions
-      case "selected":
-        newState = state.map(
-          (item) =>
-            new Todo({
-              ...item,
-              selected: item.id == action.target ? !item.selected : false,
-            })
-        );
-        break;
-      case "completed":
-        newState = state.update(
-          state.findIndex((item) => item.id == action.target),
-          (item) => new Todo({ ...item, completed: !item.completed })
-        );
+      case "toggleComplete":
+        const target = state.find((item) => item.id == action.target);
+        updatedEntry = new Todo({
+          ...target,
+          completed: !target?.completed ?? false,
+        });
+        writeToProjectRepo(updatedEntry);
         break;
 
       // TodoCRUDActions
       case "update":
-        newState = state.update(
-          state.findIndex((item) => item.id === action.payload.id),
-          () => action.payload
-        );
+        updatedEntry = action.payload;
+        writeToProjectRepo(updatedEntry);
         break;
       case "add":
-        newState =
-          state.filter((todo) => !todo.completed).size < settings.maxTasks
-            ? state.push(action.payload)
-            : state;
+        const [project, _] = findTodoProj(projects, action.payload);
+        const [ddl, ddlIndex] = findTodoDeadline(project, action.payload);
+        dispatch({
+          type: "update",
+          payload: new Project({
+            ...project,
+            deadlines: action.payload.deadline
+              ? project.deadlines.set(ddlIndex, new Deadline(ddl))
+              : project.deadlines,
+            todos: project.todos.push(action.payload),
+          }),
+        });
         break;
       case "delete":
-        newState = state.filter((item) => item.id !== action.payload.id);
         break;
 
       // TodoAsyncStorageActions
       case "hydrate":
-        newState = action.payload ?? List<Todo>();
-        break;
-      case "flush":
-        newState = List<Todo>();
-        break;
+        return action.payload;
       default:
         throw new Error("Invalid Todo Action");
     }
-    if (action.type !== "hydrate") writeItems(newState, settings.user?.uid);
-    return newState;
+    return state;
   };
-};
+  const [todos, todoDispatch] = useReducer(todoReducer, List<Todo>());
 
-const useTodoRepository: () => [
-  List<Todo>,
-  React.Dispatch<TodoRepoAction>,
-  Todo | undefined,
-  boolean
-] = () => {
-  const { settings } = useContext(SettingsContext);
-  const [todos, dispatch] = useReducer(todoReducer(settings), List<Todo>());
-  const selected = todos.find((todo) => todo.selected);
-  const running = selected?.finishingTime ? true : false;
-
-  // If user is signed in, use Firebase as the source of truth and update AsyncStorage
-  // Otherwise, use only AsyncStorage and update FireStore once you're signed in.
   useEffect(() => {
-    if (settings.user) {
-      return firestore()
-        .collection("Users")
-        .doc(settings.user.uid)
-        .onSnapshot((documentSnapshot) => {
-          const storedData = JSON.parse(
-            documentSnapshot.get("todos")
-          ) as Array<Object>;
-          const storedTodos = List(storedData).map((item) =>
-            fromFirestore(item)
-          );
-          dispatch({ type: "hydrate", payload: storedTodos });
-        });
-    } else {
-      AsyncStorage.getItem("todos")
-        .then((tempLstStr) => {
-          if (tempLstStr) {
-            const asyncTodos = List(
-              (JSON.parse(tempLstStr) as Array<Object>).map(
-                (item) => new Todo(item)
-              )
-            );
-            dispatch({ type: "hydrate", payload: asyncTodos });
-          }
-        })
-        .catch((error) => {
-          console.log("Error reading todos:", error);
-        });
-    }
-  }, [settings.user]);
+    todoDispatch({
+      type: "hydrate",
+      payload: projects
+        .map((proj) => proj.todos)
+        .reduce((agg, projTodos) => agg.concat(projTodos), List<Todo>()),
+    });
+  }, [projects]);
 
-  return [todos, dispatch, selected, running];
+  return [todos, todoDispatch];
 };
 
 export default useTodoRepository;

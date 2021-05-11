@@ -5,12 +5,13 @@ export default class Deadline {
   id: string;
   name: string;
   due: Date;
-  todos: List<string> = List<string>();
+  todos: List<string>;
 
-  constructor(name: string, due: Date, id?: string) {
-    this.id = id ?? uuidv4();
-    this.name = name;
-    this.due = due;
+  constructor(data: Pick<Deadline, "name" | "due"> & Partial<Deadline>) {
+    this.id = data.id ?? uuidv4();
+    this.name = data.name;
+    this.due = data.due;
+    this.todos = data.todos ?? List([]);
   }
 
   // TODO: Might need to JSON serialise
@@ -24,4 +25,9 @@ export default class Deadline {
 }
 
 export const fromFirestore = (doc: any) =>
-  new Deadline(doc.name, new Date(doc.due), doc.id);
+  new Deadline({
+    id: doc.id,
+    name: doc.name,
+    due: new Date(doc.due),
+    todos: doc.todos,
+  });

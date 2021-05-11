@@ -1,4 +1,9 @@
+import { List } from "immutable";
 import { v4 as uuidv4 } from "uuid";
+import Deadline from "./Deadline";
+import Project from "./Project";
+
+export const UNCATEGORISED_TODO_PROJID = "uncategorised";
 
 export default class Todo {
   id: string = uuidv4();
@@ -51,4 +56,29 @@ export function fromFirestore(doc: any) {
     ...doc,
     finishingTime: doc.finishingTime ? new Date(doc.finishingTime) : undefined,
   });
+}
+
+export function findTodoProj(
+  projects: List<Project>,
+  todo: Todo
+): [Project, number] {
+  const projID = todo.project ?? UNCATEGORISED_TODO_PROJID;
+  const project = projects.find((proj) => proj.id == projID) as Project;
+  return [
+    // TODO: Back this up with a test
+    project,
+    project.todos.findIndex((item) => item.id == todo.id),
+  ];
+}
+
+export function findTodoDeadline(
+  project: Project,
+  todo: Todo
+): [Deadline, number] {
+  const ddlID = todo.deadline ?? UNCATEGORISED_TODO_PROJID;
+  return [
+    // TODO: Back this up with a test
+    project.deadlines.find((ddl) => ddl.id == ddlID) as Deadline,
+    project.deadlines.findIndex((ddl) => ddl.id == ddlID),
+  ];
 }

@@ -5,7 +5,6 @@ const todo1 = new Todo({ name: "First task" });
 const todo2 = new Todo({
   id: undefined,
   name: "Second task",
-  notes: "I am important",
   project: uuidv4(),
   finishingTime: new Date(),
 });

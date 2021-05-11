@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Switch } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { ProjContext, TodoContext } from "../../state/context";
@@ -55,9 +55,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
         initialValues={{
           emoji: todo?.emoji ?? "",
           name: todo?.name ?? "",
-          notes: todo?.notes ?? "",
           project: todo?.project ?? "",
-          disableNotifications: todo?.disableNotifications ?? false,
         }}
         validate={(values) => {
           const errors: {
@@ -80,9 +78,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
                 ...todo,
                 emoji: values.emoji,
                 name: values.name,
-                notes: values.notes,
                 project: values.project,
-                disableNotifications: values.disableNotifications,
               }),
             })
           );
@@ -147,31 +143,10 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
                 }}
                 cancelText="Cancel"
               />
-              <TextInput
-                style={globalStyles.inputBox}
-                onChangeText={formik.handleChange("notes")}
-                onBlur={formik.handleBlur("notes")}
-                placeholder="Notes"
-                value={formik.values.notes}
-              />
               <View style={styles.boolEntry}>
                 <Text style={textStyles.header}>
                   Silence incoming notifications
                 </Text>
-                <Switch
-                  trackColor={{ false: "#767577", true: "#81b0ff" }}
-                  thumbColor={
-                    formik.values.disableNotifications ? "#f5dd4b" : "#f4f3f4"
-                  }
-                  ios_backgroundColor="#3e3e3e"
-                  value={formik.values.disableNotifications}
-                  onValueChange={() =>
-                    formik.setFieldValue(
-                      "disableNotifications",
-                      !formik.values.disableNotifications
-                    )
-                  }
-                />
               </View>
             </View>
             <View style={globalStyles.bottomButtons}>

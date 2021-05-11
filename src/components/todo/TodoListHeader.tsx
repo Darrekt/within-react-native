@@ -48,13 +48,7 @@ const TodoListHeader = ({ todos, dispatch, isOpen, taskIsRunning }: IProps) => {
       </View>
       {isOpen && (
         <View style={styles.openHeaderButtonRow}>
-          <Pressable
-            onPress={() => {
-              dispatch({
-                type: "flush",
-              });
-            }}
-          >
+          <Pressable onPress={() => {}}>
             <MaterialIcons name="clear-all" size={24} color="black" />
           </Pressable>
           <Pressable

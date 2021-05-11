@@ -6,15 +6,16 @@ import Todo, { fromFirestore as todoFromFireStore } from "./Todo";
 export default class Project {
   id: string = uuidv4();
   emoji: string = "✏️";
-  name: string = "";
+  name: string;
   notes: string = "";
   completed: boolean = false;
   deadlines: List<Deadline> = List([]);
   todos: List<Todo> = List([]);
 
-  constructor(data: Partial<Project>) {
+  constructor(data: Pick<Project, "name"> & Partial<Project>) {
     if (!data.id) delete data.id;
     Object.assign(this, data);
+    this.name = data.name;
   }
 
   // Returns the first deadline that has not passed, or the most recently passed one.
@@ -56,13 +57,13 @@ export default class Project {
 }
 
 export function fromFirestore(doc: any) {
+  console.log("Todos:", doc.todos);
+  console.log("Deadlines:", doc.deadlines);
   return new Project({
     ...doc,
-    todos: List(doc.todos).map((todoStr) =>
-      todoFromFireStore(JSON.parse(todoStr as string))
-    ),
+    todos: List(doc.todos).map((todoStr) => todoFromFireStore(todoStr)),
     deadlines: List(doc.deadlines).map((deadlineStr) =>
-      dlFromFireStore(JSON.parse(deadlineStr as string))
+      dlFromFireStore(deadlineStr)
     ),
   });
 }

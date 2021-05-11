@@ -4,14 +4,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Icon } from "react-native-elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { SettingsContext } from "./src/state/context";
+import { SettingsContext, ProjContext } from "./src/state/context";
 import useSettingsRepository from "./src/hooks/useSettingsRepository";
+import useProjectRepository from "./src/hooks/useProjectRepository";
 import Toast from "react-native-toast-message";
 
 import TodoScreen from "./src/screens/Todo/TodoScreen";
 import StatScreen from "./src/screens/StatScreen";
 import OnboardingScreen from "./src/screens/OnboardingScreen";
-import GroupScreen from "./src/screens/GroupScreen";
 import SettingsScreen from "./src/screens/Settings/SettingsScreen";
 import AuthManagementScreen from "./src/screens/Onboarding/AuthManagementScreen";
 import EmailSignInScreen from "./src/screens/Onboarding/EmailSignInScreen";
@@ -113,39 +113,57 @@ export default function App() {
   );
 }
 
-const appTabNav = () => (
-  <Tab.Navigator
-    initialRouteName="Todos"
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        switch (route.name) {
-          case "Stats":
-            return (
-              <Icon
-                name="md-stats-chart"
-                type="ionicon"
-                size={size}
-                color={color}
-              />
-            );
-          case "Groups":
-            return (
-              <Icon name="message" type="material" size={size} color={color} />
-            );
-          default:
-            return (
-              <Icon name="checkbox" type="ionicon" size={size} color={color} />
-            );
-        }
-      },
-    })}
-    tabBarOptions={{
-      activeTintColor: "#01D1EE",
-      inactiveTintColor: "gray",
-    }}
-  >
-    <Tab.Screen name="Todos" component={TodoScreen} />
-    <Tab.Screen name="Stats" component={StatScreen} />
-    {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
-  </Tab.Navigator>
-);
+const appTabNav = () => {
+  const [projects, proj_dispatch] = useProjectRepository();
+
+  return (
+    <ProjContext.Provider
+      value={{ projects: projects, dispatch: proj_dispatch }}
+    >
+      <Tab.Navigator
+        initialRouteName="Todos"
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            switch (route.name) {
+              case "Stats":
+                return (
+                  <Icon
+                    name="md-stats-chart"
+                    type="ionicon"
+                    size={size}
+                    color={color}
+                  />
+                );
+              case "Groups":
+                return (
+                  <Icon
+                    name="message"
+                    type="material"
+                    size={size}
+                    color={color}
+                  />
+                );
+              default:
+                return (
+                  <Icon
+                    name="checkbox"
+                    type="ionicon"
+                    size={size}
+                    color={color}
+                  />
+                );
+            }
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: "#01D1EE",
+          inactiveTintColor: "gray",
+        }}
+      >
+        <Tab.Screen name="Todos" component={TodoScreen} />
+        <Tab.Screen name="Stats" component={StatScreen} />
+        {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
+      </Tab.Navigator>
+    </ProjContext.Provider>
+  );
+};

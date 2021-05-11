@@ -4,12 +4,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
-import { ProjContext, TodoContext } from "./../../state/context";
+import { TodoContext } from "./../../state/context";
 import LinearGradient from "react-native-linear-gradient";
 import useTodoRepository from "../../hooks/useTodoRepository";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
-import useProjectRepository from "../../hooks/useProjectRepository";
 
 import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
@@ -93,62 +92,57 @@ const TodoScreen = () => {
 };
 
 const TodoNavigator = () => {
-  const [todos, dispatch, selected, running] = useTodoRepository();
-  const [projects, proj_dispatch] = useProjectRepository();
+  const [todos, dispatch] = useTodoRepository();
 
   return (
-    <ProjContext.Provider
-      value={{ projects: projects, dispatch: proj_dispatch }}
+    <TodoContext.Provider
+      value={{
+        todos: todos,
+        dispatch: dispatch,
+        selected: undefined,
+        running: false,
+      }}
     >
-      <TodoContext.Provider
-        value={{
-          todos: todos,
-          dispatch: dispatch,
-          selected: selected,
-          running: running,
-        }}
-      >
-        <Stack.Navigator>
-          <Stack.Screen
-            name="AppHome"
-            component={TodoScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ViewProjScreen"
-            component={ViewProjectScreen}
-            options={{
-              title: "View Project",
-              headerBackTitleVisible: false,
-            }}
-          />
-          <Stack.Screen
-            name="AddProjScreen"
-            component={ViewProjectScreen}
-            options={{
-              title: "Add a Project",
-              headerBackTitleVisible: false,
-            }}
-          />
-          <Stack.Screen
-            name="EditTodoScreen"
-            component={ViewTodoScreen}
-            options={{
-              title: "Edit task",
-              headerBackTitleVisible: false,
-            }}
-          />
-          <Stack.Screen
-            name="AddTodoScreen"
-            component={ViewTodoScreen}
-            options={{
-              title: "Add task",
-              headerBackTitleVisible: false,
-            }}
-          />
-        </Stack.Navigator>
-      </TodoContext.Provider>
-    </ProjContext.Provider>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="AppHome"
+          component={TodoScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ViewProjScreen"
+          component={ViewProjectScreen}
+          options={{
+            title: "View Project",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="AddProjScreen"
+          component={ViewProjectScreen}
+          options={{
+            title: "Add a Project",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditTodoScreen"
+          component={ViewTodoScreen}
+          options={{
+            title: "Edit task",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="AddTodoScreen"
+          component={ViewTodoScreen}
+          options={{
+            title: "Add task",
+            headerBackTitleVisible: false,
+          }}
+        />
+      </Stack.Navigator>
+    </TodoContext.Provider>
   );
 };
 
