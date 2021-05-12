@@ -58,7 +58,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     const timer = setTimeout(
       () =>
         timeLeft === 0
-          ? dispatch({ type: "finished", target: selectedTask.id })
+          ? dispatch({ type: "finished", payload: selectedTask })
           : setTimeLeft(getTimeLeft(selectedTask)),
       selectedTask.finishingTime ? 1000 : 0
     );
@@ -78,7 +78,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
       key: "timerControl",
       action: {
         type: selectedTask.finishingTime ? "pause" : "start",
-        target: selectedTask.id,
+        payload: selectedTask,
       },
       icon: (
         <Icon
@@ -90,7 +90,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     },
     {
       key: "timerReset",
-      action: { type: "reset", target: selectedTask.id },
+      action: { type: "reset", payload: selectedTask },
       icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
     },
   ];

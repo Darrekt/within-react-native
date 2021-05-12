@@ -29,11 +29,11 @@ export const ProjContext = React.createContext<{
 export const TodoContext = React.createContext<{
   todos: List<Todo>;
   dispatch: React.Dispatch<TodoRepoAction>;
-  selected: Todo | undefined;
+  selected: string;
   running: boolean;
 }>({
   todos: List<Todo>(),
   dispatch: () => null,
-  selected: undefined,
+  selected: "",
   running: false,
 });

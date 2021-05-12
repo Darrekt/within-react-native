@@ -12,7 +12,7 @@ import Deadline from "../models/Deadline";
 
 export type TodoRepoAction =
   | TodoAsyncStorageAction
-  | TodoCRUDAction
+  | TodoUpdateAction
   | TodoProductivityAction
   | TodoTimerAction;
 
@@ -21,30 +21,31 @@ export type TodoAsyncStorageAction = {
   payload: List<Todo>;
 };
 
-export type TodoCRUDAction = {
+export type TodoUpdateAction = {
   type: "add" | "update" | "delete";
   payload: Todo;
 };
 
 export type TodoProductivityAction = {
-  type: "toggleComplete" | "assign" | "de-assign";
-  target: Todo["id"];
+  type: "select" | "toggleComplete" | "assign" | "de-assign";
+  payload: Todo;
 };
 
 export type TodoTimerAction = {
   type: "start" | "pause" | "reset" | "finished";
-  target: Todo["id"];
+  payload: Todo;
 };
 
 const useTodoRepository: () => [
   List<Todo>,
-  React.Dispatch<TodoRepoAction>
-  // Todo | undefined,
-  // boolean
+  React.Dispatch<TodoRepoAction>,
+  string,
+  boolean
 ] = () => {
   const { projects, dispatch } = useContext(ProjContext);
   const { settings } = useContext(SettingsContext);
-  // const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("");
+  const [running, setRunning] = useState(false);
 
   // Each action should result in at most a single call using this function, which batches all relevant updates in a single action, and thus a single database operation.
   function writeToProjectRepo(todo: Todo, ddl?: Deadline) {
@@ -64,12 +65,21 @@ const useTodoRepository: () => [
   }
 
   const todoReducer = (state: List<Todo>, action: TodoRepoAction) => {
-    let updatedEntry: Todo;
+    if (action.type == "hydrate") return action.payload;
+
+    const [project, todoIndex] = findTodoProj(projects, action.payload);
+    const [ddl, ddlIndex] = findTodoDeadline(project, action.payload);
+    let updatedTodo: Todo;
+    let updatedDeadline: Deadline;
+
     switch (action.type) {
+      case "select":
+        setSelected(selected == action.payload.id ? "" : action.payload.id);
+        break;
       // TodoTimerActions
       case "start":
         state.update(
-          state.findIndex((item) => item.id == action.target),
+          state.findIndex((item) => item.id == action.payload.id),
           (item) => {
             const finishAt = new Date();
             if (item.remaining) {
@@ -88,12 +98,13 @@ const useTodoRepository: () => [
             });
           }
         );
+        setRunning(true);
         break;
       case "pause":
       case "reset":
       case "finished":
         state.update(
-          state.findIndex((item) => item.id == action.target),
+          state.findIndex((item) => item.id == action.payload.id),
           (item) => {
             return new Todo({
               ...item,
@@ -104,43 +115,51 @@ const useTodoRepository: () => [
             });
           }
         );
+        setRunning(false);
         break;
 
       // TodoProductivityActions
       case "toggleComplete":
-        const target = state.find((item) => item.id == action.target);
-        updatedEntry = new Todo({
-          ...target,
-          completed: !target?.completed ?? false,
-        });
-        writeToProjectRepo(updatedEntry);
+        writeToProjectRepo(
+          new Todo({ ...action.payload, completed: !action.payload.completed })
+        );
         break;
 
       // TodoCRUDActions
       case "update":
-        updatedEntry = action.payload;
-        writeToProjectRepo(updatedEntry);
+        writeToProjectRepo(action.payload);
         break;
       case "add":
-        const [project, _] = findTodoProj(projects, action.payload);
-        const [ddl, ddlIndex] = findTodoDeadline(project, action.payload);
+        updatedDeadline = action.payload.deadline
+          ? new Deadline({ ...ddl, todos: ddl.todos.push(action.payload.id) })
+          : ddl;
         dispatch({
           type: "update",
           payload: new Project({
             ...project,
             deadlines: action.payload.deadline
-              ? project.deadlines.set(ddlIndex, new Deadline(ddl))
+              ? project.deadlines.set(ddlIndex, updatedDeadline)
               : project.deadlines,
             todos: project.todos.push(action.payload),
           }),
         });
         break;
       case "delete":
+        updatedDeadline = action.payload.deadline
+          ? new Deadline({ ...ddl, todos: ddl.todos.remove(ddlIndex) })
+          : ddl;
+        dispatch({
+          type: "update",
+          payload: new Project({
+            ...project,
+            deadlines: action.payload.deadline
+              ? project.deadlines.set(ddlIndex, updatedDeadline)
+              : project.deadlines,
+            todos: project.todos.remove(todoIndex),
+          }),
+        });
         break;
 
-      // TodoAsyncStorageActions
-      case "hydrate":
-        return action.payload;
       default:
         throw new Error("Invalid Todo Action");
     }
@@ -148,16 +167,18 @@ const useTodoRepository: () => [
   };
   const [todos, todoDispatch] = useReducer(todoReducer, List<Todo>());
 
-  useEffect(() => {
-    todoDispatch({
-      type: "hydrate",
-      payload: projects
-        .map((proj) => proj.todos)
-        .reduce((agg, projTodos) => agg.concat(projTodos), List<Todo>()),
-    });
-  }, [projects]);
+  useEffect(
+    () =>
+      todoDispatch({
+        type: "hydrate",
+        payload: projects
+          .map((proj) => proj.todos)
+          .reduce((agg, projTodos) => agg.concat(projTodos), List<Todo>()),
+      }),
+    [projects]
+  );
 
-  return [todos, todoDispatch];
+  return [todos, todoDispatch, selected, running];
 };
 
 export default useTodoRepository;

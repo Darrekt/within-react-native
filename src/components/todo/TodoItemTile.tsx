@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Icon, ListItem, withBadge } from "react-native-elements";
 import Todo from "../../models/Todo";
-import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { TodoRepoAction } from "../../hooks/useTodoRepository";
 import { useNavigation } from "@react-navigation/core";
@@ -40,18 +40,19 @@ const styles = StyleSheet.create({
 
 type Props = {
   todo: Todo;
-  running: boolean;
   dispatch: React.Dispatch<TodoRepoAction>;
+  selected: string;
+  running: boolean;
 };
 
-const TodoItemTile = ({ todo, running, dispatch }: Props) => {
+const TodoItemTile = ({ todo, dispatch, selected, running }: Props) => {
   const navigation = useNavigation();
   let itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
     : styles.tileTitleTextStyle;
 
   itemTitleTextStyle =
-    !todo.selected && running
+    todo.id !== selected && running
       ? { ...itemTitleTextStyle, ...styles.unselectedTileText }
       : itemTitleTextStyle;
 
@@ -63,9 +64,9 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
     {
       key: todo.id + "complete",
       action: {
-        type: "completed",
-        target: todo.id,
-      } as TodoRepoAction,
+        type: "toggleComplete",
+        payload: todo,
+      },
       icon: todo.completed ? (
         <Icon name="ios-refresh" type="ionicon" color="black" />
       ) : (
@@ -87,21 +88,6 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
         <Entypo key={todo.id + "delete"} name="cross" size={20} color="black" />
       ),
     },
-    // {
-    //   key: todo.id + "rearrange",
-    //   action: {
-    //     type: "completed",
-    //     target: todo.id,
-    //   },
-    //   icon: (
-    //     <FontAwesome
-    //       key={todo.id + "sort"}
-    //       name="sort"
-    //       size={20}
-    //       color="black"
-    //     />
-    //   ),
-    // },
   ];
 
   const BadgedText = withBadge(todo.laps, {
@@ -118,14 +104,16 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
   return (
     <ListItem
       topDivider
-      containerStyle={todo.selected ? styles.selectedTileStyle : undefined}
+      containerStyle={
+        todo.id == selected ? styles.selectedTileStyle : undefined
+      }
     >
       <TouchableOpacity
         onPress={() => {
           if (!running)
             dispatch({
-              type: "selected",
-              target: todo.id,
+              type: "select",
+              payload: todo,
             });
         }}
         onLongPress={() => {
@@ -140,7 +128,7 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
           <CircleButtonGroup
             dispatch={dispatch}
             actions={buttons}
-            active={!running || todo.selected}
+            active={!running || todo.id == selected}
           />
         </ListItem.Content>
       </TouchableOpacity>

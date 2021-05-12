@@ -7,7 +7,7 @@ import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
-import ConfettiCannon from "react-native-confetti-cannon";
+// import ConfettiCannon from "react-native-confetti-cannon";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -48,7 +48,7 @@ const HomeDisplay = () => {
           showsHorizontalScrollIndicator={false}
         >
           {projContext.projects
-            .sortBy((value) => value.due)
+            .sortBy((value) => value.closestDeadline())
             .filter((value) => !value.completed)
             .map((project) => (
               <ProjectCard key={project.id} project={project} />

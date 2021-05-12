@@ -48,7 +48,7 @@ const TodoScreen = () => {
       )}
       {isOpen ? (
         <TodoComponents.TimerDisplay
-          selectedTask={selected}
+          selectedTask={todos.find((todo) => todo.id == selected)}
           dispatch={dispatch}
         />
       ) : (
@@ -78,8 +78,9 @@ const TodoScreen = () => {
           renderItem: ({ item }) => (
             <TodoComponents.ItemTile
               todo={item}
-              running={running}
               dispatch={dispatch}
+              selected={selected}
+              running={running}
             />
           ),
           ListEmptyComponent: isOpen
@@ -92,15 +93,15 @@ const TodoScreen = () => {
 };
 
 const TodoNavigator = () => {
-  const [todos, dispatch] = useTodoRepository();
+  const [todos, dispatch, selected, running] = useTodoRepository();
 
   return (
     <TodoContext.Provider
       value={{
         todos: todos,
         dispatch: dispatch,
-        selected: undefined,
-        running: false,
+        selected: selected,
+        running: running,
       }}
     >
       <Stack.Navigator>
