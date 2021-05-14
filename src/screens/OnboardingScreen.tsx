@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Image, StyleSheet } from "react-native";
-import { SettingsContext } from "../state/context";
+import { GlobalStateContext } from "../state/context";
 import Onboarding from "react-native-onboarding-swiper";
-import auth from "@react-native-firebase/auth";
+import { Actions } from "../hooks/Actions";
 
 const styles = StyleSheet.create({
   container: {
@@ -16,12 +16,12 @@ const styles = StyleSheet.create({
 });
 
 const OnboardingScreen = () => {
-  const settings = useContext(SettingsContext);
+  const { dispatch } = useContext(GlobalStateContext);
   return (
     <Onboarding
       containerStyles={styles.container}
-      onSkip={() => settings.dispatch({type: "onboarding"})}
-      onDone={() => settings.dispatch({type: "onboarding"})}
+      onSkip={() => dispatch({ type: Actions.SettingsToggleOnboarding })}
+      onDone={() => dispatch({ type: Actions.SettingsToggleOnboarding })}
       pages={[
         {
           backgroundColor: "#ffffff",

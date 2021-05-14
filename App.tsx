@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [state, dispatch] = useAppState();
+  console.log(state);
 
   return (
     <GlobalStateContext.Provider

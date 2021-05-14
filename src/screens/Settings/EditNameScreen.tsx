@@ -4,13 +4,14 @@ import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { SettingsContext } from "../../state/context";
+import { GlobalStateContext } from "../../state/context";
 import { firebase } from "@react-native-firebase/auth";
-import Toast from "react-native-toast-message";
 import SubmitButton from "../../components/util/SubmitButton";
+import { Actions } from "../../hooks/Actions";
 
 const EditNameScreen = () => {
-  const { settings, dispatch } = useContext(SettingsContext);
+  const { state, dispatch } = useContext(GlobalStateContext);
+  const settings = state.settings;
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>
@@ -28,7 +29,10 @@ const EditNameScreen = () => {
           settings.user
             ?.updateProfile({ displayName: values.newName })
             .then(() => {
-              dispatch({ type: "auth", user: firebase.auth().currentUser });
+              dispatch({
+                type: Actions.SettingsAuth,
+                user: firebase.auth().currentUser,
+              });
               navigation.goBack();
             })
             .catch((error) => console.log(error));

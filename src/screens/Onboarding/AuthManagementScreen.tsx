@@ -1,17 +1,18 @@
 import auth from "@react-native-firebase/auth";
 import React, { useContext } from "react";
-import { View, Text, Button, useWindowDimensions } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import { Avatar, SocialIcon, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
-import { SettingsContext } from "../../state/context";
+import { GlobalStateContext } from "../../state/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 
 const AuthManagementScreen = () => {
-  const { settings } = useContext(SettingsContext);
+  const { state } = useContext(GlobalStateContext);
   const navigation = useNavigation();
   const width = useWindowDimensions().width * 0.7;
+  const settings = state.settings
 
   return (
     <View
@@ -35,7 +36,6 @@ const AuthManagementScreen = () => {
       {settings.user ? (
         <View style={globalStyles.column}>
           <SettingsGroup
-            name=""
             items={[
               {
                 name: "Name",
@@ -73,21 +73,21 @@ const AuthManagementScreen = () => {
               button
               style={{ width: width }}
               type="google"
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <SocialIcon
               title="Sign In With Facebook"
               button
               style={{ width: width }}
               type="facebook"
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <SocialIcon
               title="Sign In With Twitter"
               button
               style={{ width: width }}
               type="twitter"
-              onPress={() => { }}
+              onPress={() => {}}
             />
             <SubmitButton
               text="Sign in with Email"

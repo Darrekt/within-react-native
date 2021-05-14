@@ -256,49 +256,48 @@ const globalReducer = (state: GlobalState, action: Action): GlobalState => {
 const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
   const [state, dispatch] = useReducer(globalReducer, DEFAULT_GLOBAL_STATE);
 
-  //TODO: Write one side effect for Project and Settings
-  useEffect(() => {
-    if (state.settings.user) {
-      return firestore()
-        .collection("Users")
-        .doc(state.settings.user.uid)
-        .collection("projects")
-        .onSnapshot((querySnapshot) => {
-          const storedData = querySnapshot.empty
-            ? List<Project>()
-            : List<Project>(
-                querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
-              );
-          dispatch({
-            type: Actions.RepoHydrate,
-            payload: { ...state, projects: storedData },
-          });
-        });
-    }
-  }, [state.settings.user]);
+  // useEffect(() => {
+  //   if (state.settings.user) {
+  //     return firestore()
+  //       .collection("Users")
+  //       .doc(state.settings.user.uid)
+  //       .collection("projects")
+  //       .onSnapshot((querySnapshot) => {
+  //         const storedData = querySnapshot.empty
+  //           ? List<Project>()
+  //           : List<Project>(
+  //               querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
+  //             );
+  //         dispatch({
+  //           type: Actions.RepoHydrate,
+  //           payload: { ...state, projects: storedData },
+  //         });
+  //       });
+  //   }
+  // }, [state.settings.user, state.projects.toArray()]);
 
-  useEffect(() => {
-    if (state.settings.user) {
-      firestore()
-        .collection("Users")
-        .doc(state.settings.user.uid)
-        .onSnapshot((documentSnapshot) => {
-          const snapshot = documentSnapshot.data() as Omit<
-            SageSettings,
-            "user"
-          >;
-          if (snapshot) {
-            dispatch({
-              type: Actions.RepoHydrate,
-              payload: {
-                ...state,
-                settings: { ...snapshot, user: state.settings.user },
-              },
-            });
-          }
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (state.settings.user) {
+  //     firestore()
+  //       .collection("Users")
+  //       .doc(state.settings.user.uid)
+  //       .onSnapshot((documentSnapshot) => {
+  //         const snapshot = documentSnapshot.data() as Omit<
+  //           SageSettings,
+  //           "user"
+  //         >;
+  //         if (snapshot) {
+  //           dispatch({
+  //             type: Actions.RepoHydrate,
+  //             payload: {
+  //               ...state,
+  //               settings: { ...snapshot, user: state.settings.user },
+  //             },
+  //           });
+  //         }
+  //       });
+  //   }
+  // }, []);
 
   return [state, dispatch];
 };

@@ -3,12 +3,13 @@ import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import { SettingsContext } from "../../state/context";
+import { GlobalStateContext } from "../../state/context";
 import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
 
 const EditEmailScreen = () => {
-  const { settings } = useContext(SettingsContext);
+  const { state } = useContext(GlobalStateContext);
+  const settings = state.settings;
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>

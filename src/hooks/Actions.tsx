@@ -1,6 +1,5 @@
-import { List } from "immutable";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import GlobalState, { SageSettings } from "./State";
+import { GlobalState, SageSettings } from "./State";
 import Project from "../models/Project";
 import Todo from "../models/Todo";
 

@@ -7,10 +7,12 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { SettingsContext } from "../../state/context";
+import { Actions } from "../../hooks/Actions";
+import { GlobalStateContext } from "../../state/context";
 
 const SettingsScreen = () => {
-  const { settings, dispatch } = useContext(SettingsContext);
+  const { state, dispatch } = useContext(GlobalStateContext);
+  const settings = state.settings;
   const navigation = useNavigation();
 
   const generalSettings = [
@@ -18,13 +20,13 @@ const SettingsScreen = () => {
       name: "Onboarding",
       subtitle: "Reset your onboarding status",
       icon: <Icon name="handshake-o" type="font-awesome" />,
-      action: () => dispatch({ type: "onboarding" }),
+      action: () => dispatch({ type: Actions.SettingsToggleOnboarding }),
     },
     {
       name: "Theme",
       subtitle: "Change or customise your theme",
       icon: <Icon name="palette" type="materialIcon" />,
-      action: () => dispatch({ type: "theme" }),
+      action: () => dispatch({ type: Actions.SettingsToggleOnboarding }),
     },
   ];
 
@@ -77,7 +79,8 @@ const SettingsScreen = () => {
               },
               {
                 text: "OK",
-                onPress: () => dispatch({ type: "reset", value: settings }),
+                onPress: () =>
+                  dispatch({ type: Actions.SettingsReset, value: settings }),
               },
             ]
           );

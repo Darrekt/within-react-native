@@ -4,8 +4,8 @@ import { Icon, ListItem, withBadge } from "react-native-elements";
 import Todo from "../../models/Todo";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
-import { TodoRepoAction } from "../../hooks/useTodoRepository";
 import { useNavigation } from "@react-navigation/core";
+import { Actions, TodoAction } from "../../hooks/Actions";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   todo: Todo;
-  dispatch: React.Dispatch<TodoRepoAction>;
+  dispatch: React.Dispatch<TodoAction>;
   selected: string;
   running: boolean;
 };
@@ -58,13 +58,13 @@ const TodoItemTile = ({ todo, dispatch, selected, running }: Props) => {
 
   const buttons: {
     key: string;
-    action: TodoRepoAction;
+    action: TodoAction;
     icon: JSX.Element;
   }[] = [
     {
       key: todo.id + "complete",
       action: {
-        type: "toggleComplete",
+        type: Actions.TodoToggleComplete,
         payload: todo,
       },
       icon: todo.completed ? (
@@ -81,7 +81,7 @@ const TodoItemTile = ({ todo, dispatch, selected, running }: Props) => {
     {
       key: todo.id + "delete",
       action: {
-        type: "delete",
+        type: Actions.TodoDelete,
         payload: todo,
       },
       icon: (
@@ -112,7 +112,7 @@ const TodoItemTile = ({ todo, dispatch, selected, running }: Props) => {
         onPress={() => {
           if (!running)
             dispatch({
-              type: "select",
+              type: Actions.TodoSelect,
               payload: todo,
             });
         }}

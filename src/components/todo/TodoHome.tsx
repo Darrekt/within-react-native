@@ -1,13 +1,18 @@
 import React from "react";
-import { StyleSheet, View, TouchableHighlight, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableHighlight,
+  Dimensions,
+  Text,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
-import { ProjContext } from "../../state/context";
+import { GlobalStateContext } from "../../state/context";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
-// import ConfettiCannon from "react-native-confetti-cannon";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -25,7 +30,7 @@ const styles = StyleSheet.create({
 
 // TODO: Make height and alignments responsive; all heights are hard coded currently.
 const HomeDisplay = () => {
-  const projContext = React.useContext(ProjContext);
+  const { state } = React.useContext(GlobalStateContext);
   const navigation = useNavigation();
 
   const addProjButton = (
@@ -40,14 +45,13 @@ const HomeDisplay = () => {
 
   return (
     <View style={{ ...globalStyles.column }}>
-      {/* <ConfettiCannon count={100} origin={{ x: 0, y: 0 }} fadeOut autoStart={true}/> */}
       <HeadingDropDown header="Projects" dropdown={addProjButton}>
         <ScrollView
           style={{ width: "100%" }}
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {projContext.projects
+          {state.projects
             .sortBy((value) => value.closestDeadline())
             .filter((value) => !value.completed)
             .map((project) => (
@@ -58,42 +62,7 @@ const HomeDisplay = () => {
       {/* TODO: Hacky fix */}
       <View style={{ height: 15 }}></View>
       <HeadingDropDown header="Deadlines">
-        {/* <LineChart
-          data={{
-            labels: ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
-            datasets: [
-              {
-                data: [
-                  Math.random() * 10,
-                  Math.random() * 10,
-                  Math.random() * 10,
-                  Math.random() * 10,
-                  Math.random() * 10,
-                  Math.random() * 10,
-                ],
-              },
-            ],
-          }}
-          width={0.85 * Dimensions.get("window").width} // from react-native
-          height={0.2 * Dimensions.get("window").height}
-          chartConfig={{
-            backgroundGradientFrom: "#01C2EF",
-            backgroundGradientTo: "#56DEF1",
-            decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            style: {
-              borderRadius: 15,
-            },
-            propsForDots: {
-              r: "5",
-              strokeWidth: "1",
-              stroke: "#FFAE5E",
-            },
-          }}
-          bezier
-          style={styles.insightsCard}
-        /> */}
+        <Text>Hi</Text>
       </HeadingDropDown>
     </View>
   );

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { TodoTimerAction } from "../../hooks/useTodoRepository";
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import Todo from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { Icon } from "react-native-elements";
+import { Actions, TodoAction } from "../../hooks/Actions";
 
 const styles = StyleSheet.create({
   positionedLogo: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 type DisplayProps = {
   selectedTask?: Todo;
-  dispatch: React.Dispatch<TodoTimerAction>;
+  dispatch: React.Dispatch<TodoAction>;
 };
 
 const TodoTimerDisplay = ({ selectedTask, dispatch }: DisplayProps) => {
@@ -47,7 +47,7 @@ const TodoTimerDisplay = ({ selectedTask, dispatch }: DisplayProps) => {
 
 type TimerProps = {
   selectedTask: Todo;
-  dispatch: React.Dispatch<TodoTimerAction>;
+  dispatch: React.Dispatch<TodoAction>;
 };
 
 const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
@@ -58,7 +58,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     const timer = setTimeout(
       () =>
         timeLeft === 0
-          ? dispatch({ type: "finished", payload: selectedTask })
+          ? dispatch({ type: Actions.TodoFinish, payload: selectedTask })
           : setTimeLeft(getTimeLeft(selectedTask)),
       selectedTask.finishingTime ? 1000 : 0
     );
@@ -71,13 +71,15 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
 
   const timerActions: {
     key: string;
-    action: TodoTimerAction;
+    action: TodoAction;
     icon: JSX.Element;
   }[] = [
     {
       key: "timerControl",
       action: {
-        type: selectedTask.finishingTime ? "pause" : "start",
+        type: selectedTask.finishingTime
+          ? Actions.TodoPause
+          : Actions.TodoSelect,
         payload: selectedTask,
       },
       icon: (
@@ -90,7 +92,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     },
     {
       key: "timerReset",
-      action: { type: "reset", payload: selectedTask },
+      action: { type: Actions.TodoReset, payload: selectedTask },
       icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
     },
   ];
