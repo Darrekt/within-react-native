@@ -8,7 +8,7 @@ import {
   SettingsAction,
 } from "../hooks/useSettingsRepository";
 import { TodoRepoAction } from "../hooks/useTodoRepository";
-import { ProjectRepoAction } from "../hooks/useProjectRepository";
+import { Action } from "../hooks/useProjectRepository";
 
 export const SettingsContext = React.createContext<{
   settings: SageSettings;
@@ -20,7 +20,7 @@ export const SettingsContext = React.createContext<{
 
 export const ProjContext = React.createContext<{
   projects: List<Project>;
-  dispatch: React.Dispatch<ProjectRepoAction>;
+  dispatch: React.Dispatch<Action>;
 }>({
   projects: List<Project>(),
   dispatch: () => null,

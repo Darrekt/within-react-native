@@ -3,6 +3,8 @@ import { List } from "immutable";
 import Deadline, { fromFirestore as dlFromFireStore } from "./Deadline";
 import Todo, { fromFirestore as todoFromFireStore } from "./Todo";
 
+export const UNCATEGORISED_TODO_PROJID = "uncategorised";
+
 export default class Project {
   id: string = uuidv4();
   emoji: string = "✏️";
@@ -66,4 +68,30 @@ export function fromFirestore(doc: any) {
       dlFromFireStore(deadlineStr)
     ),
   });
+}
+
+export function findTodoProj(
+  projects: List<Project>,
+  todo: Todo
+): [Project, number, number] {
+  const projID = todo.project ?? UNCATEGORISED_TODO_PROJID;
+  const project = projects.find((proj) => proj.id == projID) as Project;
+  return [
+    // TODO: Back this up with a test
+    project,
+    projects.findIndex((proj) => proj.id == projID),
+    project.todos.findIndex((item) => item.id == todo.id),
+  ];
+}
+
+export function findTodoDeadline(
+  project: Project,
+  todo: Todo
+): [Deadline, number] {
+  const ddlID = todo.deadline ?? UNCATEGORISED_TODO_PROJID;
+  return [
+    // TODO: Back this up with a test
+    project.deadlines.find((ddl) => ddl.id == ddlID) as Deadline,
+    project.deadlines.findIndex((ddl) => ddl.id == ddlID),
+  ];
 }
