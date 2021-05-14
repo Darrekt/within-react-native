@@ -1,39 +1,11 @@
 import React from "react";
-import { List } from "immutable";
-import Project from "../models/Project";
-import Todo from "../models/Todo";
-import {
-  SageSettings,
-  sageDefaultSettings,
-  SettingsAction,
-} from "../hooks/useSettingsRepository";
-import { TodoRepoAction } from "../hooks/useTodoRepository";
-import { Action } from "../hooks/useProjectRepository";
+import { Action } from "../hooks/Actions";
+import { GlobalState, DEFAULT_GLOBAL_STATE } from "../hooks/State";
 
-export const SettingsContext = React.createContext<{
-  settings: SageSettings;
-  dispatch: React.Dispatch<SettingsAction>;
-}>({
-  settings: sageDefaultSettings,
-  dispatch: () => null,
-});
-
-export const ProjContext = React.createContext<{
-  projects: List<Project>;
+export const GlobalStateContext = React.createContext<{
+  state: GlobalState;
   dispatch: React.Dispatch<Action>;
 }>({
-  projects: List<Project>(),
+  state: DEFAULT_GLOBAL_STATE,
   dispatch: () => null,
-});
-
-export const TodoContext = React.createContext<{
-  todos: List<Todo>;
-  dispatch: React.Dispatch<TodoRepoAction>;
-  selected: string;
-  running: boolean;
-}>({
-  todos: List<Todo>(),
-  dispatch: () => null,
-  selected: "",
-  running: false,
 });

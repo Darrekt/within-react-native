@@ -2,12 +2,11 @@ import "react-native-get-random-values";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Icon } from "react-native-elements";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { SettingsContext, ProjContext } from "./src/state/context";
-import useSettingsRepository from "./src/hooks/useSettingsRepository";
-import useProjectRepository from "./src/hooks/useProjectRepository";
 import Toast from "react-native-toast-message";
+import { Icon } from "react-native-elements";
+import useAppState from "./src/hooks/useAppState";
+import { GlobalStateContext } from "./src/state/context";
 
 import TodoScreen from "./src/screens/Todo/TodoScreen";
 import StatScreen from "./src/screens/StatScreen";
@@ -24,17 +23,17 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [settings, dispatch] = useSettingsRepository();
+  const [state, dispatch] = useAppState();
 
   return (
-    <SettingsContext.Provider
+    <GlobalStateContext.Provider
       value={{
-        settings: settings,
+        state: state,
         dispatch: dispatch,
       }}
     >
       <NavigationContainer>
-        {!settings.onboarding ? (
+        {!state.settings.onboarding ? (
           <>
             <Stack.Navigator>
               <Stack.Screen name="Onboarding" component={OnboardingScreen} />
@@ -109,61 +108,55 @@ export default function App() {
         )}
       </NavigationContainer>
       <Toast ref={(ref) => Toast.setRef(ref)} />
-    </SettingsContext.Provider>
+    </GlobalStateContext.Provider>
   );
 }
 
 const appTabNav = () => {
-  const [projects, proj_dispatch] = useProjectRepository();
-
   return (
-    <ProjContext.Provider
-      value={{ projects: projects, dispatch: proj_dispatch }}
+    <Tab.Navigator
+      initialRouteName="Todos"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          switch (route.name) {
+            case "Stats":
+              return (
+                <Icon
+                  name="md-stats-chart"
+                  type="ionicon"
+                  size={size}
+                  color={color}
+                />
+              );
+            case "Groups":
+              return (
+                <Icon
+                  name="message"
+                  type="material"
+                  size={size}
+                  color={color}
+                />
+              );
+            default:
+              return (
+                <Icon
+                  name="checkbox"
+                  type="ionicon"
+                  size={size}
+                  color={color}
+                />
+              );
+          }
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: "#01D1EE",
+        inactiveTintColor: "gray",
+      }}
     >
-      <Tab.Navigator
-        initialRouteName="Todos"
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            switch (route.name) {
-              case "Stats":
-                return (
-                  <Icon
-                    name="md-stats-chart"
-                    type="ionicon"
-                    size={size}
-                    color={color}
-                  />
-                );
-              case "Groups":
-                return (
-                  <Icon
-                    name="message"
-                    type="material"
-                    size={size}
-                    color={color}
-                  />
-                );
-              default:
-                return (
-                  <Icon
-                    name="checkbox"
-                    type="ionicon"
-                    size={size}
-                    color={color}
-                  />
-                );
-            }
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: "#01D1EE",
-          inactiveTintColor: "gray",
-        }}
-      >
-        <Tab.Screen name="Todos" component={TodoScreen} />
-        <Tab.Screen name="Stats" component={StatScreen} />
-        {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
-      </Tab.Navigator>
-    </ProjContext.Provider>
+      <Tab.Screen name="Todos" component={TodoScreen} />
+      <Tab.Screen name="Stats" component={StatScreen} />
+      {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
+    </Tab.Navigator>
   );
 };

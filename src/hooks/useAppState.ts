@@ -12,6 +12,10 @@ import Todo from "../models/Todo";
 import {
   GlobalState,
   SageSettings,
+  SAGE_DEFAULT_SETTINGS,
+  DEFAULT_GLOBAL_STATE,
+} from "./State";
+import {
   Actions,
   Action,
   ProjectAction,
@@ -19,23 +23,6 @@ import {
   SettingsAction,
 } from "./Actions";
 import { getTimeLeft } from "../util/timer";
-
-export const sageDefaultSettings: SageSettings = {
-  onboarding: false,
-  user: null,
-  theme: true,
-  maxProjects: 4,
-  maxTasks: 3,
-  defaultInterval: 25 * 60,
-};
-
-export const defaultGlobalState: GlobalState = {
-  projects: List<Project>(),
-  todos: List<Todo>(),
-  settings: sageDefaultSettings,
-  selectedTodo: "",
-  running: false,
-};
 
 const projectsReducer = (
   settings: SageSettings,
@@ -57,7 +44,7 @@ const projectsReducer = (
     case Actions.ProjectDelete:
       return state.filter((item) => item.id !== action.payload.id);
     default:
-      throw "Invalid Project Action";
+      throw Error("Invalid Project Action");
   }
 };
 const todoReducer = (
@@ -65,9 +52,6 @@ const todoReducer = (
   state: List<Project>,
   action: TodoAction
 ) => {
-  // Each action should result in at most a single call using this function, which batches all relevant updates in a single action, and thus a single database operation.
-  let newState: List<Project> = state;
-
   // Find the project containing this Todo, or uncategorised
   const [project, projIndex, todoIndex] = findTodoProj(state, action.payload);
   const [deadline, deadlineIndex] = findTodoDeadline(project, action.payload);
@@ -192,7 +176,7 @@ const todoReducer = (
       );
 
     default:
-      throw new Error("Invalid todo action");
+      throw Error("Invalid todo action");
   }
 };
 
@@ -201,7 +185,7 @@ const settingsReducer = (state: SageSettings, action: SettingsAction) => {
     case Actions.SettingsAuth:
       return { ...state, user: action.user };
     case Actions.SettingsReset:
-      return sageDefaultSettings;
+      return SAGE_DEFAULT_SETTINGS;
     case Actions.SettingsToggleOnboarding:
       return { ...state, onboarding: !state.onboarding };
     case Actions.SettingsChangeMaxProjects:
@@ -211,7 +195,7 @@ const settingsReducer = (state: SageSettings, action: SettingsAction) => {
     case Actions.SettingsChangeDefaultInterval:
       return { ...state, defaultInterval: action.value };
     default:
-      throw "Invalid settings action";
+      throw Error("Invalid settings action");
   }
 };
 
@@ -221,7 +205,7 @@ const globalReducer = (state: GlobalState, action: Action): GlobalState => {
     case Actions.RepoHydrate:
       return action.payload;
     case Actions.RepoFlush:
-      return defaultGlobalState;
+      return DEFAULT_GLOBAL_STATE;
 
     // Project Actions
     case Actions.ProjectUpdate:
@@ -269,8 +253,8 @@ const globalReducer = (state: GlobalState, action: Action): GlobalState => {
   }
 };
 
-const useAppStateReducer: () => [GlobalState, React.Dispatch<Action>] = () => {
-  const [state, dispatch] = useReducer(globalReducer, defaultGlobalState);
+const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
+  const [state, dispatch] = useReducer(globalReducer, DEFAULT_GLOBAL_STATE);
 
   //TODO: Write one side effect for Project and Settings
   useEffect(() => {
@@ -291,22 +275,6 @@ const useAppStateReducer: () => [GlobalState, React.Dispatch<Action>] = () => {
           });
         });
     }
-    // else {
-    //   AsyncStorage.getItem("projects")
-    //     .then((tempLstStr) => {
-    //       if (tempLstStr) {
-    //         const asyncProjects = List(
-    //           (JSON.parse(tempLstStr) as Array<any>).map(
-    //             (item) => new Project(item)
-    //           )
-    //         );
-    //         dispatch({ type: "hydrate", payload: asyncProjects });
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log("Error reading todos:", error);
-    //     });
-    // }
   }, [state.settings.user]);
 
   useEffect(() => {
@@ -330,20 +298,12 @@ const useAppStateReducer: () => [GlobalState, React.Dispatch<Action>] = () => {
           }
         });
     }
-    // else {
-    //   AsyncStorage.getItem(settingsAyncStoreKey)
-    //     .then((settingsStr) => {
-    //       if (settingsStr)
-    //         dispatch({ type: "hydrate", value: JSON.parse(settingsStr) });
-    //     })
-    //     .catch((e) => console.log(e));
-    // }
   }, []);
 
   return [state, dispatch];
 };
 
-export default useAppStateReducer;
+export default useAppState;
 
 async function writeItems(state: List<Project>, uid?: string | null) {
   try {

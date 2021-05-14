@@ -1,24 +1,8 @@
 import { List } from "immutable";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import GlobalState, { SageSettings } from "./State";
 import Project from "../models/Project";
 import Todo from "../models/Todo";
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-
-export type SageSettings = {
-  onboarding: boolean;
-  user: FirebaseAuthTypes.User | null;
-  theme: boolean;
-  maxProjects: number;
-  maxTasks: number;
-  defaultInterval: number;
-};
-
-export type GlobalState = {
-  projects: List<Project>;
-  todos: List<Todo>;
-  settings: SageSettings;
-  selectedTodo: string;
-  running: boolean;
-};
 
 export enum Actions {
   RepoHydrate = "REPO_HYDRATE",
