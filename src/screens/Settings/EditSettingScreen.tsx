@@ -8,7 +8,7 @@ import { GlobalStateContext } from "../../state/context";
 import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
 import { printTimeLeft } from "../../util/timer";
-import { Actions } from "../../hooks/Actions";
+import { Actions } from "../../state/Actions";
 
 const styles = StyleSheet.create({
   headerStyle: {

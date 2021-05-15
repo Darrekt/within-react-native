@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { ProjContext } from "../../state/context";
 import { globalStyles, textStyles } from "../../../styles";
 import Project from "../../models/Project";
 import EmojiRegex from "emoji-regex";
@@ -15,6 +14,8 @@ import wrapAsync from "../../util/dispatchAsync";
 import { LineChart } from "react-native-chart-kit";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
+import { GlobalStateContext } from "../../state/context";
+import { Actions } from "../../state/Actions";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -51,9 +52,10 @@ const styles = StyleSheet.create({
 });
 
 const ViewProjectScreen = ({ route, navigation }: Props) => {
-  const { projects, dispatch } = React.useContext(ProjContext);
+  const { state, dispatch } = React.useContext(GlobalStateContext);
+
   const project = route.params?.id
-    ? projects.find((proj) => proj.id === route.params.id)
+    ? state.projects.find((proj) => proj.id === route.params.id)
     : undefined;
 
   return (
@@ -80,7 +82,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
       onSubmit={async (values) => {
         await wrapAsync(() =>
           dispatch({
-            type: project ? "update" : "add",
+            type: project ? Actions.ProjectUpdate : Actions.ProjectAdd,
             payload: new Project({
               ...project,
               emoji: values.emoji,
@@ -210,7 +212,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 onPress={async () => {
                   await wrapAsync(() =>
                     dispatch({
-                      type: "update",
+                      type: Actions.ProjectUpdate,
                       payload: new Project({ ...project, completed: true }),
                     })
                   );

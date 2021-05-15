@@ -7,7 +7,7 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { Actions } from "../../hooks/Actions";
+import { Actions } from "../../state/Actions";
 import { GlobalStateContext } from "../../state/context";
 
 const SettingsScreen = () => {

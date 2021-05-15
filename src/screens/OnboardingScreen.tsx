@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Image, StyleSheet } from "react-native";
 import { GlobalStateContext } from "../state/context";
 import Onboarding from "react-native-onboarding-swiper";
-import { Actions } from "../hooks/Actions";
+import { Actions } from "../state/Actions";
 
 const styles = StyleSheet.create({
   container: {

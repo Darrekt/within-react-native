@@ -1,7 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useReducer } from "react";
 import { List } from "immutable";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 import Project, {
   fromFirestore,
   findTodoProj,
@@ -14,14 +14,14 @@ import {
   SageSettings,
   SAGE_DEFAULT_SETTINGS,
   DEFAULT_GLOBAL_STATE,
-} from "./State";
+} from "../state/State";
 import {
   Actions,
   Action,
   ProjectAction,
   TodoAction,
   SettingsAction,
-} from "./Actions";
+} from "../state/Actions";
 import { getTimeLeft } from "../util/timer";
 
 const projectsReducer = (
@@ -256,25 +256,57 @@ const globalReducer = (state: GlobalState, action: Action): GlobalState => {
 const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
   const [state, dispatch] = useReducer(globalReducer, DEFAULT_GLOBAL_STATE);
 
-  // useEffect(() => {
-  //   if (state.settings.user) {
-  //     return firestore()
-  //       .collection("Users")
-  //       .doc(state.settings.user.uid)
-  //       .collection("projects")
-  //       .onSnapshot((querySnapshot) => {
-  //         const storedData = querySnapshot.empty
-  //           ? List<Project>()
-  //           : List<Project>(
-  //               querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
-  //             );
-  //         dispatch({
-  //           type: Actions.RepoHydrate,
-  //           payload: { ...state, projects: storedData },
-  //         });
-  //       });
-  //   }
-  // }, [state.settings.user, state.projects.toArray()]);
+  // Listener for auth state changes
+  useEffect(
+    () =>
+      auth().onAuthStateChanged((user) =>
+        dispatch({ type: Actions.SettingsAuth, user: user })
+      ),
+    []
+  );
+
+  // Project listener
+  useEffect(() => {
+    console.log("PROJECT LISTENER SUBSCRIBED")
+    if (state.settings.user) {
+      return firestore()
+        .collection("Users")
+        .doc(state.settings.user.uid)
+        .collection("projects")
+        .onSnapshot((querySnapshot) => {
+          const storedData = querySnapshot.empty
+            ? List<Project>()
+            : List<Project>(
+                querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
+              );
+          // TODO: Maybe diff the db state and current state
+          dispatch({
+            type: Actions.RepoHydrate,
+            payload: { ...state, projects: storedData },
+          });
+        });
+    }
+  }, []);
+
+  // Write to firestore each a state change causes a re-render
+  useEffect(() => {
+    console.log("WRITE TO FIREBASE")
+    // try {
+    //   if (state.settings.user) {
+    //     const projCollection = firestore()
+    //       .collection("Users")
+    //       .doc(state.settings.user.uid)
+    //       .collection("projects");
+
+    //     // TODO: Does this always incur all writes?
+    //     state.projects.forEach((proj) =>
+    //       projCollection.doc(proj.id).set(proj.toEntity())
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.log("Error saving projects:", error);
+    // }
+  }, [state.projects.toArray()]);
 
   // useEffect(() => {
   //   if (state.settings.user) {
@@ -297,33 +329,9 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
   //         }
   //       });
   //   }
-  // }, []);
+  // }, [state.settings]);
 
   return [state, dispatch];
 };
 
 export default useAppState;
-
-async function writeItems(state: List<Project>, uid?: string | null) {
-  try {
-    await AsyncStorage.setItem(
-      "projects",
-      JSON.stringify(state.map((item) => item.toEntity()).toJSON())
-    );
-    if (uid) {
-      const tempLstStr = await AsyncStorage.getItem("projects");
-      if (tempLstStr !== null) {
-        const projCollection = firestore()
-          .collection("Users")
-          .doc(uid)
-          .collection("projects");
-
-        state.forEach(async (proj) =>
-          projCollection.doc(proj.id).set(proj.toEntity())
-        );
-      }
-    }
-  } catch (error) {
-    console.log("Error saving projects:", error);
-  }
-}

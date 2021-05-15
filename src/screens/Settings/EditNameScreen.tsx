@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { GlobalStateContext } from "../../state/context";
 import { firebase } from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
-import { Actions } from "../../hooks/Actions";
+import { Actions } from "../../state/Actions";
 
 const EditNameScreen = () => {
   const { state, dispatch } = useContext(GlobalStateContext);

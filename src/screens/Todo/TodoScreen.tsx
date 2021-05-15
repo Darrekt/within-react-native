@@ -1,6 +1,5 @@
 import React from "react";
 import { View, useWindowDimensions } from "react-native";
-import { List } from "immutable";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
@@ -13,6 +12,7 @@ import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
 import Todo from "../../models/Todo";
 import { GlobalStateContext } from "../../state/context";
+import { getAllTodos, isRunning } from "../../state/State";
 
 const Stack = createStackNavigator();
 
@@ -22,11 +22,8 @@ const TodoScreen = () => {
   const modalizeRef = React.useRef<Modalize>(null);
   const windowHeight = useWindowDimensions().height;
 
-  const todos: List<Todo> = state.projects
-    .map((proj) => proj.todos)
-    .reduce((agg, projTodos) => agg.concat(projTodos)) ?? List<Todo>([]);
-
-  const running = false;
+  const todos = getAllTodos(state.projects);
+  const running = isRunning(todos);
 
   return (
     <View style={globalStyles.container}>

@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
-import { ProjContext, TodoContext } from "../../state/context";
 import { globalStyles, textStyles } from "../../../styles";
 import Todo from "../../models/Todo";
 import EmojiRegex from "emoji-regex";
@@ -12,6 +11,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
+import { GlobalStateContext } from "../../state/context";
+import { getAllTodos } from "../../state/State";
+import { Actions } from "../../state/Actions";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -43,8 +45,8 @@ const styles = StyleSheet.create({
 });
 
 const ViewTodoScreen = ({ route, navigation }: Props) => {
-  const { projects } = React.useContext(ProjContext);
-  const { todos, dispatch } = React.useContext(TodoContext);
+  const { state, dispatch } = React.useContext(GlobalStateContext);
+  const todos = getAllTodos(state.projects);
   const todo = route.params?.id
     ? todos.find((item) => item.id === route.params.id)
     : undefined;
@@ -73,7 +75,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
         onSubmit={async (values) => {
           await wrapAsync(() =>
             dispatch({
-              type: todo ? "update" : "add",
+              type: todo ? Actions.TodoUpdate : Actions.TodoAdd,
               payload: new Todo({
                 ...todo,
                 emoji: values.emoji,
@@ -126,7 +128,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
               </View>
               <Text style={textStyles.header}>Additional details</Text>
               <ModalSelector
-                data={projects
+                data={state.projects
                   .map((proj) => {
                     return {
                       key: proj.id,
@@ -135,8 +137,9 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
                   })
                   .toArray()}
                 initValue={
-                  projects.find((proj) => proj.id === formik.values.project)
-                    ?.name ?? "No project!"
+                  state.projects.find(
+                    (proj) => proj.id === formik.values.project
+                  )?.name ?? "No project!"
                 }
                 onChange={(option) => {
                   formik.setFieldValue("project", option.key);
