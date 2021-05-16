@@ -267,7 +267,7 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
 
   // Project listener
   useEffect(() => {
-    console.log("PROJECT LISTENER SUBSCRIBED")
+    console.log("PROJECT LISTENER SUBSCRIBED");
     if (state.settings.user) {
       return firestore()
         .collection("Users")
@@ -280,6 +280,7 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
                 querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
               );
           // TODO: Maybe diff the db state and current state
+          console.log("DISPATCHING HYDRATION")
           dispatch({
             type: Actions.RepoHydrate,
             payload: { ...state, projects: storedData },
@@ -290,7 +291,7 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
 
   // Write to firestore each a state change causes a re-render
   useEffect(() => {
-    console.log("WRITE TO FIREBASE")
+    console.log("WRITE TO FIREBASE");
     // try {
     //   if (state.settings.user) {
     //     const projCollection = firestore()
@@ -306,7 +307,7 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
     // } catch (error) {
     //   console.log("Error saving projects:", error);
     // }
-  }, [state.projects.toArray()]);
+  }, [state.projects]);
 
   // useEffect(() => {
   //   if (state.settings.user) {

@@ -9,7 +9,6 @@ export default class Todo {
   laps: number = 0;
   completed: boolean = false;
   remaining?: number;
-
   /// finishingTime is a Date that specifies the end of the current interval. If the task is not running, this is undefined. There should only be one globally running task.
   finishingTime?: Date;
 
@@ -19,7 +18,7 @@ export default class Todo {
   }
 
   // WARNING: Make sure you update toFireStore if you change the shape of the Todo object!
-  toFirestore() {
+  toEntity() {
     return {
       id: this.id,
       emoji: this.emoji,
@@ -30,6 +29,24 @@ export default class Todo {
       remaining: this.remaining,
       finishingTime: this.finishingTime?.getTime(),
     };
+  }
+
+  equals(other: Todo | undefined) {
+    if (this === other) return true;
+    if (other === undefined) return false;
+
+    let result = true;
+    const thisTodo = this.toEntity();
+    const otherTodo = other.toEntity();
+
+    const todoKeys = Object.keys(thisTodo) as (keyof typeof thisTodo)[];
+    const otherKeys = Object.keys(otherTodo) as (keyof typeof otherTodo)[];
+
+    todoKeys.forEach((key, index) => {
+      if (!otherKeys.includes(key)) result = false;
+      if (thisTodo[key] !== otherTodo[key]) result = false;
+    });
+    return result;
   }
 }
 

@@ -22,6 +22,8 @@ const project2 = new Project({
   deadlines: List([]),
 });
 
+const project3 = new Project({ ...project2 });
+
 test("Correct constructor handling of IDs", () => {
   // console.log(project2.id)
   expect(project1.id).toEqual(testID);
@@ -31,14 +33,6 @@ test("Correct constructor handling of IDs", () => {
 test("ToEntity should have all properties of Project", () => {
   const properties = Object.keys(project2);
   const entity = project2.toEntity();
-  properties.forEach((property) => {
-    expect(entity).toHaveProperty(property);
-  });
-});
-
-test("toFirestore should have all properties of Project", () => {
-  const properties = Object.keys(project2);
-  const entity = project2.toFirestore();
   properties.forEach((property) => {
     expect(entity).toHaveProperty(property);
   });

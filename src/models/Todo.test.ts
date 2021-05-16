@@ -15,17 +15,9 @@ test("All todos should have IDs made", () => {
   expect(todo2.id).toBeDefined();
 });
 
-test("ToEntity should have all properties of Todo", () => {
+test("toEntity should have all properties of Todo", () => {
   const properties = Object.keys(todo2);
   const entity = todo2.toEntity();
-  properties.forEach((property) => {
-    expect(entity).toHaveProperty(property);
-  });
-});
-
-test("toFirestore should have all properties of Todo", () => {
-  const properties = Object.keys(todo2);
-  const entity = todo2.toFirestore();
   properties.forEach((property) => {
     expect(entity).toHaveProperty(property);
   });

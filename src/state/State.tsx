@@ -38,7 +38,7 @@ export const DEFAULT_GLOBAL_STATE: GlobalState = {
 export const getAllTodos = (projects: List<Project>): List<Todo> =>
   projects
     .map((proj) => proj.todos)
-    .reduce((agg, projTodos) => agg.concat(projTodos));
+    .reduce((agg, projTodos) => agg.concat(projTodos), List<Todo>([]));
 
 export const isRunning = (todos: List<Todo>): boolean =>
   todos.some((todo) => todo.finishingTime !== undefined);

@@ -23,8 +23,8 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  console.log("App rendered.")
   const [state, dispatch] = useAppState();
-  console.log(state);
 
   return (
     <GlobalStateContext.Provider

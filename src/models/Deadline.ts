@@ -22,6 +22,27 @@ export default class Deadline {
       due: this.due.getTime(),
     };
   }
+
+  equals(other: Deadline | undefined) {
+    if (this === other) return true;
+    if (other === undefined) return false;
+
+    let result = true;
+    const thisDeadline = this.toEntity();
+    const otherDeadline = other.toEntity();
+
+    const todoKeys = Object.keys(thisDeadline) as (keyof typeof thisDeadline)[];
+    const otherKeys = Object.keys(
+      otherDeadline
+    ) as (keyof typeof otherDeadline)[];
+
+    todoKeys.forEach((key) => {
+      if (!otherKeys.includes(key)) result = false;
+      if (thisDeadline[key] !== otherDeadline[key]) result = false;
+    });
+
+    return result;
+  }
 }
 
 export const fromFirestore = (doc: any) =>

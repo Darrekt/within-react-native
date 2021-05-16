@@ -28,7 +28,6 @@ export default class Project {
     );
   }
 
-  // WARNING: Make sure you update toEntity if you change the shape of the Project object!
   toEntity() {
     return {
       id: this.id,
@@ -36,31 +35,45 @@ export default class Project {
       name: this.name,
       notes: this.notes,
       completed: this.completed,
-      todos: this.todos.toArray(),
-      deadlines: this.deadlines
-        .map((deadline) => deadline.due.getTime())
-        .toArray(),
+      todos: this.todos.map((todo) => todo.toEntity()).toArray(),
+      deadlines: this.deadlines.map((ddl) => ddl.toEntity()).toArray(),
     };
   }
 
-  toFirestore() {
-    return {
-      id: this.id,
-      emoji: this.emoji,
-      name: this.name,
-      notes: this.notes,
-      completed: this.completed,
-      todos: this.todos.toArray(),
-      deadlines: this.deadlines
-        .map((deadline) => deadline.toEntity())
-        .toArray(),
-    };
+  equals(other: Project | undefined) {
+    if (this === other) return true;
+    if (other === undefined) return false;
+
+    const projA = this.toEntity();
+    const projB = other.toEntity();
+    const projKeys = Object.keys(projA).filter(
+      (key) => key !== "todos" && key !== "deadlines"
+    ) as (keyof Omit<typeof projA, "todos" | "deadlines">)[];
+    const objKeys = Object.keys(projB).filter(
+      (key) => key !== "todos" && key !== "deadlines"
+    ) as (keyof Omit<typeof projB, "todos" | "deadlines">)[];
+
+    let result = true;
+    projKeys.forEach((key) => {
+      console.log(`Comparing ${key}:  ${projA[key]}, ${projB[key]}`);
+      if (!objKeys.includes(key)) result = false;
+      if (projA[key] !== projB[key]) result = false;
+    });
+
+    this.deadlines.forEach((ddl, index) => {
+      if (!ddl.equals(other.deadlines.get(index))) result = false;
+    });
+
+    this.todos.forEach((todo, index) => {
+      console.log(`Comparing Todos: ${todo.id}, ${other.todos.get(index)?.id}`);
+      if (!todo.equals(other.todos.get(index))) result = false;
+    });
+
+    return result;
   }
 }
 
 export function fromFirestore(doc: any) {
-  console.log("Todos:", doc.todos);
-  console.log("Deadlines:", doc.deadlines);
   return new Project({
     ...doc,
     todos: List(doc.todos).map((todoStr) => todoFromFireStore(todoStr)),
