@@ -279,12 +279,17 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
             : List<Project>(
                 querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
               );
-          // TODO: Maybe diff the db state and current state
-          console.log("DISPATCHING HYDRATION")
-          dispatch({
-            type: Actions.RepoHydrate,
-            payload: { ...state, projects: storedData },
+          let result = true;
+          storedData.forEach((proj, index) => {
+            if (!proj.equals(state.projects.get(index))) result = false;
           });
+          if (!result) {
+            console.log("DISPATCHING HYDRATION");
+            dispatch({
+              type: Actions.RepoHydrate,
+              payload: { ...state, projects: storedData },
+            });
+          }
         });
     }
   }, []);
@@ -292,21 +297,20 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
   // Write to firestore each a state change causes a re-render
   useEffect(() => {
     console.log("WRITE TO FIREBASE");
-    // try {
-    //   if (state.settings.user) {
-    //     const projCollection = firestore()
-    //       .collection("Users")
-    //       .doc(state.settings.user.uid)
-    //       .collection("projects");
+    try {
+      if (state.settings.user) {
+        const projCollection = firestore()
+          .collection("Users")
+          .doc(state.settings.user.uid)
+          .collection("projects");
+        state.projects.forEach((proj) =>
+          projCollection.doc(proj.id).set(proj.toEntity())
+        );
+      }
+    } catch (error) {
+      console.log("Error saving projects:", error);
+    }
 
-    //     // TODO: Does this always incur all writes?
-    //     state.projects.forEach((proj) =>
-    //       projCollection.doc(proj.id).set(proj.toEntity())
-    //     );
-    //   }
-    // } catch (error) {
-    //   console.log("Error saving projects:", error);
-    // }
   }, [state.projects]);
 
   // useEffect(() => {

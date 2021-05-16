@@ -55,7 +55,6 @@ export default class Project {
 
     let result = true;
     projKeys.forEach((key) => {
-      console.log(`Comparing ${key}:  ${projA[key]}, ${projB[key]}`);
       if (!objKeys.includes(key)) result = false;
       if (projA[key] !== projB[key]) result = false;
     });
@@ -65,7 +64,6 @@ export default class Project {
     });
 
     this.todos.forEach((todo, index) => {
-      console.log(`Comparing Todos: ${todo.id}, ${other.todos.get(index)?.id}`);
       if (!todo.equals(other.todos.get(index))) result = false;
     });
 
