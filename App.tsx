@@ -2,28 +2,100 @@ import "react-native-get-random-values";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Toast from "react-native-toast-message";
-import { Icon } from "react-native-elements";
 import useAppState from "./src/hooks/useAppState";
 import { GlobalStateContext } from "./src/state/context";
 
-import TodoScreen from "./src/screens/Todo/TodoScreen";
-import StatScreen from "./src/screens/StatScreen";
-import OnboardingScreen from "./src/screens/OnboardingScreen";
+import OnboardingScreen from "./src/screens/Onboarding/OnboardingScreen";
 import SettingsScreen from "./src/screens/Settings/SettingsScreen";
 import AuthManagementScreen from "./src/screens/Onboarding/AuthManagementScreen";
-import EmailSignInScreen from "./src/screens/Onboarding/EmailSignInScreen";
 import EditEmailScreen from "./src/screens/Settings/EditEmailScreen";
 import EditPasswordScreen from "./src/screens/Settings/EditPasswordScreen";
 import EditNameScreen from "./src/screens/Settings/EditNameScreen";
 import EditProductivitySettingScreen from "./src/screens/Settings/EditSettingScreen";
+import TabNavigationBar from "./src/screens/TabNavigationBar";
+import { SageSettings } from "./src/state/State";
+import SignInScreen from "./src/screens/Onboarding/SignInScreen";
 
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+
+function ChooseScreens(settings: SageSettings) {
+  if (!settings.onboarding) {
+    return <Stack.Screen name="Onboarding" component={OnboardingScreen} />;
+  } else if (!settings.user) {
+    return (
+      <Stack.Screen
+        name="SignInScreen"
+        component={SignInScreen}
+        options={{
+          headerShown: false,
+          headerBackTitleVisible: false,
+        }}
+      />
+    );
+  } else {
+    return (
+      <>
+        <Stack.Screen
+          name="AppHome"
+          component={TabNavigationBar}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SettingsScreen"
+          component={SettingsScreen}
+          options={{
+            title: "Settings",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="AuthMgmtScreen"
+          component={AuthManagementScreen}
+          options={{
+            title: "Account Management",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditNameScreen"
+          component={EditNameScreen}
+          options={{
+            title: "Change display name",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditPasswordScreen"
+          component={EditPasswordScreen}
+          options={{
+            title: "Change Password",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditEmailScreen"
+          component={EditEmailScreen}
+          options={{
+            title: "Change email settings",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="EditProductivitySettingScreen"
+          component={EditProductivitySettingScreen}
+          options={{
+            title: "Change Productivity Settings",
+            headerBackTitleVisible: false,
+          }}
+        />
+      </>
+    );
+  }
+}
 
 export default function App() {
-  console.log("App rendered.")
+  console.log("App rendered.");
   const [state, dispatch] = useAppState();
 
   return (
@@ -34,130 +106,11 @@ export default function App() {
       }}
     >
       <NavigationContainer>
-        {!state.settings.onboarding ? (
-          <>
-            <Stack.Navigator>
-              <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-            </Stack.Navigator>
-          </>
-        ) : (
-          <>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="AppHome"
-                component={appTabNav}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="SettingsScreen"
-                component={SettingsScreen}
-                options={{
-                  title: "Settings",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="AuthScreen"
-                component={AuthManagementScreen}
-                options={{
-                  title: "Account Management",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="EditNameScreen"
-                component={EditNameScreen}
-                options={{
-                  title: "Change display name",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="EditPasswordScreen"
-                component={EditPasswordScreen}
-                options={{
-                  title: "Change Password",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="EmailSignInScreen"
-                component={EmailSignInScreen}
-                options={{
-                  title: "Sign-in with Email",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="EditEmailScreen"
-                component={EditEmailScreen}
-                options={{
-                  title: "Change email settings",
-                  headerBackTitleVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="EditProductivitySettingScreen"
-                component={EditProductivitySettingScreen}
-                options={{
-                  title: "Change Productivity Settings",
-                  headerBackTitleVisible: false,
-                }}
-              />
-            </Stack.Navigator>
-          </>
-        )}
+        <Stack.Navigator>
+          {ChooseScreens(state.settings)}
+        </Stack.Navigator>
       </NavigationContainer>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </GlobalStateContext.Provider>
   );
 }
-
-const appTabNav = () => {
-  return (
-    <Tab.Navigator
-      initialRouteName="Todos"
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          switch (route.name) {
-            case "Stats":
-              return (
-                <Icon
-                  name="md-stats-chart"
-                  type="ionicon"
-                  size={size}
-                  color={color}
-                />
-              );
-            case "Groups":
-              return (
-                <Icon
-                  name="message"
-                  type="material"
-                  size={size}
-                  color={color}
-                />
-              );
-            default:
-              return (
-                <Icon
-                  name="checkbox"
-                  type="ionicon"
-                  size={size}
-                  color={color}
-                />
-              );
-          }
-        },
-      })}
-      tabBarOptions={{
-        activeTintColor: "#01D1EE",
-        inactiveTintColor: "gray",
-      }}
-    >
-      <Tab.Screen name="Todos" component={TodoScreen} />
-      <Tab.Screen name="Stats" component={StatScreen} />
-      {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
-    </Tab.Navigator>
-  );
-};

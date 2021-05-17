@@ -183,6 +183,7 @@ const todoReducer = (
 const settingsReducer = (state: SageSettings, action: SettingsAction) => {
   switch (action.type) {
     case Actions.SettingsAuth:
+      console.log("LOGGED IN USER: ", action.user?.email);
       return { ...state, user: action.user };
     case Actions.SettingsReset:
       return SAGE_DEFAULT_SETTINGS;
@@ -274,11 +275,12 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
         .doc(state.settings.user.uid)
         .collection("projects")
         .onSnapshot((querySnapshot) => {
-          const storedData = querySnapshot.empty
-            ? List<Project>()
-            : List<Project>(
-                querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
-              );
+          const storedData =
+            querySnapshot.empty && querySnapshot !== null
+              ? List<Project>()
+              : List<Project>(
+                  querySnapshot.docs.map((doc) => fromFirestore(doc.data()))
+                );
           let result = true;
           storedData.forEach((proj, index) => {
             if (!proj.equals(state.projects.get(index))) result = false;
@@ -310,7 +312,6 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
     } catch (error) {
       console.log("Error saving projects:", error);
     }
-
   }, [state.projects]);
 
   // useEffect(() => {

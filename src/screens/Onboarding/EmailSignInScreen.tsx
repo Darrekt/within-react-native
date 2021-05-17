@@ -8,7 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
 
 const EmailSignInScreen = () => {
-  const navigation = useNavigation();
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -24,12 +23,10 @@ const EmailSignInScreen = () => {
 
         return errors;
       }}
-      onSubmit={async (values) => {
+      onSubmit={(values) => {
         auth()
           .signInWithEmailAndPassword(values.email, values.password)
-          .then(() => {
-            navigation.goBack();
-          })
+          .then(() => console.log("Signed in!"))
           .catch((error) => {
             if (error.code === "auth/user-disabled") {
               Alert.alert(
