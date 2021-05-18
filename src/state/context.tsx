@@ -1,6 +1,6 @@
 import React from "react";
 import { Action } from "./Actions";
-import { GlobalState, DEFAULT_GLOBAL_STATE } from "./State";
+import { GlobalState, DEFAULT_GLOBAL_STATE } from "./Store";
 
 export const GlobalStateContext = React.createContext<{
   state: GlobalState;

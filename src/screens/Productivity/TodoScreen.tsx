@@ -12,7 +12,7 @@ import ViewProjectScreen from "./ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
 import Todo from "../../models/Todo";
 import { GlobalStateContext } from "../../state/context";
-import { getAllTodos, isRunning } from "../../state/State";
+import { getAllTodos, isRunning } from "../../state/Store";
 
 const Stack = createStackNavigator();
 

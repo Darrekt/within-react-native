@@ -12,7 +12,7 @@ import ModalSelector from "react-native-modal-selector";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import { GlobalStateContext } from "../../state/context";
-import { getAllTodos } from "../../state/State";
+import { getAllTodos } from "../../state/Store";
 import { Actions } from "../../state/Actions";
 
 type RootStackParamList = {

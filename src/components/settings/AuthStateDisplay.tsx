@@ -11,7 +11,7 @@ import { Avatar } from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
 import { globalStyles } from "../../../styles";
 import { SettingsAction } from "../../state/Actions";
-import { SageSettings } from "../../state/State";
+import { SageSettings } from "../../state/Store";
 
 const styles = StyleSheet.create({
   linearGradient: {

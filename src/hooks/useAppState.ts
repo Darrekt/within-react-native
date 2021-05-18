@@ -14,7 +14,7 @@ import {
   SageSettings,
   SAGE_DEFAULT_SETTINGS,
   DEFAULT_GLOBAL_STATE,
-} from "../state/State";
+} from "../state/Store";
 import {
   Actions,
   Action,

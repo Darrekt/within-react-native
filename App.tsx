@@ -14,7 +14,7 @@ import EditPasswordScreen from "./src/screens/Settings/EditPasswordScreen";
 import EditNameScreen from "./src/screens/Settings/EditNameScreen";
 import EditProductivitySettingScreen from "./src/screens/Settings/EditSettingScreen";
 import TabNavigationBar from "./src/screens/TabNavigationBar";
-import { SageSettings } from "./src/state/State";
+import { SageSettings } from "./src/state/Store";
 import SignInScreen from "./src/screens/Onboarding/SignInScreen";
 
 const Stack = createStackNavigator();
