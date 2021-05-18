@@ -8,7 +8,7 @@ import LinearGradient from "react-native-linear-gradient";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
 
-import ViewProjectScreen from "./../../screens/Todo/ViewProjectScreen";
+import ViewProjectScreen from "./ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
 import Todo from "../../models/Todo";
 import { GlobalStateContext } from "../../state/context";

@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-import TodoScreen from "./Todo/TodoScreen";
+import TodoScreen from "./Productivity/TodoScreen";
 import StatScreen from "./StatScreen";
 
 const Tab = createBottomTabNavigator();

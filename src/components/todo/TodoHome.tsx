@@ -13,6 +13,7 @@ import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
 import { useNavigation } from "@react-navigation/native";
 import { Entypo } from "@expo/vector-icons";
+import HeaderButton from "../util/HeaderButton";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -33,19 +34,22 @@ const HomeDisplay = () => {
   const { state } = React.useContext(GlobalStateContext);
   const navigation = useNavigation();
 
-  const addProjButton = (
-    <TouchableHighlight
-      onPress={() => {
-        navigation.navigate("AddProjScreen");
-      }}
-    >
-      <Entypo name="plus" size={20} color="black" />
-    </TouchableHighlight>
+  // const addProjButton = (
+  //   <TouchableHighlight
+  //     onPress={() => {
+  //       navigation.navigate("AddProjScreen");
+  //     }}
+  //   >
+  //     <Entypo name="plus" size={20} color="black" />
+  //   </TouchableHighlight>
+  // );
+  const headerButton = (
+    <HeaderButton route="AddProjScreen" iconName="plus" iconType="entypo" />
   );
 
   return (
     <View style={{ ...globalStyles.column }}>
-      <HeadingDropDown header="Projects" dropdown={addProjButton}>
+      <HeadingDropDown header="Projects" dropdown={headerButton}>
         <ScrollView
           style={{ width: "100%" }}
           horizontal
