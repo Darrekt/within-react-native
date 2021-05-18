@@ -8,7 +8,6 @@ import auth from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
 
 export const SignInScreen = () => {
-  const width = Dimensions.get("screen").width * 0.7;
   return (
     <View style={globalStyles.centered}>
       <Text

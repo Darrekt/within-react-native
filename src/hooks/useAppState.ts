@@ -276,7 +276,7 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
         .collection("projects")
         .onSnapshot((querySnapshot) => {
           const storedData =
-            querySnapshot.empty && querySnapshot !== null
+            querySnapshot && querySnapshot.empty
               ? List<Project>()
               : List<Project>(
                   querySnapshot.docs.map((doc) => fromFirestore(doc.data()))

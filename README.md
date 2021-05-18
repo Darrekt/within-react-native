@@ -6,11 +6,8 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 
 - Timer shifts oddly at the 11th second of single digit minutes
 - Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
-- Completion adds 2 laps and not 1
+- ~~Completion adds 2 laps and not 1~~
 - View and update pages don't work perfectly: may need unit testing
-- Usability
-- Retention
-- Efficacy
 
 ## TODOS
 
@@ -21,15 +18,16 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
   - Changing color pallettes
 
 - Features
-  - Add test suite for projects and todo data models
-  - Complete projects
-  - Complete todos
+
+  - ~~Add test suite for projects and todo data models~~
+  - ~~Complete projects~~
+  - ~~Complete todos~~
   - Deadlines
   - Disable notifications
 
 - Backend
 
-  - Onboarding sign in
+  - ~~Onboarding sign in~~
   - Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
   - Terms of use, indemnity, loss of profit etc
 
@@ -41,13 +39,14 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 - Measurement? Is the user over/underestimating?
   - How many tasks do you successfully set and complete?
 - Goals: Distinguishing Todo lists and Success lists
+- Build in feedback to test for
+  - Usability
+  - Retention
+  - Efficacy
 
 ## Misc
 
-- Landing page
-
-  - Goal and progress visualised right away
-  - Consistent and timed reinforcement
-  - "Source" Trigger
-
+- Goal and progress visualised right away
+- Consistent and timed reinforcement
+- "Source" Trigger
 - Success-built progression to task and goal completion
