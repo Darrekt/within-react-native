@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import Project from "../models/Project";
 import Deadline from "../models/Deadline";
 import Todo from "../models/Todo";
-import { GlobalState, SAGE_DEFAULT_SETTINGS } from "./Store";
+import { GlobalState, SAGE_DEFAULT_SETTINGS } from "./store";
 
 const projID = uuidv4();
 const ddlID = uuidv4();

@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Toast from "react-native-toast-message";
 import useAppState from "./src/hooks/useAppState";
-import { GlobalStateContext } from "./src/state/context";
+import { GlobalStateContext } from "./src/redux/context";
 
 import OnboardingScreen from "./src/screens/Onboarding/OnboardingScreen";
 import SettingsScreen from "./src/screens/Settings/SettingsScreen";
@@ -14,7 +14,7 @@ import EditPasswordScreen from "./src/screens/Settings/EditPasswordScreen";
 import EditNameScreen from "./src/screens/Settings/EditNameScreen";
 import EditProductivitySettingScreen from "./src/screens/Settings/EditSettingScreen";
 import TabNavigationBar from "./src/screens/TabNavigationBar";
-import { SageSettings } from "./src/state/Store";
+import { SageSettings } from "./src/redux/store";
 import SignInScreen from "./src/screens/Onboarding/SignInScreen";
 
 const Stack = createStackNavigator();
@@ -95,7 +95,6 @@ function ChooseScreens(settings: SageSettings) {
 }
 
 export default function App() {
-  console.log("App rendered.");
   const [state, dispatch] = useAppState();
 
   return (

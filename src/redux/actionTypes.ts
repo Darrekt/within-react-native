@@ -1,5 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { GlobalState, SageSettings } from "./Store";
+import { GlobalState, SageSettings } from "./store";
 import Project from "../models/Project";
 import Todo from "../models/Todo";
 
