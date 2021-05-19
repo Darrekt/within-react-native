@@ -4,7 +4,7 @@ import { View, Text, useWindowDimensions } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
-import { GlobalStateContext } from "../../state/context";
+import { GlobalStateContext } from "../../redux/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 

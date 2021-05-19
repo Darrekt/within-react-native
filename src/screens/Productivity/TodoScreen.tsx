@@ -11,8 +11,8 @@ import SettingsButton from "../../components/settings/SettingsButton";
 import ViewProjectScreen from "./ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
 import Todo from "../../models/Todo";
-import { GlobalStateContext } from "../../state/context";
-import { getAllTodos, isRunning } from "../../state/Store";
+import { GlobalStateContext } from "../../redux/context";
+import { getAllTodos, isRunning } from "../../redux/store";
 
 const Stack = createStackNavigator();
 

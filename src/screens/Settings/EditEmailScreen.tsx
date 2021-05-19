@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import { GlobalStateContext } from "../../state/context";
+import { GlobalStateContext } from "../../redux/context";
 import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
 

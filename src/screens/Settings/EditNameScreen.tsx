@@ -4,10 +4,10 @@ import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { GlobalStateContext } from "../../state/context";
+import { GlobalStateContext } from "../../redux/context";
 import { firebase } from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
-import { Actions } from "../../state/Actions";
+import { Actions } from "../../redux/actionTypes";
 
 const EditNameScreen = () => {
   const { state, dispatch } = useContext(GlobalStateContext);

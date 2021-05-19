@@ -28,6 +28,7 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 - Backend
 
   - ~~Onboarding sign in~~
+  - Simple, seperate state from schema. Write all interactions.
   - Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
   - Terms of use, indemnity, loss of profit etc
 

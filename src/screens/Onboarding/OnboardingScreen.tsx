@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Dimensions, Image, StyleSheet, Text } from "react-native";
-import { GlobalStateContext } from "../../state/context";
+import { GlobalStateContext } from "../../redux/context";
 import Onboarding from "react-native-onboarding-swiper";
-import { Actions } from "../../state/Actions";
+import { Actions } from "../../redux/actionTypes";
 
 const styles = StyleSheet.create({
   container: {

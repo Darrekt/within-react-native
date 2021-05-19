@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
-import { GlobalStateContext } from "../../state/context";
+import { GlobalStateContext } from "../../redux/context";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
 import { useNavigation } from "@react-navigation/native";

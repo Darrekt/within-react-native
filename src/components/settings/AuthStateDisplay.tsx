@@ -10,8 +10,8 @@ import {
 import { Avatar } from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
 import { globalStyles } from "../../../styles";
-import { SettingsAction } from "../../state/Actions";
-import { SageSettings } from "../../state/Store";
+import { SettingsAction } from "../../redux/actionTypes";
+import { SageSettings } from "../../redux/store";
 
 const styles = StyleSheet.create({
   linearGradient: {

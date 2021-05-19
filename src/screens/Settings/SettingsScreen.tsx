@@ -7,8 +7,8 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { Actions } from "../../state/Actions";
-import { GlobalStateContext } from "../../state/context";
+import { Actions } from "../../redux/actionTypes";
+import { GlobalStateContext } from "../../redux/context";
 
 const SettingsScreen = () => {
   const { state, dispatch } = useContext(GlobalStateContext);

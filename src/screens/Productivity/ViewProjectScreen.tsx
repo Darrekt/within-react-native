@@ -13,8 +13,8 @@ import wrapAsync from "../../util/dispatchAsync";
 import { LineChart } from "react-native-chart-kit";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
-import { GlobalStateContext } from "../../state/context";
-import { Actions } from "../../state/Actions";
+import { GlobalStateContext } from "../../redux/context";
+import { Actions } from "../../redux/actionTypes";
 import HeaderButton from "../../components/util/HeaderButton";
 
 type RootStackParamList = {

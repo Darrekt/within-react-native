@@ -11,9 +11,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
-import { GlobalStateContext } from "../../state/context";
-import { getAllTodos } from "../../state/Store";
-import { Actions } from "../../state/Actions";
+import { GlobalStateContext } from "../../redux/context";
+import { getAllTodos } from "../../redux/store";
+import { Actions } from "../../redux/actionTypes";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };

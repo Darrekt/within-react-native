@@ -4,7 +4,7 @@ import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import Todo from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { Icon } from "react-native-elements";
-import { Actions, TodoAction } from "../../state/Actions";
+import { Actions, TodoAction } from "../../redux/actionTypes";
 
 const styles = StyleSheet.create({
   positionedLogo: {

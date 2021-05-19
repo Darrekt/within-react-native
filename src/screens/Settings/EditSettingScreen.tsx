@@ -4,11 +4,11 @@ import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { GlobalStateContext } from "../../state/context";
+import { GlobalStateContext } from "../../redux/context";
 import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
 import { printTimeLeft } from "../../util/timer";
-import { Actions } from "../../state/Actions";
+import { Actions } from "../../redux/actionTypes";
 
 const styles = StyleSheet.create({
   headerStyle: {
