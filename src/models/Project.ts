@@ -11,8 +11,8 @@ export default class Project {
   name: string;
   notes: string = "";
   completed: boolean = false;
-  deadlines: List<Deadline> = List([]);
-  todos: List<Todo> = List([]);
+  deadlines: Deadline[] = [];
+  todos: Todo[] = [];
 
   constructor(data: Pick<Project, "name"> & Partial<Project>) {
     if (!data.id) delete data.id;
@@ -35,8 +35,8 @@ export default class Project {
       name: this.name,
       notes: this.notes,
       completed: this.completed,
-      todos: this.todos.map((todo) => todo.toEntity()).toArray(),
-      deadlines: this.deadlines.map((ddl) => ddl.toEntity()).toArray(),
+      todos: this.todos.map((todo) => todo.toEntity()),
+      deadlines: this.deadlines.map((ddl) => ddl.toEntity()),
     };
   }
 
@@ -105,4 +105,16 @@ export function findTodoDeadline(
     project.deadlines.find((ddl) => ddl.id == ddlID) as Deadline,
     project.deadlines.findIndex((ddl) => ddl.id == ddlID),
   ];
+}
+
+export function compareByDeadline(projA: Project, projB: Project) {
+  // TODO: Implement sorting comparator
+  const ddlA = projA.closestDeadline()?.due;
+  const ddlB = projB.closestDeadline()?.due;
+
+  if (ddlA === undefined && ddlB === undefined) return 0;
+  else if (ddlA === undefined && ddlB !== undefined) return 1;
+  else if (ddlB === undefined && ddlA !== undefined) return 0;
+  // else if (ddlA < ddlB) return -1;
+  else return 1;
 }

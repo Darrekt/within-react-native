@@ -1,33 +1,64 @@
 import { List } from "immutable";
-import Project from "../../models/Project";
-import { Actions, ProjectAction } from "../actionTypes";
+import Project, { compareByDeadline } from "../../models/Project";
+import { Actions, ProjectAction, TodoAction } from "../actionTypes";
+import deadlineReducer from "./deadlines";
+import todoReducer from "./todos";
 
 const defaultProject = new Project({
   id: "uncategorised",
   name: "Uncategorised Tasks",
 });
 
+const findAndUpdateProject = (
+  state: Project[],
+  target: string,
+  updater: (proj: Project) => Project
+) =>
+  List(state)
+    .update(
+      state.findIndex((item) => item.id === target),
+      updater
+    )
+    .toArray();
+
 const projectReducer = (
   state: Project[] = [defaultProject],
-  action: ProjectAction
+  action: ProjectAction | TodoAction
 ) => {
   switch (action.type) {
     // Project Actions
     case Actions.ProjectUpdate:
-      return List(state)
-        .update(
-          state.findIndex((item) => item.id === action.payload.id),
-          (proj) => action.payload
-        )
-        .toArray();
+      return findAndUpdateProject(
+        state,
+        action.payload.id,
+        (proj) => action.payload
+      );
     case Actions.ProjectAdd:
-      return List(state).push(action.payload).toArray();
-    //   return state.filterNot((project) => project.completed).size <
-    //     settings.maxProjects
-    //     ? state.push(action.payload)
-    //     : state;
+      return List(state).push(action.payload).sort(compareByDeadline).toArray();
     case Actions.ProjectDelete:
       return state.filter((item) => item.id !== action.payload.id);
+
+    case Actions.TodoAdd:
+    case Actions.TodoDelete:
+    case Actions.TodoUpdate:
+    case Actions.TodoAssign:
+    case Actions.TodoDeassign:
+    case Actions.TodoSelect:
+    case Actions.TodoToggleComplete:
+    case Actions.TodoStart:
+    case Actions.TodoPause:
+    case Actions.TodoReset:
+    case Actions.TodoFinish:
+      return findAndUpdateProject(
+        state,
+        action.payload.project,
+        (proj) =>
+          new Project({
+            ...proj,
+            deadlines: deadlineReducer(proj.deadlines, action),
+            todos: todoReducer(proj.todos, action),
+          })
+      );
     default:
       throw Error("Invalid Project Action");
   }

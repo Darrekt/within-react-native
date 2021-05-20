@@ -1,29 +1,23 @@
 import React from "react";
 import { View, useWindowDimensions } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
 import LinearGradient from "react-native-linear-gradient";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
-
-import ViewProjectScreen from "./ViewProjectScreen";
-import ViewTodoScreen from "./ViewTodoScreen";
 import Todo from "../../models/Todo";
-import { GlobalStateContext } from "../../redux/context";
-import { getAllTodos, isRunning } from "../../redux/store";
-
-const Stack = createStackNavigator();
+import { useSelector } from "react-redux";
+import { getTodos, isRunning } from "../../redux/selectors";
 
 const TodoScreen = () => {
-  const { state, dispatch } = React.useContext(GlobalStateContext);
+  const todos = useSelector(getTodos);
+  const selected = "";
+  const running = useSelector(isRunning);
+
   const [isOpen, setIsOpen] = React.useState(false);
   const modalizeRef = React.useRef<Modalize>(null);
   const windowHeight = useWindowDimensions().height;
-
-  const todos = getAllTodos(state.projects);
-  const running = isRunning(todos);
 
   return (
     <View style={globalStyles.container}>
@@ -51,8 +45,7 @@ const TodoScreen = () => {
       )}
       {isOpen ? (
         <TodoComponents.TimerDisplay
-          selectedTask={todos.find((todo) => todo.id == state.selectedTodo)}
-          dispatch={dispatch}
+          selectedTask={todos.find((todo) => todo.id == selected)}
         />
       ) : (
         <TodoComponents.HomeDisplay />
@@ -70,20 +63,14 @@ const TodoScreen = () => {
         HeaderComponent={<View style={globalStyles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
-            <TodoComponents.ListHeader
-              todos={todos.toArray()}
-              dispatch={dispatch}
-              isOpen={isOpen}
-            />
+            <TodoComponents.ListHeader todos={todos} isOpen={isOpen} />
           ),
-          data: isOpen ? todos.toArray() : [],
+          data: isOpen ? todos : [],
           keyExtractor: (item: Todo) => item.id,
           renderItem: ({ item }) => (
             <TodoComponents.ItemTile
               todo={item}
-              dispatch={dispatch}
-              selected={state.selectedTodo}
-              // TODO: Change running
+              selected={selected}
               running={running}
             />
           ),
@@ -96,48 +83,4 @@ const TodoScreen = () => {
   );
 };
 
-const TodoNavigator = () => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="AppHome"
-        component={TodoScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="ViewProjScreen"
-        component={ViewProjectScreen}
-        options={{
-          title: "View Project",
-          headerBackTitleVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="AddProjScreen"
-        component={ViewProjectScreen}
-        options={{
-          title: "Add a Project",
-          headerBackTitleVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="EditTodoScreen"
-        component={ViewTodoScreen}
-        options={{
-          title: "Edit task",
-          headerBackTitleVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="AddTodoScreen"
-        component={ViewTodoScreen}
-        options={{
-          title: "Add task",
-          headerBackTitleVisible: false,
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
-export default TodoNavigator;
+export default TodoScreen;

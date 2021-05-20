@@ -1,7 +1,9 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { GlobalState, SageSettings } from "./store";
+import { GlobalState } from "./store";
 import Project from "../models/Project";
 import Todo from "../models/Todo";
+import { SageSettings } from "./reducers/settings";
+import Deadline from "../models/Deadline";
 
 export enum Actions {
   RepoHydrate = "REPO_HYDRATE",
@@ -9,6 +11,14 @@ export enum Actions {
   ProjectAdd = "PROJECT_ADD",
   ProjectDelete = "PROJECT_DELETE",
   ProjectUpdate = "PROJECT_UPDATE",
+  ProjectAddDeadline = "PROJECT_ADD_DEADLINE",
+  ProjectDeleteDeadline = "PROJECT_DEL_DEADLINE",
+  ProjectCompleteDeadline = "PROJECT_COMPLETE_DEADLINE",
+  ProjectUpdateDeadline = "PROJECT_UPDATE_DEADLINE",
+  DeadlineAdd = "DEADLINE_ADD",
+  DeadlineRemove = "DEADLINE_REMOVE",
+  DeadlineUpdate = "DEADLINE_UPDATE",
+  DeadlineComplete = "DEADLINE_COMPLETE",
   TodoAdd = "TODO_ADD",
   TodoDelete = "TODO_DELETE",
   TodoUpdate = "TODO_UPDATE",
@@ -36,24 +46,45 @@ export type RepoAction = {
 };
 
 export type ProjectAction = {
-  type: Actions.ProjectAdd | Actions.ProjectDelete | Actions.ProjectUpdate;
+  type:
+    | Actions.ProjectAdd
+    | Actions.ProjectDelete
+    | Actions.ProjectUpdate
+    | Actions.ProjectAddDeadline;
   payload: Project;
 };
 
-export type TodoAction = {
+export type DeadlineAction = {
   type:
-    | Actions.TodoAdd
-    | Actions.TodoUpdate
-    | Actions.TodoDelete
-    | Actions.TodoSelect
-    | Actions.TodoToggleComplete
-    | Actions.TodoAssign
-    | Actions.TodoDeassign
-    | Actions.TodoStart
-    | Actions.TodoPause
-    | Actions.TodoReset
-    | Actions.TodoFinish;
+    | Actions.DeadlineAdd
+    | Actions.DeadlineRemove
+    | Actions.DeadlineUpdate
+    | Actions.DeadlineComplete;
+  targetProj: string;
+  payload: Deadline;
+};
+
+export type TodoAction =
+  | TodoStart
+  | {
+      type:
+        | Actions.TodoAdd
+        | Actions.TodoUpdate
+        | Actions.TodoDelete
+        | Actions.TodoSelect
+        | Actions.TodoToggleComplete
+        | Actions.TodoAssign
+        | Actions.TodoDeassign
+        | Actions.TodoPause
+        | Actions.TodoReset
+        | Actions.TodoFinish;
+      payload: Todo;
+    };
+
+export type TodoStart = {
+  type: Actions.TodoStart;
   payload: Todo;
+  interval: number;
 };
 
 export type SettingsAction =

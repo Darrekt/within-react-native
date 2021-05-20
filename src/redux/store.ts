@@ -1,13 +1,8 @@
-import Project from "../models/Project";
-import Todo from "../models/Todo";
-import { SageSettings, SAGE_DEFAULT_SETTINGS } from "./reducers/settings";
 import { createStore } from "redux";
 import rootReducer from "./reducers/rootReducer";
 
-export type GlobalState = {
-  projects: Project[];
-  todos: Todo[];
-  settings: SageSettings;
-};
+const store = createStore(rootReducer);
 
-export default createStore(rootReducer);
+export default store;
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

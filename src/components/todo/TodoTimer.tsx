@@ -5,6 +5,7 @@ import Todo from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { Icon } from "react-native-elements";
 import { Actions, TodoAction } from "../../redux/actionTypes";
+import { useAppDispatch } from "../../redux/hooks";
 
 const styles = StyleSheet.create({
   positionedLogo: {
@@ -32,10 +33,10 @@ const styles = StyleSheet.create({
 
 type DisplayProps = {
   selectedTask?: Todo;
-  dispatch: React.Dispatch<TodoAction>;
 };
 
-const TodoTimerDisplay = ({ selectedTask, dispatch }: DisplayProps) => {
+const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
+  const dispatch = useAppDispatch();
   if (selectedTask) {
     return (
       <TodoTimer selectedTask={selectedTask} dispatch={dispatch}></TodoTimer>

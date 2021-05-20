@@ -4,7 +4,7 @@ export default class Todo {
   id: string = uuidv4();
   emoji: string = "✏️";
   name: string = "";
-  project?: string;
+  project: string;
   deadline?: string;
   laps: number = 0;
   completed: boolean = false;
@@ -15,6 +15,7 @@ export default class Todo {
   constructor(data: Partial<Todo>) {
     if (!data.id) delete data.id;
     Object.assign(this, data);
+    this.project = data.project ?? "uncategorised";
   }
 
   // WARNING: Make sure you update toFireStore if you change the shape of the Todo object!

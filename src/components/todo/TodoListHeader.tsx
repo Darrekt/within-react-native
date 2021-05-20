@@ -3,7 +3,6 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { globalStyles } from "../../../styles";
 import Todo from "../../models/Todo";
-import { TodoRepoAction } from "../../hooks/useTodoRepository";
 import { useNavigation } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
@@ -32,12 +31,11 @@ const styles = StyleSheet.create({
 
 type IProps = {
   todos: Array<Todo>;
-  dispatch: React.Dispatch<TodoRepoAction>;
   isOpen: boolean;
   taskIsRunning?: boolean;
 };
 
-const TodoListHeader = ({ todos, dispatch, isOpen, taskIsRunning }: IProps) => {
+const TodoListHeader = ({ todos, isOpen, taskIsRunning }: IProps) => {
   const navigation = useNavigation();
   return (
     <View style={isOpen ? styles.openHeader : globalStyles.centered}>

@@ -6,6 +6,7 @@ import { AntDesign, Entypo } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { useNavigation } from "@react-navigation/core";
 import { Actions, TodoAction } from "../../redux/actionTypes";
+import { useAppDispatch } from "../../redux/hooks";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -40,12 +41,12 @@ const styles = StyleSheet.create({
 
 type Props = {
   todo: Todo;
-  dispatch: React.Dispatch<TodoAction>;
   selected: string;
   running: boolean;
 };
 
-const TodoItemTile = ({ todo, dispatch, selected, running }: Props) => {
+const TodoItemTile = ({ todo, selected, running }: Props) => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   let itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
