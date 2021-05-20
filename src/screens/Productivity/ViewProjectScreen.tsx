@@ -13,9 +13,10 @@ import wrapAsync from "../../util/dispatchAsync";
 import { LineChart } from "react-native-chart-kit";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
-import { GlobalStateContext } from "../../redux/context";
 import { Actions } from "../../redux/actionTypes";
 import HeaderButton from "../../components/util/HeaderButton";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getProjects } from "../../redux/selectors";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -52,10 +53,11 @@ const styles = StyleSheet.create({
 });
 
 const ViewProjectScreen = ({ route, navigation }: Props) => {
-  const { state, dispatch } = React.useContext(GlobalStateContext);
+  const projects = useAppSelector(getProjects);
+  const dispatch = useAppDispatch();
 
   const project = route.params?.id
-    ? state.projects.find((proj) => proj.id === route.params.id)
+    ? projects.find((proj) => proj.id === route.params.id)
     : undefined;
 
   const addDeadlineBtn = (

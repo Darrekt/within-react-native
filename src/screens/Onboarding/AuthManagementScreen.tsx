@@ -1,18 +1,17 @@
 import auth from "@react-native-firebase/auth";
-import React, { useContext } from "react";
-import { View, Text, useWindowDimensions } from "react-native";
+import React from "react";
+import { View, Text } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
-import { GlobalStateContext } from "../../redux/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
+import { useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
 
 const AuthManagementScreen = () => {
-  const { state } = useContext(GlobalStateContext);
+  const settings = useAppSelector(getSettings);
   const navigation = useNavigation();
-  const width = useWindowDimensions().width * 0.7;
-  const settings = state.settings;
 
   return (
     <View

@@ -1,5 +1,5 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from "react";
+import auth from "@react-native-firebase/auth";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { SageSettings } from "../redux/reducers/settings";
@@ -14,6 +14,8 @@ import EditNameScreen from "./Settings/EditNameScreen";
 import EditProductivitySettingScreen from "./Settings/EditSettingScreen";
 import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { Actions } from "../redux/actionTypes";
 
 const Stack = createStackNavigator();
 
@@ -92,7 +94,19 @@ function ChooseScreens(settings: SageSettings) {
   }
 }
 
-function StackScreens(settings: SageSettings) {
+function StackScreens() {
+  const { settings } = useAppSelector((state) => ({
+    settings: getSettings(state),
+  }));
+  const dispatch = useAppDispatch();
+  useEffect(
+    () =>
+      auth().onAuthStateChanged((user) =>
+        dispatch({ type: Actions.SettingsAuth, user: user })
+      ),
+    []
+  );
+
   return (
     <NavigationContainer>
       <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
@@ -100,4 +114,4 @@ function StackScreens(settings: SageSettings) {
   );
 }
 
-export default connect(getSettings)(StackScreens);
+export default StackScreens;

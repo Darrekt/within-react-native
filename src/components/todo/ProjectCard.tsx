@@ -5,6 +5,7 @@ import { globalStyles } from "../../../styles";
 import Project from "../../models/Project";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { List } from "immutable";
 
 const styles = StyleSheet.create({
   blackFont: {
@@ -17,10 +18,11 @@ const styles = StyleSheet.create({
 
 export default function ProjectCard({ project }: { project: Project }) {
   const navigation = useNavigation();
-
   const now = new Date().valueOf();
   const dueDateFont =
-    (project.deadlines.first(0).valueOf()) > now ? styles.blackFont : styles.redFont;
+    List(project.deadlines).first(0).valueOf() > now
+      ? styles.blackFont
+      : styles.redFont;
 
   return (
     <Card
@@ -73,12 +75,12 @@ export default function ProjectCard({ project }: { project: Project }) {
           <AntDesign name="calendar" size={30} color="black" />
           <View style={{ ...globalStyles.column, marginHorizontal: 20 }}>
             <Text style={dueDateFont}>
-              {project.closestDeadline()?.toDateString() ?? "No due date!"}
+              {project.closestDeadline()?.due.toDateString() ?? "No due date!"}
             </Text>
             <Text>
-              {project.todos.isEmpty()
+              {List(project.todos).isEmpty()
                 ? "Done for today!"
-                : `${project.todos.size} tasks left`}
+                : `${project.todos.length} tasks left`}
             </Text>
           </View>
           {/* TODO: Project TAG HERE */}

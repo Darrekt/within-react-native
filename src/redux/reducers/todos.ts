@@ -67,7 +67,8 @@ const todoReducer = (state: Todo[], action: TodoAction): Todo[] => {
       );
 
     default:
-      throw Error("Invalid todo action");
+      console.log(`Invalid todo action: ${action.type}`);
+      return state;
   }
 };
 

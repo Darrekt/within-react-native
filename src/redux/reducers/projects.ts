@@ -49,6 +49,7 @@ const projectReducer = (
     case Actions.TodoPause:
     case Actions.TodoReset:
     case Actions.TodoFinish:
+      console.log("Got to theright part?")
       return findAndUpdateProject(
         state,
         action.payload.project,
@@ -60,7 +61,8 @@ const projectReducer = (
           })
       );
     default:
-      throw Error("Invalid Project Action");
+      console.log(`Ignored Project Action: ${action.type}`);
+      return state;
   }
 };
 

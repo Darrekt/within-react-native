@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Dimensions, Image, StyleSheet, Text } from "react-native";
-import { GlobalStateContext } from "../../redux/context";
 import Onboarding from "react-native-onboarding-swiper";
 import { Actions } from "../../redux/actionTypes";
+import { useAppDispatch } from "../../redux/hooks";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 });
 
 const OnboardingScreen = () => {
-  const { dispatch } = useContext(GlobalStateContext);
+  const dispatch = useAppDispatch();
   return (
     <Onboarding
       containerStyles={styles.container}

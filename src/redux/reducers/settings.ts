@@ -1,5 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { Actions, SettingsAction } from "../actionTypes";
+import { Action, Actions, ProjectAction, SettingsAction } from "../actionTypes";
 
 export type SageSettings = {
   onboarding: boolean;
@@ -21,7 +21,7 @@ export const SAGE_DEFAULT_SETTINGS: SageSettings = {
 
 const settingsReducer = (
   state: SageSettings = SAGE_DEFAULT_SETTINGS,
-  action: SettingsAction
+  action: ProjectAction | SettingsAction
 ) => {
   switch (action.type) {
     case Actions.SettingsAuth:
@@ -38,7 +38,8 @@ const settingsReducer = (
     case Actions.SettingsChangeDefaultInterval:
       return { ...state, defaultInterval: action.value };
     default:
-      throw Error("Invalid settings action");
+      console.log(`Ignored settings action: ${action.type}`);
+      return state;
   }
 };
 

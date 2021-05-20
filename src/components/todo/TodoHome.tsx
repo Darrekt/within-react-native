@@ -1,19 +1,13 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableHighlight,
-  Dimensions,
-  Text,
-} from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
-import { GlobalStateContext } from "../../redux/context";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
-import { useNavigation } from "@react-navigation/native";
-import { Entypo } from "@expo/vector-icons";
 import HeaderButton from "../util/HeaderButton";
+import { useAppSelector } from "../../redux/hooks";
+import { getProjects } from "../../redux/selectors";
+import { List } from "immutable";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -31,18 +25,7 @@ const styles = StyleSheet.create({
 
 // TODO: Make height and alignments responsive; all heights are hard coded currently.
 const HomeDisplay = () => {
-  const { state } = React.useContext(GlobalStateContext);
-  const navigation = useNavigation();
-
-  // const addProjButton = (
-  //   <TouchableHighlight
-  //     onPress={() => {
-  //       navigation.navigate("AddProjScreen");
-  //     }}
-  //   >
-  //     <Entypo name="plus" size={20} color="black" />
-  //   </TouchableHighlight>
-  // );
+  const projects = useAppSelector(getProjects);
   const headerButton = (
     <HeaderButton route="AddProjScreen" iconName="plus" iconType="entypo" />
   );
@@ -55,8 +38,7 @@ const HomeDisplay = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
         >
-          {state.projects
-            .sortBy((value) => value.closestDeadline())
+          {List(projects)
             .filter((value) => !value.completed)
             .map((project) => (
               <ProjectCard key={project.id} project={project} />

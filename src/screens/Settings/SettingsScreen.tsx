@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useContext } from "react";
+import React from "react";
 import { View, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import { globalStyles } from "../../../styles";
@@ -8,11 +8,12 @@ import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Actions } from "../../redux/actionTypes";
-import { GlobalStateContext } from "../../redux/context";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
 
 const SettingsScreen = () => {
-  const { state, dispatch } = useContext(GlobalStateContext);
-  const settings = state.settings;
+  const settings = useAppSelector(getSettings);
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
   const generalSettings = [

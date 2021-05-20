@@ -79,14 +79,6 @@ const useAppState: () => [GlobalState, React.Dispatch<Action>] = () => {
   const [state, dispatch] = useReducer(globalReducer, DEFAULT_GLOBAL_STATE);
 
   // Listener for auth state changes
-  useEffect(
-    () =>
-      auth().onAuthStateChanged((user) =>
-        dispatch({ type: Actions.SettingsAuth, user: user })
-      ),
-    []
-  );
-
   // Project listener
   useEffect(() => {
     console.log("PROJECT LISTENER SUBSCRIBED");

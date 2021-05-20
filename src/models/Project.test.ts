@@ -1,7 +1,6 @@
 import { List } from "immutable";
 import { v4 as uuidv4 } from "uuid";
 import Project from "./Project";
-import Deadline from "./Deadline";
 import Todo from "./Todo";
 
 const testID = uuidv4();
@@ -18,8 +17,7 @@ const project2 = new Project({
   id: undefined,
   name: "Second task",
   notes: "I am important",
-  todos: List([todo1, todo2]),
-  deadlines: List([]),
+  todos: [todo1, todo2],
 });
 
 const project3 = new Project({ ...project2 });
@@ -28,6 +26,11 @@ test("Correct constructor handling of IDs", () => {
   // console.log(project2.id)
   expect(project1.id).toEqual(testID);
   expect(project2.id).toBeDefined();
+});
+
+test("All fields should be defined", () => {
+  const keys = Object.keys(project2) as (keyof Project)[];
+  keys.forEach((key) => expect(project2[key]).toBeDefined());
 });
 
 test("ToEntity should have all properties of Project", () => {

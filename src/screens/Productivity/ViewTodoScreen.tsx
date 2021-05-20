@@ -11,9 +11,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
-import { GlobalStateContext } from "../../redux/context";
-import { getAllTodos } from "../../redux/store";
 import { Actions } from "../../redux/actionTypes";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getProjects, getTodos } from "../../redux/selectors";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -45,8 +45,9 @@ const styles = StyleSheet.create({
 });
 
 const ViewTodoScreen = ({ route, navigation }: Props) => {
-  const { state, dispatch } = React.useContext(GlobalStateContext);
-  const todos = getAllTodos(state.projects);
+  const projects = useAppSelector(getProjects);
+  const todos = useAppSelector(getTodos);
+  const dispatch = useAppDispatch();
   const todo = route.params?.id
     ? todos.find((item) => item.id === route.params.id)
     : undefined;
@@ -128,29 +129,21 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
               </View>
               <Text style={textStyles.header}>Additional details</Text>
               <ModalSelector
-                data={state.projects
-                  .map((proj) => {
-                    return {
-                      key: proj.id,
-                      label: proj.name,
-                    };
-                  })
-                  .toArray()}
+                data={projects.map((proj) => {
+                  return {
+                    key: proj.id,
+                    label: proj.name,
+                  };
+                })}
                 initValue={
-                  state.projects.find(
-                    (proj) => proj.id === formik.values.project
-                  )?.name ?? "No project!"
+                  projects.find((proj) => proj.id === formik.values.project)
+                    ?.name ?? "No project!"
                 }
                 onChange={(option) => {
                   formik.setFieldValue("project", option.key);
                 }}
                 cancelText="Cancel"
               />
-              <View style={styles.boolEntry}>
-                <Text style={textStyles.header}>
-                  Silence incoming notifications
-                </Text>
-              </View>
             </View>
             <View style={globalStyles.bottomButtons}>
               <SubmitButton

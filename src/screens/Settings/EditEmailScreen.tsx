@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import { GlobalStateContext } from "../../redux/context";
 import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
+import { useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
 
 const EditEmailScreen = () => {
-  const { state } = useContext(GlobalStateContext);
-  const settings = state.settings;
+  const settings = useAppSelector(getSettings);
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>

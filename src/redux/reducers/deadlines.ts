@@ -21,7 +21,8 @@ const deadlineReducer = (
     // case Actions.DeadlineComplete:
     //     return
     default:
-      throw Error("Invalid Project Action");
+      console.log(`Ignored deadline action: ${action.type}`);
+      return state;
   }
 };
 

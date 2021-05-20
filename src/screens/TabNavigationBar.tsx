@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 import TodoScreen from "./Productivity/TodoScreen";
 import StatScreen from "./StatScreen";
+import TodoNavigator from "./Productivity/TodoNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +49,7 @@ const TabNavigationBar = () => {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Todos" component={TodoScreen} />
+      <Tab.Screen name="Todos" component={TodoNavigator} />
       <Tab.Screen name="Stats" component={StatScreen} />
       {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
     </Tab.Navigator>

@@ -1,17 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { GlobalStateContext } from "../../redux/context";
 import { firebase } from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Actions } from "../../redux/actionTypes";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
 
 const EditNameScreen = () => {
-  const { state, dispatch } = useContext(GlobalStateContext);
-  const settings = state.settings;
+  const settings = useAppSelector(getSettings);
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>

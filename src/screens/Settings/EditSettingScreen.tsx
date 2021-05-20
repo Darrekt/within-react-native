@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
@@ -9,6 +9,8 @@ import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
 import { printTimeLeft } from "../../util/timer";
 import { Actions } from "../../redux/actionTypes";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
 
 const styles = StyleSheet.create({
   headerStyle: {
@@ -39,8 +41,8 @@ const validateProjects = (setVal?: number) => {
 };
 
 const EditProductivitySettingScreen = () => {
-  const { state, dispatch } = useContext(GlobalStateContext);
-  const settings = state.settings;
+  const settings = useAppSelector(getSettings);
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
   return (
