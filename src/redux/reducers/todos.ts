@@ -1,15 +1,22 @@
 import { List } from "immutable";
 import Todo from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
-import { Actions, TodoAction } from "../actionTypes";
+import { Actions, TodoAction } from "../actions/actionTypes";
 
-const setTodo = (state: Todo[], payload: Todo): Todo[] =>
-  List(state)
+/**
+ * setTodo attempts to set the todo if it exists, and if not adds it to the end of the list.
+ * @param state The current list of Todos for this project.
+ * @param payload  The Todo to be added.
+ * @returns a new Array which includes the updated or added entry.
+ */
+const setTodo = (state: Todo[], payload: Todo): Todo[] => {
+  return List(state)
     .set(
       state.findIndex((todo) => todo.id === payload.id),
       payload
     )
     .toArray();
+};
 
 // todoReducer is a nested reducer that will be called from the main projectReducer.
 // It therefore takes as state the list of Todos for this project. We can thus implicitly assume

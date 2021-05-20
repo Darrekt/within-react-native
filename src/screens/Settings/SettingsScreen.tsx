@@ -7,7 +7,7 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { Actions } from "../../redux/actionTypes";
+import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
 

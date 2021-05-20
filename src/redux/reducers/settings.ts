@@ -1,5 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { Action, Actions, ProjectAction, SettingsAction } from "../actionTypes";
+import { Actions, ProjectAction, SettingsAction } from "../actions/actionTypes";
 
 export type SageSettings = {
   onboarding: boolean;

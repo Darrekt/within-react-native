@@ -1,7 +1,7 @@
 import React from "react";
 import { Dimensions, Image, StyleSheet, Text } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import { Actions } from "../../redux/actionTypes";
+import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch } from "../../redux/hooks";
 
 const styles = StyleSheet.create({

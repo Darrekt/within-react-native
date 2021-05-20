@@ -1,6 +1,7 @@
 import { List } from "immutable";
 import Project, { compareByDeadline } from "../../models/Project";
-import { Actions, ProjectAction, TodoAction } from "../actionTypes";
+import { Actions, ProjectAction, TodoAction } from "../actions/actionTypes";
+import { findTodoByID } from "../selectors";
 import deadlineReducer from "./deadlines";
 import todoReducer from "./todos";
 
@@ -38,18 +39,26 @@ const projectReducer = (
     case Actions.ProjectDelete:
       return state.filter((item) => item.id !== action.payload.id);
 
+    case Actions.ProjectComplete:
+      return findAndUpdateProject(
+        state,
+        action.payload.id,
+        (proj) => new Project({ ...proj, completed: !proj.completed })
+      );
+    case Actions.ProjectCompleteDeadline:
+      return state;
+
     case Actions.TodoAdd:
     case Actions.TodoDelete:
     case Actions.TodoUpdate:
-    case Actions.TodoAssign:
-    case Actions.TodoDeassign:
+    case Actions.TodoAssignDeadline:
+    case Actions.TodoDeassignDeadline:
     case Actions.TodoSelect:
     case Actions.TodoToggleComplete:
     case Actions.TodoStart:
     case Actions.TodoPause:
     case Actions.TodoReset:
     case Actions.TodoFinish:
-      console.log("Got to theright part?")
       return findAndUpdateProject(
         state,
         action.payload.project,
@@ -60,6 +69,15 @@ const projectReducer = (
             todos: todoReducer(proj.todos, action),
           })
       );
+    case Actions.TodoAssignProject:
+      const prevTodo = findTodoByID(state, action.payload.id);
+      // TODO: Updating Todo sometimes requires editing of 2 projects
+      // Remove from list if reassigned to other project
+      // Add to list if new to this project
+
+      // Find the previous version of this todo
+      // compare to the new payload
+      return state;
     default:
       console.log(`Ignored Project Action: ${action.type}`);
       return state;

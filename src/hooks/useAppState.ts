@@ -18,7 +18,7 @@ import {
 import {
   Actions,
   Action,
-} from "../redux/actionTypes";
+} from "../redux/actions/actionTypes";
 import { getTimeLeft } from "../util/timer";
 
 const globalReducer = (state: GlobalState, action: Action): GlobalState => {

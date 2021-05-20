@@ -4,8 +4,9 @@ import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import Todo from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { Icon } from "react-native-elements";
-import { Actions, TodoAction } from "../../redux/actionTypes";
-import { useAppDispatch } from "../../redux/hooks";
+import { Actions, TodoAction } from "../../redux/actions/actionTypes";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
 
 const styles = StyleSheet.create({
   positionedLogo: {
@@ -52,6 +53,7 @@ type TimerProps = {
 };
 
 const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
+  const settings = useAppSelector(getSettings);
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
 
   // TODO: This implementation completes a task twice.
@@ -80,8 +82,9 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
       action: {
         type: selectedTask.finishingTime
           ? Actions.TodoPause
-          : Actions.TodoSelect,
+          : Actions.TodoStart,
         payload: selectedTask,
+        interval: settings.defaultInterval,
       },
       icon: (
         <Icon

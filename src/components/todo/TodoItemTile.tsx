@@ -5,7 +5,7 @@ import Todo from "../../models/Todo";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { useNavigation } from "@react-navigation/core";
-import { Actions, TodoAction } from "../../redux/actionTypes";
+import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch } from "../../redux/hooks";
 
 const styles = StyleSheet.create({

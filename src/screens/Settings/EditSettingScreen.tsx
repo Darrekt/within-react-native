@@ -4,11 +4,10 @@ import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { GlobalStateContext } from "../../redux/context";
 import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
 import { printTimeLeft } from "../../util/timer";
-import { Actions } from "../../redux/actionTypes";
+import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
 

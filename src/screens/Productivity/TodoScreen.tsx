@@ -8,11 +8,11 @@ import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
 import Todo from "../../models/Todo";
 import { useSelector } from "react-redux";
-import { getTodos, isRunning } from "../../redux/selectors";
+import { getSelected, getTodos, isRunning } from "../../redux/selectors";
 
 const TodoScreen = () => {
   const todos = useSelector(getTodos);
-  const selected = "";
+  const selected = useSelector(getSelected);
   const running = useSelector(isRunning);
 
   const [isOpen, setIsOpen] = React.useState(false);

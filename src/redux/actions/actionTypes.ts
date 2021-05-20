@@ -1,5 +1,4 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { GlobalState } from "./store";
 import Project from "../models/Project";
 import Todo from "../models/Todo";
 import { SageSettings } from "./reducers/settings";
@@ -11,6 +10,7 @@ export enum Actions {
   ProjectAdd = "PROJECT_ADD",
   ProjectDelete = "PROJECT_DELETE",
   ProjectUpdate = "PROJECT_UPDATE",
+  ProjectComplete = "PROJECT_COMPLETE",
   ProjectAddDeadline = "PROJECT_ADD_DEADLINE",
   ProjectDeleteDeadline = "PROJECT_DEL_DEADLINE",
   ProjectCompleteDeadline = "PROJECT_COMPLETE_DEADLINE",
@@ -24,8 +24,9 @@ export enum Actions {
   TodoUpdate = "TODO_UPDATE",
   TodoSelect = "TODO_SELECT",
   TodoToggleComplete = "TODO_TOGGLECOMPLETE",
-  TodoAssign = "TODO_ASSIGN",
-  TodoDeassign = "TODO_DEASSIGN",
+  TodoAssignProject = "TODO_ASSIGN_PROJECT",
+  TodoAssignDeadline = "TODO_ASSIGN_DEADLINE",
+  TodoDeassignDeadline = "TODO_DEASSIGN_DEADLINE",
   TodoStart = "TODO_START",
   TodoPause = "TODO_PAUSE",
   TodoReset = "TODO_RESET",
@@ -50,7 +51,11 @@ export type ProjectAction = {
     | Actions.ProjectAdd
     | Actions.ProjectDelete
     | Actions.ProjectUpdate
-    | Actions.ProjectAddDeadline;
+    | Actions.ProjectComplete
+    | Actions.ProjectAddDeadline
+    | Actions.ProjectDeleteDeadline
+    | Actions.ProjectCompleteDeadline
+    | Actions.ProjectUpdateDeadline;
   payload: Project;
 };
 
@@ -73,8 +78,9 @@ export type TodoAction =
         | Actions.TodoDelete
         | Actions.TodoSelect
         | Actions.TodoToggleComplete
-        | Actions.TodoAssign
-        | Actions.TodoDeassign
+        | Actions.TodoAssignProject
+        | Actions.TodoAssignDeadline
+        | Actions.TodoDeassignDeadline
         | Actions.TodoPause
         | Actions.TodoReset
         | Actions.TodoFinish;

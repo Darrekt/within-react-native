@@ -15,7 +15,7 @@ import EditProductivitySettingScreen from "./Settings/EditSettingScreen";
 import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Actions } from "../redux/actionTypes";
+import { Actions } from "../redux/actions/actionTypes";
 
 const Stack = createStackNavigator();
 
@@ -95,16 +95,15 @@ function ChooseScreens(settings: SageSettings) {
 }
 
 function StackScreens() {
-  const { settings } = useAppSelector((state) => ({
-    settings: getSettings(state),
-  }));
+  const settings = useAppSelector(getSettings);
   const dispatch = useAppDispatch();
+
   useEffect(
     () =>
       auth().onAuthStateChanged((user) =>
         dispatch({ type: Actions.SettingsAuth, user: user })
       ),
-    []
+    [settings.user]
   );
 
   return (

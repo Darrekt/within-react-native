@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import Deadline from "../../models/Deadline";
-import { Actions, DeadlineAction, TodoAction } from "../actionTypes";
+import { Actions, DeadlineAction, TodoAction } from "../actions/actionTypes";
 
 const deadlineReducer = (
   state: Deadline[] = [],

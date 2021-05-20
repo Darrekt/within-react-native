@@ -11,7 +11,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
-import { Actions } from "../../redux/actionTypes";
+import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects, getTodos } from "../../redux/selectors";
 

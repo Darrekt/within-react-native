@@ -13,7 +13,7 @@ import wrapAsync from "../../util/dispatchAsync";
 import { LineChart } from "react-native-chart-kit";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
-import { Actions } from "../../redux/actionTypes";
+import { Actions } from "../../redux/actions/actionTypes";
 import HeaderButton from "../../components/util/HeaderButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects } from "../../redux/selectors";
