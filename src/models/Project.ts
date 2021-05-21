@@ -60,11 +60,11 @@ export default class Project {
     });
 
     this.deadlines.forEach((ddl, index) => {
-      if (!ddl.equals(other.deadlines.get(index))) result = false;
+      if (!ddl.equals(other.deadlines[index])) result = false;
     });
 
     this.todos.forEach((todo, index) => {
-      if (!todo.equals(other.todos.get(index))) result = false;
+      if (!todo.equals(other.todos[index])) result = false;
     });
 
     return result;
@@ -82,7 +82,7 @@ export function fromFirestore(doc: any) {
 }
 
 export function findTodoProj(
-  projects: List<Project>,
+  projects: Project[],
   todo: Todo
 ): [Project, number, number] {
   const projID = todo.project ?? UNCATEGORISED_TODO_PROJID;

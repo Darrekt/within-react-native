@@ -1,8 +1,8 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import Project from "../models/Project";
-import Todo from "../models/Todo";
-import { SageSettings } from "./reducers/settings";
-import Deadline from "../models/Deadline";
+import Project from "../../models/Project";
+import Deadline from "../../models/Deadline";
+import Todo from "../../models/Todo";
+import { SageSettings } from "../reducers/settings";
 
 export enum Actions {
   RepoHydrate = "REPO_HYDRATE",

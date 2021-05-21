@@ -10,13 +10,13 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
-import { LineChart } from "react-native-chart-kit";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
 import { Actions } from "../../redux/actions/actionTypes";
 import HeaderButton from "../../components/util/HeaderButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects } from "../../redux/selectors";
+import ProjectProgressGraph from "../../components/todo/ProjectProgressGraph";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -38,17 +38,13 @@ type Props = {
   navigation: ViewProjectScreenNavigationProp;
 };
 
-const bottomButtonWidth = "85%";
+const bottomButtonWidth = Dimensions.get("screen").width * 0.85;
 const styles = StyleSheet.create({
   emojiInput: { ...globalStyles.inputBox, width: "20%" },
   nameInput: { ...globalStyles.inputBox, width: "50%" },
   boolEntry: {
     ...globalStyles.row,
     padding: 10,
-  },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
   },
 });
 
@@ -149,92 +145,64 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 value={formik.values.notes}
               />
             </HeadingDropDown>
-            {/* DATE DISPLAY */}
-            {project && (
-              <HeadingDropDown header="Progress">
-                <LineChart
-                  data={{
-                    labels: [
-                      "Sun",
-                      "Mon",
-                      "Tues",
-                      "Wed",
-                      "Thurs",
-                      "Fri",
-                      "Sat",
-                    ],
-                    datasets: [
-                      {
-                        data: [
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                        ],
-                      },
-                    ],
-                  }}
-                  width={0.85 * Dimensions.get("window").width} // from react-native
-                  height={0.2 * Dimensions.get("window").height}
-                  chartConfig={{
-                    backgroundGradientFrom: "#01C2EF",
-                    backgroundGradientTo: "#56DEF1",
-                    decimalPlaces: 0, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    labelColor: (opacity = 1) =>
-                      `rgba(255, 255, 255, ${opacity})`,
-                    style: {
-                      borderRadius: 15,
-                    },
-                    propsForDots: {
-                      r: "5",
-                      strokeWidth: "1",
-                      stroke: "#FFAE5E",
-                    },
-                  }}
-                  bezier
-                  style={styles.chart}
-                />
-              </HeadingDropDown>
-            )}
+            {project && <ProjectProgressGraph />}
           </View>
           {project && (
             <HeadingDropDown header="Deadlines" dropdown={addDeadlineBtn}>
               <DeadlineDisplay></DeadlineDisplay>
-              {/* <DateTimePicker
-                  style={{ minWidth: 0.3 * Dimensions.get("window").width }}
-                  value={formik.values.due}
-                  mode="date"
-                  is24Hour={true}
-                  display="default"
-                  onChange={(event, date) => formik.setFieldValue("due", date)}
-                /> */}
             </HeadingDropDown>
           )}
           <View style={globalStyles.bottomButtons}>
             {project && (
-              <SubmitButton
-                width={bottomButtonWidth}
-                onPress={async () => {
-                  await wrapAsync(() =>
-                    dispatch({
-                      type: Actions.ProjectUpdate,
-                      payload: new Project({ ...project, completed: true }),
-                    })
-                  );
-
-                  navigation.goBack();
-                  Toast.show({
-                    type: "success",
-                    position: "bottom",
-                    text1: "Completed Project!",
-                    text2: project.name,
-                  });
+              <View
+                style={{
+                  ...globalStyles.row,
+                  width: bottomButtonWidth,
+                  alignItems: "center",
+                  justifyContent: "space-between",
                 }}
-                text="Complete Project"
-              />
+              >
+                <SubmitButton
+                  width={0.45 * bottomButtonWidth}
+                  onPress={async () => {
+                    await wrapAsync(() =>
+                      dispatch({
+                        type: Actions.ProjectUpdate,
+                        payload: new Project({ ...project, completed: true }),
+                      })
+                    );
+
+                    navigation.goBack();
+                    Toast.show({
+                      type: "success",
+                      position: "bottom",
+                      text1: "Completed Project!",
+                      text2: project.name,
+                    });
+                  }}
+                  text="Complete"
+                />
+                <SubmitButton
+                  width={0.45 * bottomButtonWidth}
+                  onPress={async () => {
+                    await wrapAsync(() =>
+                      dispatch({
+                        type: Actions.ProjectDelete,
+                        payload: project,
+                      })
+                    );
+
+                    navigation.goBack();
+                    Toast.show({
+                      type: "info",
+                      position: "bottom",
+                      text1: "Deleted Project!",
+                      text2: project.name,
+                    });
+                  }}
+                  text="Delete"
+                />
+              </View>
             )}
             <SubmitButton
               width={bottomButtonWidth}

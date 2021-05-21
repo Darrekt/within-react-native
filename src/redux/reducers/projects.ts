@@ -48,9 +48,42 @@ const projectReducer = (
     case Actions.ProjectCompleteDeadline:
       return state;
 
+    case Actions.TodoUpdate:
+      const prevTodo = findTodoByID(state, action.payload.id);
+
+      let newState = state;
+      if (action.payload.project !== prevTodo.project) {
+        // Add to list of new project
+        newState = findAndUpdateProject(
+          state,
+          action.payload.project,
+          (proj) =>
+            new Project({
+              ...proj,
+              todos: todoReducer(proj.todos, {
+                type: Actions.TodoAdd,
+                payload: action.payload,
+              }),
+            })
+        );
+        // Remove from list of old project
+        newState = findAndUpdateProject(
+          newState,
+          prevTodo.project,
+          (proj) =>
+            new Project({
+              ...proj,
+              todos: todoReducer(proj.todos, {
+                type: Actions.TodoDelete,
+                payload: action.payload,
+              }),
+            })
+        );
+        return newState;
+      }
+
     case Actions.TodoAdd:
     case Actions.TodoDelete:
-    case Actions.TodoUpdate:
     case Actions.TodoAssignDeadline:
     case Actions.TodoDeassignDeadline:
     case Actions.TodoSelect:
@@ -70,13 +103,6 @@ const projectReducer = (
           })
       );
     case Actions.TodoAssignProject:
-      const prevTodo = findTodoByID(state, action.payload.id);
-      // TODO: Updating Todo sometimes requires editing of 2 projects
-      // Remove from list if reassigned to other project
-      // Add to list if new to this project
-
-      // Find the previous version of this todo
-      // compare to the new payload
       return state;
     default:
       console.log(`Ignored Project Action: ${action.type}`);

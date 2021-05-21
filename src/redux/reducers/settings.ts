@@ -16,7 +16,7 @@ export const SAGE_DEFAULT_SETTINGS: SageSettings = {
   theme: true,
   maxProjects: 4,
   maxTasks: 3,
-  defaultInterval: 25 * 60,
+  defaultInterval: 1 * 60,
 };
 
 const settingsReducer = (
