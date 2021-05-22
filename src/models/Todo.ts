@@ -1,5 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
 
+export type TodoEntity = {
+  id: string;
+  emoji: string;
+  name: string;
+  project: string;
+  deadline?: string;
+  laps: number;
+  completed: boolean;
+  remaining?: number;
+  finishingTime?: number;
+};
+
 export default class Todo {
   id: string = uuidv4();
   emoji: string = "✏️";
@@ -19,7 +31,7 @@ export default class Todo {
   }
 
   // WARNING: Make sure you update toFireStore if you change the shape of the Todo object!
-  toEntity() {
+  toEntity(): TodoEntity {
     return {
       id: this.id,
       emoji: this.emoji,

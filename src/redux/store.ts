@@ -1,8 +1,9 @@
-import { AnyAction, applyMiddleware, createStore } from "redux";
+import { AnyAction } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { ThunkAction } from "redux-thunk";
 import rootReducer from "./reducers/rootReducer";
-import thunk, { ThunkAction } from "redux-thunk";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = configureStore({ reducer: rootReducer });
 
 export default store;
 export type RootState = ReturnType<typeof store.getState>;

@@ -1,9 +1,22 @@
 import { v4 as uuidv4 } from "uuid";
 import { List } from "immutable";
-import Deadline, { fromFirestore as dlFromFireStore } from "./Deadline";
-import Todo, { fromFirestore as todoFromFireStore } from "./Todo";
+import Deadline, {
+  DeadlineEntity,
+  fromFirestore as dlFromFireStore,
+} from "./Deadline";
+import Todo, { fromFirestore as todoFromFireStore, TodoEntity } from "./Todo";
 
 export const UNCATEGORISED_TODO_PROJID = "uncategorised";
+
+export type ProjectEntity = {
+  id: string;
+  emoji: string;
+  name: string;
+  notes: string;
+  completed: boolean;
+  deadlines: DeadlineEntity[];
+  todos: TodoEntity[];
+};
 
 export default class Project {
   id: string = uuidv4();
@@ -28,7 +41,7 @@ export default class Project {
     );
   }
 
-  toEntity() {
+  toEntity(): ProjectEntity {
     return {
       id: this.id,
       emoji: this.emoji,

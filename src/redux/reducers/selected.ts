@@ -1,6 +1,9 @@
-import { Actions, TodoAction } from "../actions/actionTypes";
+import {
+  Action,
+  Actions,
+} from "../actions/actionTypes";
 
-const selectedReducer = (state = "", action: TodoAction) => {
+const selectedReducer = (state = "", action: Action) => {
   if (action.type === Actions.TodoSelect) {
     return state === action.payload.id ? "" : action.payload.id;
   } else return state;

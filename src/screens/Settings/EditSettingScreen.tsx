@@ -7,7 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
 import { printTimeLeft } from "../../util/timer";
-import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
 import { changeWorkParams } from "../../redux/actions/settings/thunks";

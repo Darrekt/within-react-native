@@ -1,5 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { Actions, ProjectAction, SettingsAction } from "../actions/actionTypes";
+import { Action, Actions } from "../actions/actionTypes";
 
 export type SageSettings = {
   onboarding: boolean;
@@ -21,7 +21,7 @@ export const SAGE_DEFAULT_SETTINGS: SageSettings = {
 
 const settingsReducer = (
   state: SageSettings = SAGE_DEFAULT_SETTINGS,
-  action: ProjectAction | SettingsAction
+  action: Action
 ) => {
   switch (action.type) {
     case Actions.SettingsHydrate:

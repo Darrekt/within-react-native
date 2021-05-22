@@ -1,25 +1,32 @@
-import { List } from "immutable";
 import { v4 as uuidv4 } from "uuid";
+
+export type DeadlineEntity = {
+  id: string;
+  name: string;
+  due: number;
+  todos: string[];
+};
 
 export default class Deadline {
   id: string;
   name: string;
   due: Date;
-  todos: List<string>;
+  todos: string[];
 
   constructor(data: Pick<Deadline, "name" | "due"> & Partial<Deadline>) {
     this.id = data.id ?? uuidv4();
     this.name = data.name;
     this.due = data.due;
-    this.todos = data.todos ?? List([]);
+    this.todos = data.todos ?? [];
   }
 
   // TODO: Might need to JSON serialise
-  toEntity() {
+  toEntity(): DeadlineEntity {
     return {
       id: this.id,
       name: this.name,
       due: this.due.getTime(),
+      todos: this.todos,
     };
   }
 

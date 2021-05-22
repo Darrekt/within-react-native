@@ -114,8 +114,22 @@ function StackScreens() {
   // Project listener
   useEffect(() => {
     if (settings.user) {
+      console.log("SETTINGS LISTENER SUBSCRIBED");
+      const cleanupSettingsListener = firestore()
+        .collection("Users")
+        .doc(settings.user.uid)
+        .onSnapshot((documentSnapshot) => {
+          const snapshot = documentSnapshot.data() as Omit<
+            SageSettings,
+            "user"
+          >;
+          if (snapshot) {
+            dispatch(hydrateSettings({ ...snapshot }));
+          }
+        });
+
       console.log("PROJECT LISTENER SUBSCRIBED");
-      return firestore()
+      const cleanupProjectListener = firestore()
         .collection("Users")
         .doc(settings.user.uid)
         .collection("projects")
@@ -138,24 +152,11 @@ function StackScreens() {
           //   });
           // }
         });
-    }
-  }, [settings.user]);
 
-  useEffect(() => {
-    if (settings.user) {
-      console.log(settings.user);
-      return firestore()
-        .collection("Users")
-        .doc(settings.user.uid)
-        .onSnapshot((documentSnapshot) => {
-          const snapshot = documentSnapshot.data() as Omit<
-            SageSettings,
-            "user"
-          >;
-          if (snapshot) {
-            dispatch(hydrateSettings({ ...snapshot }));
-          }
-        });
+      return () => {
+        cleanupSettingsListener();
+        cleanupProjectListener();
+      };
     }
   }, [settings.user]);
 

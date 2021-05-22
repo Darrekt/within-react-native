@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import Project, { compareByDeadline } from "../../models/Project";
-import { Actions, ProjectAction, TodoAction } from "../actions/actionTypes";
+import { Action, Actions } from "../actions/actionTypes";
 import { findTodoByID } from "../selectors";
 import deadlineReducer from "./deadlines";
 import todoReducer from "./todos";
@@ -24,7 +24,7 @@ const findAndUpdateProject = (
 
 const projectReducer = (
   state: Project[] = [defaultProject],
-  action: ProjectAction | TodoAction
+  action: Action
 ) => {
   switch (action.type) {
     case Actions.ProjectHydrate:
