@@ -52,7 +52,7 @@ export default class Deadline {
   }
 }
 
-export const fromFirestore = (doc: any) =>
+export const fromEntity = (doc: any) =>
   new Deadline({
     id: doc.id,
     name: doc.name,

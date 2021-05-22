@@ -63,7 +63,7 @@ export default class Todo {
   }
 }
 
-export function fromFirestore(doc: any) {
+export function fromEntity(doc: any) {
   return new Todo({
     ...doc,
     finishingTime: doc.finishingTime ? new Date(doc.finishingTime) : undefined,

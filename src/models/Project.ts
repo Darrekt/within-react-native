@@ -2,9 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 import { List } from "immutable";
 import Deadline, {
   DeadlineEntity,
-  fromFirestore as dlFromFireStore,
+  fromEntity as dlFromFireStore,
 } from "./Deadline";
-import Todo, { fromFirestore as todoFromFireStore, TodoEntity } from "./Todo";
+import Todo, { fromEntity as todoFromFireStore, TodoEntity } from "./Todo";
 
 export const UNCATEGORISED_TODO_PROJID = "uncategorised";
 
@@ -84,7 +84,7 @@ export default class Project {
   }
 }
 
-export function fromFirestore(doc: any) {
+export function fromEntity(doc: any) {
   return new Project({
     ...doc,
     todos: List(doc.todos).map((todoStr) => todoFromFireStore(todoStr)),
@@ -120,10 +120,10 @@ export function findTodoDeadline(
   ];
 }
 
-export function compareByDeadline(projA: Project, projB: Project) {
+export function compareByDeadline(projA: ProjectEntity, projB: ProjectEntity) {
   // TODO: Implement sorting comparator
-  const ddlA = projA.closestDeadline()?.due;
-  const ddlB = projB.closestDeadline()?.due;
+  const ddlA = fromEntity(projA).closestDeadline()?.due;
+  const ddlB = fromEntity(projB).closestDeadline()?.due;
 
   if (ddlA === undefined && ddlB === undefined) return 0;
   else if (ddlA === undefined && ddlB !== undefined) return 1;

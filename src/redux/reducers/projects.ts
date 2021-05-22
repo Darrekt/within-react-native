@@ -1,5 +1,9 @@
 import { List } from "immutable";
-import Project, { compareByDeadline } from "../../models/Project";
+import Project, {
+  compareByDeadline,
+  fromEntity,
+  ProjectEntity,
+} from "../../models/Project";
 import { Action, Actions } from "../actions/actionTypes";
 import { findTodoByID } from "../selectors";
 import deadlineReducer from "./deadlines";
@@ -8,12 +12,12 @@ import todoReducer from "./todos";
 const defaultProject = new Project({
   id: "uncategorised",
   name: "Uncategorised Tasks",
-});
+}).toEntity();
 
 const findAndUpdateProject = (
-  state: Project[],
+  state: ProjectEntity[],
   target: string,
-  updater: (proj: Project) => Project
+  updater: (proj: ProjectEntity) => ProjectEntity
 ) =>
   List(state)
     .update(
@@ -23,9 +27,9 @@ const findAndUpdateProject = (
     .toArray();
 
 const projectReducer = (
-  state: Project[] = [defaultProject],
+  state: ProjectEntity[] = [defaultProject],
   action: Action
-) => {
+): ProjectEntity[] => {
   switch (action.type) {
     case Actions.ProjectHydrate:
       return action.payload;
@@ -41,10 +45,8 @@ const projectReducer = (
       return state.filter((item) => item.id !== action.payload.id);
 
     case Actions.ProjectComplete:
-      return findAndUpdateProject(
-        state,
-        action.payload.id,
-        (proj) => new Project({ ...proj, completed: !proj.completed })
+      return findAndUpdateProject(state, action.payload.id, (proj) =>
+        fromEntity({ ...proj, completed: !proj.completed }).toEntity()
       );
     case Actions.ProjectCompleteDeadline:
       return state;
@@ -55,33 +57,27 @@ const projectReducer = (
       let newState = state;
       if (action.payload.project !== prevTodo.project) {
         // Add to list of new project
-        newState = findAndUpdateProject(
-          state,
-          action.payload.project,
-          (proj) =>
-            new Project({
-              ...proj,
-              todos: todoReducer(proj.todos, {
-                type: Actions.TodoAdd,
-                payload: action.payload,
-              }),
-            })
+        newState = findAndUpdateProject(state, action.payload.project, (proj) =>
+          fromEntity({
+            ...proj,
+            todos: todoReducer(proj.todos, {
+              type: Actions.TodoAdd,
+              payload: action.payload,
+            }),
+          }).toEntity()
         );
         // Remove from list of old project
-        newState = findAndUpdateProject(
-          newState,
-          prevTodo.project,
-          (proj) =>
-            new Project({
-              ...proj,
-              todos: todoReducer(proj.todos, {
-                type: Actions.TodoDelete,
-                payload: action.payload,
-              }),
-            })
+        newState = findAndUpdateProject(newState, prevTodo.project, (proj) =>
+          fromEntity({
+            ...proj,
+            todos: todoReducer(proj.todos, {
+              type: Actions.TodoDelete,
+              payload: action.payload,
+            }),
+          }).toEntity()
         );
         return newState;
-      }
+      } 
 
     case Actions.TodoAdd:
     case Actions.TodoDelete:
@@ -93,16 +89,11 @@ const projectReducer = (
     case Actions.TodoPause:
     case Actions.TodoReset:
     case Actions.TodoFinish:
-      return findAndUpdateProject(
-        state,
-        action.payload.project,
-        (proj) =>
-          new Project({
-            ...proj,
-            deadlines: deadlineReducer(proj.deadlines, action),
-            todos: todoReducer(proj.todos, action),
-          })
-      );
+      return findAndUpdateProject(state, action.payload.project, (proj) => ({
+        ...proj,
+        deadlines: deadlineReducer(proj.deadlines, action),
+        todos: todoReducer(proj.todos, action),
+      }));
     case Actions.TodoAssignProject:
       return state;
     default:

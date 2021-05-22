@@ -1,7 +1,7 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import Project from "../../models/Project";
-import Deadline from "../../models/Deadline";
-import Todo from "../../models/Todo";
+import { ProjectEntity } from "../../models/Project";
+import { DeadlineEntity } from "../../models/Deadline";
+import { TodoEntity } from "../../models/Todo";
 import { SageSettings } from "../reducers/settings";
 
 export enum Actions {
@@ -43,7 +43,7 @@ export type Action = ProjectAction | TodoAction | SettingsAction;
 export type ProjectAction =
   | {
       type: Actions.ProjectHydrate;
-      payload: Project[];
+      payload: ProjectEntity[];
     }
   | {
       type:
@@ -55,7 +55,7 @@ export type ProjectAction =
         | Actions.ProjectDeleteDeadline
         | Actions.ProjectCompleteDeadline
         | Actions.ProjectUpdateDeadline;
-      payload: Project;
+      payload: ProjectEntity;
     };
 
 export type DeadlineAction = {
@@ -65,13 +65,13 @@ export type DeadlineAction = {
     | Actions.DeadlineUpdate
     | Actions.DeadlineComplete;
   targetProj: string;
-  payload: Deadline;
+  payload: DeadlineEntity;
 };
 
 export type TodoAction =
   | {
       type: Actions.TodoStart;
-      payload: Todo;
+      payload: TodoEntity;
       interval: number;
     }
   | {
@@ -87,7 +87,7 @@ export type TodoAction =
         | Actions.TodoPause
         | Actions.TodoReset
         | Actions.TodoFinish;
-      payload: Todo;
+      payload: TodoEntity;
     };
 
 export type SettingsAction =

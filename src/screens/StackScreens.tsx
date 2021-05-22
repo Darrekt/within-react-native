@@ -17,7 +17,7 @@ import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Actions } from "../redux/actions/actionTypes";
-import { fromFirestore } from "../models/Project";
+import { fromEntity } from "../models/Project";
 import { hydrateProjects } from "../redux/actions/actions";
 import { hydrateSettings } from "../redux/actions/settings/actions";
 
@@ -99,7 +99,7 @@ function ChooseScreens(settings: SageSettings) {
 }
 
 function StackScreens() {
-  const projects = useAppSelector(getProjects);
+  // const projects = useAppSelector(getProjects);
   const settings = useAppSelector(getSettings);
   const dispatch = useAppDispatch();
 
@@ -137,7 +137,7 @@ function StackScreens() {
           const storedData =
             querySnapshot && querySnapshot.empty
               ? []
-              : querySnapshot.docs.map((doc) => fromFirestore(doc.data()));
+              : querySnapshot.docs.map((doc) => fromEntity(doc.data()));
 
           dispatch(hydrateProjects(storedData));
           // let result = true;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
-import Todo from "../../models/Todo";
+import { TodoEntity } from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { Icon } from "react-native-elements";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 type DisplayProps = {
-  selectedTask?: Todo;
+  selectedTask?: TodoEntity;
 };
 
 const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
@@ -48,26 +48,38 @@ const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
 };
 
 type TimerProps = {
-  selectedTask: Todo;
+  selectedTask: TodoEntity;
   dispatch: React.Dispatch<TodoAction>;
 };
 
 const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
   const settings = useAppSelector(getSettings);
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
 
-  // TODO: This implementation completes a task twice.
+  let displayVal;
+  if (selectedTask.finishingTime)
+    displayVal = getTimeLeft(selectedTask.finishingTime);
+  else if (selectedTask.remaining) displayVal = selectedTask.remaining;
+  else displayVal = settings.defaultInterval;
+
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(displayVal));
+
+  // FIXME: This implementation completes a task twice.
+  // Every time the component re-renders, check if the todo is running (finishingTime).
+  // If running, setTimeLeft in one second.
+  // If paused, display the remaining time
+  // If not running, display defaultInterval
   useEffect(() => {
     const timer = setTimeout(
-      () =>
-        timeLeft === 0
-          ? dispatch({ type: Actions.TodoFinish, payload: selectedTask })
-          : setTimeLeft(getTimeLeft(selectedTask)),
+      () => {
+        if (timeLeft === 0)
+          dispatch({ type: Actions.TodoFinish, payload: selectedTask });
+        else if (selectedTask.finishingTime)
+          setTimeLeft(getTimeLeft(selectedTask.finishingTime));
+      },
       selectedTask.finishingTime ? 1000 : 0
     );
 
     return () => {
-      setTimeLeft(getTimeLeft(selectedTask));
       clearTimeout(timer);
     };
   });

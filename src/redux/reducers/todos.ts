@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import Todo from "../../models/Todo";
+import { TodoEntity } from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
 import { Actions, TodoAction } from "../actions/actionTypes";
 
@@ -9,7 +9,7 @@ import { Actions, TodoAction } from "../actions/actionTypes";
  * @param payload  The Todo to be added.
  * @returns a new Array which includes the updated or added entry.
  */
-const setTodo = (state: Todo[], payload: Todo): Todo[] => {
+const setTodo = (state: TodoEntity[], payload: TodoEntity): TodoEntity[] => {
   return List(state)
     .set(
       state.findIndex((todo) => todo.id === payload.id),
@@ -18,10 +18,16 @@ const setTodo = (state: Todo[], payload: Todo): Todo[] => {
     .toArray();
 };
 
-// todoReducer is a nested reducer that will be called from the main projectReducer.
-// It therefore takes as state the list of Todos for this project. We can thus implicitly assume
-// that all todos in this instance of the reducer call will have the associated project ID.
-const todoReducer = (state: Todo[], action: TodoAction): Todo[] => {
+/**
+ * todoReducer is a nested reducer that will be called from the main projectReducer.
+It therefore takes as state the list of Todos for this project. We can thus implicitly assume
+that all todos in this instance of the reducer call will have the associated project ID. 
+
+ * @param state
+ * @param action 
+ * @returns 
+ */
+const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
   switch (action.type) {
     case Actions.TodoAdd:
       return List(state).push(action.payload).toArray();
@@ -32,10 +38,10 @@ const todoReducer = (state: Todo[], action: TodoAction): Todo[] => {
 
     // TodoProductivityActions
     case Actions.TodoToggleComplete:
-      return setTodo(
-        state,
-        new Todo({ ...action.payload, completed: !action.payload.completed })
-      );
+      return setTodo(state, {
+        ...action.payload,
+        completed: !action.payload.completed,
+      });
 
     // TodoTimerActions
     case Actions.TodoStart:
@@ -47,31 +53,25 @@ const todoReducer = (state: Todo[], action: TodoAction): Todo[] => {
       }
       finishAt.setMilliseconds(finishAt.getMilliseconds() + 500);
 
-      return setTodo(
-        state,
-        new Todo({
-          ...action.payload,
-          remaining: undefined,
-          finishingTime: finishAt,
-        })
-      );
+      return setTodo(state, {
+        ...action.payload,
+        remaining: undefined,
+        finishingTime: finishAt.getTime(),
+      });
 
     case Actions.TodoPause:
     case Actions.TodoReset:
     case Actions.TodoFinish:
-      return setTodo(
-        state,
-        new Todo({
-          ...action.payload,
-          remaining:
-            action.type == Actions.TodoPause
-              ? getTimeLeft(action.payload)
-              : undefined,
-          laps:
-            action.payload.laps + (action.type === Actions.TodoFinish ? 1 : 0),
-          finishingTime: undefined,
-        })
-      );
+      return setTodo(state, {
+        ...action.payload,
+        remaining:
+          action.type == Actions.TodoPause && action.payload.finishingTime
+            ? getTimeLeft(action.payload.finishingTime)
+            : undefined,
+        laps:
+          action.payload.laps + (action.type === Actions.TodoFinish ? 1 : 0),
+        finishingTime: undefined,
+      });
 
     default:
       console.log(`Invalid todo action: ${action.type}`);
