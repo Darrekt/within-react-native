@@ -7,6 +7,7 @@ import CircleButtonGroup from "../util/CircleButtonGroup";
 import { useNavigation } from "@react-navigation/core";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch } from "../../redux/hooks";
+import { selectTodo } from "../../redux/actions/actions";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -111,11 +112,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
     >
       <TouchableOpacity
         onPress={() => {
-          if (!running)
-            dispatch({
-              type: Actions.TodoSelect,
-              payload: todo,
-            });
+          if (!running) dispatch(selectTodo(todo));
         }}
         onLongPress={() => {
           navigation.navigate("EditTodoScreen", { id: todo.id });

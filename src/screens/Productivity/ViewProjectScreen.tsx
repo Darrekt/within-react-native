@@ -17,6 +17,7 @@ import HeaderButton from "../../components/util/HeaderButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects } from "../../redux/selectors";
 import ProjectProgressGraph from "../../components/todo/ProjectProgressGraph";
+import { deleteProject } from "../../redux/actions/actions";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -185,12 +186,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 <SubmitButton
                   width={0.45 * bottomButtonWidth}
                   onPress={async () => {
-                    await wrapAsync(() =>
-                      dispatch({
-                        type: Actions.ProjectDelete,
-                        payload: project,
-                      })
-                    );
+                    await wrapAsync(() => dispatch(deleteProject(project)));
 
                     navigation.goBack();
                     Toast.show({

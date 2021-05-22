@@ -24,19 +24,21 @@ const settingsReducer = (
   action: ProjectAction | SettingsAction
 ) => {
   switch (action.type) {
+    case Actions.SettingsHydrate:
+      return { ...action.payload, user: state.user };
     case Actions.SettingsAuth:
-      console.log("LOGGED IN USER: ", action.user?.email);
       return { ...state, user: action.user };
     case Actions.SettingsReset:
       return SAGE_DEFAULT_SETTINGS;
     case Actions.SettingsToggleOnboarding:
       return { ...state, onboarding: !state.onboarding };
-    case Actions.SettingsChangeMaxProjects:
-      return { ...state, maxProjects: action.value };
-    case Actions.SettingsChangeMaxTasks:
-      return { ...state, maxTasks: action.value };
-    case Actions.SettingsChangeDefaultInterval:
-      return { ...state, defaultInterval: action.value };
+    case Actions.SettingsChangeWorkParams:
+      return {
+        ...state,
+        maxProjects: action.value[0],
+        maxTasks: action.value[1],
+        defaultInterval: action.value[2],
+      };
     default:
       console.log(`Ignored settings action: ${action.type}`);
       return state;

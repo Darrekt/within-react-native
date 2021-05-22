@@ -5,8 +5,8 @@ import Todo from "../../models/Todo";
 import { SageSettings } from "../reducers/settings";
 
 export enum Actions {
-  RepoHydrate = "REPO_HYDRATE",
-  RepoFlush = "REPO_FLUSH",
+  Reset = "REPO_FLUSH",
+  ProjectHydrate = "PROJECT_HYDRATE",
   ProjectAdd = "PROJECT_ADD",
   ProjectDelete = "PROJECT_DELETE",
   ProjectUpdate = "PROJECT_UPDATE",
@@ -31,33 +31,32 @@ export enum Actions {
   TodoPause = "TODO_PAUSE",
   TodoReset = "TODO_RESET",
   TodoFinish = "TODO_FINISH",
+  SettingsHydrate = "SETTINGS_HYDRATE",
   SettingsAuth = "SETTINGS_AUTH",
   SettingsReset = "SETTINGS_RESET",
   SettingsToggleOnboarding = "SETTINGS_TOGGLE_ONBOARDING",
-  SettingsChangeMaxTasks = "SETTINGS_CHANGE_MAX_TASKS",
-  SettingsChangeMaxProjects = "SETTINGS_CHANGE_MAX_PROJECTS",
-  SettingsChangeDefaultInterval = "SETTINGS_CHANGE_DEFAULT_INTERVAL",
+  SettingsChangeWorkParams = "SETTINGS_CHANGE_PARAMS",
 }
 
-export type Action = RepoAction | ProjectAction | TodoAction | SettingsAction;
+export type Action = ProjectAction | TodoAction | SettingsAction;
 
-export type RepoAction = {
-  type: Actions.RepoFlush | Actions.RepoHydrate;
-  payload: GlobalState;
-};
-
-export type ProjectAction = {
-  type:
-    | Actions.ProjectAdd
-    | Actions.ProjectDelete
-    | Actions.ProjectUpdate
-    | Actions.ProjectComplete
-    | Actions.ProjectAddDeadline
-    | Actions.ProjectDeleteDeadline
-    | Actions.ProjectCompleteDeadline
-    | Actions.ProjectUpdateDeadline;
-  payload: Project;
-};
+export type ProjectAction =
+  | {
+      type: Actions.ProjectHydrate;
+      payload: Project[];
+    }
+  | {
+      type:
+        | Actions.ProjectAdd
+        | Actions.ProjectDelete
+        | Actions.ProjectUpdate
+        | Actions.ProjectComplete
+        | Actions.ProjectAddDeadline
+        | Actions.ProjectDeleteDeadline
+        | Actions.ProjectCompleteDeadline
+        | Actions.ProjectUpdateDeadline;
+      payload: Project;
+    };
 
 export type DeadlineAction = {
   type:
@@ -70,7 +69,11 @@ export type DeadlineAction = {
 };
 
 export type TodoAction =
-  | TodoStart
+  | {
+      type: Actions.TodoStart;
+      payload: Todo;
+      interval: number;
+    }
   | {
       type:
         | Actions.TodoAdd
@@ -87,36 +90,19 @@ export type TodoAction =
       payload: Todo;
     };
 
-export type TodoStart = {
-  type: Actions.TodoStart;
-  payload: Todo;
-  interval: number;
-};
-
 export type SettingsAction =
-  | SettingResetAction
-  | SettingsAuthAction
-  | SettingToggleAction
-  | SettingChangeValueAction;
-
-type SettingsAuthAction = {
-  type: Actions.SettingsAuth;
-  user: FirebaseAuthTypes.User | null;
-};
-
-type SettingResetAction = {
-  type: Actions.SettingsReset;
-  value: Omit<SageSettings, "user">;
-};
-
-type SettingToggleAction = {
-  type: Actions.SettingsToggleOnboarding;
-};
-
-type SettingChangeValueAction = {
-  type:
-    | Actions.SettingsChangeDefaultInterval
-    | Actions.SettingsChangeMaxProjects
-    | Actions.SettingsChangeMaxTasks;
-  value: number;
-};
+  | { type: Actions.SettingsHydrate; payload: Omit<SageSettings, "user"> }
+  | {
+      type: Actions.SettingsReset;
+    }
+  | {
+      type: Actions.SettingsAuth;
+      user: FirebaseAuthTypes.User | null;
+    }
+  | {
+      type: Actions.SettingsToggleOnboarding;
+    }
+  | {
+      type: Actions.SettingsChangeWorkParams;
+      value: [number, number, number];
+    };

@@ -10,6 +10,7 @@ import { printTimeLeft } from "../../util/timer";
 import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
+import { changeWorkParams } from "../../redux/actions/settings/thunks";
 
 const styles = StyleSheet.create({
   headerStyle: {
@@ -67,18 +68,13 @@ const EditProductivitySettingScreen = () => {
           return errors;
         }}
         onSubmit={(values) => {
-          dispatch({
-            type: Actions.SettingsChangeMaxProjects,
-            value: values.maxProjects,
-          });
-          dispatch({
-            type: Actions.SettingsChangeMaxTasks,
-            value: values.maxTasks,
-          });
-          dispatch({
-            type: Actions.SettingsChangeDefaultInterval,
-            value: values.defaultInterval,
-          });
+          dispatch(
+            changeWorkParams(
+              values.maxProjects,
+              values.maxTasks,
+              values.defaultInterval
+            )
+          );
           navigation.goBack();
         }}
       >

@@ -27,7 +27,8 @@ const projectReducer = (
   action: ProjectAction | TodoAction
 ) => {
   switch (action.type) {
-    // Project Actions
+    case Actions.ProjectHydrate:
+      return action.payload;
     case Actions.ProjectUpdate:
       return findAndUpdateProject(
         state,
@@ -105,7 +106,7 @@ const projectReducer = (
     case Actions.TodoAssignProject:
       return state;
     default:
-      console.log(`Ignored Project Action: ${action.type}`);
+      console.log(`Ignored project action: ${action.type}`);
       return state;
   }
 };

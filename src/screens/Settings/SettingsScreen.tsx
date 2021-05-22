@@ -8,6 +8,7 @@ import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Actions } from "../../redux/actions/actionTypes";
+import { resetSettings } from "../../redux/actions/settings/actions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
 
@@ -80,8 +81,7 @@ const SettingsScreen = () => {
               },
               {
                 text: "OK",
-                onPress: () =>
-                  dispatch({ type: Actions.SettingsReset, value: settings }),
+                onPress: () => dispatch(resetSettings()),
               },
             ]
           );
