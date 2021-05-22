@@ -63,7 +63,7 @@ export default class Todo {
   }
 }
 
-export function fromEntity(doc: any) {
+export function TodoFromEntity(doc: any) {
   return new Todo({
     ...doc,
     finishingTime: doc.finishingTime ? new Date(doc.finishingTime) : undefined,

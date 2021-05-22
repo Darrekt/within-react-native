@@ -52,7 +52,7 @@ export default class Deadline {
   }
 }
 
-export const fromEntity = (doc: any) =>
+export const DeadlineFromEntity = (doc: any) =>
   new Deadline({
     id: doc.id,
     name: doc.name,

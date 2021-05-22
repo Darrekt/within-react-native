@@ -3,7 +3,7 @@ import { Action, Actions } from "../actions/actionTypes";
 
 export type SageSettings = {
   onboarding: boolean;
-  user: FirebaseAuthTypes.User | null;
+  user: string | null;
   theme: boolean;
   maxProjects: number;
   maxTasks: number;

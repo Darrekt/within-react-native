@@ -1,8 +1,8 @@
-import Project from "../../models/Project";
+import Project, { ProjectEntity } from "../../models/Project";
 import Todo from "../../models/Todo";
 import { Actions, ProjectAction, TodoAction } from "./actionTypes";
 
-export const hydrateProjects = (projects: Project[]): ProjectAction => ({
+export const hydrateProjects = (projects: ProjectEntity[]): ProjectAction => ({
   type: Actions.ProjectHydrate,
   payload: projects,
 });

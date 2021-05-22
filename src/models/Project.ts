@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { List } from "immutable";
-import Deadline, {
-  DeadlineEntity,
-  fromEntity as dlFromFireStore,
-} from "./Deadline";
-import Todo, { fromEntity as todoFromFireStore, TodoEntity } from "./Todo";
+import Deadline, { DeadlineEntity, DeadlineFromEntity } from "./Deadline";
+import Todo, { TodoFromEntity, TodoEntity } from "./Todo";
 
 export const UNCATEGORISED_TODO_PROJID = "uncategorised";
 
@@ -87,9 +84,9 @@ export default class Project {
 export function fromEntity(doc: any) {
   return new Project({
     ...doc,
-    todos: List(doc.todos).map((todoStr) => todoFromFireStore(todoStr)),
+    todos: List(doc.todos).map((todoStr) => TodoFromEntity(todoStr).toEntity()),
     deadlines: List(doc.deadlines).map((deadlineStr) =>
-      dlFromFireStore(deadlineStr)
+      DeadlineFromEntity(deadlineStr).toEntity()
     ),
   });
 }

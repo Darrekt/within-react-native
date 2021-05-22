@@ -97,7 +97,7 @@ export type SettingsAction =
     }
   | {
       type: Actions.SettingsAuth;
-      user: FirebaseAuthTypes.User | null;
+      user: string | null;
     }
   | {
       type: Actions.SettingsToggleOnboarding;

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
-import Project from "../../models/Project";
+import Project, { fromEntity, ProjectEntity } from "../../models/Project";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { List } from "immutable";
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({ project }: { project: ProjectEntity }) {
   const navigation = useNavigation();
   const now = new Date().valueOf();
   const dueDateFont =
@@ -75,7 +75,7 @@ export default function ProjectCard({ project }: { project: Project }) {
           <AntDesign name="calendar" size={30} color="black" />
           <View style={{ ...globalStyles.column, marginHorizontal: 20 }}>
             <Text style={dueDateFont}>
-              {project.closestDeadline()?.due.toDateString() ?? "No due date!"}
+              {fromEntity(project).closestDeadline()?.due.toDateString() ?? "No due date!"}
             </Text>
             <Text>
               {List(project.todos).isEmpty()

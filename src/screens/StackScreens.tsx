@@ -19,7 +19,10 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Actions } from "../redux/actions/actionTypes";
 import { fromEntity } from "../models/Project";
 import { hydrateProjects } from "../redux/actions/actions";
-import { hydrateSettings } from "../redux/actions/settings/actions";
+import {
+  hydrateSettings,
+  userChanged,
+} from "../redux/actions/settings/actions";
 
 const Stack = createStackNavigator();
 
@@ -104,10 +107,7 @@ function StackScreens() {
   const dispatch = useAppDispatch();
 
   useEffect(
-    () =>
-      auth().onAuthStateChanged((user) =>
-        dispatch({ type: Actions.SettingsAuth, user: user })
-      ),
+    () => auth().onAuthStateChanged((user) => dispatch(userChanged(user))),
     []
   );
 
@@ -117,7 +117,7 @@ function StackScreens() {
       console.log("SETTINGS LISTENER SUBSCRIBED");
       const cleanupSettingsListener = firestore()
         .collection("Users")
-        .doc(settings.user.uid)
+        .doc(settings.user)
         .onSnapshot((documentSnapshot) => {
           const snapshot = documentSnapshot.data() as Omit<
             SageSettings,
@@ -131,13 +131,15 @@ function StackScreens() {
       console.log("PROJECT LISTENER SUBSCRIBED");
       const cleanupProjectListener = firestore()
         .collection("Users")
-        .doc(settings.user.uid)
+        .doc(settings.user)
         .collection("projects")
         .onSnapshot((querySnapshot) => {
           const storedData =
             querySnapshot && querySnapshot.empty
               ? []
-              : querySnapshot.docs.map((doc) => fromEntity(doc.data()));
+              : querySnapshot.docs.map((doc) =>
+                  fromEntity(doc.data()).toEntity()
+                );
 
           dispatch(hydrateProjects(storedData));
           // let result = true;
