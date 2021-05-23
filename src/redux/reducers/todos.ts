@@ -74,7 +74,7 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
       });
 
     default:
-      console.log(`Invalid todo action: ${action.type}`);
+      console.log(`Todos unchanged: ${action.type}`);
       return state;
   }
 };

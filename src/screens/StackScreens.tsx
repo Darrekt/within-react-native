@@ -23,6 +23,7 @@ import {
   hydrateSettings,
   userChanged,
 } from "../redux/actions/settings/actions";
+import { isPlain } from "@reduxjs/toolkit";
 
 const Stack = createStackNavigator();
 
@@ -140,7 +141,6 @@ function StackScreens() {
               : querySnapshot.docs.map((doc) =>
                   fromEntity(doc.data()).toEntity()
                 );
-
           dispatch(hydrateProjects(storedData));
           // let result = true;
           // storedData.forEach((proj, index) => {

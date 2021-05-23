@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export type TodoEntity = {
+export interface TodoEntity {
   id: string;
   emoji: string;
   name: string;

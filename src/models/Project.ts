@@ -5,7 +5,7 @@ import Todo, { TodoFromEntity, TodoEntity } from "./Todo";
 
 export const UNCATEGORISED_TODO_PROJID = "uncategorised";
 
-export type ProjectEntity = {
+export interface ProjectEntity {
   id: string;
   emoji: string;
   name: string;
@@ -13,7 +13,7 @@ export type ProjectEntity = {
   completed: boolean;
   deadlines: DeadlineEntity[];
   todos: TodoEntity[];
-};
+}
 
 export default class Project {
   id: string = uuidv4();
@@ -84,10 +84,12 @@ export default class Project {
 export function fromEntity(doc: any) {
   return new Project({
     ...doc,
-    todos: List(doc.todos).map((todoStr) => TodoFromEntity(todoStr).toEntity()),
-    deadlines: List(doc.deadlines).map((deadlineStr) =>
-      DeadlineFromEntity(deadlineStr).toEntity()
-    ),
+    todos: List(doc.todos)
+      .map((todoStr) => TodoFromEntity(todoStr))
+      .toArray(),
+    deadlines: List(doc.deadlines)
+      .map((deadlineStr) => DeadlineFromEntity(deadlineStr))
+      .toArray(),
   });
 }
 

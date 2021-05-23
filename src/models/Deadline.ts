@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
-export type DeadlineEntity = {
+export interface DeadlineEntity {
   id: string;
   name: string;
   due: number;
   todos: string[];
-};
+}
 
 export default class Deadline {
   id: string;

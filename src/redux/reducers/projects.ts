@@ -97,7 +97,7 @@ const projectReducer = (
     case Actions.TodoAssignProject:
       return state;
     default:
-      console.log(`Ignored project action: ${action.type}`);
+      console.log(`Projects unchanged: ${action.type}`);
       return state;
   }
 };

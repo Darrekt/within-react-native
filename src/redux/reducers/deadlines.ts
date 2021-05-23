@@ -21,7 +21,7 @@ const deadlineReducer = (
     // case Actions.DeadlineComplete:
     //     return
     default:
-      console.log(`Ignored deadline action: ${action.type}`);
+      console.log(`Deadlines unchanged: ${action.type}`);
       return state;
   }
 };

@@ -40,7 +40,7 @@ const settingsReducer = (
         defaultInterval: action.value[2],
       };
     default:
-      console.log(`Ignored settings action: ${action.type}`);
+      console.log(`Settings unchanged: ${action.type}`);
       return state;
   }
 };
