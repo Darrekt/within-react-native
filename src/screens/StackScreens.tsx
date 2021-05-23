@@ -3,8 +3,11 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { SageSettings } from "../redux/reducers/settings";
-import { getProjects, getSettings } from "../redux/selectors";
+import {
+  FirestoreSageSettings,
+  SageSettings,
+} from "../redux/reducers/settings";
+import { getSettings } from "../redux/selectors";
 
 import OnboardingScreen from "./Onboarding/OnboardingScreen";
 import SettingsScreen from "./Settings/SettingsScreen";
@@ -16,14 +19,12 @@ import EditProductivitySettingScreen from "./Settings/EditSettingScreen";
 import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { Actions } from "../redux/actions/actionTypes";
 import { fromEntity } from "../models/Project";
 import { hydrateProjects } from "../redux/actions/actions";
 import {
+  authStateChanged,
   hydrateSettings,
-  userChanged,
 } from "../redux/actions/settings/actions";
-import { isPlain } from "@reduxjs/toolkit";
 
 const Stack = createStackNavigator();
 
@@ -108,7 +109,7 @@ function StackScreens() {
   const dispatch = useAppDispatch();
 
   useEffect(
-    () => auth().onAuthStateChanged((user) => dispatch(userChanged(user))),
+    () => auth().onAuthStateChanged((user) => dispatch(authStateChanged(user))),
     []
   );
 
@@ -120,10 +121,7 @@ function StackScreens() {
         .collection("Users")
         .doc(settings.user)
         .onSnapshot((documentSnapshot) => {
-          const snapshot = documentSnapshot.data() as Omit<
-            SageSettings,
-            "user"
-          >;
+          const snapshot = documentSnapshot.data() as FirestoreSageSettings;
           if (snapshot) {
             dispatch(hydrateSettings({ ...snapshot }));
           }

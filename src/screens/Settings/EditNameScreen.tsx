@@ -1,3 +1,4 @@
+import auth from "@react-native-firebase/auth";
 import React from "react";
 import { View, Text } from "react-native";
 import { Formik } from "formik";
@@ -11,13 +12,13 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
 
 const EditNameScreen = () => {
-  const settings = useAppSelector(getSettings);
+  const user = auth().currentUser;
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>
       <Formik
-        initialValues={{ newName: settings.user?.displayName ?? "" }}
+        initialValues={{ newName: user?.displayName ?? "" }}
         validate={(values) => {
           const errors: { newName?: string } = {};
 
@@ -27,7 +28,7 @@ const EditNameScreen = () => {
           return errors;
         }}
         onSubmit={async (values) => {
-          settings.user
+          user
             ?.updateProfile({ displayName: values.newName })
             .then(() => {
               dispatch({

@@ -1,14 +1,15 @@
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Action, Actions } from "../actions/actionTypes";
 
-export type SageSettings = {
+export interface SageSettings {
   onboarding: boolean;
   user: string | null;
   theme: boolean;
   maxProjects: number;
   maxTasks: number;
   defaultInterval: number;
-};
+}
+
+export type FirestoreSageSettings = Omit<SageSettings, "user">;
 
 export const SAGE_DEFAULT_SETTINGS: SageSettings = {
   onboarding: false,
@@ -16,16 +17,19 @@ export const SAGE_DEFAULT_SETTINGS: SageSettings = {
   theme: true,
   maxProjects: 4,
   maxTasks: 3,
-  defaultInterval: 1 * 60,
+  defaultInterval: 25 * 60,
 };
 
 const settingsReducer = (
   state: SageSettings = SAGE_DEFAULT_SETTINGS,
   action: Action
-) => {
+): SageSettings => {
   switch (action.type) {
     case Actions.SettingsHydrate:
-      return { ...action.payload, user: state.user };
+      return {
+        ...action.payload,
+        user: state.user,
+      };
     case Actions.SettingsAuth:
       return { ...state, user: action.user };
     case Actions.SettingsReset:

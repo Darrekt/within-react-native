@@ -11,21 +11,29 @@ export const resetSettings: ActionCreator<AppThunk> =
   () => async (dispatch, getState) => {
     const loggedInUser = getState().settings.user;
     const { user, ...settingsWithoutUser } = SAGE_DEFAULT_SETTINGS;
-    if (loggedInUser)
-      await settingsDoc(loggedInUser.uid).set(settingsWithoutUser);
+    if (loggedInUser) await settingsDoc(loggedInUser).set(settingsWithoutUser);
     else
       dispatch({
         type: Actions.SettingsReset,
       });
   };
 
+export const toggleOnboarding = (): AppThunk => async (dispatch, getState) => {
+  const settings = getState().settings;
+  if (settings.user)
+    await settingsDoc(settings.user).set(
+      { onboarding: !settings.onboarding },
+      { mergeFields: ["onboarding"] }
+    );
+  else dispatch({ type: Actions.SettingsToggleOnboarding });
+};
+
 export const changeWorkParams =
   (maxProjects: number, maxTasks: number, defaultInterval: number): AppThunk =>
   async (dispatch, getState) => {
     const settings: SageSettings = getState().settings;
-    const user = settings.user;
-    if (user)
-      await settingsDoc(user.uid).set(
+    if (settings.user)
+      await settingsDoc(settings.user).set(
         { maxProjects, maxTasks, defaultInterval },
         { mergeFields: ["maxProjects", "maxTasks", "defaultInterval"] }
       );

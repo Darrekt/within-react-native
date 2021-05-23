@@ -7,8 +7,10 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { Actions } from "../../redux/actions/actionTypes";
-import { resetSettings } from "../../redux/actions/settings/actions";
+import {
+  resetSettings,
+  toggleOnboarding,
+} from "../../redux/actions/settings/thunks";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
 
@@ -22,13 +24,13 @@ const SettingsScreen = () => {
       name: "Onboarding",
       subtitle: "Reset your onboarding status",
       icon: <Icon name="handshake-o" type="font-awesome" />,
-      action: () => dispatch({ type: Actions.SettingsToggleOnboarding }),
+      action: () => dispatch(toggleOnboarding()),
     },
     {
       name: "Theme",
       subtitle: "Change or customise your theme",
       icon: <Icon name="palette" type="materialIcon" />,
-      action: () => dispatch({ type: Actions.SettingsToggleOnboarding }),
+      action: () => dispatch(toggleOnboarding()),
     },
   ];
 

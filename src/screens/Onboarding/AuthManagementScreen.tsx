@@ -6,11 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { useAppSelector } from "../../redux/hooks";
-import { getSettings } from "../../redux/selectors";
 
 const AuthManagementScreen = () => {
-  const settings = useAppSelector(getSettings);
+  const user = auth().currentUser;
   const navigation = useNavigation();
 
   return (
@@ -26,11 +24,11 @@ const AuthManagementScreen = () => {
         <Avatar
           rounded
           size="xlarge"
-          title={settings.user?.displayName?.charAt(0) ?? ""}
+          title={user?.displayName?.charAt(0) ?? ""}
           overlayContainerStyle={{ backgroundColor: "#73eeff" }}
         />
         <Text style={textStyles.avatarName}>
-          {settings.user?.displayName ?? "Add a display name!"}
+          {user?.displayName ?? "Add a display name!"}
         </Text>
       </View>
       <View style={globalStyles.column}>
@@ -51,7 +49,7 @@ const AuthManagementScreen = () => {
             {
               name: "Email",
               icon: <Icon name="email" type="fontisto" />,
-              subtitle: settings.user?.emailVerified
+              subtitle: user?.emailVerified
                 ? "Verified!"
                 : "Not yet verified!",
               action: () => navigation.navigate("EditEmailScreen"),

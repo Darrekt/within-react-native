@@ -2,7 +2,7 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { ProjectEntity } from "../../models/Project";
 import { DeadlineEntity } from "../../models/Deadline";
 import { TodoEntity } from "../../models/Todo";
-import { SageSettings } from "../reducers/settings";
+import { FirestoreSageSettings, SageSettings } from "../reducers/settings";
 
 export enum Actions {
   Reset = "REPO_FLUSH",
@@ -91,7 +91,10 @@ export type TodoAction =
     };
 
 export type SettingsAction =
-  | { type: Actions.SettingsHydrate; payload: Omit<SageSettings, "user"> }
+  | {
+      type: Actions.SettingsHydrate;
+      payload: FirestoreSageSettings;
+    }
   | {
       type: Actions.SettingsReset;
     }

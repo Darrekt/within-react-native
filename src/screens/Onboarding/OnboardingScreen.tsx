@@ -2,6 +2,7 @@ import React from "react";
 import { Dimensions, Image, StyleSheet, Text } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import { Actions } from "../../redux/actions/actionTypes";
+import { toggleOnboarding } from "../../redux/actions/settings/thunks";
 import { useAppDispatch } from "../../redux/hooks";
 
 const styles = StyleSheet.create({
@@ -22,8 +23,8 @@ const OnboardingScreen = () => {
   return (
     <Onboarding
       containerStyles={styles.container}
-      onSkip={() => dispatch({ type: Actions.SettingsToggleOnboarding })}
-      onDone={() => dispatch({ type: Actions.SettingsToggleOnboarding })}
+      onSkip={() => dispatch(toggleOnboarding())}
+      onDone={() => dispatch(toggleOnboarding())}
       pages={[
         {
           backgroundColor: "#ffffff",

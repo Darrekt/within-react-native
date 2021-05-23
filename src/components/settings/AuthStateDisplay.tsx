@@ -1,3 +1,4 @@
+import { firebase } from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
@@ -10,8 +11,6 @@ import {
 import { Avatar } from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
 import { globalStyles } from "../../../styles";
-import { SettingsAction } from "../../redux/actions/actionTypes";
-import { SageSettings } from "../../redux/reducers/settings";
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -33,13 +32,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const AuthStateDisplay = ({
-  settings,
-  dispatch,
-}: {
-  settings: SageSettings;
-  dispatch: React.Dispatch<SettingsAction>;
-}) => {
+const AuthStateDisplay = () => {
+  const user = firebase.auth().currentUser;
   const width = useWindowDimensions().width * 0.85;
   const navigation = useNavigation();
 
@@ -62,13 +56,13 @@ const AuthStateDisplay = ({
           <Avatar
             rounded
             size="large"
-            title={settings.user?.displayName?.charAt(0) ?? ""}
+            title={user?.displayName?.charAt(0) ?? ""}
             overlayContainerStyle={{ backgroundColor: "#73EEFF" }}
           />
-          {settings.user ? (
+          {user ? (
             <Text style={styles.buttonText}>
               {`Signed in as ${
-                settings.user.displayName ??
+                user.displayName ??
                 "a mysterious entity. Set a display name here!"
               }`}
             </Text>
