@@ -2,6 +2,7 @@ import { List } from "immutable";
 import { TodoEntity } from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
 import { Actions, TodoAction } from "../actions/actionTypes";
+import { findTodoInList } from "../selectors";
 
 /**
  * setTodo attempts to set the todo if it exists, and if not adds it to the end of the list.
@@ -28,6 +29,7 @@ that all todos in this instance of the reducer call will have the associated pro
  * @returns 
  */
 const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
+  let target: TodoEntity;
   switch (action.type) {
     case Actions.TodoAdd:
       return List(state).push(action.payload).toArray();
@@ -36,14 +38,13 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
     case Actions.TodoUpdate:
       return setTodo(state, action.payload);
 
-    // TodoProductivityActions
     case Actions.TodoToggleComplete:
+      target = findTodoInList(state, action.payload.id);
       return setTodo(state, {
-        ...action.payload,
-        completed: !action.payload.completed,
+        ...target,
+        completed: !target.completed,
       });
 
-    // TodoTimerActions
     case Actions.TodoStart:
       const finishAt = new Date();
       if (action.payload.remaining) {
@@ -52,7 +53,6 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
         finishAt.setMinutes(finishAt.getMinutes() + action.interval / 60);
       }
       finishAt.setMilliseconds(finishAt.getMilliseconds() + 500);
-
       return setTodo(state, {
         ...action.payload,
         remaining: undefined,

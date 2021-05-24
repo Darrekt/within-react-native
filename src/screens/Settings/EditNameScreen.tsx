@@ -8,8 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { firebase } from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Actions } from "../../redux/actions/actionTypes";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getSettings } from "../../redux/selectors";
+import { useAppDispatch } from "../../redux/hooks";
 
 const EditNameScreen = () => {
   const user = auth().currentUser;

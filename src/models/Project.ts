@@ -93,20 +93,6 @@ export function fromEntity(doc: any) {
   });
 }
 
-export function findTodoProj(
-  projects: Project[],
-  todo: Todo
-): [Project, number, number] {
-  const projID = todo.project ?? UNCATEGORISED_TODO_PROJID;
-  const project = projects.find((proj) => proj.id == projID) as Project;
-  return [
-    // TODO: Back this up with a test
-    project,
-    projects.findIndex((proj) => proj.id == projID),
-    project.todos.findIndex((item) => item.id == todo.id),
-  ];
-}
-
 export function findTodoDeadline(
   project: Project,
   todo: Todo

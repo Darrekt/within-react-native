@@ -8,10 +8,10 @@ import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
 import Todo from "../../models/Todo";
 import { useSelector } from "react-redux";
-import { getSelected, getTodos, isRunning } from "../../redux/selectors";
+import { getAllTodos, getSelected, isRunning } from "../../redux/selectors";
 
 const TodoScreen = () => {
-  const todos = useSelector(getTodos);
+  const todos = useSelector(getAllTodos);
   const selected = useSelector(getSelected);
   const running = useSelector(isRunning);
 

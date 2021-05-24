@@ -6,11 +6,9 @@ import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
-import { useAppSelector } from "../../redux/hooks";
-import { getSettings } from "../../redux/selectors";
 
 const EditEmailScreen = () => {
-  const user = auth().currentUser
+  const user = auth().currentUser;
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>

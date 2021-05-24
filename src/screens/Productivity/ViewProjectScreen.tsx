@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import Project from "../../models/Project";
+import Project, { fromEntity } from "../../models/Project";
 import EmojiRegex from "emoji-regex";
 import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
@@ -12,12 +12,16 @@ import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
-import { Actions } from "../../redux/actions/actionTypes";
 import HeaderButton from "../../components/util/HeaderButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects } from "../../redux/selectors";
 import ProjectProgressGraph from "../../components/todo/ProjectProgressGraph";
-import { deleteProject } from "../../redux/actions/actions";
+import { deleteProject } from "../../redux/actions/projects/actions";
+import {
+  addFirebaseProject,
+  completeFirebaseProject,
+  updateFirebaseProject,
+} from "../../redux/actions/projects/thunks";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -83,19 +87,19 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
         return errors;
       }}
       onSubmit={async (values) => {
-        await wrapAsync(() =>
-          dispatch({
-            type: project ? Actions.ProjectUpdate : Actions.ProjectAdd,
-            payload: new Project({
-              ...project,
-              emoji: values.emoji,
-              name: values.name,
-              notes: values.notes,
-              // TODO
-              // deadlines: List(values.deadlines),
-            }),
-          })
-        );
+        await wrapAsync(() => {
+          const updatedProj = new Project({
+            ...fromEntity(project),
+            emoji: values.emoji,
+            name: values.name,
+            notes: values.notes,
+          });
+          dispatch(
+            project
+              ? updateFirebaseProject(updatedProj)
+              : addFirebaseProject(updatedProj)
+          );
+        });
         navigation.goBack();
         Toast.show({
           type: "success",
@@ -167,10 +171,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                   width={0.45 * bottomButtonWidth}
                   onPress={async () => {
                     await wrapAsync(() =>
-                      dispatch({
-                        type: Actions.ProjectUpdate,
-                        payload: new Project({ ...project, completed: true }),
-                      })
+                      dispatch(completeFirebaseProject(project.id))
                     );
 
                     navigation.goBack();
@@ -186,7 +187,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 <SubmitButton
                   width={0.45 * bottomButtonWidth}
                   onPress={async () => {
-                    await wrapAsync(() => dispatch(deleteProject(project)));
+                    await wrapAsync(() => dispatch(deleteProject(project.id)));
 
                     navigation.goBack();
                     Toast.show({

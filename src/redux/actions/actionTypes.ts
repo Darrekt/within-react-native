@@ -1,8 +1,7 @@
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { ProjectEntity } from "../../models/Project";
 import { DeadlineEntity } from "../../models/Deadline";
 import { TodoEntity } from "../../models/Todo";
-import { FirestoreSageSettings, SageSettings } from "../reducers/settings";
+import { FirestoreSageSettings } from "../reducers/settings";
 
 export enum Actions {
   Reset = "REPO_FLUSH",
@@ -46,16 +45,12 @@ export type ProjectAction =
       payload: ProjectEntity[];
     }
   | {
-      type:
-        | Actions.ProjectAdd
-        | Actions.ProjectDelete
-        | Actions.ProjectUpdate
-        | Actions.ProjectComplete
-        | Actions.ProjectAddDeadline
-        | Actions.ProjectDeleteDeadline
-        | Actions.ProjectCompleteDeadline
-        | Actions.ProjectUpdateDeadline;
+      type: Actions.ProjectAdd | Actions.ProjectUpdate;
       payload: ProjectEntity;
+    }
+  | {
+      type: Actions.ProjectDelete | Actions.ProjectComplete;
+      target: string;
     };
 
 export type DeadlineAction = {
@@ -70,24 +65,24 @@ export type DeadlineAction = {
 
 export type TodoAction =
   | {
-      type: Actions.TodoStart;
-      payload: TodoEntity;
-      interval: number;
-    }
-  | {
       type:
         | Actions.TodoAdd
         | Actions.TodoUpdate
-        | Actions.TodoDelete
-        | Actions.TodoSelect
-        | Actions.TodoToggleComplete
         | Actions.TodoAssignProject
         | Actions.TodoAssignDeadline
         | Actions.TodoDeassignDeadline
+        | Actions.TodoDelete
+        | Actions.TodoSelect
+        | Actions.TodoToggleComplete
         | Actions.TodoPause
         | Actions.TodoReset
         | Actions.TodoFinish;
       payload: TodoEntity;
+    }
+  | {
+      type: Actions.TodoStart;
+      payload: TodoEntity;
+      interval: number;
     };
 
 export type SettingsAction =

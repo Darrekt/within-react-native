@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import Todo from "../../models/Todo";
+import Todo, { TodoFromEntity } from "../../models/Todo";
 import EmojiRegex from "emoji-regex";
 import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
@@ -13,7 +13,7 @@ import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getProjects, getTodos } from "../../redux/selectors";
+import { getAllTodos, getProjects } from "../../redux/selectors";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 
 const ViewTodoScreen = ({ route, navigation }: Props) => {
   const projects = useAppSelector(getProjects);
-  const todos = useAppSelector(getTodos);
+  const todos = useAppSelector(getAllTodos);
   const dispatch = useAppDispatch();
   const todo = route.params?.id
     ? todos.find((item) => item.id === route.params.id)
@@ -78,7 +78,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
             dispatch({
               type: todo ? Actions.TodoUpdate : Actions.TodoAdd,
               payload: new Todo({
-                ...todo,
+                ...TodoFromEntity(todo),
                 emoji: values.emoji,
                 name: values.name,
                 project: values.project,

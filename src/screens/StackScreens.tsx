@@ -20,7 +20,7 @@ import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fromEntity } from "../models/Project";
-import { hydrateProjects } from "../redux/actions/actions";
+import { hydrateProjects } from "../redux/actions/projects/actions";
 import {
   authStateChanged,
   hydrateSettings,

@@ -5,7 +5,7 @@ import Project, {
   ProjectEntity,
 } from "../../models/Project";
 import { Action, Actions } from "../actions/actionTypes";
-import { findTodoByID } from "../selectors";
+import { findTodoInState } from "../selectors";
 import deadlineReducer from "./deadlines";
 import todoReducer from "./todos";
 
@@ -30,29 +30,31 @@ const projectReducer = (
   state: ProjectEntity[] = [defaultProject],
   action: Action
 ): ProjectEntity[] => {
+  let currProj: ProjectEntity;
   switch (action.type) {
     case Actions.ProjectHydrate:
       return action.payload;
+
     case Actions.ProjectUpdate:
       return findAndUpdateProject(
         state,
         action.payload.id,
         (proj) => action.payload
       );
+
     case Actions.ProjectAdd:
       return List(state).push(action.payload).sort(compareByDeadline).toArray();
+
     case Actions.ProjectDelete:
-      return state.filter((item) => item.id !== action.payload.id);
+      return state.filter((item) => item.id !== action.target);
 
     case Actions.ProjectComplete:
-      return findAndUpdateProject(state, action.payload.id, (proj) =>
+      return findAndUpdateProject(state, action.target, (proj) =>
         fromEntity({ ...proj, completed: !proj.completed }).toEntity()
       );
-    case Actions.ProjectCompleteDeadline:
-      return state;
 
     case Actions.TodoUpdate:
-      const prevTodo = findTodoByID(state, action.payload.id);
+      const prevTodo = findTodoInState(state, action.payload.id);
 
       let newState = state;
       if (action.payload.project !== prevTodo.project) {
@@ -77,12 +79,10 @@ const projectReducer = (
           }).toEntity()
         );
         return newState;
-      } 
+      }
 
     case Actions.TodoAdd:
     case Actions.TodoDelete:
-    case Actions.TodoAssignDeadline:
-    case Actions.TodoDeassignDeadline:
     case Actions.TodoSelect:
     case Actions.TodoToggleComplete:
     case Actions.TodoStart:

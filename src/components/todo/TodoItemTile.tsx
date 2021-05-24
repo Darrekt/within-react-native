@@ -7,7 +7,7 @@ import CircleButtonGroup from "../util/CircleButtonGroup";
 import { useNavigation } from "@react-navigation/core";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch } from "../../redux/hooks";
-import { selectTodo } from "../../redux/actions/actions";
+import { selectTodo } from "../../redux/actions/todos/thunks";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -67,7 +67,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
       key: todo.id + "complete",
       action: {
         type: Actions.TodoToggleComplete,
-        payload: todo,
+        payload: todo.toEntity(),
       },
       icon: todo.completed ? (
         <Icon name="ios-refresh" type="ionicon" color="black" />
@@ -84,7 +84,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
       key: todo.id + "delete",
       action: {
         type: Actions.TodoDelete,
-        payload: todo,
+        payload: todo.toEntity(),
       },
       icon: (
         <Entypo key={todo.id + "delete"} name="cross" size={20} color="black" />
@@ -112,7 +112,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
     >
       <TouchableOpacity
         onPress={() => {
-          if (!running) dispatch(selectTodo(todo));
+          if (!running) dispatch(selectTodo(todo.toEntity()));
         }}
         onLongPress={() => {
           navigation.navigate("EditTodoScreen", { id: todo.id });
