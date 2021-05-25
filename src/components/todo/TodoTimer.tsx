@@ -69,15 +69,11 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
 
   const [timeLeft, setTimeLeft] = useState(secondsLeft);
 
-  // FIXME: This implementation completes a task twice.
-  // Every time the component re-renders, check if the todo is running (finishingTime).
-  // If running, setTimeLeft in one second.
-  // If paused, display the remaining time
-  // If not running, display defaultInterval
   useEffect(() => {
+    if (!selectedTask.finishingTime && !selectedTask.remaining)
+      setTimeLeft(settings.defaultInterval);
     if (timeLeft === 0 && selectedTask.finishingTime) {
       dispatch({ type: Actions.TodoFinish, payload: selectedTask });
-      setTimeLeft(settings.defaultInterval);
       return;
     }
     // in one second, if the task is running, set the time left on the task.
@@ -118,11 +114,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
   ];
   return (
     <View style={styles.positionedLogo}>
-      <Text style={styles.timerFont}>
-        {printTimeLeft(
-          selectedTask.finishingTime ? timeLeft : settings.defaultInterval
-        )}
-      </Text>
+      <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
       <CircleButtonGroup actions={timerActions} active />
     </View>
   );
