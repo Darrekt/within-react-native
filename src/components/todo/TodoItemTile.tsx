@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Icon, ListItem, withBadge } from "react-native-elements";
-import { TodoEntity, TodoFromEntity } from "../../models/Todo";
+import { TodoEntity } from "../../models/Todo";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { useNavigation } from "@react-navigation/core";
-import { Actions, TodoAction } from "../../redux/actions/actionTypes";
+import { TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch } from "../../redux/hooks";
-import { completeTodo, selectTodo } from "../../redux/actions/todos/actions";
+import { selectTodo } from "../../redux/actions/todos/actions";
 import {
   completeFirebaseTodo,
   deleteFirebaseTodo,

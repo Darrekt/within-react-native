@@ -11,13 +11,13 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
-import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllTodos, getProjects } from "../../redux/selectors";
 import {
   addFirebaseTodo,
   updateFirebaseTodo,
 } from "../../redux/actions/todos/thunks";
+import { UNCATEGORISED_TODO_PROJID } from "../../models/Project";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -62,18 +62,20 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
         initialValues={{
           emoji: todo?.emoji ?? "",
           name: todo?.name ?? "",
-          project: todo?.project ?? "",
+          project: todo?.project ?? UNCATEGORISED_TODO_PROJID,
         }}
         validate={(values) => {
           const errors: {
             emoji?: string;
             name?: string;
+            project?: string;
           } = {};
 
           if (values.emoji && !EmojiRegex().test(values.emoji))
             errors.emoji = "Invalid emoji";
 
           if (!values.name) errors.name = "Please enter a task name.";
+          if (!values.project) errors.project = "Invalid project ID";
 
           return errors;
         }}

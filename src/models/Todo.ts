@@ -10,7 +10,7 @@ export interface TodoEntity {
   completed: boolean;
   remaining?: number;
   finishingTime?: number;
-};
+}
 
 export default class Todo {
   id: string = uuidv4();
@@ -26,6 +26,7 @@ export default class Todo {
 
   constructor(data: Partial<Todo>) {
     if (!data.id) delete data.id;
+    if (!data.emoji) delete data.emoji;
     Object.assign(this, data);
     this.project = data.project ?? "uncategorised";
   }
@@ -55,7 +56,7 @@ export default class Todo {
     const todoKeys = Object.keys(thisTodo) as (keyof typeof thisTodo)[];
     const otherKeys = Object.keys(otherTodo) as (keyof typeof otherTodo)[];
 
-    todoKeys.forEach((key, index) => {
+    todoKeys.forEach((key) => {
       if (!otherKeys.includes(key)) result = false;
       if (thisTodo[key] !== otherTodo[key]) result = false;
     });

@@ -53,6 +53,8 @@ export default class Project {
   equals(other: Project | undefined) {
     if (this === other) return true;
     if (other === undefined) return false;
+    if (this.deadlines.length !== other.deadlines.length) return false;
+    if (this.todos.length !== other.todos.length) return false;
 
     const projA = this.toEntity();
     const projB = other.toEntity();
@@ -63,6 +65,7 @@ export default class Project {
       (key) => key !== "todos" && key !== "deadlines"
     ) as (keyof Omit<typeof projB, "todos" | "deadlines">)[];
 
+    // Value equality checks
     let result = true;
     projKeys.forEach((key) => {
       if (!objKeys.includes(key)) result = false;

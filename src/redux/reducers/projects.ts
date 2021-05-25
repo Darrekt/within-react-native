@@ -9,12 +9,12 @@ import { findTodoInState } from "../selectors";
 import deadlineReducer from "./deadlines";
 import todoReducer from "./todos";
 
-const defaultProject = new Project({
+export const defaultProject = new Project({
   id: "uncategorised",
   name: "Uncategorised Tasks",
 }).toEntity();
 
-const findAndUpdateProject = (
+export const findAndUpdateProject = (
   state: ProjectEntity[],
   target: string,
   updater: (proj: ProjectEntity) => ProjectEntity

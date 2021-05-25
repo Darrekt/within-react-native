@@ -7,6 +7,7 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
+import { sanitiseFirebaseProjects } from "../../redux/actions/projects/thunks";
 import {
   resetSettings,
   toggleOnboarding,
@@ -62,13 +63,19 @@ const SettingsScreen = () => {
         marginHorizontal: 5,
       }}
     >
-      <AuthStateDisplay settings={settings} dispatch={dispatch} />
+      <AuthStateDisplay />
       <HeadingDropDown header="Productivity">
         <SettingsGroup items={productivitySettings} />
       </HeadingDropDown>
       <HeadingDropDown header="General">
         <SettingsGroup items={generalSettings} />
       </HeadingDropDown>
+      <SubmitButton
+        text="Sanitise Projects"
+        onPress={() => {
+          dispatch(sanitiseFirebaseProjects());
+        }}
+      />
       <SubmitButton
         text="Reset Settings"
         onPress={() => {
