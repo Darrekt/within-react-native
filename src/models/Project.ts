@@ -26,6 +26,7 @@ export default class Project {
 
   constructor(data: Pick<Project, "name"> & Partial<Project>) {
     if (!data.id) delete data.id;
+    if (!data.emoji) delete data.emoji;
     Object.assign(this, data);
     this.name = data.name;
   }

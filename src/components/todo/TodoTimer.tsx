@@ -7,8 +7,11 @@ import { Icon } from "react-native-elements";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
-import { startTodo } from "../../redux/actions/todos/thunks";
-import { pauseTodo, resetTodo } from "../../redux/actions/todos/actions";
+import {
+  pauseFirebaseTodo,
+  startFirebaseTodo,
+  resetFirebaseTodo,
+} from "../../redux/actions/todos/thunks";
 import { AppThunk } from "../../redux/store";
 
 const styles = StyleSheet.create({
@@ -96,8 +99,8 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     {
       key: "timerControl",
       action: selectedTask.finishingTime
-        ? pauseTodo(selectedTask)
-        : startTodo(selectedTask),
+        ? pauseFirebaseTodo(selectedTask)
+        : startFirebaseTodo(selectedTask),
 
       icon: (
         <Icon
@@ -109,7 +112,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     },
     {
       key: "timerReset",
-      action: resetTodo(selectedTask),
+      action: resetFirebaseTodo(selectedTask),
       icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
     },
   ];
