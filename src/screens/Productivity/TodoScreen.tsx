@@ -45,7 +45,7 @@ const TodoScreen = () => {
       )}
       {isOpen ? (
         <TodoComponents.TimerDisplay
-          selectedTask={todos.find((todo) => todo.id == selected)}
+          selectedTask={todos.find((todo) => todo.id === selected)}
         />
       ) : (
         <TodoComponents.HomeDisplay />

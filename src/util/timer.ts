@@ -1,9 +1,5 @@
-import { TodoEntity } from "../models/Todo";
-
-export function getTimeLeft(finishingTime: number) {
-  const now = new Date();
-  return Math.max(0, Math.floor((finishingTime - now.valueOf()) / 1000));
-}
+export const getTimeLeft = (finishingTime: number) =>
+  Math.max(0, Math.floor((finishingTime - new Date().getTime()) / 1000));
 
 export function printTimeLeft(secondsLeft: number) {
   const hours = Math.floor(secondsLeft / 3600);

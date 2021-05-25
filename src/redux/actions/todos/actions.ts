@@ -1,27 +1,42 @@
-import Todo from "../../../models/Todo";
+import { TodoEntity } from "../../../models/Todo";
 import { Actions, TodoAction } from "../actionTypes";
 
-export const addTodo = (todo: Todo): TodoAction => ({
+export const addTodo = (todo: TodoEntity): TodoAction => ({
   type: Actions.TodoAdd,
-  payload: todo.toEntity(),
+  payload: todo,
 });
 
-export const updateTodo = (todo: Todo): TodoAction => ({
+export const updateTodo = (todo: TodoEntity): TodoAction => ({
   type: Actions.TodoUpdate,
-  payload: todo.toEntity(),
+  payload: todo,
 });
 
-export const deleteTodo = (todoID: string): TodoAction => ({
+export const deleteTodo = (todo: TodoEntity): TodoAction => ({
   type: Actions.TodoDelete,
-  target: todoID,
+  payload: todo,
 });
 
-export const selectTodo = (todoID: string): TodoAction => ({
+export const selectTodo = (todo: TodoEntity): TodoAction => ({
   type: Actions.TodoSelect,
-  target: todoID,
+  payload: todo,
 });
 
-export const completeTodo = (todoID: string): TodoAction => ({
+export const completeTodo = (todo: TodoEntity): TodoAction => ({
   type: Actions.TodoToggleComplete,
-  target: todoID,
+  payload: todo,
+});
+
+export const pauseTodo = (todo: TodoEntity): TodoAction => ({
+  type: Actions.TodoPause,
+  payload: todo,
+});
+
+export const resetTodo = (todo: TodoEntity): TodoAction => ({
+  type: Actions.TodoReset,
+  payload: todo,
+});
+
+export const finishTodoInterval = (todo: TodoEntity): TodoAction => ({
+  type: Actions.TodoFinish,
+  payload: todo,
 });

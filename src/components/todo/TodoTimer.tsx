@@ -7,6 +7,9 @@ import { Icon } from "react-native-elements";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
+import { startTodo } from "../../redux/actions/todos/thunks";
+import { pauseTodo, resetTodo } from "../../redux/actions/todos/actions";
+import { AppThunk } from "../../redux/store";
 
 const styles = StyleSheet.create({
   positionedLogo: {
@@ -55,13 +58,13 @@ type TimerProps = {
 const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
   const settings = useAppSelector(getSettings);
 
-  let displayVal;
+  let secondsLeft;
   if (selectedTask.finishingTime)
-    displayVal = getTimeLeft(selectedTask.finishingTime);
-  else if (selectedTask.remaining) displayVal = selectedTask.remaining;
-  else displayVal = settings.defaultInterval;
+    secondsLeft = getTimeLeft(selectedTask.finishingTime);
+  else if (selectedTask.remaining) secondsLeft = selectedTask.remaining;
+  else secondsLeft = settings.defaultInterval;
 
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(displayVal));
+  const [timeLeft, setTimeLeft] = useState(secondsLeft);
 
   // FIXME: This implementation completes a task twice.
   // Every time the component re-renders, check if the todo is running (finishingTime).
@@ -69,15 +72,16 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
   // If paused, display the remaining time
   // If not running, display defaultInterval
   useEffect(() => {
-    const timer = setTimeout(
-      () => {
-        if (timeLeft === 0)
-          dispatch({ type: Actions.TodoFinish, payload: selectedTask });
-        else if (selectedTask.finishingTime)
-          setTimeLeft(getTimeLeft(selectedTask.finishingTime));
-      },
-      selectedTask.finishingTime ? 1000 : 0
-    );
+    if (timeLeft === 0 && selectedTask.finishingTime) {
+      dispatch({ type: Actions.TodoFinish, payload: selectedTask });
+      setTimeLeft(settings.defaultInterval);
+      return;
+    }
+    // in one second, if the task is running, set the time left on the task.
+    const timer = setTimeout(() => {
+      if (selectedTask.finishingTime)
+        setTimeLeft(getTimeLeft(selectedTask.finishingTime));
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
@@ -86,18 +90,15 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
 
   const timerActions: {
     key: string;
-    action: TodoAction;
+    action: TodoAction | AppThunk;
     icon: JSX.Element;
   }[] = [
     {
       key: "timerControl",
-      action: {
-        type: selectedTask.finishingTime
-          ? Actions.TodoPause
-          : Actions.TodoStart,
-        payload: selectedTask,
-        interval: settings.defaultInterval,
-      },
+      action: selectedTask.finishingTime
+        ? pauseTodo(selectedTask)
+        : startTodo(selectedTask),
+
       icon: (
         <Icon
           reverse
@@ -108,14 +109,18 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     },
     {
       key: "timerReset",
-      action: { type: Actions.TodoReset, payload: selectedTask },
+      action: resetTodo(selectedTask),
       icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
     },
   ];
   return (
     <View style={styles.positionedLogo}>
-      <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
-      <CircleButtonGroup actions={timerActions} dispatch={dispatch} active />
+      <Text style={styles.timerFont}>
+        {printTimeLeft(
+          selectedTask.finishingTime ? timeLeft : settings.defaultInterval
+        )}
+      </Text>
+      <CircleButtonGroup actions={timerActions} active />
     </View>
   );
 };

@@ -20,6 +20,7 @@ import { deleteProject } from "../../redux/actions/projects/actions";
 import {
   addFirebaseProject,
   completeFirebaseProject,
+  deleteFirebaseProject,
   updateFirebaseProject,
 } from "../../redux/actions/projects/thunks";
 
@@ -88,16 +89,23 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
       }}
       onSubmit={async (values) => {
         await wrapAsync(() => {
-          const updatedProj = new Project({
-            ...fromEntity(project),
-            emoji: values.emoji,
-            name: values.name,
-            notes: values.notes,
-          });
           dispatch(
             project
-              ? updateFirebaseProject(updatedProj)
-              : addFirebaseProject(updatedProj)
+              ? updateFirebaseProject(
+                  new Project({
+                    ...fromEntity(project),
+                    emoji: values.emoji,
+                    name: values.name,
+                    notes: values.notes,
+                  })
+                )
+              : addFirebaseProject(
+                  new Project({
+                    emoji: values.emoji,
+                    name: values.name,
+                    notes: values.notes,
+                  })
+                )
           );
         });
         navigation.goBack();
@@ -187,7 +195,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 <SubmitButton
                   width={0.45 * bottomButtonWidth}
                   onPress={async () => {
-                    await wrapAsync(() => dispatch(deleteProject(project.id)));
+                    await wrapAsync(() => dispatch(deleteFirebaseProject(project.id)));
 
                     navigation.goBack();
                     Toast.show({

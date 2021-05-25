@@ -1,7 +1,4 @@
-import Project, {
-  ProjectEntity,
-  UNCATEGORISED_TODO_PROJID,
-} from "../models/Project";
+import { ProjectEntity } from "../models/Project";
 import { TodoEntity } from "../models/Todo";
 import { RootState } from "../redux/store";
 

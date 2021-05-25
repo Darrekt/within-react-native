@@ -46,30 +46,40 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
       });
 
     case Actions.TodoStart:
-      const finishAt = new Date();
-      if (action.payload.remaining) {
-        finishAt.setSeconds(finishAt.getSeconds() + action.payload.remaining);
-      } else {
-        finishAt.setMinutes(finishAt.getMinutes() + action.interval / 60);
-      }
-      finishAt.setMilliseconds(finishAt.getMilliseconds() + 500);
+      let finishAt;
+      finishAt = new Date(
+        new Date().getTime() +
+          500 +
+          (action.payload.remaining
+            ? action.payload.remaining
+            : action.interval) *
+            1000
+      );
+      console.log("action interval: ", action.interval);
+      console.log("action payload: ", action.payload);
+      console.log("started with: ", getTimeLeft(finishAt.getTime()));
       return setTodo(state, {
         ...action.payload,
         remaining: undefined,
         finishingTime: finishAt.getTime(),
       });
 
-    case Actions.TodoPause:
     case Actions.TodoReset:
+      return setTodo(state, {
+        ...action.payload,
+        remaining: undefined,
+        finishingTime: undefined,
+      });
+    case Actions.TodoPause:
     case Actions.TodoFinish:
       return setTodo(state, {
         ...action.payload,
-        remaining:
-          action.type == Actions.TodoPause && action.payload.finishingTime
-            ? getTimeLeft(action.payload.finishingTime)
-            : undefined,
         laps:
           action.payload.laps + (action.type === Actions.TodoFinish ? 1 : 0),
+        remaining:
+          action.type === Actions.TodoPause && action.payload.finishingTime
+            ? getTimeLeft(action.payload.finishingTime)
+            : undefined,
         finishingTime: undefined,
       });
 

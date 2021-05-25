@@ -14,6 +14,10 @@ import wrapAsync from "../../util/dispatchAsync";
 import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllTodos, getProjects } from "../../redux/selectors";
+import {
+  addFirebaseTodo,
+  updateFirebaseTodo,
+} from "../../redux/actions/todos/thunks";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -75,15 +79,24 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
         }}
         onSubmit={async (values) => {
           await wrapAsync(() =>
-            dispatch({
-              type: todo ? Actions.TodoUpdate : Actions.TodoAdd,
-              payload: new Todo({
-                ...TodoFromEntity(todo),
-                emoji: values.emoji,
-                name: values.name,
-                project: values.project,
-              }),
-            })
+            dispatch(
+              todo
+                ? updateFirebaseTodo(
+                    new Todo({
+                      ...TodoFromEntity(todo),
+                      emoji: values.emoji,
+                      name: values.name,
+                      project: values.project,
+                    }).toEntity()
+                  )
+                : addFirebaseTodo(
+                    new Todo({
+                      emoji: values.emoji,
+                      name: values.name,
+                      project: values.project,
+                    }).toEntity()
+                  )
+            )
           );
           Toast.show({
             type: "success",
