@@ -5,6 +5,7 @@ const Stack = createStackNavigator();
 import TodoScreen from "./TodoScreen";
 import ViewProjectScreen from "./ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
+import ViewDeadlineScreen from "./ViewDeadlineScreen";
 
 const TodoNavigator = () => {
   return (
@@ -27,6 +28,22 @@ const TodoNavigator = () => {
         component={ViewProjectScreen}
         options={{
           title: "Add a Project",
+          headerBackTitleVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="ViewDeadlineScreen"
+        component={ViewDeadlineScreen}
+        options={{
+          title: "View Deadline",
+          headerBackTitleVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="AddDeadlineScreen"
+        component={ViewDeadlineScreen}
+        options={{
+          title: "Add Deadline",
           headerBackTitleVisible: false,
         }}
       />

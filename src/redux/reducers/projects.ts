@@ -1,7 +1,7 @@
 import { List } from "immutable";
 import Project, {
   compareByDeadline,
-  fromEntity,
+  ProjectFromEntity,
   ProjectEntity,
 } from "../../models/Project";
 import { Action, Actions } from "../actions/actionTypes";
@@ -50,7 +50,7 @@ const projectReducer = (
 
     case Actions.ProjectComplete:
       return findAndUpdateProject(state, action.target, (proj) =>
-        fromEntity({ ...proj, completed: !proj.completed }).toEntity()
+        ProjectFromEntity({ ...proj, completed: !proj.completed }).toEntity()
       );
 
     case Actions.TodoUpdate:
@@ -60,7 +60,7 @@ const projectReducer = (
       if (action.payload.project !== prevTodo.project) {
         // Add to list of new project
         newState = findAndUpdateProject(state, action.payload.project, (proj) =>
-          fromEntity({
+          ProjectFromEntity({
             ...proj,
             todos: todoReducer(proj.todos, {
               type: Actions.TodoAdd,
@@ -70,7 +70,7 @@ const projectReducer = (
         );
         // Remove from list of old project
         newState = findAndUpdateProject(newState, prevTodo.project, (proj) =>
-          fromEntity({
+          ProjectFromEntity({
             ...proj,
             todos: todoReducer(proj.todos, {
               type: Actions.TodoDelete,

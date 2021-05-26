@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { fromEntity, ProjectEntity } from "../../../models/Project";
+import { ProjectFromEntity, ProjectEntity } from "../../../models/Project";
 import { TodoEntity } from "../../../models/Todo";
 import projectReducer from "../../reducers/projects";
 import todoReducer from "../../reducers/todos";
@@ -33,7 +33,7 @@ export const diffAndWriteProjects = (
   newState.forEach((project) => {
     const otherProj = prevState.find((item) => item.id === project.id);
 
-    if (!otherProj || !fromEntity(project).equals(fromEntity(otherProj))) {
+    if (!otherProj || !ProjectFromEntity(project).equals(ProjectFromEntity(otherProj))) {
       writeToProjectsCollection(userID)(project);
     }
   });

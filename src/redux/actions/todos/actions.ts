@@ -1,4 +1,4 @@
-import { TodoEntity } from "../../../models/Todo";
+import { TodoEntity } from "../../../models/Todo"
 import { Actions, TodoAction } from "../actionTypes";
 
 export const addTodo = (todo: TodoEntity): TodoAction => ({

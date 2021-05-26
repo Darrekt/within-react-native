@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export interface DeadlineEntity {
   id: string;
+  project: string;
   name: string;
   due: number;
   todos: string[];
@@ -9,21 +10,25 @@ export interface DeadlineEntity {
 
 export default class Deadline {
   id: string;
+  project: string;
   name: string;
   due: Date;
   todos: string[];
 
-  constructor(data: Pick<Deadline, "name" | "due"> & Partial<Deadline>) {
+  constructor(
+    data: Pick<Deadline, "project" | "name" | "due"> & Partial<Deadline>
+  ) {
     this.id = data.id ?? uuidv4();
+    this.project = data.project;
     this.name = data.name;
     this.due = data.due;
     this.todos = data.todos ?? [];
   }
 
-  // TODO: Might need to JSON serialise
   toEntity(): DeadlineEntity {
     return {
       id: this.id,
+      project: this.project,
       name: this.name,
       due: this.due.getTime(),
       todos: this.todos,
@@ -55,6 +60,7 @@ export default class Deadline {
 export const DeadlineFromEntity = (doc: any) =>
   new Deadline({
     id: doc.id,
+    project: doc.project,
     name: doc.name,
     due: new Date(doc.due),
     todos: doc.todos,

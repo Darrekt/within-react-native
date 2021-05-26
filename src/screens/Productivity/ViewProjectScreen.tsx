@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import Project, { fromEntity } from "../../models/Project";
+import Project, { ProjectFromEntity } from "../../models/Project";
 import EmojiRegex from "emoji-regex";
 import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
@@ -16,7 +16,6 @@ import HeaderButton from "../../components/util/HeaderButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects } from "../../redux/selectors";
 import ProjectProgressGraph from "../../components/todo/ProjectProgressGraph";
-import { deleteProject } from "../../redux/actions/projects/actions";
 import {
   addFirebaseProject,
   completeFirebaseProject,
@@ -63,7 +62,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
     : undefined;
 
   const addDeadlineBtn = (
-    <HeaderButton route="AddDeadlinePage" iconName="plus" iconType="entypo" />
+    <HeaderButton route="AddDeadlineScreen" iconName="plus" iconType="entypo" />
   );
 
   return (
@@ -93,7 +92,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
             project
               ? updateFirebaseProject(
                   new Project({
-                    ...fromEntity(project),
+                    ...ProjectFromEntity(project),
                     emoji: values.emoji,
                     name: values.name,
                     notes: values.notes,
@@ -165,7 +164,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               <DeadlineDisplay></DeadlineDisplay>
             </HeadingDropDown>
           )}
-          <View style={globalStyles.bottomButtons}>
+          <View style={{ ...globalStyles.bottomButtons, alignSelf: "auto" }}>
             {project && (
               <View
                 style={{
@@ -195,7 +194,9 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 <SubmitButton
                   width={0.45 * bottomButtonWidth}
                   onPress={async () => {
-                    await wrapAsync(() => dispatch(deleteFirebaseProject(project.id)));
+                    await wrapAsync(() =>
+                      dispatch(deleteFirebaseProject(project.id))
+                    );
 
                     navigation.goBack();
                     Toast.show({

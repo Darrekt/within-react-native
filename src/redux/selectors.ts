@@ -1,3 +1,4 @@
+import { DeadlineEntity } from "../models/Deadline";
 import { ProjectEntity } from "../models/Project";
 import { TodoEntity } from "../models/Todo";
 import { RootState } from "../redux/store";
@@ -5,10 +6,26 @@ import { RootState } from "../redux/store";
 export const getProjects = (state: RootState) => state.projects;
 export const getSelected = (state: RootState): string => state.selected;
 export const getSettings = (state: RootState) => state.settings;
+export const getAllDeadlines = (state: RootState): DeadlineEntity[] =>
+  state.projects
+    .map((proj) => proj.deadlines)
+    .reduce(
+      (agg, projDeadlines) => agg.concat(projDeadlines),
+      <DeadlineEntity[]>[]
+    );
+
 export const getAllTodos = (state: RootState): TodoEntity[] =>
   state.projects
     .map((proj) => proj.todos)
     .reduce((agg, projTodos) => agg.concat(projTodos), <TodoEntity[]>[]);
+
+export const findDeadline =
+  (deadlineID: string | undefined) => (state: RootState) =>
+    deadlineID
+      ? state.projects
+          .find((proj) => proj.deadlines.some((ddl) => ddl.id === deadlineID))
+          ?.deadlines.find((ddl) => ddl.id === deadlineID)
+      : undefined;
 
 export const isRunning = (state: RootState): boolean =>
   getAllTodos(state).some((todo) => todo.finishingTime !== undefined);

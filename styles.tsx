@@ -65,6 +65,7 @@ export const globalStyles = StyleSheet.create({
   },
   bottomButtons: {
     alignItems: "center",
+    alignSelf: "stretch",
     marginBottom: 20,
   },
 });

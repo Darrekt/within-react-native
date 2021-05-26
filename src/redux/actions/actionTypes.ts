@@ -10,10 +10,6 @@ export enum Actions {
   ProjectDelete = "PROJECT_DELETE",
   ProjectUpdate = "PROJECT_UPDATE",
   ProjectComplete = "PROJECT_COMPLETE",
-  ProjectAddDeadline = "PROJECT_ADD_DEADLINE",
-  ProjectDeleteDeadline = "PROJECT_DEL_DEADLINE",
-  ProjectCompleteDeadline = "PROJECT_COMPLETE_DEADLINE",
-  ProjectUpdateDeadline = "PROJECT_UPDATE_DEADLINE",
   DeadlineAdd = "DEADLINE_ADD",
   DeadlineRemove = "DEADLINE_REMOVE",
   DeadlineUpdate = "DEADLINE_UPDATE",
@@ -59,7 +55,6 @@ export type DeadlineAction = {
     | Actions.DeadlineRemove
     | Actions.DeadlineUpdate
     | Actions.DeadlineComplete;
-  targetProj: string;
   payload: DeadlineEntity;
 };
 

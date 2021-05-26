@@ -85,7 +85,7 @@ export default class Project {
   }
 }
 
-export function fromEntity(doc: any) {
+export function ProjectFromEntity(doc: any) {
   return new Project({
     ...doc,
     todos: List(doc.todos)
@@ -111,8 +111,8 @@ export function findTodoDeadline(
 
 export function compareByDeadline(projA: ProjectEntity, projB: ProjectEntity) {
   // TODO: Implement sorting comparator
-  const ddlA = fromEntity(projA).closestDeadline()?.due;
-  const ddlB = fromEntity(projB).closestDeadline()?.due;
+  const ddlA = ProjectFromEntity(projA).closestDeadline()?.due;
+  const ddlB = ProjectFromEntity(projB).closestDeadline()?.due;
 
   if (ddlA === undefined && ddlB === undefined) return 0;
   else if (ddlA === undefined && ddlB !== undefined) return 1;

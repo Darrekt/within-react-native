@@ -3,20 +3,19 @@ import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import Project from "../../models/Project";
-import EmojiRegex from "emoji-regex";
 import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
-import { LineChart } from "react-native-chart-kit";
-import HeadingDropDown from "../../components/layout/HeadingDropDown";
-import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
-import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getProjects } from "../../redux/selectors";
+import { findDeadline, getProjects } from "../../redux/selectors";
+import {
+  addFirebaseDeadline,
+  updateFirebaseDeadline,
+} from "../../redux/actions/deadlines/thunks";
+import Deadline, { DeadlineFromEntity } from "../../models/Deadline";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -40,200 +39,103 @@ type Props = {
 
 const bottomButtonWidth = "85%";
 const styles = StyleSheet.create({
-  emojiInput: { ...globalStyles.inputBox, width: "20%" },
-  nameInput: { ...globalStyles.inputBox, width: "50%" },
-  boolEntry: {
-    ...globalStyles.row,
-    padding: 10,
+  nameCol: {
+    ...globalStyles.column,
+    width: Dimensions.get("screen").width * 0.55,
   },
-  chart: {
-    marginVertical: 8,
-    borderRadius: 16,
+  dateCol: {
+    width: 0.3 * Dimensions.get("window").width,
+    justifyContent: "center",
   },
+  nameInput: { ...globalStyles.inputBox, width: "100%" },
 });
 
 const ViewDeadlineScreen = ({ route, navigation }: Props) => {
   const projects = useAppSelector(getProjects);
+  const deadline = useAppSelector(findDeadline(route.params?.id));
   const dispatch = useAppDispatch();
 
-  const project = route.params?.id
-    ? projects.find((proj) => proj.id === route.params.id)
-    : undefined;
+  const initialValues = {
+    name: deadline?.name ?? "",
+    due: deadline?.due ? new Date(deadline.due) : new Date(),
+    todos: deadline?.todos ?? [],
+  };
 
   return (
     <Formik
-      initialValues={{
-        emoji: project?.emoji ?? "",
-        name: project?.name ?? "",
-        notes: project?.notes ?? "",
-        deadlines: project?.deadlines ?? [],
-      }}
+      initialValues={initialValues}
       validate={(values) => {
         const errors: {
           emoji?: string;
           name?: string;
         } = {};
 
-        if (values.emoji && !EmojiRegex().test(values.emoji))
-          errors.emoji = "Invalid emoji";
-
-        if (!values.name) errors.name = "Please enter a project name.";
+        if (!values.name) errors.name = "Please enter a name.";
 
         return errors;
       }}
       onSubmit={async (values) => {
         await wrapAsync(() =>
-          dispatch({
-            type: project ? Actions.ProjectUpdate : Actions.ProjectAdd,
-            payload: new Project({
-              ...project,
-              emoji: values.emoji,
-              name: values.name,
-              notes: values.notes,
-              // TODO
-              // deadlines: List(values.deadlines),
-            }),
-          })
+          dispatch(
+            deadline
+              ? updateFirebaseDeadline(
+                  new Deadline({
+                    ...DeadlineFromEntity(deadline),
+                    name: values.name,
+                    due: values.due,
+                  }).toEntity()
+                )
+              : addFirebaseDeadline(
+                  new Deadline({
+                    project: route.params.id,
+                    name: values.name,
+                    due: values.due,
+                  }).toEntity()
+                )
+          )
         );
         navigation.goBack();
         Toast.show({
           type: "success",
           position: "bottom",
-          text1: `${project ? "Updated" : "Added"} Project:`,
+          text1: `${deadline ? "Updated" : "Added"} Deadline:`,
           text2: values.name,
         });
       }}
     >
       {(formik) => (
         <View style={globalStyles.form}>
-          <View style={globalStyles.column}>
-            <View style={globalStyles.spacer}></View>
-            <HeadingDropDown header="Project Info">
-              <View style={globalStyles.row}>
-                <TextInput
-                  style={styles.emojiInput}
-                  onChangeText={formik.handleChange("emoji")}
-                  onBlur={formik.handleBlur("emoji")}
-                  placeholder="Emoji"
-                  value={formik.values.emoji}
-                />
-                <TextInput
-                  style={styles.nameInput}
-                  onChangeText={formik.handleChange("name")}
-                  onBlur={formik.handleBlur("name")}
-                  placeholder="Project name"
-                  value={formik.values.name}
-                />
-              </View>
-              <View style={globalStyles.row}>
-                {formik.touched.emoji && formik.errors.emoji && (
-                  <Text style={textStyles.validationMessage}>
-                    {formik.errors.emoji}
-                  </Text>
-                )}
-                {formik.touched.name && formik.errors.name && (
-                  <Text style={textStyles.validationMessage}>
-                    {formik.errors.name}
-                  </Text>
-                )}
-              </View>
+          <View style={globalStyles.row}>
+            <View style={styles.nameCol}>
               <TextInput
-                style={globalStyles.inputBox}
-                onChangeText={formik.handleChange("notes")}
-                onBlur={formik.handleBlur("notes")}
-                placeholder="Notes"
-                value={formik.values.notes}
+                style={styles.nameInput}
+                onChangeText={formik.handleChange("name")}
+                onBlur={formik.handleBlur("name")}
+                placeholder="Name"
+                value={formik.values.name}
               />
-            </HeadingDropDown>
-            {/* DATE DISPLAY */}
-            {project && (
-              <HeadingDropDown header="Progress">
-                <LineChart
-                  data={{
-                    labels: [
-                      "Sun",
-                      "Mon",
-                      "Tues",
-                      "Wed",
-                      "Thurs",
-                      "Fri",
-                      "Sat",
-                    ],
-                    datasets: [
-                      {
-                        data: [
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                          Math.random() * 10,
-                        ],
-                      },
-                    ],
-                  }}
-                  width={0.85 * Dimensions.get("window").width} // from react-native
-                  height={0.2 * Dimensions.get("window").height}
-                  chartConfig={{
-                    backgroundGradientFrom: "#01C2EF",
-                    backgroundGradientTo: "#56DEF1",
-                    decimalPlaces: 0, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    labelColor: (opacity = 1) =>
-                      `rgba(255, 255, 255, ${opacity})`,
-                    style: {
-                      borderRadius: 15,
-                    },
-                    propsForDots: {
-                      r: "5",
-                      strokeWidth: "1",
-                      stroke: "#FFAE5E",
-                    },
-                  }}
-                  bezier
-                  style={styles.chart}
-                />
-              </HeadingDropDown>
-            )}
+              {formik.touched.name && formik.errors.name && (
+                <Text style={textStyles.validationMessage}>
+                  {formik.errors.name}
+                </Text>
+              )}
+            </View>
+            <View style={globalStyles.column}>
+              <DateTimePicker
+                style={styles.dateCol}
+                value={formik.values.due}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={(event, date) => formik.setFieldValue("due", date)}
+              />
+            </View>
           </View>
-          <HeadingDropDown header="Deadlines">
-            <DeadlineDisplay></DeadlineDisplay>
-            {/* <DateTimePicker
-                  style={{ minWidth: 0.3 * Dimensions.get("window").width }}
-                  value={formik.values.due}
-                  mode="date"
-                  is24Hour={true}
-                  display="default"
-                  onChange={(event, date) => formik.setFieldValue("due", date)}
-                /> */}
-          </HeadingDropDown>
           <View style={globalStyles.bottomButtons}>
-            {project && (
-              <SubmitButton
-                width={bottomButtonWidth}
-                onPress={async () => {
-                  await wrapAsync(() =>
-                    dispatch({
-                      type: Actions.ProjectUpdate,
-                      payload: new Project({ ...project, completed: true }),
-                    })
-                  );
-
-                  navigation.goBack();
-                  Toast.show({
-                    type: "success",
-                    position: "bottom",
-                    text1: "Completed Project!",
-                    text2: project.name,
-                  });
-                }}
-                text="Complete Project"
-              />
-            )}
             <SubmitButton
               width={bottomButtonWidth}
               onPress={() => formik.handleSubmit()}
-              text={project ? "Save Changes" : "Add Project"}
+              text={deadline ? "Save Changes" : "Add Deadline"}
             />
           </View>
         </View>

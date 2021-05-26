@@ -19,7 +19,7 @@ import EditProductivitySettingScreen from "./Settings/EditSettingScreen";
 import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { fromEntity } from "../models/Project";
+import { ProjectFromEntity } from "../models/Project";
 import { hydrateProjects } from "../redux/actions/projects/actions";
 import {
   authStateChanged,
@@ -104,7 +104,6 @@ function ChooseScreens(settings: SageSettings) {
 }
 
 function StackScreens() {
-  // const projects = useAppSelector(getProjects);
   const settings = useAppSelector(getSettings);
   const dispatch = useAppDispatch();
 
@@ -113,7 +112,6 @@ function StackScreens() {
     []
   );
 
-  // Project listener
   useEffect(() => {
     if (settings.user) {
       console.log("SETTINGS LISTENER SUBSCRIBED");
@@ -137,20 +135,9 @@ function StackScreens() {
             querySnapshot && querySnapshot.empty
               ? []
               : querySnapshot.docs.map((doc) =>
-                  fromEntity(doc.data()).toEntity()
+                  ProjectFromEntity(doc.data()).toEntity()
                 );
           dispatch(hydrateProjects(storedData));
-          // let result = true;
-          // storedData.forEach((proj, index) => {
-          //   if (!proj.equals(projects[index])) result = false;
-          // });
-          // if (!result) {
-          //   console.log("DISPATCHING HYDRATION");
-          //   dispatch({
-          //     type: Actions.ProjectHydrate,
-          //     payload: storedData,
-          //   });
-          // }
         });
 
       return () => {
