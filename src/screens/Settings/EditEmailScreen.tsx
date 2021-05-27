@@ -1,20 +1,20 @@
-import React, { useContext } from "react";
+import auth from "@react-native-firebase/auth";
+import React from "react";
 import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import { SettingsContext } from "../../state/context";
 import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
 
 const EditEmailScreen = () => {
-  const { settings } = useContext(SettingsContext);
+  const user = auth().currentUser;
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>
       <View style={{ ...globalStyles.column, marginVertical: 15 }}>
         <Text style={textStyles.avatarName}>Current Email:</Text>
-        <Text style={textStyles.header}>{settings.user?.email}</Text>
+        <Text style={textStyles.header}>{user?.email}</Text>
       </View>
       <Formik
         initialValues={{
@@ -39,7 +39,7 @@ const EditEmailScreen = () => {
           return errors;
         }}
         onSubmit={(values) => {
-          settings.user
+          user
             ?.updateEmail(values.newEmail)
             .then(() => {
               navigation.goBack();
@@ -87,9 +87,9 @@ const EditEmailScreen = () => {
                   {formik.errors.confirmNewEmail}
                 </Text>
               )}
-            {!settings.user?.emailVerified && (
+            {!user?.emailVerified && (
               <SubmitButton
-                onPress={() => settings.user?.sendEmailVerification()}
+                onPress={() => user?.sendEmailVerification()}
                 text="Send verification email"
               />
             )}

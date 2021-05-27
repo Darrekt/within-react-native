@@ -17,7 +17,7 @@ const Card = ({
   children,
   style,
   elevation = 2,
-  opacity = 0.5,
+  opacity = 0.3,
   cornerRadius = 20,
   noShadow = false,
   onPress,
@@ -36,12 +36,12 @@ const Card = ({
         Platform.select({
           ios: {
             shadowOffset: { width: 1, height: elevation },
-            shadowRadius: elevation ? elevation + 2 : 0,
+            shadowRadius: elevation ? elevation + 7 : 0,
             shadowOpacity: opacity,
           },
           android: {
             elevation: elevation,
-            shadowRadius: elevation ? elevation + 2 : 0,
+            shadowRadius: elevation ? elevation + 7 : 0,
             shadowOpacity: opacity,
           },
         })),

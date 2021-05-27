@@ -1,5 +1,9 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { Action } from "../../redux/actions/actionTypes";
+import { useAppDispatch } from "../../redux/hooks";
+import { AppThunk } from "../../redux/store";
 
 const styles = StyleSheet.create({
   tileActions: {
@@ -13,20 +17,16 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props<A> = {
-  actions: { key: string; action: A; icon: JSX.Element }[];
-  dispatch: React.Dispatch<A>;
+type Props = {
+  actions: { key: string; action: any; icon: JSX.Element }[];
   active: boolean;
 };
 
-export default function CircleButtonGroup<A>({
-  actions,
-  dispatch,
-  active,
-}: Props<A>) {
+export default function CircleButtonGroup({ actions, active }: Props) {
+  const dispatch = useAppDispatch();
   return (
     <View style={styles.tileActions}>
-      {actions.map((action, i) => (
+      {actions.map((action) => (
         <TouchableOpacity
           key={action.key}
           style={styles.actionButtons}

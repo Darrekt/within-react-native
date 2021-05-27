@@ -1,21 +1,23 @@
-import React, { useContext } from "react";
+import auth from "@react-native-firebase/auth";
+import React from "react";
 import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { SettingsContext } from "../../state/context";
 import { firebase } from "@react-native-firebase/auth";
-import Toast from "react-native-toast-message";
 import SubmitButton from "../../components/util/SubmitButton";
+import { Actions } from "../../redux/actions/actionTypes";
+import { useAppDispatch } from "../../redux/hooks";
 
 const EditNameScreen = () => {
-  const { settings, dispatch } = useContext(SettingsContext);
+  const user = auth().currentUser;
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   return (
     <View style={globalStyles.centered}>
       <Formik
-        initialValues={{ newName: settings.user?.displayName ?? "" }}
+        initialValues={{ newName: user?.displayName ?? "" }}
         validate={(values) => {
           const errors: { newName?: string } = {};
 
@@ -25,10 +27,13 @@ const EditNameScreen = () => {
           return errors;
         }}
         onSubmit={async (values) => {
-          settings.user
+          user
             ?.updateProfile({ displayName: values.newName })
             .then(() => {
-              dispatch({ type: "auth", user: firebase.auth().currentUser });
+              dispatch({
+                type: Actions.SettingsAuth,
+                user: firebase.auth().currentUser,
+              });
               navigation.goBack();
             })
             .catch((error) => console.log(error));

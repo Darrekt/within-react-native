@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
-import { TodoTimerAction } from "../../hooks/useTodoRepository";
+import { StyleSheet, View, Text } from "react-native";
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
-import Todo from "../../models/Todo";
+import { TodoEntity } from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { Icon } from "react-native-elements";
+import { Actions, TodoAction } from "../../redux/actions/actionTypes";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
+import {
+  pauseFirebaseTodo,
+  startFirebaseTodo,
+  resetFirebaseTodo,
+} from "../../redux/actions/todos/thunks";
+import { AppThunk } from "../../redux/store";
 
 const styles = StyleSheet.create({
   positionedLogo: {
@@ -31,65 +39,65 @@ const styles = StyleSheet.create({
 });
 
 type DisplayProps = {
-  selectedTask?: Todo;
-  dispatch: React.Dispatch<TodoTimerAction>;
+  selectedTask?: TodoEntity;
 };
 
-const TodoTimerDisplay = ({ selectedTask, dispatch }: DisplayProps) => {
+const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
+  const dispatch = useAppDispatch();
   if (selectedTask) {
     return (
       <TodoTimer selectedTask={selectedTask} dispatch={dispatch}></TodoTimer>
     );
   } else {
-    return (
-      <View style={styles.positionedLogo}>
-        <Image
-          style={styles.img}
-          source={require("../../../assets/old_mascot/attention.png")}
-        />
-        <Text style={styles.modalHeaderText}>
-          Select a task to get started on!
-        </Text>
-      </View>
-    );
+    return <View style={styles.positionedLogo}></View>;
   }
 };
 
 type TimerProps = {
-  selectedTask: Todo;
-  dispatch: React.Dispatch<TodoTimerAction>;
+  selectedTask: TodoEntity;
+  dispatch: React.Dispatch<TodoAction>;
 };
 
 const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(selectedTask));
+  const settings = useAppSelector(getSettings);
 
-  // TODO: This implementation completes a task twice.
+  let secondsLeft;
+  if (selectedTask.finishingTime)
+    secondsLeft = getTimeLeft(selectedTask.finishingTime);
+  else if (selectedTask.remaining) secondsLeft = selectedTask.remaining;
+  else secondsLeft = settings.defaultInterval;
+
+  const [timeLeft, setTimeLeft] = useState(secondsLeft);
+
   useEffect(() => {
-    const timer = setTimeout(
-      () =>
-        timeLeft === 0
-          ? dispatch({ type: "finished", target: selectedTask.id })
-          : setTimeLeft(getTimeLeft(selectedTask)),
-      selectedTask.finishingTime ? 1000 : 0
-    );
+    if (!selectedTask.finishingTime && !selectedTask.remaining)
+      setTimeLeft(settings.defaultInterval);
+    if (timeLeft === 0 && selectedTask.finishingTime) {
+      dispatch({ type: Actions.TodoFinish, payload: selectedTask });
+      return;
+    }
+    // in one second, if the task is running, set the time left on the task.
+    const timer = setTimeout(() => {
+      if (selectedTask.finishingTime)
+        setTimeLeft(getTimeLeft(selectedTask.finishingTime));
+    }, 1000);
 
     return () => {
-      setTimeLeft(getTimeLeft(selectedTask));
       clearTimeout(timer);
     };
   });
 
   const timerActions: {
     key: string;
-    action: TodoTimerAction;
+    action: TodoAction | AppThunk;
     icon: JSX.Element;
   }[] = [
     {
       key: "timerControl",
-      action: {
-        type: selectedTask.finishingTime ? "pause" : "start",
-        target: selectedTask.id,
-      },
+      action: selectedTask.finishingTime
+        ? pauseFirebaseTodo(selectedTask)
+        : startFirebaseTodo(selectedTask),
+
       icon: (
         <Icon
           reverse
@@ -100,14 +108,14 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     },
     {
       key: "timerReset",
-      action: { type: "reset", target: selectedTask.id },
+      action: resetFirebaseTodo(selectedTask),
       icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
     },
   ];
   return (
     <View style={styles.positionedLogo}>
       <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
-      <CircleButtonGroup actions={timerActions} dispatch={dispatch} active />
+      <CircleButtonGroup actions={timerActions} active />
     </View>
   );
 };

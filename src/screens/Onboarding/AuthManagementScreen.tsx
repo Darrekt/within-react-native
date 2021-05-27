@@ -1,103 +1,68 @@
 import auth from "@react-native-firebase/auth";
-import React, { useContext } from "react";
-import { View, Text, Button, useWindowDimensions } from "react-native";
-import { Avatar, SocialIcon, Icon } from "react-native-elements";
+import React from "react";
+import { View, Text } from "react-native";
+import { Avatar, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
-import { SettingsContext } from "../../state/context";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 
 const AuthManagementScreen = () => {
-  const { settings } = useContext(SettingsContext);
+  const user = auth().currentUser;
   const navigation = useNavigation();
-  const width = useWindowDimensions().width * 0.7;
 
   return (
     <View
       style={{
         ...globalStyles.column,
-        justifyContent: "flex-start",
+        height: "100%",
+        justifyContent: "center",
         margin: 20,
       }}
     >
-      <View style={{ ...globalStyles.column, marginTop: 30 }}>
+      <View style={{ ...globalStyles.column, marginVertical: 30 }}>
         <Avatar
           rounded
           size="xlarge"
-          title={settings.user?.displayName?.charAt(0) ?? ""}
+          title={user?.displayName?.charAt(0) ?? ""}
           overlayContainerStyle={{ backgroundColor: "#73eeff" }}
         />
         <Text style={textStyles.avatarName}>
-          {settings.user?.displayName ?? "Add a display name!"}
+          {user?.displayName ?? "Add a display name!"}
         </Text>
       </View>
-      {settings.user ? (
-        <View style={globalStyles.column}>
-          <SettingsGroup
-            name=""
-            items={[
-              {
-                name: "Name",
-                subtitle: "Change your display name",
-                icon: <Icon name="person-outline" />,
-                action: () => navigation.navigate("EditNameScreen"),
-              },
-              {
-                name: "Password",
-                icon: <Icon name="key" type="feather" />,
-                subtitle: "Change your password",
-                action: () => navigation.navigate("EditPasswordScreen"),
-              },
-              {
-                name: "Email",
-                icon: <Icon name="email" type="fontisto" />,
-                subtitle: settings.user.emailVerified
-                  ? "Verified!"
-                  : "Not yet verified!",
-                action: () => navigation.navigate("EditEmailScreen"),
-              },
-            ]}
-          />
-          <SubmitButton
-            onPress={() => {
-              auth().signOut();
-            }}
-            text="Sign Out"
-          />
-        </View>
-      ) : (
-          <View style={globalStyles.column}>
-            <SocialIcon
-              title="Sign In With Google"
-              button
-              style={{ width: width }}
-              type="google"
-              onPress={() => { }}
-            />
-            <SocialIcon
-              title="Sign In With Facebook"
-              button
-              style={{ width: width }}
-              type="facebook"
-              onPress={() => { }}
-            />
-            <SocialIcon
-              title="Sign In With Twitter"
-              button
-              style={{ width: width }}
-              type="twitter"
-              onPress={() => { }}
-            />
-            <SubmitButton
-              text="Sign in with Email"
-              onPress={() => {
-                navigation.navigate("EmailSignInScreen");
-              }}
-              width={width}
-            />
-          </View>
-        )}
+      <View style={globalStyles.column}>
+        <SettingsGroup
+          items={[
+            {
+              name: "Name",
+              subtitle: "Change your display name",
+              icon: <Icon name="person-outline" />,
+              action: () => navigation.navigate("EditNameScreen"),
+            },
+            {
+              name: "Password",
+              icon: <Icon name="key" type="feather" />,
+              subtitle: "Change your password",
+              action: () => navigation.navigate("EditPasswordScreen"),
+            },
+            {
+              name: "Email",
+              icon: <Icon name="email" type="fontisto" />,
+              subtitle: user?.emailVerified
+                ? "Verified!"
+                : "Not yet verified!",
+              action: () => navigation.navigate("EditEmailScreen"),
+            },
+          ]}
+        />
+        <SubmitButton
+          onPress={() => {
+            auth().signOut();
+          }}
+          text="Sign Out"
+        />
+      </View>
     </View>
   );
 };

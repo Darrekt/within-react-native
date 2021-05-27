@@ -1,17 +1,5 @@
-import Todo from "../models/Todo";
-
-export function getTimeLeft(todo: Todo) {
-  // FIXME: Have a global time setting instead of 25:00
-  if (todo?.remaining) {
-    return todo.remaining;
-  } else if (todo?.finishingTime) {
-    const now = new Date();
-    return Math.max(
-      0,
-      Math.floor((todo.finishingTime.valueOf() - now.valueOf()) / 1000)
-    );
-  } else return 25 * 60;
-}
+export const getTimeLeft = (finishingTime: number) =>
+  Math.max(0, Math.floor((finishingTime - new Date().getTime()) / 1000));
 
 export function printTimeLeft(secondsLeft: number) {
   const hours = Math.floor(secondsLeft / 3600);

@@ -1,13 +1,15 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { SettingsContext } from "../../state/context";
 import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
 import { printTimeLeft } from "../../util/timer";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
+import { changeWorkParams } from "../../redux/actions/settings/thunks";
 
 const styles = StyleSheet.create({
   headerStyle: {
@@ -38,7 +40,8 @@ const validateProjects = (setVal?: number) => {
 };
 
 const EditProductivitySettingScreen = () => {
-  const { settings, dispatch } = useContext(SettingsContext);
+  const settings = useAppSelector(getSettings);
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
   return (
@@ -56,7 +59,7 @@ const EditProductivitySettingScreen = () => {
             defaultInterval?: string;
           } = {};
 
-        //   TODO: Ugly code, maybe change to using Yup?
+          //   TODO: Ugly code, maybe change to using Yup?
           if (validateProjects(values.maxProjects))
             errors.maxProjects = validateProjects(values.maxProjects);
           if (validateProjects(values.maxTasks))
@@ -64,9 +67,13 @@ const EditProductivitySettingScreen = () => {
           return errors;
         }}
         onSubmit={(values) => {
-          dispatch({ type: "maxProjects", value: values.maxProjects });
-          dispatch({ type: "maxTasks", value: values.maxTasks });
-          dispatch({ type: "defaultInterval", value: values.defaultInterval });
+          dispatch(
+            changeWorkParams(
+              values.maxProjects,
+              values.maxTasks,
+              values.defaultInterval
+            )
+          );
           navigation.goBack();
         }}
       >

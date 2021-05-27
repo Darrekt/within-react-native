@@ -1,47 +1,122 @@
 import { v4 as uuidv4 } from "uuid";
 import { List } from "immutable";
-import Todo from "./Todo";
+import Deadline, { DeadlineEntity, DeadlineFromEntity } from "./Deadline";
+import Todo, { TodoFromEntity, TodoEntity } from "./Todo";
+
+export const UNCATEGORISED_TODO_PROJID = "uncategorised";
+
+export interface ProjectEntity {
+  id: string;
+  emoji: string;
+  name: string;
+  notes: string;
+  completed: boolean;
+  deadlines: DeadlineEntity[];
+  todos: TodoEntity[];
+}
 
 export default class Project {
   id: string = uuidv4();
   emoji: string = "✏️";
-  name: string = "";
+  name: string;
   notes: string = "";
   completed: boolean = false;
-  todos: List<Todo> = List([]);
-  due?: Date;
+  deadlines: Deadline[] = [];
+  todos: Todo[] = [];
 
-  constructor(data: Partial<Project>) {
+  constructor(data: Pick<Project, "name"> & Partial<Project>) {
+    if (!data.id) delete data.id;
+    if (!data.emoji) delete data.emoji;
     Object.assign(this, data);
+    this.name = data.name;
   }
 
-  // WARNING: Make sure you update toEntity if you change the shape of the Project object!
-  toEntity() {
+  // Returns the first deadline that has not passed, or the most recently passed one.
+  // If no deadlines exist, returns undefined.
+  closestDeadline() {
+    return this.deadlines.find(
+      (deadline) => deadline.due.getTime() < new Date().getTime()
+    );
+  }
+
+  toEntity(): ProjectEntity {
     return {
       id: this.id,
       emoji: this.emoji,
       name: this.name,
       notes: this.notes,
       completed: this.completed,
-      due: this.due?.getTime(),
+      todos: this.todos.map((todo) => todo.toEntity()),
+      deadlines: this.deadlines.map((ddl) => ddl.toEntity()),
     };
   }
 
-  toFirestore() {
-    return {
-      id: this.id,
-      emoji: this.emoji,
-      name: this.name,
-      notes: this.notes,
-      completed: this.completed,
-      due: this.due?.getTime(),
-    };
+  equals(other: Project | undefined) {
+    if (this === other) return true;
+    if (other === undefined) return false;
+    if (this.deadlines.length !== other.deadlines.length) return false;
+    if (this.todos.length !== other.todos.length) return false;
+
+    const projA = this.toEntity();
+    const projB = other.toEntity();
+    const projKeys = Object.keys(projA).filter(
+      (key) => key !== "todos" && key !== "deadlines"
+    ) as (keyof Omit<typeof projA, "todos" | "deadlines">)[];
+    const objKeys = Object.keys(projB).filter(
+      (key) => key !== "todos" && key !== "deadlines"
+    ) as (keyof Omit<typeof projB, "todos" | "deadlines">)[];
+
+    // Value equality checks
+    let result = true;
+    projKeys.forEach((key) => {
+      if (!objKeys.includes(key)) result = false;
+      if (projA[key] !== projB[key]) result = false;
+    });
+
+    this.deadlines.forEach((ddl, index) => {
+      if (!ddl.equals(other.deadlines[index])) result = false;
+    });
+
+    this.todos.forEach((todo, index) => {
+      if (!todo.equals(other.todos[index])) result = false;
+    });
+
+    return result;
   }
 }
 
-export function fromFirestore(doc: any) {
+export function ProjectFromEntity(doc: any) {
   return new Project({
     ...doc,
-    due: doc.due ? new Date(doc.due) : undefined,
+    todos: List(doc.todos)
+      .map((todoStr) => TodoFromEntity(todoStr))
+      .toArray(),
+    deadlines: List(doc.deadlines)
+      .map((deadlineStr) => DeadlineFromEntity(deadlineStr))
+      .toArray(),
   });
+}
+
+export function findTodoDeadline(
+  project: Project,
+  todo: Todo
+): [Deadline, number] {
+  const ddlID = todo.deadline ?? UNCATEGORISED_TODO_PROJID;
+  return [
+    // TODO: Back this up with a test
+    project.deadlines.find((ddl) => ddl.id == ddlID) as Deadline,
+    project.deadlines.findIndex((ddl) => ddl.id == ddlID),
+  ];
+}
+
+export function compareByDeadline(projA: ProjectEntity, projB: ProjectEntity) {
+  // TODO: Implement sorting comparator
+  const ddlA = ProjectFromEntity(projA).closestDeadline()?.due;
+  const ddlB = ProjectFromEntity(projB).closestDeadline()?.due;
+
+  if (ddlA === undefined && ddlB === undefined) return 0;
+  else if (ddlA === undefined && ddlB !== undefined) return 1;
+  else if (ddlB === undefined && ddlA !== undefined) return 0;
+  // else if (ddlA < ddlB) return -1;
+  else return 1;
 }

@@ -1,11 +1,18 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Icon, ListItem, withBadge } from "react-native-elements";
-import Todo from "../../models/Todo";
-import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
+import { TodoEntity } from "../../models/Todo";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
-import { TodoRepoAction } from "../../hooks/useTodoRepository";
 import { useNavigation } from "@react-navigation/core";
+import { TodoAction } from "../../redux/actions/actionTypes";
+import { useAppDispatch } from "../../redux/hooks";
+import { selectTodo } from "../../redux/actions/todos/actions";
+import {
+  completeFirebaseTodo,
+  deleteFirebaseTodo,
+} from "../../redux/actions/todos/thunks";
+import { AppThunk } from "../../redux/store";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -39,33 +46,31 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  todo: Todo;
+  todo: TodoEntity;
+  selected: string;
   running: boolean;
-  dispatch: React.Dispatch<TodoRepoAction>;
 };
 
-const TodoItemTile = ({ todo, running, dispatch }: Props) => {
+const TodoItemTile = ({ todo, selected, running }: Props) => {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   let itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
     : styles.tileTitleTextStyle;
 
   itemTitleTextStyle =
-    !todo.selected && running
+    todo.id !== selected && running
       ? { ...itemTitleTextStyle, ...styles.unselectedTileText }
       : itemTitleTextStyle;
 
   const buttons: {
     key: string;
-    action: TodoRepoAction;
+    action: TodoAction | AppThunk;
     icon: JSX.Element;
   }[] = [
     {
       key: todo.id + "complete",
-      action: {
-        type: "completed",
-        target: todo.id,
-      } as TodoRepoAction,
+      action: completeFirebaseTodo(todo),
       icon: todo.completed ? (
         <Icon name="ios-refresh" type="ionicon" color="black" />
       ) : (
@@ -79,29 +84,11 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
     },
     {
       key: todo.id + "delete",
-      action: {
-        type: "delete",
-        payload: todo,
-      },
+      action: deleteFirebaseTodo(todo),
       icon: (
         <Entypo key={todo.id + "delete"} name="cross" size={20} color="black" />
       ),
     },
-    // {
-    //   key: todo.id + "rearrange",
-    //   action: {
-    //     type: "completed",
-    //     target: todo.id,
-    //   },
-    //   icon: (
-    //     <FontAwesome
-    //       key={todo.id + "sort"}
-    //       name="sort"
-    //       size={20}
-    //       color="black"
-    //     />
-    //   ),
-    // },
   ];
 
   const BadgedText = withBadge(todo.laps, {
@@ -118,15 +105,13 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
   return (
     <ListItem
       topDivider
-      containerStyle={todo.selected ? styles.selectedTileStyle : undefined}
+      containerStyle={
+        todo.id == selected ? styles.selectedTileStyle : undefined
+      }
     >
       <TouchableOpacity
         onPress={() => {
-          if (!running)
-            dispatch({
-              type: "selected",
-              target: todo.id,
-            });
+          if (!running) dispatch(selectTodo(todo));
         }}
         onLongPress={() => {
           navigation.navigate("EditTodoScreen", { id: todo.id });
@@ -138,9 +123,8 @@ const TodoItemTile = ({ todo, running, dispatch }: Props) => {
             {todo.name}
           </ListItem.Title>
           <CircleButtonGroup
-            dispatch={dispatch}
             actions={buttons}
-            active={!running || todo.selected}
+            active={!running || todo.id == selected}
           />
         </ListItem.Content>
       </TouchableOpacity>

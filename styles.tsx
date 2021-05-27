@@ -20,7 +20,6 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "space-around",
   },
   column: {
-    flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-evenly",
     alignSelf: "stretch",
@@ -29,6 +28,12 @@ export const globalStyles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  form: {
+    height: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "stretch",
   },
   inputBox: {
     margin: 8,
@@ -45,18 +50,23 @@ export const globalStyles = StyleSheet.create({
     height: 45,
     padding: 6,
     borderColor: "#56DEF1",
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
   },
   submitButton: {
     height: 40,
     width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: 5,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#fff",
     backgroundColor: "#01D1EE",
+  },
+  bottomButtons: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    marginBottom: 20,
   },
 });
 

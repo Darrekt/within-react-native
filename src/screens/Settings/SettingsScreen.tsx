@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useContext } from "react";
+import React from "react";
 import { View, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import { globalStyles } from "../../../styles";
@@ -7,10 +7,17 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { SettingsContext } from "../../state/context";
+import { sanitiseFirebaseProjects } from "../../redux/actions/projects/thunks";
+import {
+  resetSettings,
+  toggleOnboarding,
+} from "../../redux/actions/settings/thunks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getSettings } from "../../redux/selectors";
 
 const SettingsScreen = () => {
-  const { settings, dispatch } = useContext(SettingsContext);
+  const settings = useAppSelector(getSettings);
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
   const generalSettings = [
@@ -18,13 +25,13 @@ const SettingsScreen = () => {
       name: "Onboarding",
       subtitle: "Reset your onboarding status",
       icon: <Icon name="handshake-o" type="font-awesome" />,
-      action: () => dispatch({ type: "onboarding" }),
+      action: () => dispatch(toggleOnboarding()),
     },
     {
       name: "Theme",
       subtitle: "Change or customise your theme",
       icon: <Icon name="palette" type="materialIcon" />,
-      action: () => dispatch({ type: "theme" }),
+      action: () => dispatch(toggleOnboarding()),
     },
   ];
 
@@ -56,13 +63,19 @@ const SettingsScreen = () => {
         marginHorizontal: 5,
       }}
     >
-      <AuthStateDisplay settings={settings} dispatch={dispatch} />
+      <AuthStateDisplay />
       <HeadingDropDown header="Productivity">
         <SettingsGroup items={productivitySettings} />
       </HeadingDropDown>
       <HeadingDropDown header="General">
         <SettingsGroup items={generalSettings} />
       </HeadingDropDown>
+      <SubmitButton
+        text="Sanitise Projects"
+        onPress={() => {
+          dispatch(sanitiseFirebaseProjects());
+        }}
+      />
       <SubmitButton
         text="Reset Settings"
         onPress={() => {
@@ -77,7 +90,7 @@ const SettingsScreen = () => {
               },
               {
                 text: "OK",
-                onPress: () => dispatch({ type: "reset", value: settings }),
+                onPress: () => dispatch(resetSettings()),
               },
             ]
           );
