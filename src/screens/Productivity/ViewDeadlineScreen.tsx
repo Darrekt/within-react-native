@@ -10,26 +10,22 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { findDeadline, getProjects } from "../../redux/selectors";
+import { findDeadline } from "../../redux/selectors";
 import {
   addFirebaseDeadline,
   updateFirebaseDeadline,
 } from "../../redux/actions/deadlines/thunks";
 import Deadline, { DeadlineFromEntity } from "../../models/Deadline";
-
-type RootStackParamList = {
-  ViewProjScreen: { id: string };
-  EditTodoScreen: { id: string };
-};
+import { RootStackParamList, Screens } from "../navConstants";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
-  "ViewProjScreen"
+  Screens.ViewDeadline
 >;
 
 type ViewProjectScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "ViewProjScreen"
+  Screens.ViewDeadline
 >;
 
 type Props = {
@@ -51,8 +47,7 @@ const styles = StyleSheet.create({
 });
 
 const ViewDeadlineScreen = ({ route, navigation }: Props) => {
-  const projects = useAppSelector(getProjects);
-  const deadline = useAppSelector(findDeadline(route.params?.id));
+  const deadline = useAppSelector(findDeadline(route.params.deadlineID));
   const dispatch = useAppDispatch();
 
   const initialValues = {
@@ -87,7 +82,7 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
                 )
               : addFirebaseDeadline(
                   new Deadline({
-                    project: route.params.id,
+                    project: route.params.projID,
                     name: values.name,
                     due: values.due,
                   }).toEntity()

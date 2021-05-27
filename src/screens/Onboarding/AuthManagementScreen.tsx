@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { globalStyles, textStyles } from "../../../styles";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
+import { Screens } from "../navConstants";
 
 const AuthManagementScreen = () => {
   const user = auth().currentUser;
@@ -38,21 +39,19 @@ const AuthManagementScreen = () => {
               name: "Name",
               subtitle: "Change your display name",
               icon: <Icon name="person-outline" />,
-              action: () => navigation.navigate("EditNameScreen"),
+              action: () => navigation.navigate(Screens.ChangeDisplayName),
             },
             {
               name: "Password",
               icon: <Icon name="key" type="feather" />,
               subtitle: "Change your password",
-              action: () => navigation.navigate("EditPasswordScreen"),
+              action: () => navigation.navigate(Screens.ChangePassword),
             },
             {
               name: "Email",
               icon: <Icon name="email" type="fontisto" />,
-              subtitle: user?.emailVerified
-                ? "Verified!"
-                : "Not yet verified!",
-              action: () => navigation.navigate("EditEmailScreen"),
+              subtitle: user?.emailVerified ? "Verified!" : "Not yet verified!",
+              action: () => navigation.navigate(Screens.ChangeEmail),
             },
           ]}
         />

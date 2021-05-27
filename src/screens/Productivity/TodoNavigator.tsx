@@ -6,17 +6,18 @@ import TodoScreen from "./TodoScreen";
 import ViewProjectScreen from "./ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
 import ViewDeadlineScreen from "./ViewDeadlineScreen";
+import { Screens } from "../navConstants";
 
 const TodoNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="AppHome"
+        name={Screens.TodoHome}
         component={TodoScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="ViewProjScreen"
+        name={Screens.ViewProject}
         component={ViewProjectScreen}
         options={{
           title: "View Project",
@@ -24,7 +25,7 @@ const TodoNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="AddProjScreen"
+        name={Screens.AddProject}
         component={ViewProjectScreen}
         options={{
           title: "Add a Project",
@@ -32,7 +33,7 @@ const TodoNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="ViewDeadlineScreen"
+        name={Screens.ViewDeadline}
         component={ViewDeadlineScreen}
         options={{
           title: "View Deadline",
@@ -40,7 +41,7 @@ const TodoNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="AddDeadlineScreen"
+        name={Screens.AddDeadline}
         component={ViewDeadlineScreen}
         options={{
           title: "Add Deadline",
@@ -48,7 +49,7 @@ const TodoNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="EditTodoScreen"
+        name={Screens.ViewTodo}
         component={ViewTodoScreen}
         options={{
           title: "Edit task",
@@ -56,7 +57,7 @@ const TodoNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="AddTodoScreen"
+        name={Screens.AddTodo}
         component={ViewTodoScreen}
         options={{
           title: "Add task",

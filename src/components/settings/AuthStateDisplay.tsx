@@ -11,6 +11,7 @@ import {
 import { Avatar } from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
 import { globalStyles } from "../../../styles";
+import { Screens } from "../../screens/navConstants";
 
 const styles = StyleSheet.create({
   linearGradient: {
@@ -38,7 +39,9 @@ const AuthStateDisplay = () => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("AuthMgmtScreen")}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate(Screens.AuthManagement)}
+    >
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0.5 }}

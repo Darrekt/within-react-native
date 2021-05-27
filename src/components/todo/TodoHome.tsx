@@ -8,6 +8,8 @@ import HeaderButton from "../util/HeaderButton";
 import { useAppSelector } from "../../redux/hooks";
 import { getProjects } from "../../redux/selectors";
 import { List } from "immutable";
+import { useNavigation } from "@react-navigation/core";
+import { Screens } from "../../screens/navConstants";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -26,8 +28,15 @@ const styles = StyleSheet.create({
 // TODO: Make height and alignments responsive; all heights are hard coded currently.
 const HomeDisplay = () => {
   const projects = useAppSelector(getProjects);
+  const navigation = useNavigation();
   const headerButton = (
-    <HeaderButton route="AddProjScreen" iconName="plus" iconType="entypo" />
+    <HeaderButton
+      onPress={() => {
+        navigation.navigate(Screens.AddProject);
+      }}
+      iconName="plus"
+      iconType="entypo"
+    />
   );
 
   return (

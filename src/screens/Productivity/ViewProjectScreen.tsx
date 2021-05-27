@@ -22,20 +22,16 @@ import {
   deleteFirebaseProject,
   updateFirebaseProject,
 } from "../../redux/actions/projects/thunks";
-
-type RootStackParamList = {
-  ViewProjScreen: { id: string };
-  EditTodoScreen: { id: string };
-};
+import { RootStackParamList, Screens } from "../navConstants";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
-  "ViewProjScreen"
+  Screens.ViewProject
 >;
 
 type ViewProjectScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "ViewProjScreen"
+  Screens.ViewProject
 >;
 
 type Props = {
@@ -57,13 +53,9 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
   const projects = useAppSelector(getProjects);
   const dispatch = useAppDispatch();
 
-  const project = route.params?.id
-    ? projects.find((proj) => proj.id === route.params.id)
+  const project = route.params.projID
+    ? projects.find((proj) => proj.id === route.params.projID)
     : undefined;
-
-  const addDeadlineBtn = (
-    <HeaderButton route="AddDeadlineScreen" iconName="plus" iconType="entypo" />
-  );
 
   return (
     <Formik
@@ -160,8 +152,23 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
             {project && <ProjectProgressGraph />}
           </View>
           {project && (
-            <HeadingDropDown header="Deadlines" dropdown={addDeadlineBtn}>
-              <DeadlineDisplay></DeadlineDisplay>
+            <HeadingDropDown
+              header="Deadlines"
+              dropdown={
+                <HeaderButton
+                  onPress={() =>
+                    navigation.navigate(Screens.AddDeadline, {
+                      projID: project.id,
+                    })
+                  }
+                  iconName="plus"
+                  iconType="entypo"
+                />
+              }
+            >
+              {project.deadlines.map((ddl) => (
+                <DeadlineDisplay key={ddl.id} deadline={ddl} />
+              ))}
             </HeadingDropDown>
           )}
           <View style={{ ...globalStyles.bottomButtons, alignSelf: "auto" }}>

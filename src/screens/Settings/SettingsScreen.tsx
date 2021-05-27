@@ -14,6 +14,7 @@ import {
 } from "../../redux/actions/settings/thunks";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
+import { Screens } from "../navConstants";
 
 const SettingsScreen = () => {
   const settings = useAppSelector(getSettings);
@@ -40,17 +41,17 @@ const SettingsScreen = () => {
     {
       name: "Maximum Projects",
       icon: <Icon name="clipboard" type="feather" />,
-      action: () => navigation.navigate("EditProductivitySettingScreen"),
+      action: () => navigation.navigate(Screens.ChangeProductivitySettings),
     },
     {
       name: "Maximum tasks",
       icon: <Icon name="tasks" type="font-awesome-5" />,
-      action: () => navigation.navigate("EditProductivitySettingScreen"),
+      action: () => navigation.navigate(Screens.ChangeProductivitySettings),
     },
     {
       name: "Timer duration",
       icon: <Icon name="timer" />,
-      action: () => navigation.navigate("EditProductivitySettingScreen"),
+      action: () => navigation.navigate(Screens.ChangeProductivitySettings),
     },
   ];
 

@@ -13,6 +13,7 @@ import {
   deleteFirebaseTodo,
 } from "../../redux/actions/todos/thunks";
 import { AppThunk } from "../../redux/store";
+import { Screens } from "../../screens/navConstants";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -114,7 +115,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
           if (!running) dispatch(selectTodo(todo));
         }}
         onLongPress={() => {
-          navigation.navigate("EditTodoScreen", { id: todo.id });
+          navigation.navigate(Screens.ViewTodo, { id: todo.id });
         }}
       >
         <ListItem.Content style={styles.tileRow}>

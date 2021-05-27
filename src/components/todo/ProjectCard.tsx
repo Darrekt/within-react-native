@@ -2,13 +2,11 @@ import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
-import Project, {
-  ProjectEntity,
-  ProjectFromEntity,
-} from "../../models/Project";
+import { ProjectEntity, ProjectFromEntity } from "../../models/Project";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { List } from "immutable";
+import { Screens } from "../../screens/navConstants";
 
 const styles = StyleSheet.create({
   blackFont: {
@@ -35,7 +33,9 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
         paddingVertical: 10,
         paddingHorizontal: 25,
       }}
-      onPress={() => navigation.navigate("ViewProjScreen", { id: project.id })}
+      onPress={() =>
+        navigation.navigate(Screens.ViewProject, { projID: project.id })
+      }
     >
       <View style={globalStyles.column}>
         <View

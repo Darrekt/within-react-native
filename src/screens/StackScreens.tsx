@@ -25,6 +25,7 @@ import {
   authStateChanged,
   hydrateSettings,
 } from "../redux/actions/settings/actions";
+import { Screens } from "./navConstants";
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,7 @@ function ChooseScreens(settings: SageSettings) {
   } else if (!settings.user) {
     return (
       <Stack.Screen
-        name="SignInScreen"
+        name={Screens.SignIn}
         component={SignInScreen}
         options={{
           headerShown: false,
@@ -46,12 +47,12 @@ function ChooseScreens(settings: SageSettings) {
     return (
       <>
         <Stack.Screen
-          name="AppHome"
+          name={Screens.Home}
           component={TabNavigationBar}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="SettingsScreen"
+          name={Screens.Settings}
           component={SettingsScreen}
           options={{
             title: "Settings",
@@ -59,7 +60,7 @@ function ChooseScreens(settings: SageSettings) {
           }}
         />
         <Stack.Screen
-          name="AuthMgmtScreen"
+          name={Screens.AuthManagement}
           component={AuthManagementScreen}
           options={{
             title: "Account Management",
@@ -67,7 +68,7 @@ function ChooseScreens(settings: SageSettings) {
           }}
         />
         <Stack.Screen
-          name="EditNameScreen"
+          name={Screens.ChangeDisplayName}
           component={EditNameScreen}
           options={{
             title: "Change display name",
@@ -75,7 +76,7 @@ function ChooseScreens(settings: SageSettings) {
           }}
         />
         <Stack.Screen
-          name="EditPasswordScreen"
+          name={Screens.ChangePassword}
           component={EditPasswordScreen}
           options={{
             title: "Change Password",
@@ -83,7 +84,7 @@ function ChooseScreens(settings: SageSettings) {
           }}
         />
         <Stack.Screen
-          name="EditEmailScreen"
+          name={Screens.ChangeEmail}
           component={EditEmailScreen}
           options={{
             title: "Change email settings",
@@ -91,7 +92,7 @@ function ChooseScreens(settings: SageSettings) {
           }}
         />
         <Stack.Screen
-          name="EditProductivitySettingScreen"
+          name={Screens.ChangeProductivitySettings}
           component={EditProductivitySettingScreen}
           options={{
             title: "Change Productivity Settings",
