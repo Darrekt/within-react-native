@@ -1,30 +1,43 @@
 import firestore from "@react-native-firebase/firestore";
 import { DeadlineEntity } from "../../../models/Deadline";
+import { TodoEntity } from "../../../models/Todo";
 import deadlineReducer from "../../reducers/deadlines";
+import todoReducer from "../../reducers/todos";
 import { findProject } from "../../selectors";
 import { AppThunk, RootState } from "../../store";
 import * as ActionCreators from "./actions";
 
-export const writeDeadlinesInProject =
-  (userID: string) => (projID: string) => (deadlines: DeadlineEntity[]) =>
+export const writeDeadlineChanges =
+  (userID: string) =>
+  (projID: string) =>
+  (deadlines: DeadlineEntity[], todos: TodoEntity[]) =>
     firestore()
       .collection("Users")
       .doc(userID)
       .collection("projects")
       .doc(projID)
-      .set({ deadlines }, { mergeFields: ["deadlines"] });
+      .set({ deadlines, todos }, { mergeFields: ["deadlines", "todos"] });
 
 const genDeadlineWriteFunc = (
   state: RootState,
   deadline: DeadlineEntity
 ):
-  | [DeadlineEntity[], (todos: DeadlineEntity[]) => Promise<void>]
-  | [DeadlineEntity[], undefined] => {
+  | [
+      DeadlineEntity[],
+      TodoEntity[],
+      (deadlines: DeadlineEntity[], todos: TodoEntity[]) => Promise<void>
+    ]
+  | [DeadlineEntity[], TodoEntity[], undefined] => {
   // try {
   const user = state.settings.user;
-  const deadlines = findProject(state.projects, deadline.project).deadlines;
-  if (user) return [deadlines, writeDeadlinesInProject(user)(deadline.project)];
-  else return [deadlines, undefined];
+  const project = findProject(state.projects, deadline.project);
+  if (user)
+    return [
+      project.deadlines,
+      project.todos,
+      writeDeadlineChanges(user)(deadline.project),
+    ];
+  else return [project.deadlines, project.todos, undefined];
   // } catch (e) {
   //   console.log(e.message);
   // }
@@ -34,46 +47,62 @@ export const addFirebaseDeadline =
   (deadline: DeadlineEntity): AppThunk =>
   async (dispatch, getState) => {
     const action = ActionCreators.addDeadline(deadline);
-    const [deadlines, writeDeadlines] = genDeadlineWriteFunc(
+    const [deadlines, todos, writeDeadlines] = genDeadlineWriteFunc(
       getState(),
       deadline
     );
-    if (writeDeadlines) writeDeadlines(deadlineReducer(deadlines, action));
+    if (writeDeadlines)
+      writeDeadlines(
+        deadlineReducer(deadlines, action),
+        todoReducer(todos, action)
+      );
     else dispatch(action);
   };
 
 export const deleteFirebaseDeadline =
   (deadline: DeadlineEntity): AppThunk =>
   async (dispatch, getState) => {
-    const action = ActionCreators.addDeadline(deadline);
-    const [deadlines, writeDeadlines] = genDeadlineWriteFunc(
+    const action = ActionCreators.deleteDeadline(deadline);
+    const [deadlines, todos, writeDeadlines] = genDeadlineWriteFunc(
       getState(),
       deadline
     );
-    if (writeDeadlines) writeDeadlines(deadlineReducer(deadlines, action));
+    if (writeDeadlines)
+      writeDeadlines(
+        deadlineReducer(deadlines, action),
+        todoReducer(todos, action)
+      );
     else dispatch(action);
   };
 
 export const updateFirebaseDeadline =
   (deadline: DeadlineEntity): AppThunk =>
   async (dispatch, getState) => {
-    const action = ActionCreators.addDeadline(deadline);
-    const [deadlines, writeDeadlines] = genDeadlineWriteFunc(
+    const action = ActionCreators.updateDeadline(deadline);
+    const [deadlines, todos, writeDeadlines] = genDeadlineWriteFunc(
       getState(),
       deadline
     );
-    if (writeDeadlines) writeDeadlines(deadlineReducer(deadlines, action));
+    if (writeDeadlines)
+      writeDeadlines(
+        deadlineReducer(deadlines, action),
+        todoReducer(todos, action)
+      );
     else dispatch(action);
   };
 
 export const completeFirebaseDeadline =
   (deadline: DeadlineEntity): AppThunk =>
   async (dispatch, getState) => {
-    const action = ActionCreators.addDeadline(deadline);
-    const [deadlines, writeDeadlines] = genDeadlineWriteFunc(
+    const action = ActionCreators.completeDeadline(deadline);
+    const [deadlines, todos, writeDeadlines] = genDeadlineWriteFunc(
       getState(),
       deadline
     );
-    if (writeDeadlines) writeDeadlines(deadlineReducer(deadlines, action));
+    if (writeDeadlines)
+      writeDeadlines(
+        deadlineReducer(deadlines, action),
+        todoReducer(todos, action)
+      );
     else dispatch(action);
   };

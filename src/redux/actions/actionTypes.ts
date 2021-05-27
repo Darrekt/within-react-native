@@ -33,7 +33,11 @@ export enum Actions {
   SettingsChangeWorkParams = "SETTINGS_CHANGE_PARAMS",
 }
 
-export type Action = ProjectAction | TodoAction | SettingsAction;
+export type Action =
+  | ProjectAction
+  | DeadlineAction
+  | TodoAction
+  | SettingsAction;
 
 export type ProjectAction =
   | {

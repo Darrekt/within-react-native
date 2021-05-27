@@ -1,7 +1,7 @@
 import { List } from "immutable";
 import { TodoEntity } from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
-import { Actions, TodoAction } from "../actions/actionTypes";
+import { Actions, DeadlineAction, TodoAction } from "../actions/actionTypes";
 import { findTodoInList } from "../selectors";
 
 /**
@@ -28,7 +28,10 @@ that all todos in this instance of the reducer call will have the associated pro
  * @param action 
  * @returns 
  */
-const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
+const todoReducer = (
+  state: TodoEntity[],
+  action: DeadlineAction | TodoAction
+): TodoEntity[] => {
   let target: TodoEntity;
   switch (action.type) {
     case Actions.TodoAdd:
@@ -37,7 +40,6 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
       return state.filter((todo) => todo.id !== action.payload.id);
     case Actions.TodoUpdate:
       return setTodo(state, action.payload);
-
     case Actions.TodoToggleComplete:
       target = findTodoInList(state, action.payload.id);
       return setTodo(state, {
@@ -45,6 +47,7 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
         completed: !target.completed,
       });
 
+    // Timer Actions
     case Actions.TodoStart:
       let finishAt;
       finishAt = new Date(
@@ -55,15 +58,11 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
             : action.interval) *
             1000
       );
-      console.log("action interval: ", action.interval);
-      console.log("action payload: ", action.payload);
-      console.log("started with: ", getTimeLeft(finishAt.getTime()));
       return setTodo(state, {
         ...action.payload,
         remaining: undefined,
         finishingTime: finishAt.getTime(),
       });
-
     case Actions.TodoReset:
       return setTodo(state, {
         ...action.payload,
@@ -83,8 +82,29 @@ const todoReducer = (state: TodoEntity[], action: TodoAction): TodoEntity[] => {
         finishingTime: undefined,
       });
 
+    // Deadline Actions
+    case Actions.DeadlineAdd:
+      return state.map((todo) => ({
+        ...todo,
+        deadline: action.payload.todos.find((item) => item === todo.id)
+          ? action.payload.id
+          : undefined,
+      }));
+    case Actions.DeadlineRemove:
+      return state.map((todo) => ({
+        ...todo,
+        deadline: action.payload.todos.find((item) => item === todo.id)
+          ? undefined
+          : todo.deadline,
+      }));
+    case Actions.DeadlineComplete:
+      return state.map((todo) => ({
+        ...todo,
+        completed: action.payload.todos.find((item) => item === todo.id)
+          ? true
+          : false,
+      }));
     default:
-      console.log(`Todos unchanged: ${action.type}`);
       return state;
   }
 };

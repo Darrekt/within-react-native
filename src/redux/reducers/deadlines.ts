@@ -13,15 +13,19 @@ const deadlineReducer = (
       return state.filter((item) => item.id !== action.payload.id);
     case Actions.DeadlineUpdate:
       return List(state)
-        .update(
+        .set(
           state.findIndex((item) => item.id === action.payload.id),
-          (proj) => action.payload
+          action.payload
         )
         .toArray();
-    // case Actions.DeadlineComplete:
-    //     return
+    case Actions.DeadlineComplete:
+      return List(state)
+        .update(
+          state.findIndex((item) => item.id === action.payload.id),
+          (ddl) => ({ ...ddl, completed: !ddl.completed })
+        )
+        .toArray();
     default:
-      console.log(`Deadlines unchanged: ${action.type}`);
       return state;
   }
 };

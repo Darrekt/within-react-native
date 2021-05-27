@@ -30,29 +30,39 @@ const projectReducer = (
   state: ProjectEntity[] = [defaultProject],
   action: Action
 ): ProjectEntity[] => {
-  let currProj: ProjectEntity;
   switch (action.type) {
+    // Project Actions
     case Actions.ProjectHydrate:
       return action.payload;
-
     case Actions.ProjectUpdate:
       return findAndUpdateProject(
         state,
         action.payload.id,
         (proj) => action.payload
       );
-
     case Actions.ProjectAdd:
       return List(state).push(action.payload).sort(compareByDeadline).toArray();
-
     case Actions.ProjectDelete:
       return state.filter((item) => item.id !== action.target);
-
     case Actions.ProjectComplete:
       return findAndUpdateProject(state, action.target, (proj) =>
         ProjectFromEntity({ ...proj, completed: !proj.completed }).toEntity()
       );
 
+    // Deadline Actions
+    case Actions.DeadlineAdd:
+    case Actions.DeadlineUpdate:
+    case Actions.DeadlineRemove:
+    case Actions.DeadlineComplete:
+      return findAndUpdateProject(state, action.payload.project, (proj) =>
+        ProjectFromEntity({
+          ...proj,
+          deadlines: deadlineReducer(proj.deadlines, action),
+          todos: todoReducer(proj.todos, action),
+        }).toEntity()
+      );
+
+    // Todo Actions
     case Actions.TodoUpdate:
       const prevTodo = findTodoInState(state, action.payload.id);
 
@@ -80,7 +90,6 @@ const projectReducer = (
         );
         return newState;
       }
-
     case Actions.TodoAdd:
     case Actions.TodoDelete:
     case Actions.TodoSelect:
@@ -97,7 +106,6 @@ const projectReducer = (
     case Actions.TodoAssignProject:
       return state;
     default:
-      console.log(`Projects unchanged: ${action.type}`);
       return state;
   }
 };
