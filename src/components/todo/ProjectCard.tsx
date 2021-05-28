@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
 export default function ProjectCard({ project }: { project: ProjectEntity }) {
   const navigation = useNavigation();
   const now = new Date().valueOf();
+  const deadlineNumber = ProjectFromEntity(project).closestDeadline()?.due;
+  const ddlString = deadlineNumber
+    ? new Date(deadlineNumber).toDateString()
+    : undefined;
   const dueDateFont =
     List(project.deadlines).first(0).valueOf() > now
       ? styles.blackFont
@@ -78,9 +82,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
           <AntDesign name="calendar" size={30} color="black" />
           <View style={{ ...globalStyles.column, marginHorizontal: 20 }}>
             <Text style={dueDateFont}>
-              {ProjectFromEntity(project)
-                .closestDeadline()
-                ?.due.toDateString() ?? "No due date!"}
+              {ddlString ?? "No upcoming deadlines"}
             </Text>
             <Text>
               {List(project.todos).isEmpty()
@@ -88,7 +90,6 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
                 : `${project.todos.length} tasks left`}
             </Text>
           </View>
-          {/* TODO: Project TAG HERE */}
         </View>
       </View>
     </Card>

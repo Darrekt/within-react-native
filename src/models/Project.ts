@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { List } from "immutable";
-import Deadline, { DeadlineEntity, DeadlineFromEntity } from "./Deadline";
+import Deadline, {
+  DeadlineEntity,
+  DeadlineFromEntity,
+  compareDeadlines,
+} from "./Deadline";
 import Todo, { TodoFromEntity, TodoEntity } from "./Todo";
 
 export const UNCATEGORISED_TODO_PROJID = "uncategorised";
@@ -34,9 +38,10 @@ export default class Project {
   // Returns the first deadline that has not passed, or the most recently passed one.
   // If no deadlines exist, returns undefined.
   closestDeadline() {
-    return this.deadlines.find(
-      (deadline) => deadline.due.getTime() < new Date().getTime()
-    );
+    return this.deadlines
+      .map((ddl) => ddl.toEntity())
+      .sort(compareDeadlines)
+      .find((deadline) => deadline.due > new Date().getTime());
   }
 
   toEntity(): ProjectEntity {
@@ -109,14 +114,11 @@ export function findTodoDeadline(
   ];
 }
 
-export function compareByDeadline(projA: ProjectEntity, projB: ProjectEntity) {
-  // TODO: Implement sorting comparator
-  const ddlA = ProjectFromEntity(projA).closestDeadline()?.due;
-  const ddlB = ProjectFromEntity(projB).closestDeadline()?.due;
-
-  if (ddlA === undefined && ddlB === undefined) return 0;
-  else if (ddlA === undefined && ddlB !== undefined) return 1;
-  else if (ddlB === undefined && ddlA !== undefined) return 0;
-  // else if (ddlA < ddlB) return -1;
-  else return 1;
+export function compareProjectsByDeadline(
+  projA: ProjectEntity,
+  projB: ProjectEntity
+) {
+  const ddlA = ProjectFromEntity(projA).closestDeadline();
+  const ddlB = ProjectFromEntity(projB).closestDeadline();
+  return compareDeadlines(ddlA, ddlB);
 }

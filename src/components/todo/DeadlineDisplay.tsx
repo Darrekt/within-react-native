@@ -12,11 +12,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function DeadlineDisplay({
-  deadline,
-}: {
-  deadline: DeadlineEntity;
-}) {
+type Props = { deadline: DeadlineEntity };
+export default function DeadlineDisplay({ deadline }: Props) {
   const navigation = useNavigation();
   return (
     <Card

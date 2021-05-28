@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
-import { TextInput } from "react-native-gesture-handler";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import Project, { ProjectFromEntity } from "../../models/Project";
 import EmojiRegex from "emoji-regex";
@@ -15,7 +15,6 @@ import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
 import HeaderButton from "../../components/util/HeaderButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects } from "../../redux/selectors";
-import ProjectProgressGraph from "../../components/todo/ProjectProgressGraph";
 import {
   addFirebaseProject,
   completeFirebaseProject,
@@ -23,6 +22,7 @@ import {
   updateFirebaseProject,
 } from "../../redux/actions/projects/thunks";
 import { RootStackParamList, Screens } from "../navConstants";
+import { compareDeadlines } from "../../models/Deadline";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -53,7 +53,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
   const projects = useAppSelector(getProjects);
   const dispatch = useAppDispatch();
 
-  const project = route.params.projID
+  const project = route.params?.projID
     ? projects.find((proj) => proj.id === route.params.projID)
     : undefined;
 
@@ -110,47 +110,43 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
     >
       {(formik) => (
         <View style={globalStyles.form}>
-          <View style={globalStyles.column}>
-            <View style={globalStyles.spacer}></View>
-            <HeadingDropDown header="Project Info">
-              <View style={globalStyles.row}>
-                <TextInput
-                  style={styles.emojiInput}
-                  onChangeText={formik.handleChange("emoji")}
-                  onBlur={formik.handleBlur("emoji")}
-                  placeholder="Emoji"
-                  value={formik.values.emoji}
-                />
-                <TextInput
-                  style={styles.nameInput}
-                  onChangeText={formik.handleChange("name")}
-                  onBlur={formik.handleBlur("name")}
-                  placeholder="Project name"
-                  value={formik.values.name}
-                />
-              </View>
-              <View style={globalStyles.row}>
-                {formik.touched.emoji && formik.errors.emoji && (
-                  <Text style={textStyles.validationMessage}>
-                    {formik.errors.emoji}
-                  </Text>
-                )}
-                {formik.touched.name && formik.errors.name && (
-                  <Text style={textStyles.validationMessage}>
-                    {formik.errors.name}
-                  </Text>
-                )}
-              </View>
+          <HeadingDropDown header="Project Info">
+            <View style={globalStyles.row}>
               <TextInput
-                style={globalStyles.inputBox}
-                onChangeText={formik.handleChange("notes")}
-                onBlur={formik.handleBlur("notes")}
-                placeholder="Notes"
-                value={formik.values.notes}
+                style={styles.emojiInput}
+                onChangeText={formik.handleChange("emoji")}
+                onBlur={formik.handleBlur("emoji")}
+                placeholder="Emoji"
+                value={formik.values.emoji}
               />
-            </HeadingDropDown>
-            {project && <ProjectProgressGraph />}
-          </View>
+              <TextInput
+                style={styles.nameInput}
+                onChangeText={formik.handleChange("name")}
+                onBlur={formik.handleBlur("name")}
+                placeholder="Project name"
+                value={formik.values.name}
+              />
+            </View>
+            <View style={globalStyles.row}>
+              {formik.touched.emoji && formik.errors.emoji && (
+                <Text style={textStyles.validationMessage}>
+                  {formik.errors.emoji}
+                </Text>
+              )}
+              {formik.touched.name && formik.errors.name && (
+                <Text style={textStyles.validationMessage}>
+                  {formik.errors.name}
+                </Text>
+              )}
+            </View>
+            <TextInput
+              style={globalStyles.inputBox}
+              onChangeText={formik.handleChange("notes")}
+              onBlur={formik.handleBlur("notes")}
+              placeholder="Notes"
+              value={formik.values.notes}
+            />
+          </HeadingDropDown>
           {project && (
             <HeadingDropDown
               header="Deadlines"
@@ -166,9 +162,11 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 />
               }
             >
-              {project.deadlines.map((ddl) => (
-                <DeadlineDisplay key={ddl.id} deadline={ddl} />
-              ))}
+              <ScrollView>
+                {project.deadlines.sort(compareDeadlines).map((ddl) => (
+                  <DeadlineDisplay key={ddl.id} deadline={ddl} />
+                ))}
+              </ScrollView>
             </HeadingDropDown>
           )}
           <View style={{ ...globalStyles.bottomButtons, alignSelf: "auto" }}>
@@ -176,7 +174,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               <View
                 style={{
                   ...globalStyles.row,
-                  width: bottomButtonWidth,
+                  paddingHorizontal: Dimensions.get("screen").width * 0.075,
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}

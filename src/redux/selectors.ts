@@ -1,4 +1,4 @@
-import { DeadlineEntity } from "../models/Deadline";
+import { compareDeadlines, DeadlineEntity } from "../models/Deadline";
 import { ProjectEntity } from "../models/Project";
 import { TodoEntity } from "../models/Todo";
 import { RootState } from "../redux/store";
@@ -6,13 +6,14 @@ import { RootState } from "../redux/store";
 export const getProjects = (state: RootState) => state.projects;
 export const getSelected = (state: RootState): string => state.selected;
 export const getSettings = (state: RootState) => state.settings;
-export const getAllDeadlines = (state: RootState): DeadlineEntity[] =>
+export const getSortedDeadlines = (state: RootState): DeadlineEntity[] =>
   state.projects
     .map((proj) => proj.deadlines)
     .reduce(
       (agg, projDeadlines) => agg.concat(projDeadlines),
       <DeadlineEntity[]>[]
-    );
+    )
+    .sort(compareDeadlines);
 
 export const getAllTodos = (state: RootState): TodoEntity[] =>
   state.projects

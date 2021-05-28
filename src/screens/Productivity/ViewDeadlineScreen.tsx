@@ -20,12 +20,12 @@ import { RootStackParamList, Screens } from "../navConstants";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
-  Screens.ViewDeadline
+  Screens.ViewDeadline | Screens.AddDeadline
 >;
 
 type ViewProjectScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  Screens.ViewDeadline
+  Screens.ViewDeadline | Screens.AddDeadline
 >;
 
 type Props = {
@@ -33,14 +33,13 @@ type Props = {
   navigation: ViewProjectScreenNavigationProp;
 };
 
-const bottomButtonWidth = "85%";
 const styles = StyleSheet.create({
   nameCol: {
     ...globalStyles.column,
     width: Dimensions.get("screen").width * 0.55,
   },
   dateCol: {
-    width: 0.3 * Dimensions.get("window").width,
+    width: 0.3 * Dimensions.get("screen").width,
     justifyContent: "center",
   },
   nameInput: { ...globalStyles.inputBox, width: "100%" },
@@ -128,7 +127,6 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
           </View>
           <View style={globalStyles.bottomButtons}>
             <SubmitButton
-              width={bottomButtonWidth}
               onPress={() => formik.handleSubmit()}
               text={deadline ? "Save Changes" : "Add Deadline"}
             />

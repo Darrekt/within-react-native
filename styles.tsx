@@ -1,5 +1,5 @@
 // https://paletton.com/#uid=13l0u0kl1Wx1x+IcEXDsUWkWEVB
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   spacer: {
@@ -31,7 +31,8 @@ export const globalStyles = StyleSheet.create({
   },
   form: {
     height: "100%",
-    justifyContent: "space-between",
+    marginTop: Dimensions.get("screen").height * 0.02,
+    justifyContent: "flex-start",
     alignItems: "center",
     alignSelf: "stretch",
   },
@@ -54,7 +55,6 @@ export const globalStyles = StyleSheet.create({
   },
   submitButton: {
     height: 40,
-    width: "60%",
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 5,
@@ -64,6 +64,9 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "#01D1EE",
   },
   bottomButtons: {
+    position: "absolute",
+    width: "100%",
+    bottom: Dimensions.get("screen").width * 0.03,
     alignItems: "center",
     alignSelf: "stretch",
     marginBottom: 20,

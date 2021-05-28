@@ -70,3 +70,10 @@ export const DeadlineFromEntity = (doc: any) =>
     due: new Date(doc.due),
     todos: doc.todos,
   });
+
+export function compareDeadlines(ddlA?: DeadlineEntity, ddlB?: DeadlineEntity) {
+  if (ddlA && ddlB) return ddlA.due - ddlB.due;
+  else if (ddlA === undefined && ddlB !== undefined) return 1;
+  else if (ddlB === undefined && ddlA !== undefined) return -1;
+  else return 0;
+}

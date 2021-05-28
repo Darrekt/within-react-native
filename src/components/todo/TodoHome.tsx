@@ -1,15 +1,18 @@
 import React from "react";
-import { StyleSheet, View, Dimensions, Text } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
 import HeaderButton from "../util/HeaderButton";
 import { useAppSelector } from "../../redux/hooks";
-import { getProjects } from "../../redux/selectors";
+import { getProjects, getSortedDeadlines } from "../../redux/selectors";
 import { List } from "immutable";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../../screens/navConstants";
+import DeadlineDisplay from "./DeadlineDisplay";
+import { compareDeadlines } from "../../models/Deadline";
+import { compareProjectsByDeadline } from "../../models/Project";
 
 const styles = StyleSheet.create({
   wellnessCard: {
@@ -28,6 +31,7 @@ const styles = StyleSheet.create({
 // TODO: Make height and alignments responsive; all heights are hard coded currently.
 const HomeDisplay = () => {
   const projects = useAppSelector(getProjects);
+  const deadlines = useAppSelector(getSortedDeadlines);
   const navigation = useNavigation();
   const headerButton = (
     <HeaderButton
@@ -49,6 +53,7 @@ const HomeDisplay = () => {
         >
           {List(projects)
             .filter((value) => !value.completed)
+            .sort(compareProjectsByDeadline)
             .map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
@@ -57,7 +62,9 @@ const HomeDisplay = () => {
       {/* TODO: Hacky fix */}
       <View style={{ height: 15 }}></View>
       <HeadingDropDown header="Deadlines">
-        <Text>Hi</Text>
+        {deadlines.sort(compareDeadlines).map((deadline) => (
+          <DeadlineDisplay key={deadline.id} deadline={deadline} />
+        ))}
       </HeadingDropDown>
     </View>
   );
