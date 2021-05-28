@@ -52,7 +52,9 @@ export default class Project {
       notes: this.notes,
       completed: this.completed,
       todos: this.todos.map((todo) => todo.toEntity()),
-      deadlines: this.deadlines.map((ddl) => ddl.toEntity()),
+      deadlines: this.deadlines
+        .map((ddl) => ddl.toEntity())
+        .sort(compareDeadlines),
     };
   }
 

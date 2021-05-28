@@ -26,30 +26,28 @@ const styles = StyleSheet.create({
   openHeaderButtonRow: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   },
 });
 
 type IProps = {
   todos: TodoEntity[];
   isOpen: boolean;
-  taskIsRunning?: boolean;
 };
 
-const TodoListHeader = ({ todos, isOpen, taskIsRunning }: IProps) => {
+const TodoListHeader = ({ todos, isOpen }: IProps) => {
   const navigation = useNavigation();
   return (
     <View style={isOpen ? styles.openHeader : globalStyles.centered}>
       <View style={styles.openHeaderTitle}>
         <Text style={styles.modalHeaderText}>
-          {isOpen ? "Your Todos" : `${todos.length} tasks remaining`}
+          {isOpen
+            ? "Your Todos"
+            : `${todos.length} task${todos.length > 1 ? "s" : ""} remaining`}
         </Text>
       </View>
       {isOpen && (
         <View style={styles.openHeaderButtonRow}>
-          <Pressable onPress={() => {}}>
-            <MaterialIcons name="clear-all" size={24} color="black" />
-          </Pressable>
           <Pressable
             onPress={() => {
               navigation.navigate(Screens.AddTodo);

@@ -11,7 +11,7 @@ import { List } from "immutable";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../../screens/navConstants";
 import DeadlineDisplay from "./DeadlineDisplay";
-import { compareDeadlines } from "../../models/Deadline";
+import { compareDeadlines, DeadlineEntity } from "../../models/Deadline";
 import { compareProjectsByDeadline } from "../../models/Project";
 
 const styles = StyleSheet.create({
@@ -28,8 +28,12 @@ const styles = StyleSheet.create({
   },
 });
 
+export type Props = {
+  focusDeadline: (ddl: DeadlineEntity) => () => void;
+};
+
 // TODO: Make height and alignments responsive; all heights are hard coded currently.
-const HomeDisplay = () => {
+const HomeDisplay = ({ focusDeadline }: Props) => {
   const projects = useAppSelector(getProjects);
   const deadlines = useAppSelector(getSortedDeadlines);
   const navigation = useNavigation();
@@ -63,7 +67,11 @@ const HomeDisplay = () => {
       <View style={{ height: 15 }}></View>
       <HeadingDropDown header="Deadlines">
         {deadlines.sort(compareDeadlines).map((deadline) => (
-          <DeadlineDisplay key={deadline.id} deadline={deadline} />
+          <DeadlineDisplay
+            key={deadline.id}
+            deadline={deadline}
+            onPress={focusDeadline(deadline)}
+          />
         ))}
       </HeadingDropDown>
     </View>

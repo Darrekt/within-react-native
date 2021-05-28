@@ -9,6 +9,7 @@ import SettingsButton from "../../components/settings/SettingsButton";
 import Todo from "../../models/Todo";
 import { useSelector } from "react-redux";
 import { getAllTodos, getSelected, isRunning } from "../../redux/selectors";
+import { DeadlineEntity } from "../../models/Deadline";
 
 const TodoScreen = () => {
   const todos = useSelector(getAllTodos);
@@ -18,6 +19,11 @@ const TodoScreen = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const modalizeRef = React.useRef<Modalize>(null);
   const windowHeight = useWindowDimensions().height;
+
+  const openAndSelectDeadline = (deadline: DeadlineEntity) => () => {
+    // dispatch
+    modalizeRef.current?.open("top");
+  };
 
   return (
     <View style={globalStyles.container}>
@@ -48,7 +54,7 @@ const TodoScreen = () => {
           selectedTask={todos.find((todo) => todo.id === selected)}
         />
       ) : (
-        <TodoComponents.HomeDisplay />
+        <TodoComponents.HomeDisplay focusDeadline={openAndSelectDeadline} />
       )}
       <Modalize
         ref={modalizeRef}
@@ -56,6 +62,8 @@ const TodoScreen = () => {
         alwaysOpen={80}
         handlePosition="inside"
         withOverlay={false}
+        onOpen={() => setIsOpen(true)}
+        onClose={() => setIsOpen(false)}
         onPositionChange={(position) => {
           position == "top" ? setIsOpen(true) : setIsOpen(false);
         }}

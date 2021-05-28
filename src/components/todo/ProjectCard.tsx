@@ -87,7 +87,9 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
             <Text>
               {List(project.todos).isEmpty()
                 ? "Done for today!"
-                : `${project.todos.length} tasks left`}
+                : `${project.todos.length} task${
+                    project.todos.length > 1 ? "s" : ""
+                  } remaining`}
             </Text>
           </View>
         </View>

@@ -164,7 +164,15 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
             >
               <ScrollView>
                 {project.deadlines.sort(compareDeadlines).map((ddl) => (
-                  <DeadlineDisplay key={ddl.id} deadline={ddl} />
+                  <DeadlineDisplay
+                    key={ddl.id}
+                    deadline={ddl}
+                    onLongPress={() =>
+                      navigation.navigate(Screens.ViewDeadline, {
+                        deadlineID: ddl.id,
+                      })
+                    }
+                  />
                 ))}
               </ScrollView>
             </HeadingDropDown>

@@ -3,8 +3,6 @@ import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
 import { DeadlineEntity } from "../../models/Deadline";
-import { useNavigation } from "@react-navigation/core";
-import { Screens } from "../../screens/navConstants";
 
 const styles = StyleSheet.create({
   cardStyle: {
@@ -12,17 +10,23 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = { deadline: DeadlineEntity };
-export default function DeadlineDisplay({ deadline }: Props) {
-  const navigation = useNavigation();
+export type Props = {
+  deadline: DeadlineEntity;
+  onPress?: () => void;
+  onLongPress?: () => void;
+};
+export default function DeadlineDisplay({
+  deadline,
+  onPress,
+  onLongPress,
+}: Props) {
   return (
     <Card
       style={styles.cardStyle}
       elevation={1}
       opacity={0.05}
-      onLongPress={() =>
-        navigation.navigate(Screens.ViewDeadline, { deadlineID: deadline.id })
-      }
+      onPress={onPress}
+      onLongPress={onLongPress}
     >
       <View style={globalStyles.row}>
         <Text>{deadline.name}</Text>

@@ -7,9 +7,22 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 - Timer shifts oddly at the 11th second of single digit minutes
 - Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
 - ~~Completion adds 2 laps and not 1~~
-- View and update pages don't work perfectly: may need unit testing
 
 ## TODOS
+
+- Features
+
+  - ~~Deadlines~~
+    - Add Todos to deadlines
+    - Dropdown deadlines with todos (nativebase accordion)
+  - Email sign up
+  - Click deadline to work
+  - Disable notifications
+  - Set time form
+  
+  - ~~Add test suite for projects and todo data models~~
+  - ~~Complete projects~~
+  - ~~Complete todos~~
 
 - Styling
 
@@ -17,18 +30,8 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
   - DARK MODE
   - Changing color pallettes
 
-- Features
-
-  - ~~Add test suite for projects and todo data models~~
-  - ~~Complete projects~~
-  - ~~Complete todos~~
-  - Deadlines
-  - Disable notifications
-
 - Backend
 
-  - ~~Onboarding sign in~~
-  - Simple, seperate state from schema. Write all interactions.
   - Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
   - Terms of use, indemnity, loss of profit etc
 
@@ -39,7 +42,6 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
   - Teach them to chop projects up into subtasks
 - Measurement? Is the user over/underestimating?
   - How many tasks do you successfully set and complete?
-- Goals: Distinguishing Todo lists and Success lists
 - Build in feedback to test for
   - Usability
   - Retention
