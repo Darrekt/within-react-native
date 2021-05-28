@@ -11,7 +11,11 @@ export const resetSettings: ActionCreator<AppThunk> =
   () => async (dispatch, getState) => {
     const loggedInUser = getState().settings.user;
     const { user, ...settingsWithoutUser } = SAGE_DEFAULT_SETTINGS;
-    if (loggedInUser) await settingsDoc(loggedInUser).set(settingsWithoutUser);
+    if (loggedInUser)
+      await settingsDoc(loggedInUser).set(
+        { ...settingsWithoutUser, onboarding: true },
+        { merge: true }
+      );
     else
       dispatch({
         type: Actions.SettingsReset,

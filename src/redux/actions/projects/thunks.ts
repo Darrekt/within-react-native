@@ -9,20 +9,33 @@ export const projectsCollection = (userID: string) =>
   firestore().collection("Users").doc(userID).collection("projects");
 
 export const writeToProjectsCollection =
-  (userID: string) =>
-  (project: ProjectEntity, merge: boolean = true) =>
+  (userID: string) => (project: ProjectEntity, mergeFields?: string[]) =>
     firestore()
       .collection("Users")
       .doc(userID)
       .collection("projects")
       .doc(project.id)
-      .set(project, { merge: merge });
+      .set(project, {
+        mergeFields: mergeFields?.length ? mergeFields : undefined,
+      });
 
 export const sanitiseFirebaseProjects =
-  (): AppThunk => async (dispatch, getState) => {
+  (loginUser?: string): AppThunk =>
+  async (dispatch, getState) => {
     const user = getState().settings.user;
 
-    if (user) await writeToProjectsCollection(user)(defaultProject);
+    if (user)
+      await writeToProjectsCollection(loginUser ?? user)(defaultProject, [
+        "id",
+        "name",
+        "completed",
+      ]);
+    else if (loginUser)
+      await writeToProjectsCollection(loginUser)(defaultProject, [
+        "id",
+        "name",
+        "completed",
+      ]);
   };
 
 export const addFirebaseProject =

@@ -26,22 +26,34 @@ import {
   hydrateSettings,
 } from "../redux/actions/settings/actions";
 import { Screens } from "./navConstants";
+import SignUpScreen from "./Onboarding/SignUpScreen";
 
 const Stack = createStackNavigator();
 
 function ChooseScreens(settings: SageSettings) {
   if (!settings.onboarding) {
     return <Stack.Screen name="Onboarding" component={OnboardingScreen} />;
-  } else if (!settings.user) {
+  }
+  if (!settings.user) {
     return (
-      <Stack.Screen
-        name={Screens.SignIn}
-        component={SignInScreen}
-        options={{
-          headerShown: false,
-          headerBackTitleVisible: false,
-        }}
-      />
+      <>
+        <Stack.Screen
+          name={Screens.SignIn}
+          component={SignInScreen}
+          options={{
+            headerShown: false,
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.SignUp}
+          component={SignUpScreen}
+          options={{
+            title: "Create an account",
+            headerBackTitleVisible: false,
+          }}
+        />
+      </>
     );
   } else {
     return (

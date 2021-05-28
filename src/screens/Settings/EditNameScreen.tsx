@@ -9,6 +9,7 @@ import { firebase } from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Actions } from "../../redux/actions/actionTypes";
 import { useAppDispatch } from "../../redux/hooks";
+import { authStateChanged } from "../../redux/actions/settings/actions";
 
 const EditNameScreen = () => {
   const user = auth().currentUser;
@@ -30,10 +31,7 @@ const EditNameScreen = () => {
           user
             ?.updateProfile({ displayName: values.newName })
             .then(() => {
-              dispatch({
-                type: Actions.SettingsAuth,
-                user: firebase.auth().currentUser,
-              });
+              dispatch(authStateChanged(firebase.auth().currentUser));
               navigation.goBack();
             })
             .catch((error) => console.log(error));

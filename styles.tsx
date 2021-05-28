@@ -95,6 +95,7 @@ export const textStyles = StyleSheet.create({
     fontWeight: "500",
   },
   validationMessage: {
+    textAlign: "center",
     width: "70%",
     color: "red",
   },

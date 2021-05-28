@@ -2,13 +2,25 @@ import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
-import { ProjectEntity, ProjectFromEntity } from "../../models/Project";
+import {
+  ProjectEntity,
+  ProjectFromEntity,
+  UNCATEGORISED_TODO_PROJID,
+} from "../../models/Project";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { List } from "immutable";
 import { Screens } from "../../screens/navConstants";
+import { Icon } from "react-native-elements/dist/icons/Icon";
+import { Foundation } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({
+  cardStyle: {
+    width: Dimensions.get("window").width * 0.7,
+    marginHorizontal: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+  },
   blackFont: {
     color: "black",
   },
@@ -29,14 +41,17 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
       ? styles.blackFont
       : styles.redFont;
 
-  return (
+  return project.id === UNCATEGORISED_TODO_PROJID ? (
     <Card
-      style={{
-        width: Dimensions.get("window").width * 0.7,
-        marginHorizontal: 15,
-        paddingVertical: 10,
-        paddingHorizontal: 25,
-      }}
+      style={styles.cardStyle}
+      onPress={() => navigation.navigate(Screens.AddProject)}
+    >
+      <Text>Get started by adding a project!</Text>
+      <Foundation name="pencil" size={35} color="grey" />
+    </Card>
+  ) : (
+    <Card
+      style={styles.cardStyle}
       onPress={() =>
         navigation.navigate(Screens.ViewProject, { projID: project.id })
       }

@@ -43,7 +43,9 @@ const TodoListHeader = ({ todos, isOpen }: IProps) => {
         <Text style={styles.modalHeaderText}>
           {isOpen
             ? "Your Todos"
-            : `${todos.length} task${todos.length > 1 ? "s" : ""} remaining`}
+            : `${todos.length ? todos.length : "No"} task${
+                !todos.length || todos.length > 1 ? "s" : ""
+              } remaining`}
         </Text>
       </View>
       {isOpen && (
