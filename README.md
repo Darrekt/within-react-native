@@ -14,6 +14,8 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 
   - ~~Deadlines~~
     - Add Todos to deadlines
+      - Add todos modal on deadlineAdd page
+      - firebase implementation
     - Dropdown deadlines with todos (nativebase accordion)
   - Email sign up
   - Click deadline to work

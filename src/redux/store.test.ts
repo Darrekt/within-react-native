@@ -20,6 +20,7 @@ const todo1b = new Todo({
 
 const ddlA = new Deadline({
   id: ddlID,
+  project: projID,
   name: "Deadline",
   due: now,
 });

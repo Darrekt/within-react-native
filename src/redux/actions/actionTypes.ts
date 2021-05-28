@@ -19,7 +19,6 @@ export enum Actions {
   TodoUpdate = "TODO_UPDATE",
   TodoSelect = "TODO_SELECT",
   TodoToggleComplete = "TODO_TOGGLECOMPLETE",
-  TodoAssignProject = "TODO_ASSIGN_PROJECT",
   TodoAssignDeadline = "TODO_ASSIGN_DEADLINE",
   TodoDeassignDeadline = "TODO_DEASSIGN_DEADLINE",
   TodoStart = "TODO_START",
@@ -67,11 +66,9 @@ export type TodoAction =
       type:
         | Actions.TodoAdd
         | Actions.TodoUpdate
-        | Actions.TodoAssignProject
-        | Actions.TodoAssignDeadline
-        | Actions.TodoDeassignDeadline
         | Actions.TodoDelete
         | Actions.TodoSelect
+        | Actions.TodoDeassignDeadline
         | Actions.TodoToggleComplete
         | Actions.TodoPause
         | Actions.TodoReset
@@ -82,6 +79,11 @@ export type TodoAction =
       type: Actions.TodoStart;
       payload: TodoEntity;
       interval: number;
+    }
+  | {
+      type: Actions.TodoAssignDeadline;
+      payload: TodoEntity;
+      deadline: string;
     };
 
 export type SettingsAction =

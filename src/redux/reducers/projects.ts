@@ -1,8 +1,8 @@
 import { List } from "immutable";
 import Project, {
-  compareByDeadline,
   ProjectFromEntity,
   ProjectEntity,
+  compareProjectsByDeadline,
 } from "../../models/Project";
 import { Action, Actions } from "../actions/actionTypes";
 import { findTodoInState } from "../selectors";
@@ -26,7 +26,7 @@ export const findAndUpdateProject = (
     )
     .toArray();
 
-const projectReducer = (
+export const projectReducer = (
   state: ProjectEntity[] = [defaultProject],
   action: Action
 ): ProjectEntity[] => {
@@ -41,7 +41,10 @@ const projectReducer = (
         (proj) => action.payload
       );
     case Actions.ProjectAdd:
-      return List(state).push(action.payload).sort(compareByDeadline).toArray();
+      return List(state)
+        .push(action.payload)
+        .sort(compareProjectsByDeadline)
+        .toArray();
     case Actions.ProjectDelete:
       return state.filter((item) => item.id !== action.target);
     case Actions.ProjectComplete:
@@ -103,8 +106,6 @@ const projectReducer = (
         deadlines: deadlineReducer(proj.deadlines, action),
         todos: todoReducer(proj.todos, action),
       }));
-    case Actions.TodoAssignProject:
-      return state;
     default:
       return state;
   }

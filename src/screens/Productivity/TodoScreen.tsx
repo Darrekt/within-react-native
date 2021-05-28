@@ -8,17 +8,26 @@ import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
 import Todo from "../../models/Todo";
 import { useSelector } from "react-redux";
-import { getAllTodos, getSelected, isRunning } from "../../redux/selectors";
+import { getAllTodos, getSelected, getRunning } from "../../redux/selectors";
 import { DeadlineEntity } from "../../models/Deadline";
+import { useAppDispatch } from "../../redux/hooks";
+import { selectTodo } from "../../redux/actions/todos/actions";
 
 const TodoScreen = () => {
   const todos = useSelector(getAllTodos);
   const selected = useSelector(getSelected);
-  const running = useSelector(isRunning);
+  const running = useSelector(getRunning);
+  const dispatch = useAppDispatch();
 
   const [isOpen, setIsOpen] = React.useState(false);
   const modalizeRef = React.useRef<Modalize>(null);
   const windowHeight = useWindowDimensions().height;
+
+  React.useEffect(() => {
+    if (running) {
+      dispatch(selectTodo(running));
+    }
+  }, []);
 
   const openAndSelectDeadline = (deadline: DeadlineEntity) => () => {
     // dispatch
@@ -79,7 +88,7 @@ const TodoScreen = () => {
             <TodoComponents.ItemTile
               todo={item}
               selected={selected}
-              running={running}
+              running={running ? true : false}
             />
           ),
           ListEmptyComponent: isOpen

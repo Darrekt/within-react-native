@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -45,12 +52,16 @@ const EditProductivitySettingScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={globalStyles.column}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={50}
+      style={{ flex: 1, justifyContent: "flex-start" }}
+    >
       <Formik
         initialValues={{
           maxProjects: settings.maxProjects,
           maxTasks: settings.maxTasks,
-          defaultInterval: settings.defaultInterval,
+          defaultInterval: settings.defaultInterval / 60,
         }}
         validate={(values) => {
           const errors: {
@@ -64,6 +75,13 @@ const EditProductivitySettingScreen = () => {
             errors.maxProjects = validateProjects(values.maxProjects);
           if (validateProjects(values.maxTasks))
             errors.maxTasks = validateProjects(values.maxTasks);
+          // if (!values.defaultInterval)
+          //   errors.defaultInterval = "Invalid duration!";
+          // if (values.defaultInterval < 20)
+          //   errors.defaultInterval = "Too short!";
+          // if (values.defaultInterval > 45)
+          //   errors.defaultInterval = "Too long!";
+
           return errors;
         }}
         onSubmit={(values) => {
@@ -71,7 +89,7 @@ const EditProductivitySettingScreen = () => {
             changeWorkParams(
               values.maxProjects,
               values.maxTasks,
-              values.defaultInterval
+              values.defaultInterval * 60
             )
           );
           navigation.goBack();
@@ -125,8 +143,7 @@ const EditProductivitySettingScreen = () => {
                 )}
               </View>
             </Card>
-            {/* TODO: Avoid keyboard and enter in minutes */}
-            <Card elevation={0.5}>
+            {/* <Card elevation={0.5}>
               <Text style={styles.headerStyle}>Default interval duration</Text>
               <View style={globalStyles.row}>
                 <Text style={styles.bodyStyle}>
@@ -145,7 +162,8 @@ const EditProductivitySettingScreen = () => {
                   onChangeText={formik.handleChange("defaultInterval")}
                   onBlur={formik.handleBlur("defaultInterval")}
                   keyboardType="number-pad"
-                  value={printTimeLeft(formik.values.defaultInterval)}
+                  maxLength={2}
+                  value={formik.values.defaultInterval.toString()}
                   onSubmitEditing={() => formik.handleSubmit()}
                 />
                 {formik.touched.defaultInterval &&
@@ -155,12 +173,12 @@ const EditProductivitySettingScreen = () => {
                     </Text>
                   )}
               </View>
-            </Card>
+            </Card> */}
             <SubmitButton text="Save Settings" onPress={formik.handleSubmit} />
           </View>
         )}
       </Formik>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 export default EditProductivitySettingScreen;

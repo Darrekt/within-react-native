@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { TodoEntity } from "../../models/Todo";
+import { TodoEntity, TodoFromEntity } from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
 import { Actions, DeadlineAction, TodoAction } from "../actions/actionTypes";
 import { findTodoInList } from "../selectors";
@@ -104,6 +104,32 @@ const todoReducer = (
           ? true
           : false,
       }));
+    case Actions.TodoAssignDeadline:
+      return List(state)
+        .map(
+          (todo) =>
+            ({
+              ...todo,
+              deadline:
+                todo.id === action.payload.id
+                  ? action.payload.deadline
+                  : todo.deadline === action.deadline
+                  ? undefined
+                  : todo.deadline,
+            } as TodoEntity)
+        )
+        .toArray();
+    case Actions.TodoDeassignDeadline:
+      return List(state)
+        .map(
+          (todo) =>
+            ({
+              ...todo,
+              deadline:
+                todo.id === action.payload.id ? undefined : todo.deadline,
+            } as TodoEntity)
+        )
+        .toArray();
     default:
       return state;
   }

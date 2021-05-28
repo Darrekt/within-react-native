@@ -28,8 +28,8 @@ export const findDeadline =
           ?.deadlines.find((ddl) => ddl.id === deadlineID)
       : undefined;
 
-export const isRunning = (state: RootState): boolean =>
-  getAllTodos(state).some((todo) => todo.finishingTime !== undefined);
+export const getRunning = (state: RootState): TodoEntity | undefined =>
+  getAllTodos(state).find((todo) => todo.finishingTime);
 
 export const findProject = (projects: ProjectEntity[], projectID: string) => {
   const project = projects.find(
