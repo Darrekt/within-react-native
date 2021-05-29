@@ -31,7 +31,8 @@ export const globalStyles = StyleSheet.create({
   },
   form: {
     height: "100%",
-    marginTop: Dimensions.get("screen").height * 0.02,
+    paddingTop: Dimensions.get("screen").height * 0.02,
+    paddingHorizontal: Dimensions.get("screen").width * 0.07,
     justifyContent: "flex-start",
     alignItems: "center",
     alignSelf: "stretch",
@@ -39,7 +40,17 @@ export const globalStyles = StyleSheet.create({
   inputBox: {
     margin: 8,
     height: 45,
-    width: "70%",
+    width: "100%",
+    padding: 10,
+    borderColor: "#56DEF1",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 5,
+    borderWidth: 1,
+  },
+  largeInputBox: {
+    height: Dimensions.get("window").height * 0.15,
+    width: "100%",
+    margin: 8,
     padding: 10,
     borderColor: "#56DEF1",
     backgroundColor: "#FFFFFF",
@@ -80,6 +91,12 @@ export const textStyles = StyleSheet.create({
     marginHorizontal: 18,
     fontSize: 22,
     fontWeight: "500",
+  },
+  surveyQuestion: {
+    marginVertical: 5,
+    marginHorizontal: 18,
+    fontSize: 20,
+    fontWeight: "600",
   },
   avatarName: { fontSize: 25, fontWeight: "400", marginVertical: 20 },
   groupHeader: {

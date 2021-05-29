@@ -7,6 +7,7 @@ import ViewProjectScreen from "./ViewProjectScreen";
 import ViewTodoScreen from "./ViewTodoScreen";
 import ViewDeadlineScreen from "./ViewDeadlineScreen";
 import { Screens } from "../navConstants";
+import SurveyScreen from "../SurveyScreen";
 
 const TodoNavigator = () => {
   return (
@@ -15,6 +16,14 @@ const TodoNavigator = () => {
         name={Screens.TodoHome}
         component={TodoScreen}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={Screens.Survey}
+        component={SurveyScreen}
+        options={{
+          title: "Feedback survey",
+          headerBackTitleVisible: false,
+        }}
       />
       <Stack.Screen
         name={Screens.ViewProject}

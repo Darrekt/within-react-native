@@ -1,20 +1,28 @@
 import React from "react";
 import { globalStyles, textStyles } from "../../../styles";
-import { Dimensions, Text, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  StyleProp,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 type SubmitButtonProps = {
   text: string;
   onPress: () => void;
   width?: number | string;
+  style?: ViewStyle;
 };
 
-function SubmitButton({ text, onPress, width }: SubmitButtonProps) {
+function SubmitButton({ text, onPress, width, style }: SubmitButtonProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={onPress}
       style={{
+        ...style,
         width: width ?? Dimensions.get("screen").width * 0.8,
       }}
     >

@@ -12,6 +12,7 @@ import { getAllTodos, getSelected, getRunning } from "../../redux/selectors";
 import { DeadlineEntity } from "../../models/Deadline";
 import { useAppDispatch } from "../../redux/hooks";
 import { selectTodo } from "../../redux/actions/todos/actions";
+import SurveyButton from "../../components/settings/SurveyButton";
 
 const TodoScreen = () => {
   const todos = useSelector(getAllTodos);
@@ -54,6 +55,7 @@ const TodoScreen = () => {
       {!isOpen && (
         <Header
           backgroundColor="transparent"
+          leftComponent={SurveyButton()}
           rightComponent={SettingsButton()}
           containerStyle={{ borderBottomWidth: 0 }}
         />

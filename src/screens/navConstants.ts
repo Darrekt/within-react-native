@@ -8,6 +8,7 @@ export type RootStackParamList = {
 export enum Screens {
   SignIn = "APP_SIGN_IN",
   SignUp = "APP_SIGN_UP",
+  Survey = "APP_SURVEY",
   Home = "APP_HOME",
   Settings = "APP_SETTINGS",
   AuthManagement = "APP_AUTH_MGMT",
