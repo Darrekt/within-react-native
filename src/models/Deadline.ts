@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { UNCATEGORISED_TODO_PROJID } from "./Project";
 
 export interface DeadlineEntity {
   id: string;
@@ -21,7 +22,7 @@ export default class Deadline {
     data: Pick<Deadline, "project" | "name" | "due"> & Partial<Deadline>
   ) {
     this.id = data.id ?? uuidv4();
-    this.project = data.project;
+    this.project = data.project ? data.project : UNCATEGORISED_TODO_PROJID;
     this.name = data.name;
     this.completed = data.completed ?? false;
     this.due = data.due;

@@ -1,7 +1,7 @@
 export type RootStackParamList = {
   [Screens.ViewProject]: { projID: string };
-  [Screens.ViewDeadline]: { deadlineID: string };
-  [Screens.AddDeadline]: { projID: string };
+  [Screens.ViewDeadline]: { projID: undefined; deadlineID?: string };
+  [Screens.AddDeadline]: { projID: string; deadlineID: undefined };
   [Screens.ViewTodo]: { todoID: string };
 };
 

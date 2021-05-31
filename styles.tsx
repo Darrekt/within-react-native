@@ -31,7 +31,7 @@ export const globalStyles = StyleSheet.create({
   },
   form: {
     height: "100%",
-    paddingTop: Dimensions.get("screen").height * 0.02,
+    paddingVertical: Dimensions.get("screen").height * 0.02,
     paddingHorizontal: Dimensions.get("screen").width * 0.07,
     justifyContent: "flex-start",
     alignItems: "center",
@@ -80,7 +80,6 @@ export const globalStyles = StyleSheet.create({
     bottom: Dimensions.get("screen").width * 0.03,
     alignItems: "center",
     alignSelf: "stretch",
-    marginBottom: 20,
   },
 });
 
@@ -91,6 +90,7 @@ export const textStyles = StyleSheet.create({
     marginHorizontal: 18,
     fontSize: 22,
     fontWeight: "500",
+    color: "black",
   },
   surveyQuestion: {
     marginVertical: 5,

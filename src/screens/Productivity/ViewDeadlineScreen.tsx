@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Dimensions, Platform } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
 
 const ViewDeadlineScreen = ({ route, navigation }: Props) => {
   const deadline = useAppSelector(findDeadline(route.params.deadlineID));
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const dispatch = useAppDispatch();
 
   const initialValues = {
@@ -73,19 +74,19 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
           dispatch(
             deadline
               ? updateFirebaseDeadline(
-                  new Deadline({
-                    ...DeadlineFromEntity(deadline),
-                    name: values.name,
-                    due: values.due,
-                  }).toEntity()
-                )
+                new Deadline({
+                  ...DeadlineFromEntity(deadline),
+                  name: values.name,
+                  due: values.due,
+                }).toEntity()
+              )
               : addFirebaseDeadline(
-                  new Deadline({
-                    project: route.params.projID,
-                    name: values.name,
-                    due: values.due,
-                  }).toEntity()
-                )
+                new Deadline({
+                  project: route.params.projID ?? "",
+                  name: values.name,
+                  due: values.due,
+                }).toEntity()
+              )
           )
         );
         navigation.goBack();
@@ -99,32 +100,36 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
     >
       {(formik) => (
         <View style={globalStyles.form}>
-          <View style={globalStyles.row}>
-            <View style={styles.nameCol}>
-              <TextInput
-                style={styles.nameInput}
-                onChangeText={formik.handleChange("name")}
-                onBlur={formik.handleBlur("name")}
-                placeholder="Name"
-                value={formik.values.name}
-              />
-              {formik.touched.name && formik.errors.name && (
-                <Text style={textStyles.validationMessage}>
-                  {formik.errors.name}
-                </Text>
-              )}
-            </View>
-            <View style={globalStyles.column}>
-              <DateTimePicker
-                style={styles.dateCol}
-                value={formik.values.due}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={(event, date) => formik.setFieldValue("due", date)}
-              />
-            </View>
-          </View>
+          <TextInput
+            style={styles.nameInput}
+            onChangeText={formik.handleChange("name")}
+            onBlur={formik.handleBlur("name")}
+            placeholder="Name"
+            value={formik.values.name}
+          />
+          {formik.touched.name && formik.errors.name && (
+            <Text style={textStyles.validationMessage}>
+              {formik.errors.name}
+            </Text>
+          )}
+          <TextInput
+            style={styles.nameInput}
+            placeholder="Date"
+            value={formik.values.due.toDateString()}
+            onFocus={() => setShowDatePicker(true)}
+            enabled={false}
+          />
+          {showDatePicker && <DateTimePicker
+            style={styles.dateCol}
+            value={formik.values.due}
+            mode="date"
+            is24Hour={true}
+            display="default"
+            onChange={(event, date) => {
+              setShowDatePicker(Platform.OS === 'ios');
+              formik.setFieldValue("due", date ?? formik.values.due)
+            }}
+          />}
           <View style={globalStyles.bottomButtons}>
             <SubmitButton
               onPress={() => formik.handleSubmit()}
