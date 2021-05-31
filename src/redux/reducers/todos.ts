@@ -1,8 +1,11 @@
 import { List } from "immutable";
+import { NativeModules } from "react-native";
 import { TodoEntity, TodoFromEntity } from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
 import { Actions, DeadlineAction, TodoAction } from "../actions/actionTypes";
 import { findTodoInList } from "../selectors";
+
+const { DnDMode } = NativeModules;
 
 /**
  * setTodo attempts to set the todo if it exists, and if not adds it to the end of the list.
@@ -58,12 +61,14 @@ const todoReducer = (
             : action.interval) *
             1000
       );
+      DnDMode.setDNDMode(true);
       return setTodo(state, {
         ...action.payload,
         remaining: undefined,
         finishingTime: finishAt.getTime(),
       });
     case Actions.TodoReset:
+      DnDMode.setDNDMode(false);
       return setTodo(state, {
         ...action.payload,
         remaining: undefined,
@@ -71,6 +76,7 @@ const todoReducer = (
       });
     case Actions.TodoPause:
     case Actions.TodoFinish:
+      DnDMode.setDNDMode(false);
       return setTodo(state, {
         ...action.payload,
         laps:

@@ -33,7 +33,10 @@ export const diffAndWriteProjects = (
   newState.forEach((project) => {
     const otherProj = prevState.find((item) => item.id === project.id);
 
-    if (!otherProj || !ProjectFromEntity(project).equals(ProjectFromEntity(otherProj))) {
+    if (
+      !otherProj ||
+      !ProjectFromEntity(project).equals(ProjectFromEntity(otherProj))
+    ) {
       writeToProjectsCollection(userID)(project);
     }
   });
