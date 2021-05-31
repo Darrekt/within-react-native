@@ -8,7 +8,7 @@ export const StatScreen = () => (
   <View style={globalStyles.centered}>
     <Button
       color={globalStyles.submitButton.backgroundColor}
-      onPress={() => DnDMode.turnOnDND()}
+      onPress={() => DnDMode.toggleDnDMode()}
       title="Silence Notifications"
     />
   </View>

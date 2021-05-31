@@ -24,24 +24,23 @@ public class DnDMode extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void turnOnDND() {
+    public void toggleDnDMode() {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ){
             if(!notificationManager.isNotificationPolicyAccessGranted()) {
-                getReactApplicationContext().startActivity(new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS));
+                Intent i = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getReactApplicationContext().startActivity(i);
 //                ActivityCompat.requestPermissions(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS, [Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS], 0);
             }
-            notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY);
-            Log.d("DnDMode", "DnD Mode turned on.");
+            int filterSetting = notificationManager.getCurrentInterruptionFilter();
+            if (filterSetting < 2) notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY);
+            else notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL);
+            Log.d("DnDMode", "DnD Mode toggled." + notificationManager.getCurrentInterruptionFilter());
     }
         else {
             Log.d("DnDMode", "DnD Mode not supported.");
         }
 
-    }
-
-    @ReactMethod
-    public void turnOffDnD() {
-        Log.d("DnDMode", "DnD Mode turned off.");
     }
 
     @Override
