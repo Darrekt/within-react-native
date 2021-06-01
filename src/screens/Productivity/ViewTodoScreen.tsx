@@ -17,7 +17,7 @@ import {
   addFirebaseTodo,
   updateFirebaseTodo,
 } from "../../redux/actions/todos/thunks";
-import { UNCATEGORISED_TODO_PROJID } from "../../models/Project";
+import { UNCATEGORISED_TODO_PROJID } from "../../util/constants";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };

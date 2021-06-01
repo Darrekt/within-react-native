@@ -6,8 +6,7 @@ import Deadline, {
   compareDeadlines,
 } from "./Deadline";
 import Todo, { TodoFromEntity, TodoEntity } from "./Todo";
-
-export const UNCATEGORISED_TODO_PROJID = "uncategorised";
+import { UNCATEGORISED_TODO_PROJID } from "../util/constants";
 
 export interface ProjectEntity {
   id: string;

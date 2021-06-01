@@ -1,6 +1,6 @@
 import { List } from "immutable";
 import { NativeModules } from "react-native";
-import { TodoEntity, TodoFromEntity } from "../../models/Todo";
+import { TodoEntity } from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
 import { Actions, DeadlineAction, TodoAction } from "../actions/actionTypes";
 import { findTodoInList } from "../selectors";

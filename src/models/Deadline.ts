@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { UNCATEGORISED_TODO_PROJID } from "./Project";
+import { UNCATEGORISED_TODO_PROJID } from "../util/constants";
 
 export interface DeadlineEntity {
   id: string;
