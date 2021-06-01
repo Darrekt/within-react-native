@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   tileTitleTextStyle: {
-    flex: 6,
-    fontSize: 20,
+    flex: 5,
+    fontSize: 16,
     fontWeight: "400",
   },
   unselectedTileText: {
@@ -70,20 +70,6 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
     icon: JSX.Element;
   }[] = [
     {
-      key: todo.id + "complete",
-      action: completeFirebaseTodo(todo),
-      icon: todo.completed ? (
-        <Icon name="ios-refresh" type="ionicon" color="black" />
-      ) : (
-        <AntDesign
-          key={todo.id + "complete"}
-          name="check"
-          size={20}
-          color="black"
-        />
-      ),
-    },
-    {
       key: todo.id + "delete",
       action: deleteFirebaseTodo(todo),
       icon: (
@@ -94,9 +80,9 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
 
   const BadgedText = withBadge(todo.laps, {
     badgeStyle: {
-      backgroundColor: "#00C0DA",
+      backgroundColor: theme.dark,
       position: "absolute",
-      top: -8,
+      top: -4,
       right: 8,
     },
     right: 10,
@@ -105,7 +91,6 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
 
   return (
     <ListItem
-      topDivider
       linearGradientProps={{
         start: { x: 0, y: 0 },
         end: { x: 0.5, y: 0.5 },
@@ -124,14 +109,16 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
         }}
       >
         <ListItem.Content style={styles.tileRow}>
-          <BadgedText>{todo.emoji}</BadgedText>
-          <ListItem.Title style={itemTitleTextStyle}>
-            {todo.name}
+          <ListItem.Title>
+            <BadgedText style={styles.tileIconStyle}>{todo.emoji}</BadgedText>
           </ListItem.Title>
-          <CircleButtonGroup
-            actions={buttons}
-            active={!running || todo.id == selected}
-          />
+          <ListItem.Subtitle style={itemTitleTextStyle}>
+            {todo.name}
+          </ListItem.Subtitle>
+          <ListItem.CheckBox
+            disabled={running || todo.id !== selected}
+            onPress={() => dispatch(completeFirebaseTodo(todo))}
+          ></ListItem.CheckBox>
         </ListItem.Content>
       </TouchableOpacity>
     </ListItem>

@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { NativeModules } from "react-native";
+import { NativeModules, Platform } from "react-native";
 import { TodoEntity } from "../../models/Todo";
 import { getTimeLeft } from "../../util/timer";
 import { Actions, DeadlineAction, TodoAction } from "../actions/actionTypes";
@@ -61,14 +61,14 @@ const todoReducer = (
             : action.interval) *
             1000
       );
-      DnDMode.setDNDMode(true);
+      Platform.OS === "android" && DnDMode.setDNDMode(true);
       return setTodo(state, {
         ...action.payload,
         remaining: undefined,
         finishingTime: finishAt.getTime(),
       });
     case Actions.TodoReset:
-      DnDMode.setDNDMode(false);
+      Platform.OS === "android" && DnDMode.setDNDMode(false);
       return setTodo(state, {
         ...action.payload,
         remaining: undefined,
@@ -76,7 +76,7 @@ const todoReducer = (
       });
     case Actions.TodoPause:
     case Actions.TodoFinish:
-      DnDMode.setDNDMode(false);
+      Platform.OS === "android" && DnDMode.setDNDMode(false);
       return setTodo(state, {
         ...action.payload,
         laps:
