@@ -1,13 +1,9 @@
 import React from "react";
 import { globalStyles, textStyles } from "../../../styles";
-import {
-  Dimensions,
-  StyleProp,
-  Text,
-  TouchableOpacity,
-  ViewStyle,
-} from "react-native";
+import { Dimensions, Text, TouchableOpacity, ViewStyle } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import { useAppSelector } from "../../redux/hooks";
+import { getTheme } from "../../redux/selectors";
 
 type SubmitButtonProps = {
   text: string;
@@ -17,6 +13,7 @@ type SubmitButtonProps = {
 };
 
 function SubmitButton({ text, onPress, width, style }: SubmitButtonProps) {
+  const theme = useAppSelector(getTheme);
   return (
     <TouchableOpacity
       activeOpacity={0.5}
@@ -29,13 +26,15 @@ function SubmitButton({ text, onPress, width, style }: SubmitButtonProps) {
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0.5 }}
-        colors={["#01D1EE", "#96E9F5"]}
+        colors={[theme.primary, theme.light]}
         style={{
           ...globalStyles.submitButton,
           width: "100%",
         }}
       >
-        <Text style={textStyles.buttonText}>{text}</Text>
+        <Text style={{ ...textStyles.buttonText, color: theme.text.primary }}>
+          {text.toUpperCase()}
+        </Text>
       </LinearGradient>
     </TouchableOpacity>
   );

@@ -1,13 +1,15 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
-import TodoScreen from "./Productivity/TodoScreen";
 import StatScreen from "./StatScreen";
 import TodoNavigator from "./Productivity/TodoNavigator";
+import { useAppSelector } from "../redux/hooks";
+import { getTheme } from "../redux/selectors";
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigationBar = () => {
+  const theme = useAppSelector(getTheme);
   return (
     <Tab.Navigator
       initialRouteName="Todos"
@@ -45,13 +47,12 @@ const TabNavigationBar = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "#01D1EE",
+        activeTintColor: theme.dark,
         inactiveTintColor: "gray",
       }}
     >
       <Tab.Screen name="Todos" component={TodoNavigator} />
       <Tab.Screen name="Stats" component={StatScreen} />
-      {/* <Tab.Screen name="Groups" component={GroupScreen} /> */}
     </Tab.Navigator>
   );
 };

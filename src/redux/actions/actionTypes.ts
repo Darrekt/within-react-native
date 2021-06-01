@@ -2,6 +2,7 @@ import { ProjectEntity } from "../../models/Project";
 import { DeadlineEntity } from "../../models/Deadline";
 import { TodoEntity } from "../../models/Todo";
 import { FirestoreSageSettings } from "../reducers/settings";
+import { SageTheme } from "../../util/constants";
 
 export enum Actions {
   Reset = "REPO_FLUSH",
@@ -29,6 +30,7 @@ export enum Actions {
   SettingsAuth = "SETTINGS_AUTH",
   SettingsReset = "SETTINGS_RESET",
   SettingsToggleOnboarding = "SETTINGS_TOGGLE_ONBOARDING",
+  SettingsChangeTheme = "SETTINGS_CHANGE_THEME",
   SettingsChangeWorkParams = "SETTINGS_CHANGE_PARAMS",
 }
 
@@ -100,6 +102,10 @@ export type SettingsAction =
     }
   | {
       type: Actions.SettingsToggleOnboarding;
+    }
+  | {
+      type: Actions.SettingsChangeTheme;
+      payload: SageTheme;
     }
   | {
       type: Actions.SettingsChangeWorkParams;

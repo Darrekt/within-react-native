@@ -1,11 +1,18 @@
 import React, { ReactNode } from "react";
-import { ViewStyle, TouchableOpacity } from "react-native";
-import { Platform, View, StyleSheet, Dimensions } from "react-native";
+import {
+  ViewStyle,
+  TouchableOpacity,
+  Platform,
+  View,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { ShadowHeight } from "../../util/constants";
 
 type CardProps = {
   children?: ReactNode;
   style?: ViewStyle;
-  elevation?: number;
+  elevation?: ShadowHeight;
   opacity?: number;
   cornerRadius?: number;
   noShadow?: boolean;
@@ -35,14 +42,12 @@ const Card = ({
       ...(!noShadow &&
         Platform.select({
           ios: {
-            shadowOffset: { width: 1, height: elevation },
-            shadowRadius: elevation ? elevation + 7 : 0,
+            shadowOffset: { width: 1, height: elevation / 3 },
+            shadowRadius: (elevation ?? 0) / 3,
             shadowOpacity: opacity,
           },
           android: {
             elevation: elevation,
-            shadowRadius: elevation ? elevation + 7 : 0,
-            shadowOpacity: opacity,
           },
         })),
     },

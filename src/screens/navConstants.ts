@@ -11,6 +11,7 @@ export enum Screens {
   Survey = "APP_SURVEY",
   Home = "APP_HOME",
   Settings = "APP_SETTINGS",
+  Theme = "APP_THEME_CHANGE",
   AuthManagement = "APP_AUTH_MGMT",
   ChangeDisplayName = "APP_CHANGE_NAME",
   ChangePassword = "APP_CHANGE_PASSWORD",

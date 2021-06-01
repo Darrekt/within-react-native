@@ -27,6 +27,7 @@ import {
 } from "../redux/actions/settings/actions";
 import { Screens } from "./navConstants";
 import SignUpScreen from "./Onboarding/SignUpScreen";
+import ChangeThemeScreen from "./Settings/ChangeThemeScreen";
 
 const Stack = createStackNavigator();
 
@@ -68,6 +69,14 @@ function ChooseScreens(settings: SageSettings) {
           component={SettingsScreen}
           options={{
             title: "Settings",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.Theme}
+          component={ChangeThemeScreen}
+          options={{
+            title: "Choose Theme",
             headerBackTitleVisible: false,
           }}
         />

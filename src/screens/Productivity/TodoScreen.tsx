@@ -7,17 +7,22 @@ import LinearGradient from "react-native-linear-gradient";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
 import Todo from "../../models/Todo";
-import { useSelector } from "react-redux";
-import { getAllTodos, getSelected, getRunning } from "../../redux/selectors";
+import {
+  getAllTodos,
+  getSelected,
+  getRunning,
+  getTheme,
+} from "../../redux/selectors";
 import { DeadlineEntity } from "../../models/Deadline";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectTodo } from "../../redux/actions/todos/actions";
 import SurveyButton from "../../components/settings/SurveyButton";
 
 const TodoScreen = () => {
-  const todos = useSelector(getAllTodos);
-  const selected = useSelector(getSelected);
-  const running = useSelector(getRunning);
+  const todos = useAppSelector(getAllTodos);
+  const selected = useAppSelector(getSelected);
+  const running = useAppSelector(getRunning);
+  const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -41,7 +46,7 @@ const TodoScreen = () => {
         <LinearGradient
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0.5 }}
-          colors={["#01D1EE", "#96E9F5"]}
+          colors={[theme.primary, theme.gradientFade]}
           style={{
             position: "absolute",
             height: "37%",

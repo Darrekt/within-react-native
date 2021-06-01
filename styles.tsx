@@ -1,4 +1,3 @@
-// https://paletton.com/#uid=13l0u0kl1Wx1x+IcEXDsUWkWEVB
 import { Dimensions, StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
@@ -107,9 +106,8 @@ export const textStyles = StyleSheet.create({
     fontWeight: "400",
   },
   buttonText: {
-    color: "white",
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: "300",
   },
   validationMessage: {
     textAlign: "center",

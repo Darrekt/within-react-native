@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Alert } from "react-native";
 import { Icon } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { globalStyles } from "../../../styles";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
@@ -13,12 +14,10 @@ import {
   resetSettings,
   toggleOnboarding,
 } from "../../redux/actions/settings/thunks";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getSettings } from "../../redux/selectors";
+import { useAppDispatch } from "../../redux/hooks";
 import { Screens } from "../navConstants";
 
 const SettingsScreen = () => {
-  const settings = useAppSelector(getSettings);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
@@ -33,7 +32,7 @@ const SettingsScreen = () => {
       name: "Theme",
       subtitle: "Change or customise your theme",
       icon: <Icon name="palette" type="materialIcon" />,
-      action: () => dispatch(toggleOnboarding()),
+      action: () => navigation.navigate(Screens.Theme),
     },
   ];
 
@@ -58,8 +57,8 @@ const SettingsScreen = () => {
 
   return (
     <SafeAreaView>
-      <View
-        style={{
+      <ScrollView
+        contentContainerStyle={{
           ...globalStyles.column,
           height: "100%",
           justifyContent: "flex-start",
@@ -101,7 +100,7 @@ const SettingsScreen = () => {
             }}
           />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -2,6 +2,7 @@ import { compareDeadlines, DeadlineEntity } from "../models/Deadline";
 import { ProjectEntity } from "../models/Project";
 import { TodoEntity } from "../models/Todo";
 import { RootState } from "../redux/store";
+import { SageTheme, SAGE_THEME_LIST, Theme } from "../util/constants";
 
 export const getProjects = (state: RootState) => state.projects;
 export const getSelected = (state: RootState): string => state.selected;
@@ -27,6 +28,9 @@ export const findDeadline =
           .find((proj) => proj.deadlines.some((ddl) => ddl.id === deadlineID))
           ?.deadlines.find((ddl) => ddl.id === deadlineID)
       : undefined;
+
+export const getTheme = (state: RootState): Theme =>
+  SAGE_THEME_LIST[state.settings.theme];
 
 export const getRunning = (state: RootState): TodoEntity | undefined =>
   getAllTodos(state).find((todo) => todo.finishingTime);

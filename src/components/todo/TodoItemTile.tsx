@@ -6,7 +6,7 @@ import { AntDesign, Entypo } from "@expo/vector-icons";
 import CircleButtonGroup from "../util/CircleButtonGroup";
 import { useNavigation } from "@react-navigation/core";
 import { TodoAction } from "../../redux/actions/actionTypes";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectTodo } from "../../redux/actions/todos/actions";
 import {
   completeFirebaseTodo,
@@ -14,6 +14,8 @@ import {
 } from "../../redux/actions/todos/thunks";
 import { AppThunk } from "../../redux/store";
 import { Screens } from "../../screens/navConstants";
+import LinearGradient from "react-native-linear-gradient";
+import { getTheme } from "../../redux/selectors";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -27,9 +29,6 @@ const styles = StyleSheet.create({
   tileIconStyle: {
     marginRight: 20,
     fontSize: 20,
-  },
-  selectedTileStyle: {
-    backgroundColor: "aqua",
   },
   tileTitleTextStyle: {
     flex: 6,
@@ -53,6 +52,7 @@ type Props = {
 };
 
 const TodoItemTile = ({ todo, selected, running }: Props) => {
+  const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   let itemTitleTextStyle = todo.completed
@@ -106,9 +106,14 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
   return (
     <ListItem
       topDivider
-      containerStyle={
-        todo.id == selected ? styles.selectedTileStyle : undefined
-      }
+      linearGradientProps={{
+        start: { x: 0, y: 0 },
+        end: { x: 0.5, y: 0.5 },
+        colors: selected
+          ? [theme.primary, theme.gradientFade]
+          : ["white", "white"],
+      }}
+      ViewComponent={LinearGradient}
     >
       <TouchableOpacity
         onPress={() => {
@@ -119,7 +124,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
         }}
       >
         <ListItem.Content style={styles.tileRow}>
-          <BadgedText style={styles.tileIconStyle}>{todo.emoji}</BadgedText>
+          <BadgedText>{todo.emoji}</BadgedText>
           <ListItem.Title style={itemTitleTextStyle}>
             {todo.name}
           </ListItem.Title>

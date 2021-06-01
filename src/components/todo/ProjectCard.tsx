@@ -2,17 +2,12 @@ import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
-import {
-  ProjectEntity,
-  ProjectFromEntity,
-  UNCATEGORISED_TODO_PROJID,
-} from "../../models/Project";
-import { AntDesign } from "@expo/vector-icons";
+import { ProjectEntity, ProjectFromEntity } from "../../models/Project";
 import { useNavigation } from "@react-navigation/native";
 import { List } from "immutable";
 import { Screens } from "../../screens/navConstants";
-import { Icon } from "react-native-elements/dist/icons/Icon";
-import { Foundation } from "@expo/vector-icons";
+import { AntDesign, Foundation } from "@expo/vector-icons";
+import { UNCATEGORISED_TODO_PROJID } from "../../util/constants";
 
 const styles = StyleSheet.create({
   cardStyle: {
@@ -51,6 +46,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
     </Card>
   ) : (
     <Card
+      elevation={16}
       style={styles.cardStyle}
       onPress={() =>
         navigation.navigate(Screens.ViewProject, { projID: project.id })
@@ -64,7 +60,9 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
             paddingHorizontal: 10,
           }}
         >
-          <Text style={{ fontSize: 25, margin: 5 }}>{project.emoji}</Text>
+          <Text style={{ opacity: 1, fontSize: 25, margin: 5 }}>
+            {project.emoji}
+          </Text>
           <View style={globalStyles.column}>
             <Text
               style={{

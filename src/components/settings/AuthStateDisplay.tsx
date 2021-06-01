@@ -11,6 +11,8 @@ import {
 import { Avatar } from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
 import { globalStyles } from "../../../styles";
+import { useAppSelector } from "../../redux/hooks";
+import { getTheme } from "../../redux/selectors";
 import { Screens } from "../../screens/navConstants";
 
 const styles = StyleSheet.create({
@@ -28,7 +30,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginLeft: 25,
     fontFamily: "Gill Sans",
-    color: "#ffffff",
     backgroundColor: "transparent",
   },
 });
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
 const AuthStateDisplay = () => {
   const user = firebase.auth().currentUser;
   const width = useWindowDimensions().width * 0.85;
+  const theme = useAppSelector(getTheme);
   const navigation = useNavigation();
 
   return (
@@ -45,7 +47,7 @@ const AuthStateDisplay = () => {
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0.5 }}
-        colors={["#01D1EE", "#96E9F5"]}
+        colors={[theme.primary, theme.gradientFade]}
         style={{ ...styles.linearGradient, width: width }}
       >
         <View
@@ -60,20 +62,17 @@ const AuthStateDisplay = () => {
             rounded
             size="large"
             title={user?.displayName?.charAt(0) ?? ""}
-            overlayContainerStyle={{ backgroundColor: "#73EEFF" }}
+            titleStyle={{ color: theme.text.dark }}
+            overlayContainerStyle={{ backgroundColor: theme.dark }}
           />
-          {user ? (
-            <Text style={styles.buttonText}>
-              {`Signed in as ${
-                user.displayName ??
-                "a mysterious entity. Set a display name here!"
-              }`}
-            </Text>
-          ) : (
-            <Text style={styles.buttonText}>
-              Not signed in. Your data isn't synced!
-            </Text>
-          )}
+          <Text style={{ ...styles.buttonText, color: theme.text.primary }}>
+            {user
+              ? `Signed in as ${
+                  user.displayName ??
+                  "a mysterious entity. Set a display name here!"
+                }`
+              : "Not signed in. Your data isn't synced!"}
+          </Text>
         </View>
       </LinearGradient>
     </TouchableOpacity>
