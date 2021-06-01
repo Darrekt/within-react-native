@@ -1,21 +1,27 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Icon, ListItem, withBadge } from "react-native-elements";
+import {
+  Animated,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+} from "react-native";
+import { ListItem, withBadge } from "react-native-elements";
 import { TodoEntity } from "../../models/Todo";
-import { AntDesign, Entypo } from "@expo/vector-icons";
-import CircleButtonGroup from "../util/CircleButtonGroup";
 import { useNavigation } from "@react-navigation/core";
-import { TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectTodo } from "../../redux/actions/todos/actions";
 import {
   completeFirebaseTodo,
   deleteFirebaseTodo,
 } from "../../redux/actions/todos/thunks";
-import { AppThunk } from "../../redux/store";
 import { Screens } from "../../screens/navConstants";
 import LinearGradient from "react-native-linear-gradient";
 import { getTheme } from "../../redux/selectors";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { RectButton } from "react-native-gesture-handler";
+import { ERROR_COLOR } from "../../util/constants";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -43,6 +49,21 @@ const styles = StyleSheet.create({
     textDecorationLine: "line-through",
     textDecorationStyle: "solid",
   },
+  leftAction: {
+    width: Dimensions.get("screen").width * 0.25,
+    height: "100%",
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignSelf: "stretch",
+    alignContent: "flex-end",
+  },
+  actionText: {
+    color: "white",
+    width: "100%",
+    fontSize: 16,
+    fontWeight: "600",
+    backgroundColor: "transparent",
+  },
 });
 
 type Props = {
@@ -64,20 +85,6 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
       ? { ...itemTitleTextStyle, ...styles.unselectedTileText }
       : itemTitleTextStyle;
 
-  const buttons: {
-    key: string;
-    action: TodoAction | AppThunk;
-    icon: JSX.Element;
-  }[] = [
-    {
-      key: todo.id + "delete",
-      action: deleteFirebaseTodo(todo),
-      icon: (
-        <Entypo key={todo.id + "delete"} name="cross" size={20} color="black" />
-      ),
-    },
-  ];
-
   const BadgedText = withBadge(todo.laps, {
     badgeStyle: {
       backgroundColor: theme.dark,
@@ -89,39 +96,73 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
     hidden: todo.laps === 0,
   })(Text);
 
-  return (
-    <ListItem
-      linearGradientProps={{
-        start: { x: 0, y: 0 },
-        end: { x: 0.5, y: 0.5 },
-        colors: selected
-          ? [theme.primary, theme.gradientFade]
-          : ["white", "white"],
-      }}
-      ViewComponent={LinearGradient}
-    >
-      <TouchableOpacity
+  const renderRightActions = (
+    progress: Animated.AnimatedInterpolation,
+    dragX: Animated.AnimatedInterpolation
+  ) => {
+    const trans = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [0, 1],
+    });
+    return (
+      <RectButton
+        style={styles.leftAction}
         onPress={() => {
-          if (!running) dispatch(selectTodo(todo));
-        }}
-        onLongPress={() => {
-          navigation.navigate(Screens.ViewTodo, { id: todo.id });
+          console.log("pressed");
+          dispatch(deleteFirebaseTodo(todo));
         }}
       >
-        <ListItem.Content style={styles.tileRow}>
-          <ListItem.Title>
-            <BadgedText style={styles.tileIconStyle}>{todo.emoji}</BadgedText>
-          </ListItem.Title>
-          <ListItem.Subtitle style={itemTitleTextStyle}>
-            {todo.name}
-          </ListItem.Subtitle>
-          <ListItem.CheckBox
-            disabled={running || todo.id !== selected}
-            onPress={() => dispatch(completeFirebaseTodo(todo))}
-          ></ListItem.CheckBox>
-        </ListItem.Content>
-      </TouchableOpacity>
-    </ListItem>
+        <Animated.Text
+          style={[
+            styles.actionText,
+            {
+              transform: [{ translateX: trans }],
+            },
+          ]}
+        >
+          Delete
+        </Animated.Text>
+      </RectButton>
+    );
+  };
+
+  return (
+    <Swipeable overshootRight={false} renderRightActions={renderRightActions}>
+      <ListItem
+        linearGradientProps={{
+          start: { x: 0, y: 0 },
+          end: { x: 0.5, y: 0.5 },
+          colors: selected
+            ? [theme.primary, theme.gradientFade]
+            : ["white", "white"],
+        }}
+        ViewComponent={LinearGradient}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            if (!running) dispatch(selectTodo(todo));
+          }}
+          onLongPress={() => {
+            navigation.navigate(Screens.ViewTodo, { id: todo.id });
+          }}
+        >
+          <ListItem.Content style={styles.tileRow}>
+            <ListItem.Title>
+              <BadgedText style={styles.tileIconStyle}>{todo.emoji}</BadgedText>
+            </ListItem.Title>
+            <ListItem.Subtitle style={itemTitleTextStyle}>
+              {todo.name}
+            </ListItem.Subtitle>
+            <ListItem.CheckBox
+              checked={todo.completed}
+              checkedColor={theme.dark}
+              disabled={running || todo.id !== selected}
+              onPress={() => dispatch(completeFirebaseTodo(todo))}
+            ></ListItem.CheckBox>
+          </ListItem.Content>
+        </TouchableOpacity>
+      </ListItem>
+    </Swipeable>
   );
 };
 
