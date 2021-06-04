@@ -106,8 +106,8 @@ export const textStyles = StyleSheet.create({
     fontWeight: "400",
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: "400",
+    fontSize: 15,
+    fontWeight: "500",
   },
   validationMessage: {
     textAlign: "center",

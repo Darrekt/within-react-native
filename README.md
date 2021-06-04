@@ -6,33 +6,25 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 
 - Timer shifts oddly at the 11th second of single digit minutes
 - Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
-- ~~Completion adds 2 laps and not 1~~
 
 ## TODOS
 
 - Features
 
+  - Passwordless Sign in
+  - Fix CSS
   - ~~Deadlines~~
     - Add Todos to deadlines
       - Add todos modal on deadlineAdd page
       - firebase implementation
     - Dropdown deadlines with todos (nativebase accordion)
-  - Disable notifications
-
-  - ~~Add test suite for projects and todo data models~~
-  - ~~Complete projects~~
-  - ~~Complete todos~~
+    - Deploy on Android
+    - Deploy PWA
 
 - Styling
 
   - GLASS / NEUMORPHIC STYLING
   - DARK MODE
-  - Changing color pallettes
-
-- Backend
-
-  - Brainstorm website name (shield?) (medieval castles preventing scaling ropes)
-  - Terms of use, indemnity, loss of profit etc
 
 ## Proposed Features
 
