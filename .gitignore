@@ -2,6 +2,10 @@
 #
 .DS_Store
 
+# Firebase Config files
+android/app/google-services.json
+ios/GoogleService-Info.plist
+
 # Xcode
 #
 build/

@@ -352,7 +352,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.darrekt.Sage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.darrektdev.sage;
 				PRODUCT_NAME = Sage;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -378,7 +378,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.darrekt.Sage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.darrektdev.sage;
 				PRODUCT_NAME = Sage;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
