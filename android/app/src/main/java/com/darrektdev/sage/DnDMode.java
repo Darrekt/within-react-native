@@ -1,4 +1,4 @@
-package com.darrekt.Sage;
+package com.darrektdev.sage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;

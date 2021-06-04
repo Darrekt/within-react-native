@@ -41,42 +41,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:724285721213:android:d5a2bb86a953d99650ff14",
-        "android_client_info": {
-          "package_name": "com.darrektdev.sage"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "724285721213-2qbglj7urpf3aan23qhr74kg41pcerrq.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCs2jisvuoGyzrdUdRu2OeoRkk_WShN6_M"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "724285721213-2qbglj7urpf3aan23qhr74kg41pcerrq.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "724285721213-uo3012f3vqpdf0m35bg0nah8lnvevgmf.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.darrekt.Sage"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

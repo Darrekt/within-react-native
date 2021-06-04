@@ -1,4 +1,4 @@
-package com.darrekt.Sage.generated;
+package com.darrektdev.sage.generated;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.darrekt.Sage;
+package com.darrektdev.sage;
 
 import android.os.Bundle;
 
