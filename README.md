@@ -11,15 +11,15 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
 
 - Features
 
-  - Passwordless Sign in
   - Fix CSS
   - ~~Deadlines~~
     - Add Todos to deadlines
       - Add todos modal on deadlineAdd page
       - firebase implementation
     - Dropdown deadlines with todos (nativebase accordion)
-    - Deploy on Android
-    - Deploy PWA
+  - Deploy on Android
+  - Deploy PWA
+  - Passwordless Sign in
 
 - Styling
 

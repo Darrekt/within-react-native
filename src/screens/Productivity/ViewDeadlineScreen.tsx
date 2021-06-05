@@ -74,19 +74,19 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
           dispatch(
             deadline
               ? updateFirebaseDeadline(
-                new Deadline({
-                  ...DeadlineFromEntity(deadline),
-                  name: values.name,
-                  due: values.due,
-                }).toEntity()
-              )
+                  new Deadline({
+                    ...DeadlineFromEntity(deadline),
+                    name: values.name,
+                    due: values.due,
+                  }).toEntity()
+                )
               : addFirebaseDeadline(
-                new Deadline({
-                  project: route.params.projID ?? "",
-                  name: values.name,
-                  due: values.due,
-                }).toEntity()
-              )
+                  new Deadline({
+                    project: route.params.projID ?? "",
+                    name: values.name,
+                    due: values.due,
+                  }).toEntity()
+                )
           )
         );
         navigation.goBack();
@@ -119,17 +119,19 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
             onFocus={() => setShowDatePicker(true)}
             enabled={false}
           />
-          {showDatePicker && <DateTimePicker
-            style={styles.dateCol}
-            value={formik.values.due}
-            mode="date"
-            is24Hour={true}
-            display="default"
-            onChange={(event, date) => {
-              setShowDatePicker(Platform.OS === 'ios');
-              formik.setFieldValue("due", date ?? formik.values.due)
-            }}
-          />}
+          {showDatePicker && (
+            <DateTimePicker
+              style={styles.dateCol}
+              value={formik.values.due}
+              mode="date"
+              is24Hour={true}
+              display="default"
+              onChange={(event, date) => {
+                setShowDatePicker(Platform.OS === "ios");
+                formik.setFieldValue("due", date ?? formik.values.due);
+              }}
+            />
+          )}
           <View style={globalStyles.bottomButtons}>
             <SubmitButton
               onPress={() => formik.handleSubmit()}

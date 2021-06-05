@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 25,
   },
+  emojiFont: { color: "black", fontSize: 25, margin: 5 },
   blackFont: {
     color: "black",
   },
@@ -60,9 +61,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
             paddingHorizontal: 10,
           }}
         >
-          <Text style={{ opacity: 1, fontSize: 25, margin: 5 }}>
-            {project.emoji}
-          </Text>
+          <Text style={styles.emojiFont}>{project.emoji}</Text>
           <View style={globalStyles.column}>
             <Text
               style={{

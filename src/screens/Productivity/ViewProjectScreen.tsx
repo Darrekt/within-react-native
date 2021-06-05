@@ -154,6 +154,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 <HeaderButton
                   onPress={() =>
                     navigation.navigate(Screens.AddDeadline, {
+                      deadlineID: undefined,
                       projID: project.id,
                     })
                   }
@@ -170,6 +171,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                     onLongPress={() =>
                       navigation.navigate(Screens.ViewDeadline, {
                         deadlineID: ddl.id,
+                        projID: undefined,
                       })
                     }
                   />
