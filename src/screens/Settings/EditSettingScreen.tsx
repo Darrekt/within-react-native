@@ -6,7 +6,6 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
-  useWindowDimensions,
 } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
@@ -14,11 +13,10 @@ import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
 import Card from "../../components/layout/Card";
-import { printTimeLeft } from "../../util/timer";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getSettings } from "../../redux/selectors";
 import { changeWorkParams } from "../../redux/actions/settings/thunks";
-import { SafeAreaView } from "react-native-safe-area-context";
+import OneButtonForm from "../../components/layout/OneButtonForm";
 
 const styles = StyleSheet.create({
   headerStyle: {
@@ -50,7 +48,6 @@ const validateProjects = (setVal?: number) => {
 
 const EditProductivitySettingScreen = () => {
   const settings = useAppSelector(getSettings);
-  const windowDimensions = useWindowDimensions();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
@@ -78,13 +75,6 @@ const EditProductivitySettingScreen = () => {
             errors.maxProjects = validateProjects(values.maxProjects);
           if (validateProjects(values.maxTasks))
             errors.maxTasks = validateProjects(values.maxTasks);
-          // if (!values.defaultInterval)
-          //   errors.defaultInterval = "Invalid duration!";
-          // if (values.defaultInterval < 20)
-          //   errors.defaultInterval = "Too short!";
-          // if (values.defaultInterval > 45)
-          //   errors.defaultInterval = "Too long!";
-
           return errors;
         }}
         onSubmit={(values) => {
@@ -99,93 +89,62 @@ const EditProductivitySettingScreen = () => {
         }}
       >
         {(formik) => (
-          <SafeAreaView edges={["bottom", "left", "right"]}>
-            <View style={globalStyles.form}>
-              <Card elevation={2}>
-                <Text style={styles.headerStyle}>Maximum Projects</Text>
-                <View style={globalStyles.row}>
-                  <Text style={styles.bodyStyle}>
-                    While we encourage keeping busy, there really shouldn't be
-                    too many of these at once. Focus is the key!
-                  </Text>
-                  <TextInput
-                    style={{ ...globalStyles.lightInput, ...styles.inputStyle }}
-                    autoCompleteType="off"
-                    onChangeText={formik.handleChange("maxProjects")}
-                    onBlur={formik.handleBlur("maxProjects")}
-                    keyboardType="number-pad"
-                    value={`${formik.values.maxProjects}`}
-                    onSubmitEditing={() => formik.handleSubmit()}
-                  />
-                  {formik.touched.maxProjects && formik.errors.maxProjects && (
-                    <Text style={textStyles.validationMessage}>
-                      {formik.errors.maxProjects}
-                    </Text>
-                  )}
-                </View>
-              </Card>
-              <Card elevation={2}>
-                <Text style={styles.headerStyle}>Maximum Tasks</Text>
-                <View style={globalStyles.row}>
-                  <Text style={styles.bodyStyle}>
-                    Too many tasks leads to decision paralysis! Each task should
-                    be a small and finishable in one or two intervals at most.
-                  </Text>
-                  <TextInput
-                    style={{ ...globalStyles.lightInput, ...styles.inputStyle }}
-                    autoCompleteType="off"
-                    onChangeText={formik.handleChange("maxTasks")}
-                    onBlur={formik.handleBlur("maxTasks")}
-                    keyboardType="number-pad"
-                    value={`${formik.values.maxTasks}`}
-                    onSubmitEditing={() => formik.handleSubmit()}
-                  />
-                  {formik.touched.maxTasks && formik.errors.maxTasks && (
-                    <Text style={textStyles.validationMessage}>
-                      {formik.errors.maxTasks}
-                    </Text>
-                  )}
-                </View>
-              </Card>
-              {/* <Card elevation={0.5}>
-              <Text style={styles.headerStyle}>Default interval duration</Text>
+          <OneButtonForm
+            centerFields={false}
+            button={
+              <SubmitButton
+                text="Save Settings"
+                onPress={formik.handleSubmit}
+              />
+            }
+          >
+            <Card elevation={2}>
+              <Text style={styles.headerStyle}>Maximum Projects</Text>
               <View style={globalStyles.row}>
                 <Text style={styles.bodyStyle}>
-                  Keep your focus for at least 20 minutes, but don't get too
-                  tired, either! We'll allow a maximum of 45 minutes without
-                  rest.
+                  While we encourage keeping busy, there really shouldn't be too
+                  many of these at once. Focus is the key!
                 </Text>
                 <TextInput
-                  style={{
-                    ...globalStyles.lightInput,
-                    ...styles.inputStyle,
-                    flex: 2,
-                    fontSize: 20,
-                  }}
+                  style={{ ...globalStyles.lightInput, ...styles.inputStyle }}
                   autoCompleteType="off"
-                  onChangeText={formik.handleChange("defaultInterval")}
-                  onBlur={formik.handleBlur("defaultInterval")}
+                  onChangeText={formik.handleChange("maxProjects")}
+                  onBlur={formik.handleBlur("maxProjects")}
                   keyboardType="number-pad"
-                  maxLength={2}
-                  value={formik.values.defaultInterval.toString()}
+                  value={`${formik.values.maxProjects}`}
                   onSubmitEditing={() => formik.handleSubmit()}
                 />
-                {formik.touched.defaultInterval &&
-                  formik.errors.defaultInterval && (
-                    <Text style={textStyles.validationMessage}>
-                      {formik.errors.defaultInterval}
-                    </Text>
-                  )}
+                {formik.touched.maxProjects && formik.errors.maxProjects && (
+                  <Text style={textStyles.validationMessage}>
+                    {formik.errors.maxProjects}
+                  </Text>
+                )}
               </View>
-            </Card> */}
-              <View style={globalStyles.anchoredBottomButtons}>
-                <SubmitButton
-                  text="Save Settings"
-                  onPress={formik.handleSubmit}
+            </Card>
+            <Card elevation={2}>
+              <Text style={styles.headerStyle}>Maximum Tasks</Text>
+              <View style={globalStyles.row}>
+                <Text style={styles.bodyStyle}>
+                  Too many tasks leads to decision paralysis! Each task should
+                  be a small and finishable in one or two intervals at most.
+                </Text>
+                <TextInput
+                  style={{ ...globalStyles.lightInput, ...styles.inputStyle }}
+                  autoCompleteType="off"
+                  onChangeText={formik.handleChange("maxTasks")}
+                  onBlur={formik.handleBlur("maxTasks")}
+                  keyboardType="number-pad"
+                  value={`${formik.values.maxTasks}`}
+                  onSubmitEditing={() => formik.handleSubmit()}
                 />
+                {formik.touched.maxTasks && formik.errors.maxTasks && (
+                  <Text style={textStyles.validationMessage}>
+                    {formik.errors.maxTasks}
+                  </Text>
+                )}
               </View>
-            </View>
-          </SafeAreaView>
+            </Card>
+          </OneButtonForm>
         )}
       </Formik>
     </KeyboardAvoidingView>

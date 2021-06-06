@@ -4,10 +4,12 @@ import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import auth from "@react-native-firebase/auth";
-import { useNavigation } from "@react-navigation/native";
 import SubmitButton from "../../components/util/SubmitButton";
+import { useAppSelector } from "../../redux/hooks";
+import { getTheme } from "../../redux/selectors";
 
 const EmailSignInScreen = () => {
+  const theme = useAppSelector(getTheme);
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -63,7 +65,7 @@ const EmailSignInScreen = () => {
       {(formik) => (
         <View style={globalStyles.column}>
           <TextInput
-            style={globalStyles.inputBox}
+            style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
             autoCapitalize="none"
             autoCompleteType="email"
             onChangeText={formik.handleChange("email")}
@@ -77,7 +79,7 @@ const EmailSignInScreen = () => {
             </Text>
           )}
           <TextInput
-            style={globalStyles.inputBox}
+            style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
             autoCapitalize="none"
             autoCompleteType="password"
             secureTextEntry

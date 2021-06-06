@@ -7,9 +7,14 @@ import { globalStyles, textStyles } from "../../../styles";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Screens } from "../navConstants";
+import ThemedTextInput from "../../components/ThemedTextInput";
+import { useAppSelector } from "../../redux/hooks";
+import { getType } from "@reduxjs/toolkit";
+import { getTheme } from "../../redux/selectors";
 
 const AuthManagementScreen = () => {
   const user = auth().currentUser;
+  const theme = useAppSelector(getTheme);
   const navigation = useNavigation();
 
   return (
@@ -26,7 +31,8 @@ const AuthManagementScreen = () => {
           rounded
           size="xlarge"
           title={user?.displayName?.charAt(0) ?? ""}
-          overlayContainerStyle={{ backgroundColor: "#73eeff" }}
+          overlayContainerStyle={{ backgroundColor: theme.primary }}
+          titleStyle={{ color: theme.text.primary }}
         />
         <Text style={textStyles.avatarName}>
           {user?.displayName ?? "Add a display name!"}

@@ -14,7 +14,7 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
 import HeaderButton from "../../components/util/HeaderButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getProjects } from "../../redux/selectors";
+import { getProjects, getTheme } from "../../redux/selectors";
 import {
   addFirebaseProject,
   completeFirebaseProject,
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
 
 const ViewProjectScreen = ({ route, navigation }: Props) => {
   const projects = useAppSelector(getProjects);
+  const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
 
   const project = route.params?.projID
@@ -113,14 +114,14 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
           <HeadingDropDown header="Project Info">
             <View style={globalStyles.row}>
               <TextInput
-                style={styles.emojiInput}
+                style={{ ...styles.emojiInput, borderColor: theme.dark }}
                 onChangeText={formik.handleChange("emoji")}
                 onBlur={formik.handleBlur("emoji")}
                 placeholder="Emoji"
                 value={formik.values.emoji}
               />
               <TextInput
-                style={styles.nameInput}
+                style={{ ...styles.nameInput, borderColor: theme.dark }}
                 onChangeText={formik.handleChange("name")}
                 onBlur={formik.handleBlur("name")}
                 placeholder="Project name"
@@ -140,7 +141,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               )}
             </View>
             <TextInput
-              style={globalStyles.inputBox}
+              style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
               onChangeText={formik.handleChange("notes")}
               onBlur={formik.handleBlur("notes")}
               placeholder="Notes"

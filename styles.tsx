@@ -31,9 +31,8 @@ export const globalStyles = StyleSheet.create({
   inputBox: {
     margin: 8,
     height: 45,
-    width: "100%",
+    width: Dimensions.get("window").width * 0.8,
     padding: 10,
-    borderColor: "#56DEF1",
     backgroundColor: "#FFFFFF",
     borderRadius: 5,
     borderWidth: 1,
@@ -57,13 +56,6 @@ export const globalStyles = StyleSheet.create({
   bottomButtons: {
     width: Dimensions.get("window").width,
     marginBottom: Dimensions.get("window").width * 0.05,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  anchoredBottomButtons: {
-    position: "absolute",
-    width: Dimensions.get("window").width,
-    bottom: Dimensions.get("window").width * 0.05,
     justifyContent: "center",
     alignItems: "center",
   },

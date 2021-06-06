@@ -1,20 +1,21 @@
-import auth from "@react-native-firebase/auth";
+import auth, { firebase } from "@react-native-firebase/auth";
 import React from "react";
 import { View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
-import { firebase } from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
-import { Actions } from "../../redux/actions/actionTypes";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { authStateChanged } from "../../redux/actions/settings/actions";
+import OneButtonForm from "../../components/layout/OneButtonForm";
+import { getTheme } from "../../redux/selectors";
 
 const EditNameScreen = () => {
   const user = auth().currentUser;
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const theme = useAppSelector(getTheme);
   return (
     <View style={globalStyles.centered}>
       <Formik
@@ -38,9 +39,17 @@ const EditNameScreen = () => {
         }}
       >
         {(formik) => (
-          <View style={globalStyles.column}>
+          <OneButtonForm
+            nakedPage
+            button={
+              <SubmitButton
+                text="Change name"
+                onPress={() => formik.handleSubmit()}
+              />
+            }
+          >
             <TextInput
-              style={globalStyles.inputBox}
+              style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
               autoCompleteType="name"
               onChangeText={formik.handleChange("newName")}
               onBlur={formik.handleBlur("newName")}
@@ -53,11 +62,7 @@ const EditNameScreen = () => {
                 {formik.errors.newName}
               </Text>
             )}
-            <SubmitButton
-              text="Change my name!"
-              onPress={() => formik.handleSubmit()}
-            />
-          </View>
+          </OneButtonForm>
         )}
       </Formik>
     </View>

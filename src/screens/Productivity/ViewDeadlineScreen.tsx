@@ -17,6 +17,7 @@ import {
 } from "../../redux/actions/deadlines/thunks";
 import Deadline, { DeadlineFromEntity } from "../../models/Deadline";
 import { RootStackParamList, Screens } from "../navConstants";
+import OneButtonForm from "../../components/layout/OneButtonForm";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -99,7 +100,14 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
       }}
     >
       {(formik) => (
-        <View style={globalStyles.form}>
+        <OneButtonForm
+          button={
+            <SubmitButton
+              onPress={() => formik.handleSubmit()}
+              text={deadline ? "Save Changes" : "Add Deadline"}
+            />
+          }
+        >
           <TextInput
             style={styles.nameInput}
             onChangeText={formik.handleChange("name")}
@@ -132,13 +140,7 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
               }}
             />
           )}
-          <View style={globalStyles.anchoredBottomButtons}>
-            <SubmitButton
-              onPress={() => formik.handleSubmit()}
-              text={deadline ? "Save Changes" : "Add Deadline"}
-            />
-          </View>
-        </View>
+        </OneButtonForm>
       )}
     </Formik>
   );

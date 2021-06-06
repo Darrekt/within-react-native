@@ -90,7 +90,7 @@ export default function SurveyScreen() {
               )}
             </ScrollView>
           </KeyboardAvoidingView>
-          <View style={globalStyles.anchoredBottomButtons}>
+          <View style={globalStyles.bottomButtons}>
             <SubmitButton
               onPress={() => formik.handleSubmit()}
               text="Submit survey"

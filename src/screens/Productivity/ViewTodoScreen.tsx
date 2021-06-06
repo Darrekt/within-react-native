@@ -18,6 +18,7 @@ import {
   updateFirebaseTodo,
 } from "../../redux/actions/todos/thunks";
 import { UNCATEGORISED_TODO_PROJID } from "../../util/constants";
+import OneButtonForm from "../../components/layout/OneButtonForm";
 
 type RootStackParamList = {
   ViewProjScreen: { id: string };
@@ -57,119 +58,113 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
     : undefined;
 
   return (
-    <View style={globalStyles.centered}>
-      <Formik
-        initialValues={{
-          emoji: todo?.emoji ?? "",
-          name: todo?.name ?? "",
-          project: todo?.project ?? UNCATEGORISED_TODO_PROJID,
-        }}
-        validate={(values) => {
-          const errors: {
-            emoji?: string;
-            name?: string;
-            project?: string;
-          } = {};
+    <Formik
+      initialValues={{
+        emoji: todo?.emoji ?? "",
+        name: todo?.name ?? "",
+        project: todo?.project ?? UNCATEGORISED_TODO_PROJID,
+      }}
+      validate={(values) => {
+        const errors: {
+          emoji?: string;
+          name?: string;
+          project?: string;
+        } = {};
 
-          if (values.emoji && !EmojiRegex().test(values.emoji))
-            errors.emoji = "Invalid emoji";
+        if (values.emoji && !EmojiRegex().test(values.emoji))
+          errors.emoji = "Invalid emoji";
 
-          if (!values.name) errors.name = "Please enter a task name.";
-          if (!values.project) errors.project = "Invalid project ID";
+        if (!values.name) errors.name = "Please enter a task name.";
+        if (!values.project) errors.project = "Invalid project ID";
 
-          return errors;
-        }}
-        onSubmit={async (values) => {
-          await wrapAsync(() =>
-            dispatch(
-              todo
-                ? updateFirebaseTodo(
-                    new Todo({
-                      ...TodoFromEntity(todo),
-                      emoji: values.emoji,
-                      name: values.name,
-                      project: values.project,
-                    }).toEntity()
-                  )
-                : addFirebaseTodo(
-                    new Todo({
-                      emoji: values.emoji,
-                      name: values.name,
-                      project: values.project,
-                    }).toEntity()
-                  )
-            )
-          );
-          Toast.show({
-            type: "success",
-            position: "bottom",
-            text1: `${todo ? "Updated" : "Added"} todo!`,
-            text2: values.name,
-          });
-          navigation.goBack();
-        }}
-      >
-        {(formik) => (
-          <View style={globalStyles.form}>
-            <View style={globalStyles.column}>
-              <View style={globalStyles.spacer}></View>
-              <Text style={textStyles.header}>What are you doing?</Text>
-              <View style={globalStyles.row}>
-                <TextInput
-                  style={styles.emojiInput}
-                  onChangeText={formik.handleChange("emoji")}
-                  onBlur={formik.handleBlur("emoji")}
-                  placeholder="Emoji"
-                  value={formik.values.emoji}
-                />
-                <TextInput
-                  style={styles.nameInput}
-                  onChangeText={formik.handleChange("name")}
-                  onBlur={formik.handleBlur("name")}
-                  placeholder="Task name"
-                  value={formik.values.name}
-                />
-              </View>
-              <View style={globalStyles.row}>
-                {formik.touched.emoji && formik.errors.emoji && (
-                  <Text style={textStyles.validationMessage}>
-                    {formik.errors.emoji}
-                  </Text>
-                )}
-                {formik.touched.name && formik.errors.name && (
-                  <Text style={textStyles.validationMessage}>
-                    {formik.errors.name}
-                  </Text>
-                )}
-              </View>
-              <Text style={textStyles.header}>Additional details</Text>
-              <ModalSelector
-                data={projects.map((proj) => {
-                  return {
-                    key: proj.id,
-                    label: proj.name,
-                  };
-                })}
-                initValue={
-                  projects.find((proj) => proj.id === formik.values.project)
-                    ?.name ?? "No project!"
-                }
-                onChange={(option) => {
-                  formik.setFieldValue("project", option.key);
-                }}
-                cancelText="Cancel"
-              />
-            </View>
-            <View style={globalStyles.anchoredBottomButtons}>
-              <SubmitButton
-                onPress={() => formik.handleSubmit()}
-                text={`${todo ? "Edit" : "Create"} Task`}
-              />
-            </View>
+        return errors;
+      }}
+      onSubmit={async (values) => {
+        await wrapAsync(() =>
+          dispatch(
+            todo
+              ? updateFirebaseTodo(
+                  new Todo({
+                    ...TodoFromEntity(todo),
+                    emoji: values.emoji,
+                    name: values.name,
+                    project: values.project,
+                  }).toEntity()
+                )
+              : addFirebaseTodo(
+                  new Todo({
+                    emoji: values.emoji,
+                    name: values.name,
+                    project: values.project,
+                  }).toEntity()
+                )
+          )
+        );
+        Toast.show({
+          type: "success",
+          position: "bottom",
+          text1: `${todo ? "Updated" : "Added"} todo!`,
+          text2: values.name,
+        });
+        navigation.goBack();
+      }}
+    >
+      {(formik) => (
+        <OneButtonForm
+          button={
+            <SubmitButton
+              onPress={() => formik.handleSubmit()}
+              text={`${todo ? "Edit" : "Create"} Task`}
+            />
+          }
+        >
+          <View style={globalStyles.row}>
+            <TextInput
+              style={styles.emojiInput}
+              onChangeText={formik.handleChange("emoji")}
+              onBlur={formik.handleBlur("emoji")}
+              placeholder="Emoji"
+              value={formik.values.emoji}
+            />
+            <TextInput
+              style={styles.nameInput}
+              onChangeText={formik.handleChange("name")}
+              onBlur={formik.handleBlur("name")}
+              placeholder="Task name"
+              value={formik.values.name}
+            />
           </View>
-        )}
-      </Formik>
-    </View>
+          <View style={globalStyles.row}>
+            {formik.touched.emoji && formik.errors.emoji && (
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.emoji}
+              </Text>
+            )}
+            {formik.touched.name && formik.errors.name && (
+              <Text style={textStyles.validationMessage}>
+                {formik.errors.name}
+              </Text>
+            )}
+          </View>
+          <ModalSelector
+            data={projects.map((proj) => {
+              return {
+                key: proj.id,
+                label: proj.name,
+              };
+            })}
+            initValue={
+              projects.find((proj) => proj.id === formik.values.project)
+                ?.name ?? "No project!"
+            }
+            onChange={(option) => {
+              formik.setFieldValue("project", option.key);
+            }}
+            cancelText="Cancel"
+          />
+        </OneButtonForm>
+      )}
+    </Formik>
   );
 };
 export default ViewTodoScreen;

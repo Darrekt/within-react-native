@@ -11,12 +11,14 @@ import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
 import auth from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { sanitiseFirebaseProjects } from "../../redux/actions/projects/thunks";
 import { resetSettings } from "../../redux/actions/settings/thunks";
+import { getTheme } from "../../redux/selectors";
 
 export const SignUpScreen = () => {
   const dispatch = useAppDispatch();
+  const theme = useAppSelector(getTheme);
   return (
     <KeyboardAvoidingView
       style={globalStyles.centered}
@@ -89,7 +91,7 @@ export const SignUpScreen = () => {
               Sign up with email credentials:
             </Text>
             <TextInput
-              style={globalStyles.inputBox}
+              style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
               autoCapitalize="none"
               autoCompleteType="email"
               onChangeText={formik.handleChange("email")}
@@ -103,7 +105,7 @@ export const SignUpScreen = () => {
                 : ""}
             </Text>
             <TextInput
-              style={globalStyles.inputBox}
+              style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
               autoCapitalize="none"
               autoCompleteType="password"
               secureTextEntry

@@ -8,11 +8,13 @@ import auth from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../navConstants";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { sanitiseFirebaseProjects } from "../../redux/actions/projects/thunks";
+import { getTheme } from "../../redux/selectors";
 
 export const SignInScreen = () => {
   const navigation = useNavigation();
+  const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
   return (
     <View style={globalStyles.centered}>
@@ -82,7 +84,7 @@ export const SignInScreen = () => {
         {(formik) => (
           <View style={globalStyles.column}>
             <TextInput
-              style={globalStyles.inputBox}
+              style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
               autoCapitalize="none"
               autoCompleteType="email"
               onChangeText={formik.handleChange("email")}
@@ -96,7 +98,7 @@ export const SignInScreen = () => {
               </Text>
             )}
             <TextInput
-              style={globalStyles.inputBox}
+              style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
               autoCapitalize="none"
               autoCompleteType="password"
               secureTextEntry
