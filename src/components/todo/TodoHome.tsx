@@ -14,20 +14,6 @@ import DeadlineDisplay from "./DeadlineDisplay";
 import { compareDeadlines, DeadlineEntity } from "../../models/Deadline";
 import { compareProjectsByDeadline } from "../../models/Project";
 
-const styles = StyleSheet.create({
-  wellnessCard: {
-    height: "100%",
-    width: 0.4 * Dimensions.get("window").width,
-    marginVertical: 10,
-  },
-  // TODO:  This card is floating above the two above it for some reason...
-  insightsCard: {
-    height: 0.2 * Dimensions.get("window").height,
-    marginVertical: 10,
-    borderRadius: 16,
-  },
-});
-
 export type Props = {
   focusDeadline: (ddl: DeadlineEntity) => () => void;
 };
@@ -48,7 +34,7 @@ const HomeDisplay = ({ focusDeadline }: Props) => {
   );
 
   return (
-    <View style={{ ...globalStyles.column }}>
+    <View style={globalStyles.column}>
       <HeadingDropDown header="Projects" dropdown={headerButton}>
         <ScrollView
           style={{ width: "100%" }}

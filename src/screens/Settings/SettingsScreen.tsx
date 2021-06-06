@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, useWindowDimensions } from "react-native";
 import { Icon } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -20,6 +20,7 @@ import { Screens } from "../navConstants";
 const SettingsScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const windowDimensions = useWindowDimensions();
 
   const generalSettings = [
     {
@@ -56,13 +57,12 @@ const SettingsScreen = () => {
   ];
 
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={["bottom", "left", "right"]}>
       <ScrollView
         contentContainerStyle={{
           ...globalStyles.column,
-          height: "100%",
           justifyContent: "flex-start",
-          marginHorizontal: 5,
+          paddingHorizontal: 0.025 * windowDimensions.width,
         }}
       >
         <AuthStateDisplay />
@@ -72,7 +72,7 @@ const SettingsScreen = () => {
         <HeadingDropDown header="General">
           <SettingsGroup items={generalSettings} />
         </HeadingDropDown>
-        <View style={globalStyles.bottomButtons}>
+        <View style={{ ...globalStyles.bottomButtons, marginTop: "5%" }}>
           <SubmitButton
             text="Sanitise Projects"
             onPress={() => {

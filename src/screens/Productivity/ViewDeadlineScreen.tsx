@@ -132,7 +132,7 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
               }}
             />
           )}
-          <View style={globalStyles.bottomButtons}>
+          <View style={globalStyles.anchoredBottomButtons}>
             <SubmitButton
               onPress={() => formik.handleSubmit()}
               text={deadline ? "Save Changes" : "Add Deadline"}

@@ -23,7 +23,7 @@ export default function HeadingDropDown({
         }}
       >
         <Text style={textStyles.header}>{header}</Text>
-        <View style={{marginRight: 15}}>{dropdown}</View>
+        <View style={{ marginRight: 15 }}>{dropdown}</View>
       </View>
       {children}
     </View>

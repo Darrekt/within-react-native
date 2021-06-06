@@ -4,14 +4,6 @@ export const globalStyles = StyleSheet.create({
   spacer: {
     height: 30,
   },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  centerInCol: {
-    width: "30%",
-  },
   row: {
     flexDirection: "row",
     alignSelf: "stretch",
@@ -31,8 +23,8 @@ export const globalStyles = StyleSheet.create({
   form: {
     height: "100%",
     width: "100%",
-    paddingVertical: Dimensions.get("screen").height * 0.02,
-    paddingHorizontal: Dimensions.get("screen").width * 0.07,
+    paddingVertical: Dimensions.get("window").height * 0.02,
+    paddingHorizontal: Dimensions.get("window").width * 0.07,
     justifyContent: "flex-start",
     alignItems: "center",
   },
@@ -62,20 +54,16 @@ export const globalStyles = StyleSheet.create({
     borderColor: "#56DEF1",
     borderBottomWidth: 2,
   },
-  submitButton: {
-    height: 40,
+  bottomButtons: {
+    width: Dimensions.get("window").width,
+    marginBottom: Dimensions.get("window").width * 0.05,
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 5,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#fff",
-    backgroundColor: "#01D1EE",
   },
-  bottomButtons: {
+  anchoredBottomButtons: {
     position: "absolute",
-    width: Dimensions.get("screen").width,
-    bottom: Dimensions.get("screen").width * 0.03,
+    width: Dimensions.get("window").width,
+    bottom: Dimensions.get("window").width * 0.05,
     justifyContent: "center",
     alignItems: "center",
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, useWindowDimensions } from "react-native";
+import { View, useWindowDimensions, Dimensions } from "react-native";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
@@ -41,7 +41,13 @@ const TodoScreen = () => {
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "flex-start",
+      }}
+    >
       {!isOpen && (
         <LinearGradient
           start={{ x: 0, y: 0 }}
@@ -49,11 +55,9 @@ const TodoScreen = () => {
           colors={[theme.primary, theme.gradientFade]}
           style={{
             position: "absolute",
-            height: "37%",
+            height: "35%",
             width: "100%",
             top: 0,
-            // borderBottomStartRadius: 20,
-            // borderBottomEndRadius: 20,
           }}
         />
       )}

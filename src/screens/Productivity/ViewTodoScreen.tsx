@@ -160,7 +160,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
                 cancelText="Cancel"
               />
             </View>
-            <View style={globalStyles.bottomButtons}>
+            <View style={globalStyles.anchoredBottomButtons}>
               <SubmitButton
                 onPress={() => formik.handleSubmit()}
                 text={`${todo ? "Edit" : "Create"} Task`}

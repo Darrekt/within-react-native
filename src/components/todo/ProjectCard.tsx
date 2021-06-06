@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { StyleSheet, View, Text, useWindowDimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles } from "../../../styles";
 import { ProjectEntity, ProjectFromEntity } from "../../models/Project";
@@ -10,12 +10,6 @@ import { AntDesign, Foundation } from "@expo/vector-icons";
 import { UNCATEGORISED_TODO_PROJID } from "../../util/constants";
 
 const styles = StyleSheet.create({
-  cardStyle: {
-    width: Dimensions.get("window").width * 0.7,
-    marginHorizontal: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 25,
-  },
   emojiFont: { color: "black", fontSize: 25, margin: 5 },
   blackFont: {
     color: "black",
@@ -27,6 +21,7 @@ const styles = StyleSheet.create({
 
 export default function ProjectCard({ project }: { project: ProjectEntity }) {
   const navigation = useNavigation();
+  const windowDimensions = useWindowDimensions();
   const now = new Date().valueOf();
   const deadlineNumber = ProjectFromEntity(project).closestDeadline()?.due;
   const ddlString = deadlineNumber
@@ -39,7 +34,12 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
 
   return project.id === UNCATEGORISED_TODO_PROJID ? (
     <Card
-      style={styles.cardStyle}
+      style={{
+        width: windowDimensions.width * 0.7,
+        marginHorizontal: 15,
+        paddingVertical: windowDimensions.width * 0.02,
+        paddingHorizontal: 25,
+      }}
       onPress={() => navigation.navigate(Screens.AddProject)}
     >
       <Text>Get started by adding a project!</Text>
@@ -48,7 +48,13 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
   ) : (
     <Card
       elevation={16}
-      style={styles.cardStyle}
+      style={{
+        width: windowDimensions.width * 0.7,
+        marginBottom: windowDimensions.height * 0.03,
+        paddingVertical: windowDimensions.height * 0.02,
+        marginHorizontal: windowDimensions.width * 0.04,
+        paddingHorizontal: windowDimensions.width * 0.05,
+      }}
       onPress={() =>
         navigation.navigate(Screens.ViewProject, { projID: project.id })
       }
