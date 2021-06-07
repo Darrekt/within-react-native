@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Alert } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -12,7 +12,7 @@ import ModalSelector from "react-native-modal-selector";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllTodos, getProjects } from "../../redux/selectors";
+import { getAllTodos, getProjects, getTheme } from "../../redux/selectors";
 import {
   addFirebaseTodo,
   updateFirebaseTodo,
@@ -41,17 +41,14 @@ type Props = {
 };
 
 const styles = StyleSheet.create({
-  emojiInput: { ...globalStyles.inputBox, width: "20%" },
-  nameInput: { ...globalStyles.inputBox, width: "50%" },
-  boolEntry: {
-    ...globalStyles.row,
-    padding: 10,
-  },
+  emojiInput: { ...globalStyles.inputBox, flex: 1 },
+  nameInput: { ...globalStyles.inputBox, flex: 4 },
 });
 
 const ViewTodoScreen = ({ route, navigation }: Props) => {
   const projects = useAppSelector(getProjects);
   const todos = useAppSelector(getAllTodos);
+  const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
   const todo = route.params?.id
     ? todos.find((item) => item.id === route.params.id)
@@ -59,6 +56,8 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
 
   return (
     <Formik
+      validateOnChange={false}
+      validateOnBlur={false}
       initialValues={{
         emoji: todo?.emoji ?? "",
         name: todo?.name ?? "",
@@ -73,9 +72,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
 
         if (values.emoji && !EmojiRegex().test(values.emoji))
           errors.emoji = "Invalid emoji";
-
         if (!values.name) errors.name = "Please enter a task name.";
-        if (!values.project) errors.project = "Invalid project ID";
 
         return errors;
       }}
@@ -118,35 +115,59 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
             />
           }
         >
-          <View style={globalStyles.row}>
+          {formik.touched.emoji ||
+            (formik.touched.name && (
+              <View
+                style={{ ...globalStyles.column, alignItems: "flex-start" }}
+              >
+                <Text
+                  style={{
+                    ...textStyles.validationMessage,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Please fix the following errors:
+                </Text>
+                <Text style={textStyles.validationMessage}>
+                  {formik.touched.emoji &&
+                    formik.errors.emoji &&
+                    formik.errors.emoji + "\n"}
+                  {formik.touched.name &&
+                    formik.errors.name &&
+                    formik.errors.name}
+                </Text>
+              </View>
+            ))}
+          <Text style={textStyles.questionText}>Name your task:</Text>
+          <View
+            style={{ ...globalStyles.row, justifyContent: "space-between" }}
+          >
             <TextInput
-              style={styles.emojiInput}
+              style={{ ...styles.emojiInput, borderColor: theme.dark }}
               onChangeText={formik.handleChange("emoji")}
               onBlur={formik.handleBlur("emoji")}
               placeholder="Emoji"
               value={formik.values.emoji}
             />
+            <View style={{width: "10%"}} />
             <TextInput
-              style={styles.nameInput}
+              style={{ ...styles.nameInput, borderColor: theme.dark }}
               onChangeText={formik.handleChange("name")}
               onBlur={formik.handleBlur("name")}
               placeholder="Task name"
               value={formik.values.name}
             />
           </View>
-          <View style={globalStyles.row}>
-            {formik.touched.emoji && formik.errors.emoji && (
-              <Text style={textStyles.validationMessage}>
-                {formik.errors.emoji}
-              </Text>
-            )}
-            {formik.touched.name && formik.errors.name && (
-              <Text style={textStyles.validationMessage}>
-                {formik.errors.name}
-              </Text>
-            )}
-          </View>
+          <Text style={textStyles.questionText}>Assign it to a project:</Text>
           <ModalSelector
+            initValueTextStyle={{
+              color: "black",
+            }}
+            style={{
+              alignSelf: "stretch",
+              backgroundColor: "white",
+              borderColor: theme.dark,
+            }}
             data={projects.map((proj) => {
               return {
                 key: proj.id,

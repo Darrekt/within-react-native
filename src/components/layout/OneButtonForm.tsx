@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
-import { useWindowDimensions, View } from "react-native";
+import { KeyboardAvoidingView, Platform, useWindowDimensions, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Edge, SafeAreaView } from "react-native-safe-area-context";
 import { globalStyles } from "../../../styles";
 export type Props = {
@@ -21,25 +22,35 @@ export default function OneButtonForm({
     : ["left", "right"];
   return (
     <SafeAreaView edges={edges}>
-      <View
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "position" :"height" }>
+        <ScrollView
+          contentContainerStyle={{
+            ...globalStyles.form,
+            justifyContent: centerFields ? "center" : "flex-start",
+          }}
+          keyboardShouldPersistTaps="handled"
+        >
+          {/* <View
         style={{
           ...globalStyles.form,
           justifyContent: centerFields ? "center" : "flex-start",
         }}
-      >
-        {children}
-        <View
-          style={{
-            position: "absolute",
-            width: windowDimensions.width,
-            bottom: windowDimensions.width * 0.05,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {button}
-        </View>
-      </View>
+      > */}
+          {children}
+          <View
+            style={{
+              position: "absolute",
+              width: windowDimensions.width,
+              bottom: windowDimensions.width * 0.05,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {button}
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      {/* </View> */}
     </SafeAreaView>
   );
 }

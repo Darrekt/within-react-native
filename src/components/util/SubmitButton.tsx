@@ -37,8 +37,9 @@ function SubmitButton({ text, onPress, width, style }: SubmitButtonProps) {
         colors={[theme.primary, theme.light]}
         style={addShadow(4)({
           height: windowDimensions.height * 0.04,
+          minHeight: 30,
           width: "100%",
-          marginVertical: windowDimensions.height * 0.01,
+          marginVertical: windowDimensions.height * 0.02,
           justifyContent: "center",
           alignItems: "center",
           borderRadius: 10,

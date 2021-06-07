@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { ERROR_COLOR } from "./src/util/constants";
 
 export const globalStyles = StyleSheet.create({
   spacer: {
@@ -24,12 +25,11 @@ export const globalStyles = StyleSheet.create({
     height: "100%",
     width: "100%",
     paddingVertical: Dimensions.get("window").height * 0.02,
-    paddingHorizontal: Dimensions.get("window").width * 0.07,
+    paddingHorizontal: Dimensions.get("window").width * 0.1,
     justifyContent: "flex-start",
     alignItems: "center",
   },
   inputBox: {
-    margin: 8,
     height: 45,
     width: Dimensions.get("window").width * 0.8,
     padding: 10,
@@ -77,6 +77,13 @@ export const textStyles = StyleSheet.create({
     fontSize: 20,
     color: "black",
   },
+  questionText: {
+    marginTop: 15,
+    marginBottom: 8,
+    alignSelf: "stretch",
+    color: "black",
+    fontSize: 16,
+  },
   avatarName: { fontSize: 25, fontWeight: "400", marginVertical: 20 },
   groupHeader: {
     flex: 1,
@@ -90,8 +97,7 @@ export const textStyles = StyleSheet.create({
     fontWeight: "500",
   },
   validationMessage: {
-    textAlign: "center",
-    width: "70%",
-    color: "red",
+    textAlign: "left",
+    color: ERROR_COLOR,
   },
 });
