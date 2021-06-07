@@ -4,31 +4,34 @@ export interface TodoEntity {
   id: string;
   emoji: string;
   name: string;
-  project: string;
-  deadline?: string;
-  laps: number;
   completed: boolean;
-  remaining?: number;
-  finishingTime?: number;
+  project: string;
+  deadline: string | null;
+  laps: number;
+  remaining: number | null;
+  finishingTime: number | null;
 }
 
 export default class Todo {
   id: string = uuidv4();
   emoji: string = "✏️";
   name: string = "";
-  project: string;
-  deadline?: string;
-  laps: number = 0;
   completed: boolean = false;
-  remaining?: number;
+  project: string;
+  deadline: string | null;
+  laps: number = 0;
+  remaining: number | null;
   /// finishingTime is a Date that specifies the end of the current interval. If the task is not running, this is undefined. There should only be one globally running task.
-  finishingTime?: Date;
+  finishingTime: Date | null;
 
   constructor(data: Partial<Todo>) {
     if (!data.id) delete data.id;
     if (!data.emoji) delete data.emoji;
     Object.assign(this, data);
     this.project = data.project ?? "uncategorised";
+    this.deadline = data.deadline ?? null;
+    this.remaining = data.remaining ?? null;
+    this.finishingTime = data.finishingTime ?? null;
   }
 
   // WARNING: Make sure you update toFireStore if you change the shape of the Todo object!
@@ -37,11 +40,12 @@ export default class Todo {
       id: this.id,
       emoji: this.emoji,
       name: this.name,
-      laps: this.laps,
       completed: this.completed,
       project: this.project,
+      deadline: this.deadline,
+      laps: this.laps,
       remaining: this.remaining,
-      finishingTime: this.finishingTime?.getTime(),
+      finishingTime: this.finishingTime?.getTime() ?? null,
     };
   }
 

@@ -64,15 +64,15 @@ const todoReducer = (
       Platform.OS === "android" && DnDMode.setDNDMode(true);
       return setTodo(state, {
         ...action.payload,
-        remaining: undefined,
+        remaining: null,
         finishingTime: finishAt.getTime(),
       });
     case Actions.TodoReset:
       Platform.OS === "android" && DnDMode.setDNDMode(false);
       return setTodo(state, {
         ...action.payload,
-        remaining: undefined,
-        finishingTime: undefined,
+        remaining: null,
+        finishingTime: null,
       });
     case Actions.TodoPause:
     case Actions.TodoFinish:
@@ -84,8 +84,8 @@ const todoReducer = (
         remaining:
           action.type === Actions.TodoPause && action.payload.finishingTime
             ? getTimeLeft(action.payload.finishingTime)
-            : undefined,
-        finishingTime: undefined,
+            : null,
+        finishingTime: null,
       });
 
     // Deadline Actions
@@ -94,13 +94,13 @@ const todoReducer = (
         ...todo,
         deadline: action.payload.todos.find((item) => item === todo.id)
           ? action.payload.id
-          : undefined,
+          : null,
       }));
     case Actions.DeadlineRemove:
       return state.map((todo) => ({
         ...todo,
         deadline: action.payload.todos.find((item) => item === todo.id)
-          ? undefined
+          ? null
           : todo.deadline,
       }));
     case Actions.DeadlineComplete:
@@ -120,7 +120,7 @@ const todoReducer = (
                 todo.id === action.payload.id
                   ? action.payload.deadline
                   : todo.deadline === action.deadline
-                  ? undefined
+                  ? null
                   : todo.deadline,
             } as TodoEntity)
         )
@@ -131,8 +131,7 @@ const todoReducer = (
           (todo) =>
             ({
               ...todo,
-              deadline:
-                todo.id === action.payload.id ? undefined : todo.deadline,
+              deadline: todo.id === action.payload.id ? null : todo.deadline,
             } as TodoEntity)
         )
         .toArray();

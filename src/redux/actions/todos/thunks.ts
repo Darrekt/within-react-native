@@ -48,14 +48,10 @@ const genTodoWriteFunc = (
 ):
   | [TodoEntity[], (todos: TodoEntity[]) => Promise<void>]
   | [TodoEntity[], undefined] => {
-  // try {
   const user = state.settings.user;
   const todos = findProject(state.projects, todo.project).todos;
   if (user) return [todos, writeTodosInProject(user)(todo.project)];
   else return [todos, undefined];
-  // } catch (e) {
-  //   console.log(e.message);
-  // }
 };
 
 export const addFirebaseTodo =
