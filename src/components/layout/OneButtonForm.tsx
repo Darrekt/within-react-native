@@ -8,6 +8,7 @@ export type Props = {
   button: ReactNode;
   nakedPage?: boolean;
   centerFields?: boolean;
+  behaviour?: "position" | "height" | "padding";
 };
 
 export default function OneButtonForm({
@@ -15,6 +16,7 @@ export default function OneButtonForm({
   button,
   nakedPage = false,
   centerFields = true,
+  behaviour
 }: Props) {
   const windowDimensions = useWindowDimensions();
   const edges: readonly Edge[] = nakedPage
@@ -22,7 +24,7 @@ export default function OneButtonForm({
     : ["left", "right"];
   return (
     <SafeAreaView edges={edges}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "position" : "height"}>
+      <KeyboardAvoidingView behavior={behaviour ?? Platform.OS === 'ios' ? "position" : "height"}>
         <ScrollView
           contentContainerStyle={{
             ...globalStyles.form,

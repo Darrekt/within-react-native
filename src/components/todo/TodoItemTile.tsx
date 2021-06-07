@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  useWindowDimensions,
 } from "react-native";
 import { ListItem, withBadge } from "react-native-elements";
 import { TodoEntity } from "../../models/Todo";
@@ -21,7 +20,6 @@ import LinearGradient from "react-native-linear-gradient";
 import { getTheme } from "../../redux/selectors";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { RectButton } from "react-native-gesture-handler";
-import { ERROR_COLOR } from "../../util/constants";
 
 const styles = StyleSheet.create({
   tileRow: {
@@ -38,7 +36,7 @@ const styles = StyleSheet.create({
   },
   tileTitleTextStyle: {
     flex: 5,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "400",
     color: "black"
   },

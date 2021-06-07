@@ -2,7 +2,7 @@ import { compareDeadlines, DeadlineEntity } from "../models/Deadline";
 import { ProjectEntity } from "../models/Project";
 import { TodoEntity } from "../models/Todo";
 import { RootState } from "../redux/store";
-import { SageTheme, SAGE_THEME_LIST, Theme } from "../util/constants";
+import { SAGE_THEME_LIST, Theme } from "../util/constants";
 
 export const getProjects = (state: RootState) => state.projects;
 export const getSelected = (state: RootState): string => state.selected;

@@ -3,6 +3,8 @@ import { View, Text, useWindowDimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles, textStyles } from "../../../styles";
 import { DeadlineEntity } from "../../models/Deadline";
+import { useAppSelector } from "../../redux/hooks";
+import { getProjects, findProject } from "../../redux/selectors";
 
 export type Props = {
   deadline: DeadlineEntity;
@@ -14,6 +16,7 @@ export default function DeadlineDisplay({
   onPress,
   onLongPress,
 }: Props) {
+  const project = findProject(useAppSelector(getProjects), deadline.project)
   const windowDimensions = useWindowDimensions()
   return (
     <Card
@@ -26,8 +29,11 @@ export default function DeadlineDisplay({
       onLongPress={onLongPress}
     >
       <View style={globalStyles.row}>
+        <Text style={{ fontWeight: "bold", color: "black" }}>{project.emoji}</Text>
         <Text style={textStyles.infoText}>{deadline.name}</Text>
-        <Text style={textStyles.infoText}>{new Date(deadline.due).toDateString()}</Text>
+        <Text style={{ ...textStyles.infoText, color: deadline.due > new Date().getTime() ? "black" : "red" }}>
+          {new Date(deadline.due).toDateString()}
+        </Text>
       </View>
     </Card>
   );

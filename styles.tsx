@@ -39,7 +39,7 @@ export const globalStyles = StyleSheet.create({
   },
   largeInputBox: {
     height: Dimensions.get("window").height * 0.15,
-    width: "95%",
+    width: "90%",
     margin: 8,
     padding: 10,
     backgroundColor: "#FFFFFF",
@@ -78,13 +78,13 @@ export const textStyles = StyleSheet.create({
     color: "black",
   },
   avatarName: { fontSize: 24, fontWeight: "400", marginVertical: 15, color: "black" },
-  surveyQuestion: {
-    flexShrink: 1,
-    marginVertical: 5,
-    marginHorizontal: 18,
-    fontSize: 20,
-    color: "black",
-  },
+  // surveyQuestion: {
+  //   flexShrink: 1,
+  //   marginVertical: 5,
+  //   marginHorizontal: 18,
+  //   fontSize: 20,
+  //   color: "black",
+  // },
   infoText: {
     color: "black",
   },

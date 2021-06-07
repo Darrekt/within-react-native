@@ -21,12 +21,12 @@ export default function QuestionWithSlider({
   return (
     <View
       style={{
-        alignItems: "stretch",
+        alignSelf: "stretch",
         justifyContent: "center",
       }}
     >
       <View style={{ flexDirection: "row" }}>
-        <Text style={textStyles.surveyQuestion}>{question}</Text>
+        <Text style={textStyles.questionText}>{question}</Text>
       </View>
       <View
         style={{

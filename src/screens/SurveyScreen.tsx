@@ -4,8 +4,10 @@ import { Formik } from "formik";
 import React from "react";
 import { View, Text, KeyboardAvoidingView, Dimensions } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { globalStyles, textStyles } from "../../styles";
+import OneButtonForm from "../components/layout/OneButtonForm";
 import QuestionWithSlider from "../components/QuestionWithSlider";
 import SubmitButton from "../components/util/SubmitButton";
 import { useAppSelector } from "../redux/hooks";
@@ -40,63 +42,62 @@ export default function SurveyScreen() {
       }}
     >
       {(formik) => (
-        <View style={{ height: "100%", width: Dimensions.get("screen").width }}>
-          <KeyboardAvoidingView style={globalStyles.form} behavior={"position"}>
-            <ScrollView keyboardShouldPersistTaps="handled">
-              <QuestionWithSlider
-                question={"How would you rate the app?"}
-                rating={formik.values.appReview}
-                setRating={formik.handleChange("appReview")}
-              />
-              <QuestionWithSlider
-                question={"Did the app improve your focus and productivity?"}
-                rating={formik.values.productivityRating}
-                setRating={formik.handleChange("productivityRating")}
-              />
-              <Text style={textStyles.surveyQuestion}>
-                Tell us what you would like to see improved!
-              </Text>
-              <TextInput
-                style={{
-                  ...globalStyles.largeInputBox,
-                  borderColor: theme.dark,
-                }}
-                multiline
-                autoCapitalize="sentences"
-                onChangeText={formik.handleChange("featureRequest")}
-                shouldCancelWhenOutside
-                placeholder="Request features here! Feel free to reference other apps."
-                value={formik.values.featureRequest}
-              />
-              <Text style={textStyles.surveyQuestion}>
-                Please let us know of any bugs!
-              </Text>
-              <TextInput
-                style={{
-                  ...globalStyles.largeInputBox,
-                  borderColor: theme.dark,
-                }}
-                multiline
-                autoCapitalize="sentences"
-                onChangeText={formik.handleChange("bugReport")}
-                onBlur={formik.handleBlur("bugReport")}
-                placeholder="Report bugs, or just tell us if something feels wrong to you! We'll do our best to fix it."
-                value={formik.values.bugReport}
-              />
-              {formik.touched.bugReport && formik.errors.bugReport && (
-                <Text style={textStyles.validationMessage}>
-                  {formik.errors.bugReport}
-                </Text>
-              )}
-            </ScrollView>
-          </KeyboardAvoidingView>
-          <View style={globalStyles.bottomButtons}>
+        <OneButtonForm
+          behaviour="padding"
+          centerFields={false}
+          button={
             <SubmitButton
               onPress={() => formik.handleSubmit()}
               text="Submit survey"
             />
-          </View>
-        </View>
+          }
+        >
+          <QuestionWithSlider
+            question={"How would you rate the app?"}
+            rating={formik.values.appReview}
+            setRating={formik.handleChange("appReview")}
+          />
+          <QuestionWithSlider
+            question={"Did the app improve your focus and productivity?"}
+            rating={formik.values.productivityRating}
+            setRating={formik.handleChange("productivityRating")}
+          />
+          <Text style={textStyles.questionText}>
+            Tell us what you would like to see improved:
+              </Text>
+          <TextInput
+            style={{
+              ...globalStyles.largeInputBox,
+              borderColor: theme.dark,
+            }}
+            multiline
+            autoCapitalize="sentences"
+            onChangeText={formik.handleChange("featureRequest")}
+            shouldCancelWhenOutside
+            placeholder="Request features here! Feel free to reference other apps."
+            value={formik.values.featureRequest}
+          />
+          <Text style={textStyles.questionText}>
+            Please let us know of any bugs!
+              </Text>
+          <TextInput
+            style={{
+              ...globalStyles.largeInputBox,
+              borderColor: theme.dark,
+            }}
+            multiline
+            autoCapitalize="sentences"
+            onChangeText={formik.handleChange("bugReport")}
+            onBlur={formik.handleBlur("bugReport")}
+            placeholder="Report bugs, or just tell us if something feels wrong to you! We'll do our best to fix it."
+            value={formik.values.bugReport}
+          />
+          {formik.touched.bugReport && formik.errors.bugReport && (
+            <Text style={textStyles.validationMessage}>
+              {formik.errors.bugReport}
+            </Text>
+          )}
+        </OneButtonForm>
       )}
     </Formik>
   );
