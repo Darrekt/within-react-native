@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, useWindowDimensions } from "react-native";
 import Card from "../layout/Card";
-import { globalStyles } from "../../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import { ProjectEntity, ProjectFromEntity } from "../../models/Project";
 import { useNavigation } from "@react-navigation/native";
 import { List } from "immutable";
@@ -10,10 +10,7 @@ import { AntDesign, Foundation } from "@expo/vector-icons";
 import { UNCATEGORISED_TODO_PROJID } from "../../util/constants";
 
 const styles = StyleSheet.create({
-  emojiFont: { color: "black", fontSize: 25, margin: 5 },
-  blackFont: {
-    color: "black",
-  },
+  emojiFont: { fontSize: 25, margin: 5, color: "black" },
   redFont: {
     color: "red",
   },
@@ -29,7 +26,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
     : undefined;
   const dueDateFont =
     List(project.deadlines).first(0).valueOf() > now
-      ? styles.blackFont
+      ? textStyles.infoText
       : styles.redFont;
 
   return project.id === UNCATEGORISED_TODO_PROJID ? (
@@ -76,6 +73,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
                 fontSize: 20,
                 fontWeight: "500",
                 marginHorizontal: 10,
+                color: "black"
               }}
             >
               {project.name}
@@ -102,12 +100,11 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
             <Text style={dueDateFont}>
               {ddlString ?? "No upcoming deadlines"}
             </Text>
-            <Text>
+            <Text style={textStyles.infoText}>
               {List(project.todos).isEmpty()
                 ? "Done for today!"
-                : `${project.todos.length} task${
-                    project.todos.length > 1 ? "s" : ""
-                  } remaining`}
+                : `${project.todos.length} task${project.todos.length > 1 ? "s" : ""
+                } remaining`}
             </Text>
           </View>
         </View>

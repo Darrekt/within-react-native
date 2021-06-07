@@ -70,11 +70,23 @@ export const textStyles = StyleSheet.create({
     fontWeight: "500",
     color: "black",
   },
+  groupHeader: {
+    flex: 1,
+    marginBottom: 10,
+    marginLeft: 20,
+    fontSize: 20,
+    fontWeight: "400",
+    color: "black",
+  },
+  avatarName: { fontSize: 24, fontWeight: "400", marginVertical: 20, color: "black" },
   surveyQuestion: {
     flexShrink: 1,
     marginVertical: 5,
     marginHorizontal: 18,
     fontSize: 20,
+    color: "black",
+  },
+  infoText: {
     color: "black",
   },
   questionText: {
@@ -83,14 +95,6 @@ export const textStyles = StyleSheet.create({
     alignSelf: "stretch",
     color: "black",
     fontSize: 16,
-  },
-  avatarName: { fontSize: 25, fontWeight: "400", marginVertical: 20 },
-  groupHeader: {
-    flex: 1,
-    marginBottom: 10,
-    marginLeft: 20,
-    fontSize: 20,
-    fontWeight: "400",
   },
   buttonText: {
     fontSize: 15,

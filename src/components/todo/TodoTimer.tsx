@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import { TodoEntity } from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
@@ -16,15 +16,23 @@ import { AppThunk } from "../../redux/store";
 
 const styles = StyleSheet.create({
   positionedLogo: {
-    height: "40%",
     position: "absolute",
     top: "15%",
-    justifyContent: "flex-start",
+    height: "40%",
+    width: Dimensions.get("window").width,
+    alignSelf: "stretch"
+  },
+  timerTextContainer: {
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "center",
   },
   timerFont: {
+
     fontSize: 64,
     fontWeight: "400",
-    padding: "5%",
+    color: "black",
   },
   img: {
     flex: 3,
@@ -92,29 +100,31 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     action: TodoAction | AppThunk;
     icon: JSX.Element;
   }[] = [
-    {
-      key: "timerControl",
-      action: selectedTask.finishingTime
-        ? pauseFirebaseTodo(selectedTask)
-        : startFirebaseTodo(selectedTask),
+      {
+        key: "timerControl",
+        action: selectedTask.finishingTime
+          ? pauseFirebaseTodo(selectedTask)
+          : startFirebaseTodo(selectedTask),
 
-      icon: (
-        <Icon
-          reverse
-          name={selectedTask.finishingTime ? "pause" : "caretright"}
-          type="antdesign"
-        />
-      ),
-    },
-    {
-      key: "timerReset",
-      action: resetFirebaseTodo(selectedTask),
-      icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
-    },
-  ];
+        icon: (
+          <Icon
+            reverse
+            name={selectedTask.finishingTime ? "pause" : "caretright"}
+            type="antdesign"
+          />
+        ),
+      },
+      {
+        key: "timerReset",
+        action: resetFirebaseTodo(selectedTask),
+        icon: <Icon reverse name="ios-refresh" type="ionicon" color="black" />,
+      },
+    ];
   return (
     <View style={styles.positionedLogo}>
-      <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
+      <View style={styles.timerTextContainer}>
+        <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
+      </View>
       <CircleButtonGroup actions={timerActions} active />
     </View>
   );

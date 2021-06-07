@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     flex: 5,
     fontSize: 16,
     fontWeight: "400",
+    color: "black"
   },
   unselectedTileText: {
     textDecorationStyle: "solid",

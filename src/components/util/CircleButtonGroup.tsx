@@ -1,9 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { Action } from "../../redux/actions/actionTypes";
 import { useAppDispatch } from "../../redux/hooks";
-import { AppThunk } from "../../redux/store";
 
 const styles = StyleSheet.create({
   tileActions: {

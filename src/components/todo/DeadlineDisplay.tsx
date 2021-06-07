@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import Card from "../layout/Card";
-import { globalStyles } from "../../../styles";
+import { globalStyles, textStyles } from "../../../styles";
 import { DeadlineEntity } from "../../models/Deadline";
 
 const styles = StyleSheet.create({
@@ -29,8 +29,8 @@ export default function DeadlineDisplay({
       onLongPress={onLongPress}
     >
       <View style={globalStyles.row}>
-        <Text>{deadline.name}</Text>
-        <Text>{new Date(deadline.due).toDateString()}</Text>
+        <Text style={textStyles.infoText}>{deadline.name}</Text>
+        <Text style={textStyles.infoText}>{new Date(deadline.due).toDateString()}</Text>
       </View>
     </Card>
   );

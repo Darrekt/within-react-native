@@ -9,8 +9,9 @@ import { Screens } from "../../screens/navConstants";
 const styles = StyleSheet.create({
   modalHeaderText: {
     textAlign: "center",
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "500",
+    color: "black",
   },
   openHeader: {
     paddingBottom: 20,
