@@ -48,6 +48,7 @@ const EditNameScreen = () => {
               />
             }
           >
+            <Text style={textStyles.questionText}>Choose a new name:</Text>
             <TextInput
               style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
               autoCompleteType="name"

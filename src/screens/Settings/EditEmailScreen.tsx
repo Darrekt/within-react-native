@@ -65,10 +65,14 @@ const EditEmailScreen = () => {
             />
           }
         >
-          <View style={{ ...globalStyles.column, marginVertical: 15 }}>
+          <View style={{ ...globalStyles.column, marginVertical: 20 }}>
             <Text style={textStyles.avatarName}>Current Email:</Text>
-            <Text style={textStyles.header}>{user?.email}</Text>
+            <Text style={{
+              alignSelf: "center",
+              color: "black",
+            }}>{user?.email}</Text>
           </View>
+          <Text style={textStyles.questionText}>New email:</Text>
           <TextInput
             style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
             autoCapitalize="none"
@@ -83,6 +87,7 @@ const EditEmailScreen = () => {
               {formik.errors.newEmail}
             </Text>
           )}
+          <Text style={textStyles.questionText}>Confirm new email:</Text>
           <TextInput
             style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
             autoCapitalize="none"

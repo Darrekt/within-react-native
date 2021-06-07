@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Dimensions, useWindowDimensions } from "react-native";
 import { Formik } from "formik";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -23,6 +23,7 @@ import {
 } from "../../redux/actions/projects/thunks";
 import { RootStackParamList, Screens } from "../navConstants";
 import { compareDeadlines } from "../../models/Deadline";
+import OneButtonForm from "../../components/layout/OneButtonForm";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -41,8 +42,8 @@ type Props = {
 
 const bottomButtonWidth = Dimensions.get("screen").width * 0.85;
 const styles = StyleSheet.create({
-  emojiInput: { ...globalStyles.inputBox, width: "20%" },
-  nameInput: { ...globalStyles.inputBox, width: "50%" },
+  emojiInput: { ...globalStyles.inputBox, flex: 1 },
+  nameInput: { ...globalStyles.inputBox, flex: 4 },
   boolEntry: {
     ...globalStyles.row,
     padding: 10,
@@ -84,20 +85,20 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
           dispatch(
             project
               ? updateFirebaseProject(
-                  new Project({
-                    ...ProjectFromEntity(project),
-                    emoji: values.emoji,
-                    name: values.name,
-                    notes: values.notes,
-                  })
-                )
+                new Project({
+                  ...ProjectFromEntity(project),
+                  emoji: values.emoji,
+                  name: values.name,
+                  notes: values.notes,
+                })
+              )
               : addFirebaseProject(
-                  new Project({
-                    emoji: values.emoji,
-                    name: values.name,
-                    notes: values.notes,
-                  })
-                )
+                new Project({
+                  emoji: values.emoji,
+                  name: values.name,
+                  notes: values.notes,
+                })
+              )
           );
         });
         navigation.goBack();
@@ -110,9 +111,66 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
       }}
     >
       {(formik) => (
-        <View style={globalStyles.form}>
+        <OneButtonForm
+          centerFields={false}
+          nakedPage={false}
+          button={
+            <>
+              {project && (
+                <View
+                  style={{
+                    ...globalStyles.row,
+                    paddingHorizontal: Dimensions.get("screen").width * 0.075,
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <SubmitButton
+                    style={{ width: 0.45 * bottomButtonWidth }}
+                    onPress={async () => {
+                      await wrapAsync(() =>
+                        dispatch(completeFirebaseProject(project.id))
+                      );
+
+                      navigation.goBack();
+                      Toast.show({
+                        type: "success",
+                        position: "bottom",
+                        text1: "Completed Project!",
+                        text2: project.name,
+                      });
+                    }}
+                    text="Complete"
+                  />
+                  <SubmitButton
+                    style={{ width: 0.45 * bottomButtonWidth }}
+                    onPress={async () => {
+                      await wrapAsync(() =>
+                        dispatch(deleteFirebaseProject(project.id))
+                      );
+
+                      navigation.goBack();
+                      Toast.show({
+                        type: "info",
+                        position: "bottom",
+                        text1: "Deleted Project!",
+                        text2: project.name,
+                      });
+                    }}
+                    text="Delete"
+                  />
+                </View>
+              )}
+              <SubmitButton
+                style={{ width: bottomButtonWidth }}
+                onPress={() => formik.handleSubmit()}
+                text={project ? "Save Changes" : "Add Project"}
+              />
+            </>
+          }>
+
           <HeadingDropDown header="Project Info">
-            <View style={globalStyles.row}>
+            <View style={{ ...globalStyles.row, marginBottom: 15 }}>
               <TextInput
                 style={{ ...styles.emojiInput, borderColor: theme.dark }}
                 onChangeText={formik.handleChange("emoji")}
@@ -120,6 +178,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 placeholder="Emoji"
                 value={formik.values.emoji}
               />
+              <View style={{ width: "10%" }} />
               <TextInput
                 style={{ ...styles.nameInput, borderColor: theme.dark }}
                 onChangeText={formik.handleChange("name")}
@@ -151,6 +210,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
           {project && (
             <HeadingDropDown
               header="Deadlines"
+              topMargin={"5%"}
               dropdown={
                 <HeaderButton
                   onPress={() =>
@@ -164,7 +224,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 />
               }
             >
-              <ScrollView>
+              <ScrollView style={{ width: "100%" }}>
                 {project.deadlines.sort(compareDeadlines).map((ddl) => (
                   <DeadlineDisplay
                     key={ddl.id}
@@ -180,61 +240,10 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               </ScrollView>
             </HeadingDropDown>
           )}
-          <View style={{ ...globalStyles.bottomButtons, alignSelf: "auto" }}>
-            {project && (
-              <View
-                style={{
-                  ...globalStyles.row,
-                  paddingHorizontal: Dimensions.get("screen").width * 0.075,
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <SubmitButton
-                  width={0.45 * bottomButtonWidth}
-                  onPress={async () => {
-                    await wrapAsync(() =>
-                      dispatch(completeFirebaseProject(project.id))
-                    );
-
-                    navigation.goBack();
-                    Toast.show({
-                      type: "success",
-                      position: "bottom",
-                      text1: "Completed Project!",
-                      text2: project.name,
-                    });
-                  }}
-                  text="Complete"
-                />
-                <SubmitButton
-                  width={0.45 * bottomButtonWidth}
-                  onPress={async () => {
-                    await wrapAsync(() =>
-                      dispatch(deleteFirebaseProject(project.id))
-                    );
-
-                    navigation.goBack();
-                    Toast.show({
-                      type: "info",
-                      position: "bottom",
-                      text1: "Deleted Project!",
-                      text2: project.name,
-                    });
-                  }}
-                  text="Delete"
-                />
-              </View>
-            )}
-            <SubmitButton
-              width={bottomButtonWidth}
-              onPress={() => formik.handleSubmit()}
-              text={project ? "Save Changes" : "Add Project"}
-            />
-          </View>
-        </View>
-      )}
-    </Formik>
+        </OneButtonForm>
+      )
+      }
+    </Formik >
   );
 };
 export default ViewProjectScreen;

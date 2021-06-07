@@ -1,14 +1,8 @@
 import React from "react";
-import { StyleSheet, View, Text, Dimensions } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import Card from "../layout/Card";
 import { globalStyles, textStyles } from "../../../styles";
 import { DeadlineEntity } from "../../models/Deadline";
-
-const styles = StyleSheet.create({
-  cardStyle: {
-    height: Dimensions.get("screen").height * 0.07,
-  },
-});
 
 export type Props = {
   deadline: DeadlineEntity;
@@ -20,10 +14,13 @@ export default function DeadlineDisplay({
   onPress,
   onLongPress,
 }: Props) {
+  const windowDimensions = useWindowDimensions()
   return (
     <Card
-      style={styles.cardStyle}
-      elevation={1}
+      style={
+        { height: windowDimensions.height * 0.07, width: "100%" }
+      }
+      elevation={2}
       opacity={0.05}
       onPress={onPress}
       onLongPress={onLongPress}

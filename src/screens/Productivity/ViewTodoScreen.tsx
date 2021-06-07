@@ -56,8 +56,6 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
 
   return (
     <Formik
-      validateOnChange={false}
-      validateOnBlur={false}
       initialValues={{
         emoji: todo?.emoji ?? "",
         name: todo?.name ?? "",
@@ -81,20 +79,20 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
           dispatch(
             todo
               ? updateFirebaseTodo(
-                  new Todo({
-                    ...TodoFromEntity(todo),
-                    emoji: values.emoji,
-                    name: values.name,
-                    project: values.project,
-                  }).toEntity()
-                )
+                new Todo({
+                  ...TodoFromEntity(todo),
+                  emoji: values.emoji,
+                  name: values.name,
+                  project: values.project,
+                }).toEntity()
+              )
               : addFirebaseTodo(
-                  new Todo({
-                    emoji: values.emoji,
-                    name: values.name,
-                    project: values.project,
-                  }).toEntity()
-                )
+                new Todo({
+                  emoji: values.emoji,
+                  name: values.name,
+                  project: values.project,
+                }).toEntity()
+              )
           )
         );
         Toast.show({
@@ -115,29 +113,6 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
             />
           }
         >
-          {formik.touched.emoji ||
-            (formik.touched.name && (
-              <View
-                style={{ ...globalStyles.column, alignItems: "flex-start" }}
-              >
-                <Text
-                  style={{
-                    ...textStyles.validationMessage,
-                    fontWeight: "bold",
-                  }}
-                >
-                  Please fix the following errors:
-                </Text>
-                <Text style={textStyles.validationMessage}>
-                  {formik.touched.emoji &&
-                    formik.errors.emoji &&
-                    formik.errors.emoji + "\n"}
-                  {formik.touched.name &&
-                    formik.errors.name &&
-                    formik.errors.name}
-                </Text>
-              </View>
-            ))}
           <Text style={textStyles.questionText}>Name your task:</Text>
           <View
             style={{ ...globalStyles.row, justifyContent: "space-between" }}
@@ -149,7 +124,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
               placeholder="Emoji"
               value={formik.values.emoji}
             />
-            <View style={{width: "10%"}} />
+            <View style={{ width: "10%" }} />
             <TextInput
               style={{ ...styles.nameInput, borderColor: theme.dark }}
               onChangeText={formik.handleChange("name")}
@@ -158,6 +133,19 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
               value={formik.values.name}
             />
           </View>
+          {formik.touched.emoji &&
+            formik.errors.emoji &&
+            <Text style={textStyles.validationMessage}>
+              {formik.errors.emoji}
+            </Text>
+          }
+          {formik.touched.name &&
+            formik.errors.name &&
+            <Text style={textStyles.validationMessage}>
+              {formik.errors.name}
+            </Text>
+          }
+
           <Text style={textStyles.questionText}>Assign it to a project:</Text>
           <ModalSelector
             initValueTextStyle={{

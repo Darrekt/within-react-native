@@ -15,11 +15,10 @@ import { addShadow } from "../../util/styleDecorators";
 type SubmitButtonProps = {
   text: string;
   onPress: () => void;
-  width?: number | string;
   style?: ViewStyle;
 };
 
-function SubmitButton({ text, onPress, width, style }: SubmitButtonProps) {
+function SubmitButton({ text, onPress, style }: SubmitButtonProps) {
   const theme = useAppSelector(getTheme);
   const windowDimensions = useWindowDimensions();
   return (
@@ -27,8 +26,8 @@ function SubmitButton({ text, onPress, width, style }: SubmitButtonProps) {
       activeOpacity={0.5}
       onPress={onPress}
       style={{
+        width: Dimensions.get("screen").width * 0.8,
         ...style,
-        width: width ?? Dimensions.get("screen").width * 0.8,
       }}
     >
       <LinearGradient
@@ -39,7 +38,7 @@ function SubmitButton({ text, onPress, width, style }: SubmitButtonProps) {
           height: windowDimensions.height * 0.04,
           minHeight: 30,
           width: "100%",
-          marginVertical: windowDimensions.height * 0.02,
+          marginBottom: windowDimensions.height * 0.02,
           justifyContent: "center",
           alignItems: "center",
           borderRadius: 10,

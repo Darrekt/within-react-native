@@ -55,6 +55,7 @@ const EditPasswordScreen = () => {
             />
           }
         >
+          <Text style={textStyles.questionText}>Enter your old password:</Text>
           <TextInput
             style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
             autoCapitalize="none"
@@ -71,6 +72,7 @@ const EditPasswordScreen = () => {
               {formik.errors.oldPassword}
             </Text>
           )}
+          <Text style={textStyles.questionText}>New password:</Text>
           <TextInput
             style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
             autoCapitalize="none"
@@ -87,6 +89,7 @@ const EditPasswordScreen = () => {
               {formik.errors.newPassword}
             </Text>
           )}
+          <Text style={textStyles.questionText}>Confirm new password:</Text>
           <TextInput
             style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
             autoCapitalize="none"

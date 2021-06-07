@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import HeadingDropDown from "../layout/HeadingDropDown";
@@ -18,10 +18,10 @@ export type Props = {
   focusDeadline: (ddl: DeadlineEntity) => () => void;
 };
 
-// TODO: Make height and alignments responsive; all heights are hard coded currently.
 const HomeDisplay = ({ focusDeadline }: Props) => {
   const projects = useAppSelector(getProjects);
   const deadlines = useAppSelector(getSortedDeadlines);
+  const windowDimensions = useWindowDimensions()
   const navigation = useNavigation();
   const headerButton = (
     <HeaderButton
@@ -35,7 +35,9 @@ const HomeDisplay = ({ focusDeadline }: Props) => {
 
   return (
     <View style={globalStyles.column}>
-      <HeadingDropDown header="Projects" dropdown={headerButton}>
+      <HeadingDropDown header="Projects"
+        headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
+        dropdown={headerButton}>
         <ScrollView
           style={{ width: "100%" }}
           horizontal
@@ -51,14 +53,18 @@ const HomeDisplay = ({ focusDeadline }: Props) => {
       </HeadingDropDown>
       {/* TODO: Hacky fix */}
       <View style={{ height: 15 }}></View>
-      <HeadingDropDown header="Deadlines">
-        {deadlines.sort(compareDeadlines).map((deadline) => (
-          <DeadlineDisplay
-            key={deadline.id}
-            deadline={deadline}
-            onPress={focusDeadline(deadline)}
-          />
-        ))}
+      <HeadingDropDown header="Deadlines"
+        headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
+      >
+        <ScrollView style={{ width: windowDimensions.width * 0.9 }}>
+          {deadlines.sort(compareDeadlines).map((deadline) => (
+            <DeadlineDisplay
+              key={deadline.id}
+              deadline={deadline}
+              onPress={focusDeadline(deadline)}
+            />
+          ))}
+        </ScrollView>
       </HeadingDropDown>
     </View>
   );

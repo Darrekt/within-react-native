@@ -22,7 +22,7 @@ export default function OneButtonForm({
     : ["left", "right"];
   return (
     <SafeAreaView edges={edges}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "position" :"height" }>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "position" : "height"}>
         <ScrollView
           contentContainerStyle={{
             ...globalStyles.form,
@@ -30,12 +30,6 @@ export default function OneButtonForm({
           }}
           keyboardShouldPersistTaps="handled"
         >
-          {/* <View
-        style={{
-          ...globalStyles.form,
-          justifyContent: centerFields ? "center" : "flex-start",
-        }}
-      > */}
           {children}
           <View
             style={{
@@ -50,7 +44,6 @@ export default function OneButtonForm({
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-      {/* </View> */}
     </SafeAreaView>
   );
 }

@@ -30,28 +30,6 @@ const Card = ({
   onPress,
   onLongPress,
 }: CardProps) => {
-  const cardStyle = StyleSheet.create({
-    container: {
-      height: Dimensions.get("window").height * 0.2,
-      width: Dimensions.get("window").width - 40,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "white",
-      borderRadius: cornerRadius,
-      marginVertical: 10,
-      ...(!noShadow &&
-        Platform.select({
-          ios: {
-            shadowOffset: { width: 1, height: elevation / 3 },
-            shadowRadius: (elevation ?? 0) / 3,
-            shadowOpacity: opacity,
-          },
-          android: {
-            elevation: elevation,
-          },
-        })),
-    },
-  });
 
   return (
     <TouchableOpacity
@@ -59,7 +37,27 @@ const Card = ({
       onLongPress={onLongPress}
       activeOpacity={0.6}
     >
-      <View style={{ ...cardStyle.container, ...style }}>{children}</View>
+      <View style={{
+        height: Dimensions.get("window").height * 0.2,
+        width: Dimensions.get("window").width - 40,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white",
+        borderRadius: cornerRadius,
+        marginVertical: 10,
+        ...(!noShadow &&
+          Platform.select({
+            ios: {
+              shadowOffset: { width: 1, height: elevation / 3 },
+              shadowRadius: (elevation ?? 0) / 3,
+              shadowOpacity: opacity,
+            },
+            android: {
+              elevation: elevation,
+            },
+          })),
+        ...style
+      }}>{children}</View>
     </TouchableOpacity>
   );
 };

@@ -65,7 +65,6 @@ export const textStyles = StyleSheet.create({
   header: {
     flex: 4,
     marginVertical: 5,
-    marginHorizontal: 18,
     fontSize: 22,
     fontWeight: "500",
     color: "black",
@@ -78,7 +77,7 @@ export const textStyles = StyleSheet.create({
     fontWeight: "400",
     color: "black",
   },
-  avatarName: { fontSize: 24, fontWeight: "400", marginVertical: 20, color: "black" },
+  avatarName: { fontSize: 24, fontWeight: "400", marginVertical: 15, color: "black" },
   surveyQuestion: {
     flexShrink: 1,
     marginVertical: 5,
@@ -101,7 +100,9 @@ export const textStyles = StyleSheet.create({
     fontWeight: "500",
   },
   validationMessage: {
+    marginVertical: 3,
     textAlign: "left",
+    alignSelf: "flex-start",
     color: ERROR_COLOR,
   },
 });

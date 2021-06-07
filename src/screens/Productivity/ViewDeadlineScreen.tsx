@@ -75,19 +75,19 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
           dispatch(
             deadline
               ? updateFirebaseDeadline(
-                  new Deadline({
-                    ...DeadlineFromEntity(deadline),
-                    name: values.name,
-                    due: values.due,
-                  }).toEntity()
-                )
+                new Deadline({
+                  ...DeadlineFromEntity(deadline),
+                  name: values.name,
+                  due: values.due,
+                }).toEntity()
+              )
               : addFirebaseDeadline(
-                  new Deadline({
-                    project: route.params.projID ?? "",
-                    name: values.name,
-                    due: values.due,
-                  }).toEntity()
-                )
+                new Deadline({
+                  project: route.params.projID ?? "",
+                  name: values.name,
+                  due: values.due,
+                }).toEntity()
+              )
           )
         );
         navigation.goBack();
@@ -108,6 +108,7 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
             />
           }
         >
+          <Text style={textStyles.questionText}>Deadline description:</Text>
           <TextInput
             style={styles.nameInput}
             onChangeText={formik.handleChange("name")}
@@ -120,6 +121,7 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
               {formik.errors.name}
             </Text>
           )}
+          <Text style={textStyles.questionText}>Select a due date:</Text>
           <TextInput
             style={styles.nameInput}
             placeholder="Date"
@@ -134,6 +136,7 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
               mode="date"
               is24Hour={true}
               display="default"
+              minimumDate={new Date()}
               onChange={(event, date) => {
                 setShowDatePicker(Platform.OS === "ios");
                 formik.setFieldValue("due", date ?? formik.values.due);
