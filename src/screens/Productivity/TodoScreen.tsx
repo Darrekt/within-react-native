@@ -1,5 +1,5 @@
 import React from "react";
-import { View, useWindowDimensions, Dimensions } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
@@ -8,10 +8,10 @@ import * as TodoComponents from "../../components/todo/TodoComponents";
 import SettingsButton from "../../components/settings/SettingsButton";
 import Todo from "../../models/Todo";
 import {
-  getAllTodos,
   getSelected,
   getRunning,
   getTheme,
+  getCompletedTodos,
 } from "../../redux/selectors";
 import { DeadlineEntity } from "../../models/Deadline";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -19,7 +19,7 @@ import { selectTodo } from "../../redux/actions/todos/actions";
 import SurveyButton from "../../components/settings/SurveyButton";
 
 const TodoScreen = () => {
-  const todos = useAppSelector(getAllTodos);
+  const todos = useAppSelector(getCompletedTodos);
   const selected = useAppSelector(getSelected);
   const running = useAppSelector(getRunning);
   const theme = useAppSelector(getTheme);

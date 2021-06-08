@@ -7,6 +7,8 @@ import { SAGE_THEME_LIST, Theme } from "../util/constants";
 export const getProjects = (state: RootState) => state.projects;
 export const getSelected = (state: RootState): string => state.selected;
 export const getSettings = (state: RootState) => state.settings;
+
+
 export const getSortedDeadlines = (state: RootState): DeadlineEntity[] =>
   state.projects
     .map((proj) => proj.deadlines)
@@ -16,10 +18,10 @@ export const getSortedDeadlines = (state: RootState): DeadlineEntity[] =>
     )
     .sort(compareDeadlines);
 
-export const getAllTodos = (state: RootState): TodoEntity[] =>
-  state.projects
-    .map((proj) => proj.todos)
-    .reduce((agg, projTodos) => agg.concat(projTodos), <TodoEntity[]>[]);
+export const getSortedCompletedDeadlines = (
+  state: RootState
+): DeadlineEntity[] =>
+  getSortedDeadlines(state).filter((deadline) => !deadline.completed);
 
 export const findDeadline =
   (deadlineID: string | undefined) => (state: RootState) =>
@@ -28,6 +30,15 @@ export const findDeadline =
           .find((proj) => proj.deadlines.some((ddl) => ddl.id === deadlineID))
           ?.deadlines.find((ddl) => ddl.id === deadlineID)
       : undefined;
+
+
+export const getAllTodos = (state: RootState): TodoEntity[] =>
+  state.projects
+    .map((proj) => proj.todos)
+    .reduce((agg, projTodos) => agg.concat(projTodos), <TodoEntity[]>[]);
+
+export const getCompletedTodos = (state: RootState): TodoEntity[] =>
+  getAllTodos(state).filter((todo) => !todo.completed);
 
 export const getTheme = (state: RootState): Theme =>
   SAGE_THEME_LIST[state.settings.theme];

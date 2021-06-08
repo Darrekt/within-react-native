@@ -44,7 +44,10 @@ export const addFirebaseProject =
   async (dispatch, getState) => {
     const settings = getState().settings;
 
-    if (getState().projects.length < settings.maxProjects) {
+    if (
+      getState().projects.filter((item) => !item.completed).length <
+      settings.maxProjects
+    ) {
       if (settings.user)
         await writeToProjectsCollection(settings.user)(project.toEntity());
       else dispatch(ActionCreators.addProject(project.toEntity()));

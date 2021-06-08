@@ -60,8 +60,10 @@ export const addFirebaseTodo =
     const action = ActionCreators.addTodo(todo);
     const [todos, writeTodos] = genTodoWriteFunc(getState(), todo);
 
-    console.log(getState().settings.maxTasks);
-    if (todos.length < getState().settings.maxTasks) {
+    if (
+      todos.filter((item) => !item.completed).length <
+      getState().settings.maxTasks
+    ) {
       if (writeTodos) writeTodos(todoReducer(todos, action));
       else dispatch(action);
       Toast.show({
