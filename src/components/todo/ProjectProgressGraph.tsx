@@ -1,9 +1,10 @@
 import React from "react";
-import { Dimensions } from "react-native";
+import { Dimensions, useWindowDimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 import HeadingDropDown from "../layout/HeadingDropDown";
 
 export default function ProjectProgressGraph() {
+  const windowDimensions = useWindowDimensions();
   return (
     <HeadingDropDown header="Progress">
       <LineChart
@@ -22,8 +23,8 @@ export default function ProjectProgressGraph() {
             },
           ],
         }}
-        width={0.85 * Dimensions.get("window").width} // from react-native
-        height={0.2 * Dimensions.get("window").height}
+        width={0.85 * windowDimensions.width} // from react-native
+        height={0.2 * windowDimensions.height}
         chartConfig={{
           backgroundGradientFrom: "#01C2EF",
           backgroundGradientTo: "#56DEF1",

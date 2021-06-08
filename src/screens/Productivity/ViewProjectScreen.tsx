@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Dimensions, useWindowDimensions } from "react-native";
+import React from "react";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { Formik } from "formik";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -85,20 +85,20 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
           dispatch(
             project
               ? updateFirebaseProject(
-                new Project({
-                  ...ProjectFromEntity(project),
-                  emoji: values.emoji,
-                  name: values.name,
-                  notes: values.notes,
-                })
-              )
+                  new Project({
+                    ...ProjectFromEntity(project),
+                    emoji: values.emoji,
+                    name: values.name,
+                    notes: values.notes,
+                  })
+                )
               : addFirebaseProject(
-                new Project({
-                  emoji: values.emoji,
-                  name: values.name,
-                  notes: values.notes,
-                })
-              )
+                  new Project({
+                    emoji: values.emoji,
+                    name: values.name,
+                    notes: values.notes,
+                  })
+                )
           );
         });
         navigation.goBack();
@@ -120,18 +120,17 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 <View
                   style={{
                     ...globalStyles.row,
-                    paddingHorizontal: Dimensions.get("screen").width * 0.075,
+                    paddingHorizontal: Dimensions.get("screen").width * 0.1,
                     alignItems: "center",
                     justifyContent: "space-between",
                   }}
                 >
                   <SubmitButton
-                    style={{ width: 0.45 * bottomButtonWidth }}
+                    style={{ width: "45%" }}
                     onPress={async () => {
                       await wrapAsync(() =>
                         dispatch(completeFirebaseProject(project.id))
                       );
-
                       navigation.goBack();
                       Toast.show({
                         type: "success",
@@ -143,7 +142,7 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                     text="Complete"
                   />
                   <SubmitButton
-                    style={{ width: 0.45 * bottomButtonWidth }}
+                    style={{ width: "45%" }}
                     onPress={async () => {
                       await wrapAsync(() =>
                         dispatch(deleteFirebaseProject(project.id))
@@ -162,13 +161,12 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 </View>
               )}
               <SubmitButton
-                style={{ width: bottomButtonWidth }}
                 onPress={() => formik.handleSubmit()}
                 text={project ? "Save Changes" : "Add Project"}
               />
             </>
-          }>
-
+          }
+        >
           <HeadingDropDown header="Project Info">
             <View style={{ ...globalStyles.row, marginBottom: 15 }}>
               <TextInput
@@ -226,24 +224,14 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
             >
               <ScrollView style={{ width: "100%" }}>
                 {project.deadlines.sort(compareDeadlines).map((ddl) => (
-                  <DeadlineDisplay
-                    key={ddl.id}
-                    deadline={ddl}
-                    onLongPress={() =>
-                      navigation.navigate(Screens.ViewDeadline, {
-                        deadlineID: ddl.id,
-                        projID: undefined,
-                      })
-                    }
-                  />
+                  <DeadlineDisplay key={ddl.id} deadline={ddl} />
                 ))}
               </ScrollView>
             </HeadingDropDown>
           )}
         </OneButtonForm>
-      )
-      }
-    </Formik >
+      )}
+    </Formik>
   );
 };
 export default ViewProjectScreen;

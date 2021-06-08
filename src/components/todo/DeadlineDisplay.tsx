@@ -5,33 +5,42 @@ import { globalStyles, textStyles } from "../../../styles";
 import { DeadlineEntity } from "../../models/Deadline";
 import { useAppSelector } from "../../redux/hooks";
 import { getProjects, findProject } from "../../redux/selectors";
+import { useNavigation } from "@react-navigation/core";
+import { Screens } from "../../screens/navConstants";
 
 export type Props = {
   deadline: DeadlineEntity;
   onPress?: () => void;
-  onLongPress?: () => void;
 };
-export default function DeadlineDisplay({
-  deadline,
-  onPress,
-  onLongPress,
-}: Props) {
-  const project = findProject(useAppSelector(getProjects), deadline.project)
-  const windowDimensions = useWindowDimensions()
+export default function DeadlineDisplay({ deadline, onPress }: Props) {
+  const project = findProject(useAppSelector(getProjects), deadline.project);
+  const navigation = useNavigation();
+  const windowDimensions = useWindowDimensions();
   return (
     <Card
-      style={
-        { height: windowDimensions.height * 0.07, width: "100%" }
-      }
+      style={{ height: windowDimensions.height * 0.07, width: "100%" }}
       elevation={2}
       opacity={0.05}
       onPress={onPress}
-      onLongPress={onLongPress}
+      onLongPress={() =>
+        navigation.navigate(Screens.ViewDeadline, {
+          deadlineID: deadline.id,
+          projID: undefined,
+        })
+      }
     >
-      <View style={globalStyles.row}>
-        <Text style={{ fontWeight: "bold", color: "black" }}>{project.emoji}</Text>
+      <View style={{ ...globalStyles.row, justifyContent: "space-between" }}>
+        <Text style={{ fontWeight: "bold", color: "black", marginLeft: "4%" }}>
+          {project.emoji}
+        </Text>
         <Text style={textStyles.infoText}>{deadline.name}</Text>
-        <Text style={{ ...textStyles.infoText, color: deadline.due > new Date().getTime() ? "black" : "red" }}>
+        <Text
+          style={{
+            ...textStyles.infoText,
+            marginRight: "4%",
+            color: deadline.due > new Date().getTime() ? "black" : "red",
+          }}
+        >
           {new Date(deadline.due).toDateString()}
         </Text>
       </View>

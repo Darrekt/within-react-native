@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Dimensions, Platform } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Dimensions,
+  Platform,
+  useWindowDimensions,
+} from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -10,9 +17,11 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { findDeadline } from "../../redux/selectors";
+import { findDeadline, getTheme } from "../../redux/selectors";
 import {
   addFirebaseDeadline,
+  completeFirebaseDeadline,
+  deleteFirebaseDeadline,
   updateFirebaseDeadline,
 } from "../../redux/actions/deadlines/thunks";
 import Deadline, { DeadlineFromEntity } from "../../models/Deadline";
@@ -48,6 +57,8 @@ const styles = StyleSheet.create({
 
 const ViewDeadlineScreen = ({ route, navigation }: Props) => {
   const deadline = useAppSelector(findDeadline(route.params.deadlineID));
+  const theme = useAppSelector(getTheme);
+  const windowDimensions = useWindowDimensions();
   const [showDatePicker, setShowDatePicker] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -75,19 +86,19 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
           dispatch(
             deadline
               ? updateFirebaseDeadline(
-                new Deadline({
-                  ...DeadlineFromEntity(deadline),
-                  name: values.name,
-                  due: values.due,
-                }).toEntity()
-              )
+                  new Deadline({
+                    ...DeadlineFromEntity(deadline),
+                    name: values.name,
+                    due: values.due,
+                  }).toEntity()
+                )
               : addFirebaseDeadline(
-                new Deadline({
-                  project: route.params.projID ?? "",
-                  name: values.name,
-                  due: values.due,
-                }).toEntity()
-              )
+                  new Deadline({
+                    project: route.params.projID ?? "",
+                    name: values.name,
+                    due: values.due,
+                  }).toEntity()
+                )
           )
         );
         navigation.goBack();
@@ -102,15 +113,62 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
       {(formik) => (
         <OneButtonForm
           button={
-            <SubmitButton
-              onPress={() => formik.handleSubmit()}
-              text={deadline ? "Save Changes" : "Add Deadline"}
-            />
+            <>
+              {deadline && (
+                <View
+                  style={{
+                    ...globalStyles.row,
+                    paddingHorizontal: windowDimensions.width * 0.1,
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <SubmitButton
+                    style={{ width: "45%" }}
+                    onPress={async () => {
+                      await wrapAsync(() =>
+                        dispatch(completeFirebaseDeadline(deadline))
+                      );
+
+                      navigation.goBack();
+                      Toast.show({
+                        type: "success",
+                        position: "bottom",
+                        text1: "Completed deadline!",
+                        text2: deadline.name,
+                      });
+                    }}
+                    text="Complete"
+                  />
+                  <SubmitButton
+                    style={{ width: "45%" }}
+                    onPress={async () => {
+                      await wrapAsync(() =>
+                        dispatch(deleteFirebaseDeadline(deadline))
+                      );
+
+                      navigation.goBack();
+                      Toast.show({
+                        type: "info",
+                        position: "bottom",
+                        text1: "Deleted deadline!",
+                        text2: deadline.name,
+                      });
+                    }}
+                    text="Delete"
+                  />
+                </View>
+              )}
+              <SubmitButton
+                onPress={() => formik.handleSubmit()}
+                text={deadline ? "Save Changes" : "Add Deadline"}
+              />
+            </>
           }
         >
           <Text style={textStyles.questionText}>Deadline description:</Text>
           <TextInput
-            style={styles.nameInput}
+            style={{ ...styles.nameInput, borderColor: theme.dark }}
             onChangeText={formik.handleChange("name")}
             onBlur={formik.handleBlur("name")}
             placeholder="Name"
@@ -123,7 +181,7 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
           )}
           <Text style={textStyles.questionText}>Select a due date:</Text>
           <TextInput
-            style={styles.nameInput}
+            style={{ ...styles.nameInput, borderColor: theme.dark }}
             placeholder="Date"
             value={formik.values.due.toDateString()}
             onFocus={() => setShowDatePicker(true)}
