@@ -102,12 +102,6 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
           );
         });
         navigation.goBack();
-        Toast.show({
-          type: "success",
-          position: "bottom",
-          text1: `${project ? "Updated" : "Added"} Project:`,
-          text2: values.name,
-        });
       }}
     >
       {(formik) => (
@@ -127,34 +121,17 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
                 >
                   <SubmitButton
                     style={{ width: "45%" }}
-                    onPress={async () => {
-                      await wrapAsync(() =>
-                        dispatch(completeFirebaseProject(project.id))
-                      );
+                    onPress={() => {
+                      dispatch(completeFirebaseProject(project.id));
                       navigation.goBack();
-                      Toast.show({
-                        type: "success",
-                        position: "bottom",
-                        text1: "Completed Project!",
-                        text2: project.name,
-                      });
                     }}
                     text="Complete"
                   />
                   <SubmitButton
                     style={{ width: "45%" }}
                     onPress={async () => {
-                      await wrapAsync(() =>
-                        dispatch(deleteFirebaseProject(project.id))
-                      );
-
+                      dispatch(deleteFirebaseProject(project.id));
                       navigation.goBack();
-                      Toast.show({
-                        type: "info",
-                        position: "bottom",
-                        text1: "Deleted Project!",
-                        text2: project.name,
-                      });
                     }}
                     text="Delete"
                   />

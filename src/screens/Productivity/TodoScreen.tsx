@@ -36,7 +36,6 @@ const TodoScreen = () => {
   }, []);
 
   const openAndSelectDeadline = (deadline: DeadlineEntity) => () => {
-    // dispatch
     modalizeRef.current?.open("top");
   };
 
@@ -93,12 +92,12 @@ const TodoScreen = () => {
           ListHeaderComponent: (
             <TodoComponents.ListHeader todos={todos} isOpen={isOpen} />
           ),
-          data: isOpen ? todos : [],
+          data: isOpen ? todos.filter((todo) => !todo.completed) : [],
           keyExtractor: (item: Todo) => item.id,
           renderItem: ({ item }) => (
             <TodoComponents.ItemTile
               todo={item}
-              selected={selected}
+              selected={item.id === selected}
               running={running ? true : false}
             />
           ),

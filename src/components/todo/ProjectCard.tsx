@@ -22,7 +22,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
   const now = new Date().valueOf();
   const deadlineNumber = ProjectFromEntity(project).closestDeadline()?.due;
   const ddlString = deadlineNumber
-    ? new Date(deadlineNumber).toDateString()
+    ? new Date(deadlineNumber).toDateString().slice(0, -4)
     : undefined;
   const dueDateFont =
     List(project.deadlines).first(0).valueOf() > now
@@ -73,7 +73,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
                 fontSize: 20,
                 fontWeight: "500",
                 marginHorizontal: 10,
-                color: "black"
+                color: "black",
               }}
             >
               {project.name}
@@ -97,14 +97,13 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
         >
           <AntDesign name="calendar" size={30} color="black" />
           <View style={{ ...globalStyles.column, marginHorizontal: 20 }}>
-            <Text style={dueDateFont}>
-              {ddlString ?? "No upcoming deadlines"}
-            </Text>
+            <Text style={dueDateFont}>{ddlString ?? "No deadlines"}</Text>
             <Text style={textStyles.infoText}>
               {List(project.todos).isEmpty()
                 ? "Done for today!"
-                : `${project.todos.length} task${project.todos.length > 1 ? "s" : ""
-                } remaining`}
+                : `${project.todos.length} task${
+                    project.todos.length > 1 ? "s" : ""
+                  } remaining`}
             </Text>
           </View>
         </View>

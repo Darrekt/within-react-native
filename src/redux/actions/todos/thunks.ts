@@ -1,4 +1,6 @@
 import firestore from "@react-native-firebase/firestore";
+import { Alert, Vibration } from "react-native";
+import Toast from "react-native-toast-message";
 import { ProjectFromEntity, ProjectEntity } from "../../../models/Project";
 import { TodoEntity } from "../../../models/Todo";
 import projectReducer from "../../reducers/projects";
@@ -28,8 +30,6 @@ export const diffAndWriteProjects = (
   prevState: ProjectEntity[],
   newState: ProjectEntity[]
 ) => {
-  console.log(prevState);
-  console.log(newState);
   newState.forEach((project) => {
     const otherProj = prevState.find((item) => item.id === project.id);
 
@@ -59,8 +59,24 @@ export const addFirebaseTodo =
   async (dispatch, getState) => {
     const action = ActionCreators.addTodo(todo);
     const [todos, writeTodos] = genTodoWriteFunc(getState(), todo);
-    if (writeTodos) writeTodos(todoReducer(todos, action));
-    else dispatch(action);
+
+    console.log(getState().settings.maxTasks);
+    if (todos.length < getState().settings.maxTasks) {
+      if (writeTodos) writeTodos(todoReducer(todos, action));
+      else dispatch(action);
+      Toast.show({
+        type: "success",
+        position: "bottom",
+        text1: "Added todo!",
+        text2: todo.name,
+      });
+    } else
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        text1: "Too many todos!",
+        text2: "Complete the existing ones first!",
+      });
   };
 
 export const deleteFirebaseTodo =
@@ -70,6 +86,12 @@ export const deleteFirebaseTodo =
     const [todos, writeTodos] = genTodoWriteFunc(getState(), todo);
     if (writeTodos) writeTodos(todoReducer(todos, action));
     else dispatch(action);
+    Toast.show({
+      type: "error",
+      position: "bottom",
+      text1: "Deleted todo:",
+      text2: todo.name,
+    });
   };
 
 export const updateFirebaseTodo =
@@ -82,6 +104,12 @@ export const updateFirebaseTodo =
       const newState = projectReducer(state.projects, action);
       diffAndWriteProjects(state.settings.user, state.projects, newState);
     } else dispatch(action);
+    Toast.show({
+      type: "info",
+      position: "bottom",
+      text1: "Updated todo!",
+      text2: todo.name,
+    });
   };
 
 export const completeFirebaseTodo =
@@ -91,6 +119,12 @@ export const completeFirebaseTodo =
     const [todos, writeTodos] = genTodoWriteFunc(getState(), todo);
     if (writeTodos) writeTodos(todoReducer(todos, action));
     else dispatch(action);
+    Toast.show({
+      type: !todo.completed ? "success" : "info",
+      position: "bottom",
+      text1: `${!todo.completed ? "Completed" : "Un-completed"} todo!`,
+      text2: todo.name,
+    });
   };
 
 export const startFirebaseTodo =
@@ -144,4 +178,11 @@ export const finishFirebaseTodo =
     const [todos, writeTodos] = genTodoWriteFunc(state, todo);
     if (writeTodos) writeTodos(todoReducer(todos, action));
     else dispatch(action);
+    Vibration.vibrate(500);
+    Toast.show({
+      type: "success",
+      position: "bottom",
+      text1: "Finished a lap!",
+      text2: todo.name,
+    });
   };

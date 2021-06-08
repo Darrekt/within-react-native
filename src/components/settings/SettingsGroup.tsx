@@ -22,7 +22,7 @@ const SettingsGroup = ({ items }: Props) => {
   const width = useWindowDimensions().width * 0.85;
 
   return (
-    <View style={{ ...globalStyles.column, marginTop: 10, marginBottom: 20 }}>
+    <View style={{ ...globalStyles.column, marginTop: 5, marginBottom: 20 }}>
       {items.map((item, index) => {
         let roundedCornerStyle;
         if (!index)

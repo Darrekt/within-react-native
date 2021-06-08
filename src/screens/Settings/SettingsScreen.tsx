@@ -62,7 +62,7 @@ const SettingsScreen = () => {
         contentContainerStyle={{
           ...globalStyles.column,
           justifyContent: "flex-start",
-          paddingHorizontal: 0.025 * windowDimensions.width,
+          paddingHorizontal: 0.03 * windowDimensions.width,
         }}
       >
         <AuthStateDisplay />
@@ -74,12 +74,6 @@ const SettingsScreen = () => {
         </HeadingDropDown>
         <View style={{ ...globalStyles.bottomButtons, marginTop: "5%" }}>
           <SubmitButton
-            text="Sanitise Projects"
-            onPress={() => {
-              dispatch(sanitiseFirebaseProjects());
-            }}
-          />
-          <SubmitButton
             text="Reset Settings"
             onPress={() => {
               Alert.alert(
@@ -88,7 +82,6 @@ const SettingsScreen = () => {
                 [
                   {
                     text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
                     style: "cancel",
                   },
                   {

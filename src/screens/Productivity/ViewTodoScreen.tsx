@@ -75,10 +75,9 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
         return errors;
       }}
       onSubmit={async (values) => {
-        await wrapAsync(() =>
-          dispatch(
-            todo
-              ? updateFirebaseTodo(
+        dispatch(
+          todo
+            ? updateFirebaseTodo(
                 new Todo({
                   ...TodoFromEntity(todo),
                   emoji: values.emoji,
@@ -86,21 +85,14 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
                   project: values.project,
                 }).toEntity()
               )
-              : addFirebaseTodo(
+            : addFirebaseTodo(
                 new Todo({
                   emoji: values.emoji,
                   name: values.name,
                   project: values.project,
                 }).toEntity()
               )
-          )
         );
-        Toast.show({
-          type: "success",
-          position: "bottom",
-          text1: `${todo ? "Updated" : "Added"} todo!`,
-          text2: values.name,
-        });
         navigation.goBack();
       }}
     >
@@ -133,18 +125,16 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
               value={formik.values.name}
             />
           </View>
-          {formik.touched.emoji &&
-            formik.errors.emoji &&
+          {formik.touched.emoji && formik.errors.emoji && (
             <Text style={textStyles.validationMessage}>
               {formik.errors.emoji}
             </Text>
-          }
-          {formik.touched.name &&
-            formik.errors.name &&
+          )}
+          {formik.touched.name && formik.errors.name && (
             <Text style={textStyles.validationMessage}>
               {formik.errors.name}
             </Text>
-          }
+          )}
 
           <Text style={textStyles.questionText}>Assign it to a project:</Text>
           <ModalSelector

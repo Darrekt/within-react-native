@@ -4,6 +4,7 @@ import Project, { ProjectEntity } from "../../../models/Project";
 import { defaultProject } from "../../reducers/projects";
 import * as ActionCreators from "./actions";
 import { findProject } from "../../selectors";
+import Toast from "react-native-toast-message";
 
 export const projectsCollection = (userID: string) =>
   firestore().collection("Users").doc(userID).collection("projects");
@@ -41,9 +42,26 @@ export const sanitiseFirebaseProjects =
 export const addFirebaseProject =
   (project: Project): AppThunk =>
   async (dispatch, getState) => {
-    const user = getState().settings.user;
-    if (user) await writeToProjectsCollection(user)(project.toEntity());
-    else dispatch(ActionCreators.addProject(project.toEntity()));
+    const settings = getState().settings;
+
+    if (getState().projects.length < settings.maxProjects) {
+      if (settings.user)
+        await writeToProjectsCollection(settings.user)(project.toEntity());
+      else dispatch(ActionCreators.addProject(project.toEntity()));
+      Toast.show({
+        type: "success",
+        position: "bottom",
+        text1: "Added Project:",
+        text2: project.name,
+      });
+    } else {
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        text1: "Too many projects!",
+        text2: "Complete the existing ones first!",
+      });
+    }
   };
 
 export const updateFirebaseProject =
@@ -52,6 +70,12 @@ export const updateFirebaseProject =
     const user = getState().settings.user;
     if (user) await writeToProjectsCollection(user)(project.toEntity());
     else dispatch(ActionCreators.updateProject(project.toEntity()));
+    Toast.show({
+      type: "info",
+      position: "bottom",
+      text1: "Updated Project:",
+      text2: project.name,
+    });
   };
 
 export const deleteFirebaseProject =
@@ -60,18 +84,28 @@ export const deleteFirebaseProject =
     const user = getState().settings.user;
     if (user) await projectsCollection(user).doc(projectID).delete();
     else dispatch(ActionCreators.deleteProject(projectID));
+    Toast.show({
+      type: "error",
+      position: "bottom",
+      text1: "Deleted project!",
+      text2: findProject(getState().projects, projectID).name,
+    });
   };
 
 export const completeFirebaseProject =
   (projectID: string): AppThunk =>
   async (dispatch, getState) => {
     const user = getState().settings.user;
+    const project = findProject(getState().projects, projectID);
     if (user)
       await projectsCollection(user)
         .doc(projectID)
-        .set(
-          { completed: !findProject(getState().projects, projectID).completed },
-          { merge: true }
-        );
+        .set({ completed: !project.completed }, { merge: true });
     else dispatch(ActionCreators.completeProject(projectID));
+    Toast.show({
+      type: "success",
+      position: "bottom",
+      text1: "Completed project!",
+      text2: project.name,
+    });
   };

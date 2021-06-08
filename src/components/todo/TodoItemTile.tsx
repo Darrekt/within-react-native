@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     flex: 5,
     fontSize: 17,
     fontWeight: "400",
-    color: "black"
+    color: "black",
   },
   unselectedTileText: {
     textDecorationStyle: "solid",
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   todo: TodoEntity;
-  selected: string;
+  selected: boolean;
   running: boolean;
 };
 
@@ -75,12 +75,12 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
   const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+
   let itemTitleTextStyle = todo.completed
     ? { ...styles.tileTitleTextStyle, ...styles.completedTileTitleTextStyle }
     : styles.tileTitleTextStyle;
-
   itemTitleTextStyle =
-    todo.id !== selected && running
+    !selected && running
       ? { ...itemTitleTextStyle, ...styles.unselectedTileText }
       : itemTitleTextStyle;
 
@@ -106,10 +106,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
     return (
       <RectButton
         style={styles.leftAction}
-        onPress={() => {
-          console.log("pressed");
-          dispatch(deleteFirebaseTodo(todo));
-        }}
+        onPress={() => dispatch(deleteFirebaseTodo(todo))}
       >
         <Animated.Text
           style={[
@@ -126,7 +123,11 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
   };
 
   return (
-    <Swipeable overshootRight={false} renderRightActions={renderRightActions}>
+    <Swipeable
+      enabled={!running}
+      overshootRight={false}
+      renderRightActions={renderRightActions}
+    >
       <ListItem
         linearGradientProps={{
           start: { x: 0, y: 0 },
@@ -155,7 +156,7 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
             <ListItem.CheckBox
               checked={todo.completed}
               checkedColor={theme.dark}
-              disabled={running || todo.id !== selected}
+              disabled={running || selected}
               onPress={() => dispatch(completeFirebaseTodo(todo))}
             ></ListItem.CheckBox>
           </ListItem.Content>
