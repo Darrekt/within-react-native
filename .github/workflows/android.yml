@@ -11,9 +11,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-
+    - name: Decrypt secrets
+      run: |
+        mkdir $HOME/private
+        gpg --quiet --batch --yes --decrypt --passphrase="$SERVICES_SECRET" \
+        --output $HOME/private/services.tar services.tar.gpg
+        tar xvf $HOME/private/services.tar
+      env:
+        SERVICES_SECRET: ${{ secrets.SERVICES_SECRET }}
     - run: rm -rf node_modules && yarn install --frozen-lockfile
-
+    - run: yarn test
     - run: ./gradlew assembleDebug -Dorg.gradle.logging.level=info
       working-directory: android
       name: Build Android apk (debug)

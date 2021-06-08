@@ -6,7 +6,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest",
-    "clean": "npx react-native-clean-project"
+    "clean": "npx react-native-clean-project",
+    "packservices": "tar cvf services.tar android/app/google-services.json ios/GoogleService-Info.plist && gpg -c services.tar"
   },
   "jest": {
     "preset": "jest-expo",
@@ -14,7 +15,7 @@
       "./jestSetup.js"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+      "node_modules/(?!(jest-)?@react-native|react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
     ]
   },
   "dependencies": {
