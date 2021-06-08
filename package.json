@@ -7,7 +7,8 @@
     "eject": "expo eject",
     "test": "jest",
     "clean": "npx react-native-clean-project",
-    "packservices": "tar cvf services.tar android/app/google-services.json ios/GoogleService-Info.plist && gpg -c services.tar"
+    "packservices": "tar cvf services.tar android/app/google-services.json ios/GoogleService-Info.plist && gpg -c services.tar",
+    "decrypt": "gpg --quiet --batch --yes --decrypt --output services.tar services.tar.gpg && tar xvf services.tar"
   },
   "jest": {
     "preset": "jest-expo",
