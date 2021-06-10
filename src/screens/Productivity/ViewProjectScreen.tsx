@@ -23,6 +23,7 @@ import {
 import { RootStackParamList, Screens } from "../navConstants";
 import { compareDeadlines } from "../../models/Deadline";
 import OneButtonForm from "../../components/layout/OneButtonForm";
+import { Icon } from "react-native-elements/dist/icons/Icon";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
