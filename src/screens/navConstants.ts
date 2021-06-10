@@ -18,6 +18,7 @@ export enum Screens {
   ChangeEmail = "APP_CHANGE_EMAIL",
   ChangeProductivitySettings = "APP_CHANGE_PROD_SETTINGS",
   TodoHome = "TODO_HOME",
+  TodoHistory = "TODO_HISTORY",
   AddProject = "TODO_ADD_PROJECT",
   ViewProject = "TODO_VIEW_PROJECT",
   AddDeadline = "TODO_ADD_DEADLINE",

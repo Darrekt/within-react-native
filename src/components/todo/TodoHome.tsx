@@ -4,7 +4,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
-import HeaderButton from "../util/HeaderButton";
 import { useAppSelector } from "../../redux/hooks";
 import { getProjects, getSortedDeadlines } from "../../redux/selectors";
 import { List } from "immutable";
@@ -13,6 +12,7 @@ import { Screens } from "../../screens/navConstants";
 import DeadlineDisplay from "./DeadlineDisplay";
 import { compareDeadlines, DeadlineEntity } from "../../models/Deadline";
 import { compareProjectsByDeadline } from "../../models/Project";
+import { Icon } from "react-native-elements/dist/icons/Icon";
 
 export type Props = {
   focusDeadline: (ddl: DeadlineEntity) => () => void;
@@ -24,12 +24,10 @@ const HomeDisplay = ({ focusDeadline }: Props) => {
   const windowDimensions = useWindowDimensions()
   const navigation = useNavigation();
   const headerButton = (
-    <HeaderButton
+    <Icon name={"plus"} type={"entypo"} size={20} color="black"
       onPress={() => {
         navigation.navigate(Screens.AddProject);
       }}
-      iconName="plus"
-      iconType="entypo"
     />
   );
 

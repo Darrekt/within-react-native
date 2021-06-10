@@ -8,6 +8,7 @@ import ViewTodoScreen from "./ViewTodoScreen";
 import ViewDeadlineScreen from "./ViewDeadlineScreen";
 import { Screens } from "../navConstants";
 import SurveyScreen from "../SurveyScreen";
+import TodoHistory from "./TodoHistory";
 
 const TodoNavigator = () => {
   return (
@@ -22,6 +23,14 @@ const TodoNavigator = () => {
         component={SurveyScreen}
         options={{
           title: "Feedback survey",
+          headerBackTitleVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={Screens.TodoHistory}
+        component={TodoHistory}
+        options={{
+          title: "Todo History",
           headerBackTitleVisible: false,
         }}
       />

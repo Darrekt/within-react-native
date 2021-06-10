@@ -5,7 +5,6 @@ import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
 import LinearGradient from "react-native-linear-gradient";
 import * as TodoComponents from "../../components/todo/TodoComponents";
-import SettingsButton from "../../components/settings/SettingsButton";
 import Todo from "../../models/Todo";
 import {
   getSelected,
@@ -17,6 +16,9 @@ import { DeadlineEntity } from "../../models/Deadline";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectTodo } from "../../redux/actions/todos/actions";
 import SurveyButton from "../../components/settings/SurveyButton";
+import { useNavigation } from "@react-navigation/core";
+import { Icon } from "react-native-elements/dist/icons/Icon";
+import { Screens } from "../navConstants";
 
 const TodoScreen = () => {
   const todos = useAppSelector(getCompletedTodos);
@@ -24,6 +26,7 @@ const TodoScreen = () => {
   const running = useAppSelector(getRunning);
   const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
   const [isOpen, setIsOpen] = React.useState(false);
   const modalizeRef = React.useRef<Modalize>(null);
@@ -64,7 +67,13 @@ const TodoScreen = () => {
         <Header
           backgroundColor="transparent"
           leftComponent={SurveyButton()}
-          rightComponent={SettingsButton()}
+          rightComponent={
+            <View style={globalStyles.row}>
+              <Icon name="history" type="fontawesome5" onPress={() => navigation.navigate(Screens.TodoHistory)} />
+              <Icon name="settings" type="materialicons" onPress={() => navigation.navigate(Screens.Settings)} />
+            </View>
+          }
+
           containerStyle={{ borderBottomWidth: 0 }}
         />
       )}
