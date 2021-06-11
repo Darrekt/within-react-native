@@ -77,7 +77,12 @@ export const textStyles = StyleSheet.create({
     fontWeight: "400",
     color: "black",
   },
-  avatarName: { fontSize: 24, fontWeight: "400", marginVertical: 15, color: "black" },
+  avatarName: {
+    fontSize: 24,
+    fontWeight: "400",
+    marginVertical: 15,
+    color: "black",
+  },
   // surveyQuestion: {
   //   flexShrink: 1,
   //   marginVertical: 5,
@@ -97,7 +102,6 @@ export const textStyles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 15,
-    fontWeight: "500",
   },
   validationMessage: {
     marginVertical: 3,

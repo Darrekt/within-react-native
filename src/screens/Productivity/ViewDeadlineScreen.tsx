@@ -82,32 +82,24 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
         return errors;
       }}
       onSubmit={async (values) => {
-        await wrapAsync(() =>
-          dispatch(
-            deadline
-              ? updateFirebaseDeadline(
-                  new Deadline({
-                    ...DeadlineFromEntity(deadline),
-                    name: values.name,
-                    due: values.due,
-                  }).toEntity()
-                )
-              : addFirebaseDeadline(
-                  new Deadline({
-                    project: route.params.projID ?? "",
-                    name: values.name,
-                    due: values.due,
-                  }).toEntity()
-                )
-          )
+        dispatch(
+          deadline
+            ? updateFirebaseDeadline(
+                new Deadline({
+                  ...DeadlineFromEntity(deadline),
+                  name: values.name,
+                  due: values.due,
+                }).toEntity()
+              )
+            : addFirebaseDeadline(
+                new Deadline({
+                  project: route.params.projID ?? "",
+                  name: values.name,
+                  due: values.due,
+                }).toEntity()
+              )
         );
         navigation.goBack();
-        Toast.show({
-          type: "success",
-          position: "bottom",
-          text1: `${deadline ? "Updated" : "Added"} Deadline:`,
-          text2: values.name,
-        });
       }}
     >
       {(formik) => (

@@ -1,4 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
+import Toast from "react-native-toast-message";
 import { DeadlineEntity } from "../../../models/Deadline";
 import { TodoEntity } from "../../../models/Todo";
 import deadlineReducer from "../../reducers/deadlines";
@@ -57,6 +58,12 @@ export const addFirebaseDeadline =
         todoReducer(todos, action)
       );
     else dispatch(action);
+    Toast.show({
+      type: "success",
+      position: "bottom",
+      text1: `${deadline ? "Updated" : "Added"} Deadline:`,
+      text2: deadline.name,
+    });
   };
 
 export const deleteFirebaseDeadline =
@@ -73,6 +80,12 @@ export const deleteFirebaseDeadline =
         todoReducer(todos, action)
       );
     else dispatch(action);
+    Toast.show({
+      type: "error",
+      position: "bottom",
+      text1: `Deleted deadline:`,
+      text2: deadline.name,
+    });
   };
 
 export const updateFirebaseDeadline =
