@@ -13,7 +13,7 @@ export interface ProjectEntity {
   emoji: string;
   name: string;
   notes: string;
-  completed: boolean;
+  completed: number | null;
   deadlines: DeadlineEntity[];
   todos: TodoEntity[];
 }
@@ -23,7 +23,7 @@ export default class Project {
   emoji: string = "✏️";
   name: string;
   notes: string = "";
-  completed: boolean = false;
+  completed: Date | null = null;
   deadlines: Deadline[] = [];
   todos: Todo[] = [];
 
@@ -49,7 +49,7 @@ export default class Project {
       emoji: this.emoji,
       name: this.name,
       notes: this.notes,
-      completed: this.completed,
+      completed: this.completed?.getTime() ?? null,
       todos: this.todos.map((todo) => todo.toEntity()),
       deadlines: this.deadlines
         .map((ddl) => ddl.toEntity())
@@ -94,6 +94,7 @@ export default class Project {
 export function ProjectFromEntity(doc: any) {
   return new Project({
     ...doc,
+    completed: doc.completed ? new Date(doc.completed) : null,
     todos: List(doc.todos)
       .map((todoStr) => TodoFromEntity(todoStr))
       .toArray(),

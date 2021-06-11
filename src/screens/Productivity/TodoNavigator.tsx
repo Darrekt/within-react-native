@@ -30,7 +30,7 @@ const TodoNavigator = () => {
         name={Screens.TodoHistory}
         component={TodoHistory}
         options={{
-          title: "Todo History",
+          title: "History",
           headerBackTitleVisible: false,
         }}
       />

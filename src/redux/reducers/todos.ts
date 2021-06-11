@@ -47,7 +47,7 @@ const todoReducer = (
       target = findTodoInList(state, action.payload.id);
       return setTodo(state, {
         ...target,
-        completed: !target.completed,
+        completed: target.completed ? null : new Date().getTime(),
       });
 
     // Timer Actions
@@ -107,8 +107,8 @@ const todoReducer = (
       return state.map((todo) => ({
         ...todo,
         completed: action.payload.todos.find((item) => item === todo.id)
-          ? true
-          : false,
+          ? new Date().getTime()
+          : null,
       }));
     case Actions.TodoAssignDeadline:
       return List(state)
