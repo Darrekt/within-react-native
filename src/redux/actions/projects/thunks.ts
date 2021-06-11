@@ -5,6 +5,7 @@ import { defaultProject } from "../../reducers/projects";
 import * as ActionCreators from "./actions";
 import { findProject } from "../../selectors";
 import Toast from "react-native-toast-message";
+import { UNCATEGORISED_TODO_PROJID } from "../../../util/constants";
 
 export const projectsCollection = (userID: string) =>
   firestore().collection("Users").doc(userID).collection("projects");
@@ -45,8 +46,9 @@ export const addFirebaseProject =
     const settings = getState().settings;
 
     if (
-      getState().projects.filter((item) => !item.completed).length <
-      settings.maxProjects
+      getState().projects.filter(
+        (item) => item.id !== UNCATEGORISED_TODO_PROJID && !item.completed
+      ).length < settings.maxProjects
     ) {
       if (settings.user)
         await writeToProjectsCollection(settings.user)(project.toEntity());
@@ -103,7 +105,7 @@ export const completeFirebaseProject =
     if (user)
       await projectsCollection(user)
         .doc(projectID)
-        .set({ completed: !project.completed }, { merge: true });
+        .set({ completed: new Date().getTime() }, { merge: true });
     else dispatch(ActionCreators.completeProject(projectID));
     Toast.show({
       type: "success",

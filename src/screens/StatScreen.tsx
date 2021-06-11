@@ -1,8 +1,7 @@
 import React from "react";
-import { NativeModules, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { globalStyles } from "../../styles";
-
-const { DnDMode } = NativeModules;
+import DateListView from "../components/todo/DateListView";
 
 export const StatScreen = () => (
   <View style={globalStyles.centered}>

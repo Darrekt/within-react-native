@@ -4,7 +4,7 @@ export interface TodoEntity {
   id: string;
   emoji: string;
   name: string;
-  completed: boolean;
+  completed: number | null;
   project: string;
   deadline: string | null;
   laps: number;
@@ -16,7 +16,7 @@ export default class Todo {
   id: string = uuidv4();
   emoji: string = "✏️";
   name: string = "";
-  completed: boolean = false;
+  completed: Date | null = null;
   project: string;
   deadline: string | null;
   laps: number = 0;
@@ -40,7 +40,7 @@ export default class Todo {
       id: this.id,
       emoji: this.emoji,
       name: this.name,
-      completed: this.completed,
+      completed: this.completed?.getTime() ?? null,
       project: this.project,
       deadline: this.deadline,
       laps: this.laps,
@@ -71,6 +71,7 @@ export default class Todo {
 export function TodoFromEntity(doc: any) {
   return new Todo({
     ...doc,
-    finishingTime: doc.finishingTime ? new Date(doc.finishingTime) : undefined,
+    completed: doc.completed ? new Date(doc.completed) : null,
+    finishingTime: doc.finishingTime ? new Date(doc.finishingTime) : null,
   });
 }

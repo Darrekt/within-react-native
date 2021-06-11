@@ -5,7 +5,7 @@ export interface DeadlineEntity {
   id: string;
   project: string;
   name: string;
-  completed: boolean;
+  completed: number | null;
   due: number;
   todos: string[];
 }
@@ -14,7 +14,7 @@ export default class Deadline {
   id: string;
   project: string;
   name: string;
-  completed: boolean;
+  completed: Date | null;
   due: Date;
   todos: string[];
 
@@ -24,7 +24,7 @@ export default class Deadline {
     this.id = data.id ?? uuidv4();
     this.project = data.project ? data.project : UNCATEGORISED_TODO_PROJID;
     this.name = data.name;
-    this.completed = data.completed ?? false;
+    this.completed = data.completed ?? null;
     this.due = data.due;
     this.todos = data.todos ?? [];
   }
@@ -34,7 +34,7 @@ export default class Deadline {
       id: this.id,
       project: this.project,
       name: this.name,
-      completed: this.completed,
+      completed: this.completed?.getTime() ?? null,
       due: this.due.getTime(),
       todos: this.todos,
     };
@@ -67,7 +67,7 @@ export const DeadlineFromEntity = (doc: any) =>
     id: doc.id,
     project: doc.project,
     name: doc.name,
-    completed: doc.completed,
+    completed: doc.completed ? new Date(doc.completed) : null,
     due: new Date(doc.due),
     todos: doc.todos,
   });

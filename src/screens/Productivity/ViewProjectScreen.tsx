@@ -8,11 +8,10 @@ import EmojiRegex from "emoji-regex";
 import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import Toast from "react-native-toast-message";
 import wrapAsync from "../../util/dispatchAsync";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import DeadlineDisplay from "../../components/todo/DeadlineDisplay";
-import HeaderButton from "../../components/util/HeaderButton";
+import { AntDesign } from '@expo/vector-icons';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getProjects, getTheme } from "../../redux/selectors";
 import {
@@ -24,6 +23,7 @@ import {
 import { RootStackParamList, Screens } from "../navConstants";
 import { compareDeadlines } from "../../models/Deadline";
 import OneButtonForm from "../../components/layout/OneButtonForm";
+import { Icon } from "react-native-elements/dist/icons/Icon";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -85,20 +85,20 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
           dispatch(
             project
               ? updateFirebaseProject(
-                  new Project({
-                    ...ProjectFromEntity(project),
-                    emoji: values.emoji,
-                    name: values.name,
-                    notes: values.notes,
-                  })
-                )
+                new Project({
+                  ...ProjectFromEntity(project),
+                  emoji: values.emoji,
+                  name: values.name,
+                  notes: values.notes,
+                })
+              )
               : addFirebaseProject(
-                  new Project({
-                    emoji: values.emoji,
-                    name: values.name,
-                    notes: values.notes,
-                  })
-                )
+                new Project({
+                  emoji: values.emoji,
+                  name: values.name,
+                  notes: values.notes,
+                })
+              )
           );
         });
         navigation.goBack();
@@ -187,15 +187,13 @@ const ViewProjectScreen = ({ route, navigation }: Props) => {
               header="Deadlines"
               topMargin={"5%"}
               dropdown={
-                <HeaderButton
+                <AntDesign name="plus" size={24} color="black"
                   onPress={() =>
                     navigation.navigate(Screens.AddDeadline, {
                       deadlineID: undefined,
                       projID: project.id,
                     })
                   }
-                  iconName="plus"
-                  iconType="entypo"
                 />
               }
             >

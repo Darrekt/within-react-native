@@ -1,7 +1,6 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { Foundation } from "@expo/vector-icons";
-
 import { useNavigation } from "@react-navigation/native";
 import { Screens } from "../../screens/navConstants";
 

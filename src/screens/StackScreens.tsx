@@ -8,7 +8,6 @@ import {
   SageSettings,
 } from "../redux/reducers/settings";
 import { getSettings } from "../redux/selectors";
-
 import OnboardingScreen from "./Onboarding/OnboardingScreen";
 import SettingsScreen from "./Settings/SettingsScreen";
 import AuthManagementScreen from "./Onboarding/AuthManagementScreen";
@@ -136,7 +135,6 @@ function StackScreens() {
 
   useEffect(() => {
     if (settings.user) {
-      console.log("SETTINGS LISTENER SUBSCRIBED");
       const cleanupSettingsListener = firestore()
         .collection("Users")
         .doc(settings.user)
@@ -147,7 +145,6 @@ function StackScreens() {
           }
         });
 
-      console.log("PROJECT LISTENER SUBSCRIBED");
       const cleanupProjectListener = firestore()
         .collection("Users")
         .doc(settings.user)
@@ -157,8 +154,8 @@ function StackScreens() {
             querySnapshot && querySnapshot.empty
               ? []
               : querySnapshot.docs.map((doc) =>
-                  ProjectFromEntity(doc.data()).toEntity()
-                );
+                ProjectFromEntity(doc.data()).toEntity()
+              );
           dispatch(hydrateProjects(storedData));
         });
 
