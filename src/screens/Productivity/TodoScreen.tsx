@@ -10,7 +10,7 @@ import {
   getSelected,
   getRunning,
   getTheme,
-  getCompletedTodos,
+  getIncompleteTodos,
 } from "../../redux/selectors";
 import { DeadlineEntity } from "../../models/Deadline";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -21,7 +21,7 @@ import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Screens } from "../navConstants";
 
 const TodoScreen = () => {
-  const todos = useAppSelector(getCompletedTodos);
+  const todos = useAppSelector(getIncompleteTodos);
   const selected = useAppSelector(getSelected);
   const running = useAppSelector(getRunning);
   const theme = useAppSelector(getTheme);

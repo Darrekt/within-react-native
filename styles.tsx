@@ -59,6 +59,20 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  itemTileRow: {
+    width: "100%",
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  itemTileTitleTextStyle: {
+    flex: 5,
+    fontSize: 17,
+    fontWeight: "400",
+    color: "black",
+  },
 });
 
 export const textStyles = StyleSheet.create({
@@ -78,13 +92,6 @@ export const textStyles = StyleSheet.create({
     color: "black",
   },
   avatarName: { fontSize: 24, fontWeight: "400", marginVertical: 15, color: "black" },
-  // surveyQuestion: {
-  //   flexShrink: 1,
-  //   marginVertical: 5,
-  //   marginHorizontal: 18,
-  //   fontSize: 20,
-  //   color: "black",
-  // },
   infoText: {
     color: "black",
   },

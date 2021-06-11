@@ -1,24 +1,19 @@
 import React from 'react'
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native'
+import { StyleSheet, Text, useWindowDimensions } from 'react-native'
 import { useAppSelector } from '../../redux/hooks';
-import { getCompletedTodos, getTheme } from '../../redux/selectors';
+import { getTheme } from '../../redux/selectors';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import DateListView from '../../components/todo/DateListView';
 
 const styles = StyleSheet.create({
   whiteBg: { backgroundColor: "white" },
   tabTxt: { fontSize: 16, color: "black" }
 })
 
-const FirstRoute = () => (
-  <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-);
-
-const SecondRoute = () => (
-  <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-);
+const FirstRoute = () => <DateListView mode="projects" />
+const SecondRoute = () => <DateListView mode="todos" />;
 
 export default function TodoHistory() {
-  const todos = useAppSelector(getCompletedTodos)
   const theme = useAppSelector(getTheme)
   const layout = useWindowDimensions();
 

@@ -22,7 +22,10 @@ const deadlineReducer = (
       return List(state)
         .update(
           state.findIndex((item) => item.id === action.payload.id),
-          (ddl) => ({ ...ddl, completed: !ddl.completed })
+          (ddl) => ({
+            ...ddl,
+            completed: ddl.completed ? null : new Date().getTime(),
+          })
         )
         .toArray();
     default:

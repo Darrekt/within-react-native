@@ -135,7 +135,6 @@ function StackScreens() {
 
   useEffect(() => {
     if (settings.user) {
-      console.log("SETTINGS LISTENER SUBSCRIBED");
       const cleanupSettingsListener = firestore()
         .collection("Users")
         .doc(settings.user)
@@ -146,7 +145,6 @@ function StackScreens() {
           }
         });
 
-      console.log("PROJECT LISTENER SUBSCRIBED");
       const cleanupProjectListener = firestore()
         .collection("Users")
         .doc(settings.user)

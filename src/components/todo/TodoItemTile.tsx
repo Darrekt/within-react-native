@@ -16,25 +16,12 @@ import {
 import { Screens } from "../../screens/navConstants";
 import LinearGradient from "react-native-linear-gradient";
 import { getTheme } from "../../redux/selectors";
+import { globalStyles } from "../../../styles";
 
 const styles = StyleSheet.create({
-  tileRow: {
-    width: "100%",
-    paddingHorizontal: 10,
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "space-evenly",
-  },
   tileIconStyle: {
     marginRight: 20,
     fontSize: 20,
-  },
-  tileTitleTextStyle: {
-    flex: 5,
-    fontSize: 17,
-    fontWeight: "400",
-    color: "black",
   },
   unselectedTileText: {
     textDecorationStyle: "solid",
@@ -87,18 +74,18 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
         onPress={() => { !running && dispatch(selectTodo(todo)) }}
         onLongPress={() => navigation.navigate(Screens.ViewTodo, { id: todo.id })}
       >
-        <ListItem.Content style={styles.tileRow}>
+        <ListItem.Content style={globalStyles.itemTileRow}>
           <ListItem.Title>
             <BadgedText style={styles.tileIconStyle}>{todo.emoji}</BadgedText>
           </ListItem.Title>
           <ListItem.Subtitle style={!selected && running
-            ? { ...styles.tileTitleTextStyle, ...styles.unselectedTileText }
-            : styles.tileTitleTextStyle
+            ? { ...globalStyles.itemTileTitleTextStyle, ...styles.unselectedTileText }
+            : globalStyles.itemTileTitleTextStyle
           }>
             {todo.name}
           </ListItem.Subtitle>
           <ListItem.CheckBox
-            checked={todo.completed}
+            checked={todo.completed ? true : false}
             checkedColor={theme.dark}
             disabled={running || selected}
             onPress={() => dispatch(completeFirebaseTodo(todo))}
