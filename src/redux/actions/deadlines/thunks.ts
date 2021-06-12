@@ -118,4 +118,10 @@ export const completeFirebaseDeadline =
         todoReducer(todos, action)
       );
     else dispatch(action);
+    Toast.show({
+      type: "success",
+      position: "bottom",
+      text1: "Completed deadline!",
+      text2: deadline.name,
+    });
   };

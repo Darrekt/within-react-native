@@ -14,8 +14,6 @@ import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import Toast from "react-native-toast-message";
-import wrapAsync from "../../util/dispatchAsync";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { findDeadline, getTheme } from "../../redux/selectors";
 import {
@@ -117,35 +115,18 @@ const ViewDeadlineScreen = ({ route, navigation }: Props) => {
                 >
                   <SubmitButton
                     style={{ width: "45%" }}
-                    onPress={async () => {
-                      await wrapAsync(() =>
-                        dispatch(completeFirebaseDeadline(deadline))
-                      );
+                    onPress={() => {
+                      dispatch(completeFirebaseDeadline(deadline));
 
                       navigation.goBack();
-                      Toast.show({
-                        type: "success",
-                        position: "bottom",
-                        text1: "Completed deadline!",
-                        text2: deadline.name,
-                      });
                     }}
                     text="Complete"
                   />
                   <SubmitButton
                     style={{ width: "45%" }}
-                    onPress={async () => {
-                      await wrapAsync(() =>
-                        dispatch(deleteFirebaseDeadline(deadline))
-                      );
-
+                    onPress={() => {
+                      dispatch(deleteFirebaseDeadline(deadline));
                       navigation.goBack();
-                      Toast.show({
-                        type: "info",
-                        position: "bottom",
-                        text1: "Deleted deadline!",
-                        text2: deadline.name,
-                      });
                     }}
                     text="Delete"
                   />

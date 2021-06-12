@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Alert } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
@@ -9,8 +9,6 @@ import SubmitButton from "../../components/util/SubmitButton";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
-import Toast from "react-native-toast-message";
-import wrapAsync from "../../util/dispatchAsync";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getAllTodos, getProjects, getTheme } from "../../redux/selectors";
 import {

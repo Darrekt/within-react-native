@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, useWindowDimensions } from "react-native";
-import { Header } from "react-native-elements";
+import { Header, withBadge } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
 import LinearGradient from "react-native-linear-gradient";
@@ -19,8 +19,10 @@ import SurveyButton from "../../components/settings/SurveyButton";
 import { useNavigation } from "@react-navigation/core";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Screens } from "../navConstants";
-import { completeFirebaseTodo, deleteFirebaseTodo } from "../../redux/actions/todos/thunks";
-import { withBadge } from "react-native-elements";
+import {
+  completeFirebaseTodo,
+  deleteFirebaseTodo,
+} from "../../redux/actions/todos/thunks";
 
 const TodoScreen = () => {
   const todos = useAppSelector(getIncompleteTodos);
@@ -71,11 +73,18 @@ const TodoScreen = () => {
           leftComponent={SurveyButton()}
           rightComponent={
             <View style={globalStyles.row}>
-              <Icon name="history" type="fontawesome5" onPress={() => navigation.navigate(Screens.TodoHistory)} />
-              <Icon name="settings" type="materialicons" onPress={() => navigation.navigate(Screens.Settings)} />
+              <Icon
+                name="history"
+                type="fontawesome5"
+                onPress={() => navigation.navigate(Screens.TodoHistory)}
+              />
+              <Icon
+                name="settings"
+                type="materialicons"
+                onPress={() => navigation.navigate(Screens.Settings)}
+              />
             </View>
           }
-
           containerStyle={{ borderBottomWidth: 0 }}
         />
       )}
@@ -105,27 +114,29 @@ const TodoScreen = () => {
           ),
           data: isOpen ? todos.filter((todo) => !todo.completed) : [],
           keyExtractor: (item: Todo) => item.id,
-          renderItem: ({ item }: { item: TodoEntity }) => <TodoComponents.ItemTile
-            item={item}
-            selected={item.id === selected}
-            disabled={running ? true : false}
-            onPress={() => dispatch(selectTodo(item))}
-            onLongPress={() => navigation.navigate(Screens.ViewTodo, { id: item.id })}
-            deleteAction={() => dispatch(deleteFirebaseTodo(item))}
-            checkAction={() => dispatch(completeFirebaseTodo(item))}
-            BadgedText={
-              withBadge(item.laps, {
+          renderItem: ({ item }: { item: TodoEntity }) => (
+            <TodoComponents.ItemTile
+              key={item.id}
+              item={item}
+              selected={item.id === selected}
+              disabled={running ? true : false}
+              onPress={() => dispatch(selectTodo(item))}
+              onLongPress={() =>
+                navigation.navigate(Screens.ViewTodo, { id: item.id })
+              }
+              deleteAction={() => dispatch(deleteFirebaseTodo(item))}
+              checkAction={() => dispatch(completeFirebaseTodo(item))}
+              BadgedText={withBadge(item.laps, {
                 badgeStyle: {
                   backgroundColor: theme.dark,
                   position: "absolute",
                   top: -4,
                 },
                 right: 6,
-                hidden: !item.laps
-              })(Text)
-            }
-          />
-          ,
+                hidden: !item.laps,
+              })(Text)}
+            />
+          ),
           ListEmptyComponent: isOpen
             ? TodoComponents.ListEmptyDisplay
             : undefined,
