@@ -105,7 +105,10 @@ export const completeFirebaseProject =
     if (user)
       await projectsCollection(user)
         .doc(projectID)
-        .set({ completed: new Date().getTime() }, { merge: true });
+        .set(
+          { completed: project.completed ? null : new Date().getTime() },
+          { merge: true }
+        );
     else dispatch(ActionCreators.completeProject(projectID));
     Toast.show({
       type: "success",

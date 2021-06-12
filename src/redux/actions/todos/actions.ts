@@ -1,4 +1,4 @@
-import { TodoEntity } from "../../../models/Todo"
+import { TodoEntity } from "../../../models/Todo";
 import { Actions, TodoAction } from "../actionTypes";
 
 export const addTodo = (todo: TodoEntity): TodoAction => ({
@@ -6,13 +6,13 @@ export const addTodo = (todo: TodoEntity): TodoAction => ({
   payload: todo,
 });
 
-export const updateTodo = (todo: TodoEntity): TodoAction => ({
-  type: Actions.TodoUpdate,
+export const deleteTodo = (todo: TodoEntity): TodoAction => ({
+  type: Actions.TodoDelete,
   payload: todo,
 });
 
-export const deleteTodo = (todo: TodoEntity): TodoAction => ({
-  type: Actions.TodoDelete,
+export const updateTodo = (todo: TodoEntity): TodoAction => ({
+  type: Actions.TodoUpdate,
   payload: todo,
 });
 

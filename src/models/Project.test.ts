@@ -1,7 +1,7 @@
-import { List } from "immutable";
 import { v4 as uuidv4 } from "uuid";
-import Project from "./Project";
+import Project, { ProjectFromEntity } from "./Project";
 import Todo from "./Todo";
+import { isPlain, isPlainObject } from "@reduxjs/toolkit";
 
 const testID = uuidv4();
 const todo1 = new Todo({ name: "First task" });
@@ -19,11 +19,9 @@ const project2 = new Project({
   notes: "I am important",
   todos: [todo1, todo2],
 });
-
-const project3 = new Project({ ...project2 });
+const project3 = ProjectFromEntity(project2.toEntity());
 
 test("Correct constructor handling of IDs", () => {
-  // console.log(project2.id)
   expect(project1.id).toEqual(testID);
   expect(project2.id).toBeDefined();
 });
@@ -39,4 +37,14 @@ test("ToEntity should have all properties of Project", () => {
   properties.forEach((property) => {
     expect(entity).toHaveProperty(property);
   });
+});
+
+test("Check value equality of two projects", () => {
+  expect(project1.equals(project2)).toEqual(false);
+  expect(project2.equals(project3)).toEqual(true);
+});
+
+test("Project serialisability checks", () => {
+  expect(isPlainObject(project1.toEntity())).toEqual(true);
+  expect(isPlain([project1.toEntity(), project2.toEntity()])).toEqual(true);
 });

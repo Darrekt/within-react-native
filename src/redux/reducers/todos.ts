@@ -31,7 +31,7 @@ that all todos in this instance of the reducer call will have the associated pro
  * @param action 
  * @returns 
  */
-const todoReducer = (
+export const todoReducer = (
   state: TodoEntity[],
   action: DeadlineAction | TodoAction
 ): TodoEntity[] => {

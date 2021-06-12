@@ -49,7 +49,10 @@ export const projectReducer = (
       return state.filter((item) => item.id !== action.target);
     case Actions.ProjectComplete:
       return findAndUpdateProject(state, action.target, (proj) =>
-        ProjectFromEntity({ ...proj, completed: !proj.completed }).toEntity()
+        ProjectFromEntity({
+          ...proj,
+          completed: proj.completed ? null : new Date().getTime(),
+        }).toEntity()
       );
 
     // Deadline Actions
