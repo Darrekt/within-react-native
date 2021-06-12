@@ -1,11 +1,11 @@
 import React from "react";
-import { View, useWindowDimensions } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import { Header } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
 import LinearGradient from "react-native-linear-gradient";
 import * as TodoComponents from "../../components/todo/TodoComponents";
-import Todo from "../../models/Todo";
+import Todo, { TodoEntity } from "../../models/Todo";
 import {
   getSelected,
   getRunning,
@@ -19,6 +19,8 @@ import SurveyButton from "../../components/settings/SurveyButton";
 import { useNavigation } from "@react-navigation/core";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Screens } from "../navConstants";
+import { completeFirebaseTodo, deleteFirebaseTodo } from "../../redux/actions/todos/thunks";
+import { withBadge } from "react-native-elements";
 
 const TodoScreen = () => {
   const todos = useAppSelector(getIncompleteTodos);
@@ -103,13 +105,27 @@ const TodoScreen = () => {
           ),
           data: isOpen ? todos.filter((todo) => !todo.completed) : [],
           keyExtractor: (item: Todo) => item.id,
-          renderItem: ({ item }) => (
-            <TodoComponents.ItemTile
-              todo={item}
-              selected={item.id === selected}
-              running={running ? true : false}
-            />
-          ),
+          renderItem: ({ item }: { item: TodoEntity }) => <TodoComponents.ItemTile
+            item={item}
+            selected={item.id === selected}
+            disabled={running ? true : false}
+            onPress={() => dispatch(selectTodo(item))}
+            onLongPress={() => navigation.navigate(Screens.ViewTodo, { id: item.id })}
+            deleteAction={() => dispatch(deleteFirebaseTodo(item))}
+            checkAction={() => dispatch(completeFirebaseTodo(item))}
+            BadgedText={
+              withBadge(item.laps, {
+                badgeStyle: {
+                  backgroundColor: theme.dark,
+                  position: "absolute",
+                  top: -4,
+                },
+                right: 6,
+                hidden: !item.laps
+              })(Text)
+            }
+          />
+          ,
           ListEmptyComponent: isOpen
             ? TodoComponents.ListEmptyDisplay
             : undefined,

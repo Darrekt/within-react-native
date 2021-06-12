@@ -1,56 +1,35 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { ListItem, withBadge, Button } from "react-native-elements";
-import { TodoEntity } from "../../models/Todo";
-import { useNavigation } from "@react-navigation/core";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { selectTodo } from "../../redux/actions/todos/actions";
-import {
-  completeFirebaseTodo,
-  deleteFirebaseTodo,
-} from "../../redux/actions/todos/thunks";
-import { Screens } from "../../screens/navConstants";
+import { Text, TouchableOpacity } from "react-native";
+import { ListItem, Button } from "react-native-elements";
 import LinearGradient from "react-native-linear-gradient";
+import { ProjectEntity } from "../../models/Project";
+import { TodoEntity } from "../../models/Todo";
 import { getTheme } from "../../redux/selectors";
-import { globalStyles } from "../../../styles";
-
-const styles = StyleSheet.create({
-  tileIconStyle: {
-    marginRight: 20,
-    fontSize: 20,
-  },
-  unselectedTileText: {
-    textDecorationStyle: "solid",
-    color: "grey",
-  },
-});
+import { globalStyles, textStyles } from "../../../styles";
+import { useAppSelector } from "../../redux/hooks";
 
 type Props = {
-  todo: TodoEntity;
+  item: ProjectEntity | TodoEntity;
+  disabled: boolean;
   selected: boolean;
-  running: boolean;
+  onPress: () => void;
+  onLongPress: () => void;
+  deleteAction: () => void;
+  checkAction: () => void;
+  BadgedText?: React.ComponentType<{}>;
 };
 
-const TodoItemTile = ({ todo, selected, running }: Props) => {
+const TodoItemTile = ({
+  item,
+  disabled,
+  selected,
+  onPress,
+  onLongPress,
+  deleteAction,
+  checkAction,
+  BadgedText,
+}: Props) => {
   const theme = useAppSelector(getTheme);
-  const dispatch = useAppDispatch();
-  const navigation = useNavigation();
-
-  const BadgedText = withBadge(todo.laps, {
-    badgeStyle: {
-      backgroundColor: theme.dark,
-      position: "absolute",
-      top: -4,
-      right: 8,
-    },
-    right: 10,
-    hidden: todo.laps === 0,
-  })(Text);
-
   return (
     <ListItem.Swipeable
       linearGradientProps={{
@@ -64,32 +43,42 @@ const TodoItemTile = ({ todo, selected, running }: Props) => {
       rightContent={
         <Button
           title="Delete"
-          icon={{ name: 'delete', color: 'white' }}
-          buttonStyle={{ minHeight: "100%", backgroundColor: 'red' }}
-          onPress={() => deleteFirebaseTodo(todo)}
+          icon={{ name: "delete", color: "white" }}
+          buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
+          onPress={deleteAction}
         />
       }
     >
       <TouchableOpacity
-        onPress={() => { !running && dispatch(selectTodo(todo)) }}
-        onLongPress={() => navigation.navigate(Screens.ViewTodo, { id: todo.id })}
+        onPress={() => {
+          !disabled && onPress();
+        }}
+        onLongPress={() => !disabled && onLongPress()}
       >
         <ListItem.Content style={globalStyles.itemTileRow}>
           <ListItem.Title>
-            <BadgedText style={styles.tileIconStyle}>{todo.emoji}</BadgedText>
+            {BadgedText ? (
+              <BadgedText style={textStyles.emoji}>{item.emoji}</BadgedText>
+            ) : (
+              <Text style={textStyles.emoji}>{item.emoji}</Text>
+            )}
           </ListItem.Title>
-          <ListItem.Subtitle style={!selected && running
-            ? { ...globalStyles.itemTileTitleTextStyle, ...styles.unselectedTileText }
-            : globalStyles.itemTileTitleTextStyle
-          }>
-            {todo.name}
+          <ListItem.Subtitle
+            style={{
+              ...globalStyles.itemTileTitleTextStyle,
+              color: !selected && disabled ? "grey" : "black",
+            }}
+          >
+            {item.name}
           </ListItem.Subtitle>
-          <ListItem.CheckBox
-            checked={todo.completed ? true : false}
-            checkedColor={theme.dark}
-            disabled={running || selected}
-            onPress={() => dispatch(completeFirebaseTodo(todo))}
-          ></ListItem.CheckBox>
+          {checkAction && (
+            <ListItem.CheckBox
+              checked={item.completed ? true : false}
+              checkedColor={theme.dark}
+              disabled={disabled || selected}
+              onPress={checkAction}
+            />
+          )}
         </ListItem.Content>
       </TouchableOpacity>
     </ListItem.Swipeable>

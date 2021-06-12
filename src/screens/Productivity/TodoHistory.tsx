@@ -37,6 +37,7 @@ export default function TodoHistory() {
   return (
     <TabView
       navigationState={{ index, routes }}
+      swipeEnabled={false}
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
       initialLayout={{ width: layout.width }}

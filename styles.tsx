@@ -111,4 +111,9 @@ export const textStyles = StyleSheet.create({
     alignSelf: "flex-start",
     color: ERROR_COLOR,
   },
+  emoji: {
+    color: "black",
+    marginRight: 20,
+    fontSize: 18,
+  },
 });
