@@ -1,4 +1,3 @@
-import { TodoEntity } from "../../../models/Todo";
 import { Actions, FilterAction } from "../actionTypes";
 
 export const toggleFilter = (filter: string): FilterAction => ({
@@ -6,7 +5,7 @@ export const toggleFilter = (filter: string): FilterAction => ({
   payload: filter,
 });
 
-export const selectTodo = (todo: TodoEntity): FilterAction => ({
+export const selectTodo = (todoID: string): FilterAction => ({
   type: Actions.SelectTodo,
-  payload: todo.id,
+  payload: todoID,
 });

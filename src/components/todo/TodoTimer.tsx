@@ -58,10 +58,8 @@ type DisplayProps = {
 };
 
 const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
-  const projects = useAppSelector(getIncompleteProjects);
   const deadlines = useAppSelector(getSortedDeadlines);
   const filters = useAppSelector(getFilters);
-  const theme = useAppSelector(getTheme);
   const windowDimensions = useWindowDimensions();
   const dispatch = useAppDispatch();
 
@@ -69,16 +67,6 @@ const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
     <TodoTimer selectedTask={selectedTask} dispatch={dispatch} />
   ) : (
     <View style={styles.positionedLogo}>
-      <View style={globalStyles.row}>
-        {projects.map((project) => (
-          <Chip
-            key={project.id}
-            title={project.name}
-            type="outline"
-            titleStyle={{ color: theme.text.primary }}
-          />
-        ))}
-      </View>
       <ScrollView style={{ width: windowDimensions.width * 0.9 }}>
         {deadlines.slice(0, 3).map((deadline) => (
           <DeadlineDisplay

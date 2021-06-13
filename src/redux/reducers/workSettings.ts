@@ -16,10 +16,13 @@ const workSettingsReducer = (
     case Actions.ProjectHydrate:
       return {
         ...state,
-        selected:
-          action.payload
-            .find((project) => project.todos.some((todo) => todo.finishingTime))
-            ?.todos.find((todo) => todo.finishingTime)?.id ?? "",
+        selected: state.selected
+          ? state.selected
+          : action.payload
+              .find((project) =>
+                project.todos.some((todo) => todo.finishingTime)
+              )
+              ?.todos.find((todo) => todo.finishingTime)?.id ?? "",
       };
     case Actions.SettingsHydrate:
       return { ...state, ...action.payload.workSettings };

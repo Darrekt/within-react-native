@@ -13,7 +13,6 @@ import {
   getIncompleteTodos,
   getFilters,
 } from "../../redux/selectors";
-import { DeadlineEntity } from "../../models/Deadline";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import SurveyButton from "../../components/settings/SurveyButton";
 import { useNavigation } from "@react-navigation/core";
@@ -37,12 +36,6 @@ const TodoScreen = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const modalizeRef = React.useRef<Modalize>(null);
   const windowHeight = useWindowDimensions().height;
-
-  React.useEffect(() => {
-    if (running) {
-      dispatch(selectTodo(running));
-    }
-  }, []);
 
   return (
     <View
@@ -104,7 +97,13 @@ const TodoScreen = () => {
         onOpen={() => setIsOpen(true)}
         onClose={() => setIsOpen(false)}
         onPositionChange={(position) => {
-          position == "top" ? setIsOpen(true) : setIsOpen(false);
+          if (position === "top") {
+            setIsOpen(true);
+            running && dispatch(selectTodo(running.id));
+          } else {
+            setIsOpen(false);
+            dispatch(selectTodo(selected));
+          }
         }}
         panGestureEnabled={!running || !isOpen}
         HeaderComponent={<View style={globalStyles.spacer}></View>}
@@ -126,7 +125,7 @@ const TodoScreen = () => {
               item={item}
               selected={item.id === selected}
               disabled={running ? true : false}
-              onPress={() => dispatch(selectTodo(item))}
+              onPress={() => dispatch(selectTodo(item.id))}
               onLongPress={() =>
                 navigation.navigate(Screens.ViewTodo, { todoID: item.id })
               }
