@@ -42,10 +42,6 @@ const TodoScreen = () => {
     }
   }, []);
 
-  const openAndSelectDeadline = (deadline: DeadlineEntity) => () => {
-    modalizeRef.current?.open("top");
-  };
-
   return (
     <View
       style={{
@@ -93,7 +89,9 @@ const TodoScreen = () => {
           selectedTask={todos.find((todo) => todo.id === selected)}
         />
       ) : (
-        <TodoComponents.HomeDisplay focusDeadline={openAndSelectDeadline} />
+        <TodoComponents.HomeDisplay
+          openModal={() => modalizeRef.current?.open("top")}
+        />
       )}
       <Modalize
         ref={modalizeRef}

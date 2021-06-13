@@ -32,8 +32,8 @@ const workSettingsReducer = (
       return {
         ...state,
         filters: state.filters.some((value) => value === action.payload)
-          ? List(state.filters).push(action.payload).toArray()
-          : state.filters.filter((value) => value !== action.payload),
+          ? state.filters.filter((value) => value !== action.payload)
+          : List(state.filters).push(action.payload).toArray(),
       };
     default:
       return state;

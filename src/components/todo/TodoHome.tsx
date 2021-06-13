@@ -4,7 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { globalStyles } from "../../../styles";
 import HeadingDropDown from "../layout/HeadingDropDown";
 import ProjectCard from "./ProjectCard";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { getProjects, getSortedDeadlines } from "../../redux/selectors";
 import { List } from "immutable";
 import { useNavigation } from "@react-navigation/core";
@@ -13,18 +13,24 @@ import DeadlineDisplay from "./DeadlineDisplay";
 import { compareDeadlines, DeadlineEntity } from "../../models/Deadline";
 import { compareProjectsByDeadline } from "../../models/Project";
 import { Icon } from "react-native-elements/dist/icons/Icon";
+import { toggleFilterFirebase } from "../../redux/actions/workSettings/thunks";
 
 export type Props = {
-  focusDeadline: (ddl: DeadlineEntity) => () => void;
+  openModal: () => void | undefined;
 };
 
-const HomeDisplay = ({ focusDeadline }: Props) => {
+const HomeDisplay = ({ openModal }: Props) => {
   const projects = useAppSelector(getProjects);
   const deadlines = useAppSelector(getSortedDeadlines);
-  const windowDimensions = useWindowDimensions()
+  const windowDimensions = useWindowDimensions();
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
   const headerButton = (
-    <Icon name={"plus"} type={"entypo"} size={20} color="black"
+    <Icon
+      name={"plus"}
+      type={"entypo"}
+      size={20}
+      color="black"
       onPress={() => {
         navigation.navigate(Screens.AddProject);
       }}
@@ -33,9 +39,11 @@ const HomeDisplay = ({ focusDeadline }: Props) => {
 
   return (
     <View style={globalStyles.column}>
-      <HeadingDropDown header="Projects"
+      <HeadingDropDown
+        header="Projects"
         headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
-        dropdown={headerButton}>
+        dropdown={headerButton}
+      >
         <ScrollView
           style={{ width: "100%" }}
           horizontal
@@ -51,7 +59,8 @@ const HomeDisplay = ({ focusDeadline }: Props) => {
       </HeadingDropDown>
       {/* TODO: Hacky fix */}
       <View style={{ height: 15 }}></View>
-      <HeadingDropDown header="Deadlines"
+      <HeadingDropDown
+        header="Deadlines"
         headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
       >
         <ScrollView style={{ width: windowDimensions.width * 0.9 }}>
@@ -59,7 +68,10 @@ const HomeDisplay = ({ focusDeadline }: Props) => {
             <DeadlineDisplay
               key={deadline.id}
               deadline={deadline}
-              onPress={focusDeadline(deadline)}
+              onPress={() => {
+                openModal();
+                dispatch(toggleFilterFirebase(deadline.id));
+              }}
             />
           ))}
         </ScrollView>

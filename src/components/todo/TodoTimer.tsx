@@ -13,6 +13,7 @@ import { Chip, Icon } from "react-native-elements";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
+  getFilters,
   getIncompleteProjects,
   getSettings,
   getSortedDeadlines,
@@ -28,6 +29,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import DeadlineDisplay from "./DeadlineDisplay";
 import { globalStyles } from "../../../styles";
 import { toggleFilter } from "../../redux/actions/workSettings/actions";
+import { toggleFilterFirebase } from "../../redux/actions/workSettings/thunks";
 
 const styles = StyleSheet.create({
   positionedLogo: {
@@ -58,6 +60,7 @@ type DisplayProps = {
 const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
   const projects = useAppSelector(getIncompleteProjects);
   const deadlines = useAppSelector(getSortedDeadlines);
+  const filters = useAppSelector(getFilters);
   const theme = useAppSelector(getTheme);
   const windowDimensions = useWindowDimensions();
   const dispatch = useAppDispatch();
@@ -80,8 +83,9 @@ const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
         {deadlines.slice(0, 3).map((deadline) => (
           <DeadlineDisplay
             key={deadline.id}
+            selected={filters.some((filterID) => filterID === deadline.id)}
             deadline={deadline}
-            onPress={() => dispatch(toggleFilter(deadline.id))}
+            onPress={() => dispatch(toggleFilterFirebase(deadline.id))}
           />
         ))}
       </ScrollView>

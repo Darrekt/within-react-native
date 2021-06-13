@@ -4,21 +4,33 @@ import Card from "../layout/Card";
 import { globalStyles, textStyles } from "../../../styles";
 import { DeadlineEntity } from "../../models/Deadline";
 import { useAppSelector } from "../../redux/hooks";
-import { getProjects, findProject } from "../../redux/selectors";
+import { getProjects, findProject, getTheme } from "../../redux/selectors";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../../screens/navConstants";
+import { getType } from "@reduxjs/toolkit";
 
 export type Props = {
   deadline: DeadlineEntity;
+  selected?: boolean;
   onPress?: () => void;
 };
-export default function DeadlineDisplay({ deadline, onPress }: Props) {
+export default function DeadlineDisplay({
+  deadline,
+  selected = false,
+  onPress,
+}: Props) {
   const project = findProject(useAppSelector(getProjects), deadline.project);
+  const theme = useAppSelector(getTheme);
   const navigation = useNavigation();
   const windowDimensions = useWindowDimensions();
   return (
     <Card
-      style={{ height: windowDimensions.height * 0.07, width: "100%" }}
+      style={{
+        height: windowDimensions.height * 0.07,
+        width: "100%",
+        borderWidth: selected ? 1.5 : 0,
+        borderColor: theme.dark,
+      }}
       elevation={2}
       opacity={0.05}
       onPress={onPress}
@@ -30,7 +42,7 @@ export default function DeadlineDisplay({ deadline, onPress }: Props) {
       }
     >
       <View style={{ ...globalStyles.row, justifyContent: "space-between" }}>
-        <Text style={{ fontWeight: "bold", color: "black", marginLeft: "4%" }}>
+        <Text style={{ color: "black", marginLeft: "4%" }}>
           {project.emoji}
         </Text>
         <Text style={textStyles.infoText}>{deadline.name}</Text>
