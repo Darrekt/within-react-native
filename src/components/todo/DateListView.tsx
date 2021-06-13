@@ -69,7 +69,7 @@ export default function DateListView({ mode }: Props) {
                   ? navigation.navigate(Screens.ViewProject, {
                       projID: item.id,
                     })
-                  : navigation.navigate(Screens.ViewTodo, { id: item.id })
+                  : navigation.navigate(Screens.ViewTodo, { todoID: item.id })
               }
               deleteAction={() =>
                 dispatch(

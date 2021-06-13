@@ -62,7 +62,7 @@ export const addFirebaseTodo =
 
     if (
       todos.filter((item) => !item.completed).length <
-      getState().settings.maxTasks
+      getState().appSettings.maxTasks
     ) {
       if (writeTodos) writeTodos(todoReducer(todos, action));
       else dispatch(action);

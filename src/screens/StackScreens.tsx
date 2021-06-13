@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import {
   FirestoreSageSettings,
   SageSettings,
-} from "../redux/reducers/settings";
+} from "../redux/reducers/appSettings";
 import { getSettings } from "../redux/selectors";
 import OnboardingScreen from "./Onboarding/OnboardingScreen";
 import SettingsScreen from "./Settings/SettingsScreen";
@@ -27,6 +27,7 @@ import {
 import { Screens } from "./navConstants";
 import SignUpScreen from "./Onboarding/SignUpScreen";
 import ChangeThemeScreen from "./Settings/ChangeThemeScreen";
+import { FirestoreWorkSettings } from "../redux/reducers/workSettings";
 
 const Stack = createStackNavigator();
 
@@ -139,9 +140,13 @@ function StackScreens() {
         .collection("Users")
         .doc(settings.user)
         .onSnapshot((documentSnapshot) => {
-          const snapshot = documentSnapshot.data() as FirestoreSageSettings;
-          if (snapshot) {
-            dispatch(hydrateSettings({ ...snapshot }));
+          const { filters, ...appSettings } =
+            documentSnapshot.data() as FirestoreSageSettings &
+              FirestoreWorkSettings;
+          if (appSettings) {
+            dispatch(
+              hydrateSettings(appSettings as FirestoreSageSettings, { filters })
+            );
           }
         });
 
@@ -154,8 +159,8 @@ function StackScreens() {
             querySnapshot && querySnapshot.empty
               ? []
               : querySnapshot.docs.map((doc) =>
-                ProjectFromEntity(doc.data()).toEntity()
-              );
+                  ProjectFromEntity(doc.data()).toEntity()
+                );
           dispatch(hydrateProjects(storedData));
         });
 

@@ -17,20 +17,16 @@ import {
 } from "../../redux/actions/todos/thunks";
 import { UNCATEGORISED_TODO_PROJID } from "../../util/constants";
 import OneButtonForm from "../../components/layout/OneButtonForm";
-
-type RootStackParamList = {
-  ViewProjScreen: { id: string };
-  EditTodoScreen: { id: string };
-};
+import { RootStackParamList, Screens } from "../navConstants";
 
 type ViewProjectScreenRouteProp = RouteProp<
   RootStackParamList,
-  "EditTodoScreen"
+  Screens.ViewTodo
 >;
 
 type ViewProjectScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "EditTodoScreen"
+  Screens.ViewTodo
 >;
 
 type Props = {
@@ -48,8 +44,8 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
   const todos = useAppSelector(getAllTodos);
   const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
-  const todo = route.params?.id
-    ? todos.find((item) => item.id === route.params.id)
+  const todo = route.params?.todoID
+    ? todos.find((item) => item.id === route.params.todoID)
     : undefined;
 
   return (
@@ -58,6 +54,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
         emoji: todo?.emoji ?? "",
         name: todo?.name ?? "",
         project: todo?.project ?? UNCATEGORISED_TODO_PROJID,
+        deadline: todo?.deadline ?? null,
       }}
       validate={(values) => {
         const errors: {
@@ -81,6 +78,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
                   emoji: values.emoji,
                   name: values.name,
                   project: values.project,
+                  deadline: values.deadline,
                 }).toEntity()
               )
             : addFirebaseTodo(
@@ -88,6 +86,7 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
                   emoji: values.emoji,
                   name: values.name,
                   project: values.project,
+                  deadline: values.deadline,
                 }).toEntity()
               )
         );
@@ -144,18 +143,56 @@ const ViewTodoScreen = ({ route, navigation }: Props) => {
               backgroundColor: "white",
               borderColor: theme.dark,
             }}
-            data={projects.map((proj) => {
-              return {
-                key: proj.id,
-                label: proj.name,
-              };
-            })}
+            data={projects.map((proj) => ({
+              key: proj.id,
+              label: proj.name,
+            }))}
             initValue={
               projects.find((proj) => proj.id === formik.values.project)
                 ?.name ?? "No project!"
             }
             onChange={(option) => {
               formik.setFieldValue("project", option.key);
+            }}
+            cancelText="Cancel"
+          />
+          <Text style={textStyles.questionText}>
+            (Optionally) Assign it to a deadline:
+          </Text>
+          <ModalSelector
+            initValueTextStyle={{
+              color: "black",
+            }}
+            style={{
+              alignSelf: "stretch",
+              backgroundColor: "white",
+              borderColor: theme.dark,
+            }}
+            data={
+              projects
+                .find(
+                  (proj) =>
+                    (formik.values.project ?? UNCATEGORISED_TODO_PROJID) ===
+                    proj.id
+                )
+                ?.deadlines.map((deadline) => ({
+                  key: deadline.id,
+                  label: deadline.name,
+                })) ?? []
+            }
+            initValue={
+              projects
+                .find(
+                  (proj) =>
+                    (formik.values.project ?? UNCATEGORISED_TODO_PROJID) ===
+                    proj.id
+                )
+                ?.deadlines.find(
+                  (deadline) => formik.values.deadline === deadline.id
+                )?.name ?? "No deadline"
+            }
+            onChange={(option) => {
+              formik.setFieldValue("deadline", option.key);
             }}
             cancelText="Cancel"
           />

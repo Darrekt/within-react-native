@@ -46,9 +46,9 @@ export const projectReducer = (
         .sort(compareProjectsByDeadline)
         .toArray();
     case Actions.ProjectDelete:
-      return state.filter((item) => item.id !== action.target);
+      return state.filter((item) => item.id !== action.payload);
     case Actions.ProjectComplete:
-      return findAndUpdateProject(state, action.target, (proj) =>
+      return findAndUpdateProject(state, action.payload, (proj) =>
         ProjectFromEntity({
           ...proj,
           completed: proj.completed ? null : new Date().getTime(),
@@ -71,10 +71,9 @@ export const projectReducer = (
     // Todo Actions
     case Actions.TodoUpdate:
       const prevTodo = findTodoInState(state, action.payload.id);
-
       let newState = state;
+
       if (action.payload.project !== prevTodo.project) {
-        // Add to list of new project
         newState = findAndUpdateProject(state, action.payload.project, (proj) =>
           ProjectFromEntity({
             ...proj,
@@ -84,7 +83,6 @@ export const projectReducer = (
             }),
           }).toEntity()
         );
-        // Remove from list of old project
         newState = findAndUpdateProject(newState, prevTodo.project, (proj) =>
           ProjectFromEntity({
             ...proj,
@@ -98,9 +96,7 @@ export const projectReducer = (
       }
     case Actions.TodoAdd:
     case Actions.TodoDelete:
-    case Actions.TodoSelect:
     case Actions.TodoToggleComplete:
-    case Actions.TodoStart:
     case Actions.TodoPause:
     case Actions.TodoReset:
     case Actions.TodoFinish:
@@ -109,6 +105,16 @@ export const projectReducer = (
         deadlines: deadlineReducer(proj.deadlines, action),
         todos: todoReducer(proj.todos, action),
       }));
+    case Actions.TodoStart:
+      return findAndUpdateProject(
+        state,
+        action.payload.todo.project,
+        (proj) => ({
+          ...proj,
+          deadlines: deadlineReducer(proj.deadlines, action),
+          todos: todoReducer(proj.todos, action),
+        })
+      );
     default:
       return state;
   }

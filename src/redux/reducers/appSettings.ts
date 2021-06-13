@@ -12,6 +12,8 @@ export interface SageSettings {
 
 export type FirestoreSageSettings = Omit<SageSettings, "user">;
 
+export type FirestoreAppSettings = Omit<FirestoreSageSettings, "filters">;
+
 export const SAGE_DEFAULT_SETTINGS: SageSettings = {
   onboarding: false,
   user: null,
@@ -21,18 +23,18 @@ export const SAGE_DEFAULT_SETTINGS: SageSettings = {
   defaultInterval: 25 * 60,
 };
 
-const settingsReducer = (
+const appSettingsReducer = (
   state: SageSettings = SAGE_DEFAULT_SETTINGS,
   action: Action
 ): SageSettings => {
   switch (action.type) {
     case Actions.SettingsHydrate:
       return {
-        ...action.payload,
+        ...action.payload.appSettings,
         user: state.user,
       };
     case Actions.SettingsAuth:
-      return { ...state, user: action.user };
+      return { ...state, user: action.payload };
     case Actions.SettingsReset:
       return SAGE_DEFAULT_SETTINGS;
     case Actions.SettingsToggleOnboarding:
@@ -42,13 +44,13 @@ const settingsReducer = (
     case Actions.SettingsChangeWorkParams:
       return {
         ...state,
-        maxProjects: action.value[0],
-        maxTasks: action.value[1],
-        defaultInterval: action.value[2],
+        maxProjects: action.payload[0],
+        maxTasks: action.payload[1],
+        defaultInterval: action.payload[2],
       };
     default:
       return state;
   }
 };
 
-export default settingsReducer;
+export default appSettingsReducer;

@@ -16,11 +16,6 @@ export const updateTodo = (todo: TodoEntity): TodoAction => ({
   payload: todo,
 });
 
-export const selectTodo = (todo: TodoEntity): TodoAction => ({
-  type: Actions.TodoSelect,
-  payload: todo,
-});
-
 export const completeTodo = (todo: TodoEntity): TodoAction => ({
   type: Actions.TodoToggleComplete,
   payload: todo,

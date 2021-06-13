@@ -1,20 +1,22 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { SageTheme } from "../../../util/constants";
-import { FirestoreSageSettings } from "../../reducers/settings";
+import { FirestoreWorkSettings } from "../../reducers/workSettings";
+import { FirestoreAppSettings } from "../../reducers/appSettings";
 import { Actions, SettingsAction } from "../actionTypes";
 
 export const hydrateSettings = (
-  settings: FirestoreSageSettings
+  appSettings: FirestoreAppSettings,
+  workSettings: FirestoreWorkSettings
 ): SettingsAction => ({
   type: Actions.SettingsHydrate,
-  payload: settings,
+  payload: { appSettings, workSettings },
 });
 
 export const authStateChanged = (
   user: FirebaseAuthTypes.User | null
 ): SettingsAction => ({
   type: Actions.SettingsAuth,
-  user: user ? user.uid : user,
+  payload: user ? user.uid : user,
 });
 
 export const changeTheme = (theme: SageTheme): SettingsAction => ({
@@ -28,5 +30,5 @@ export const changeWorkParams = (
   defaultInterval: number
 ): SettingsAction => ({
   type: Actions.SettingsChangeWorkParams,
-  value: [maxProjects, maxTasks, defaultInterval],
+  payload: [maxProjects, maxTasks, defaultInterval],
 });

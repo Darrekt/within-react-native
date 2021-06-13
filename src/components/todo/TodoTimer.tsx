@@ -9,20 +9,25 @@ import {
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import { TodoEntity } from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
-import { Icon } from "react-native-elements";
+import { Chip, Icon } from "react-native-elements";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getSettings, getSortedDeadlines } from "../../redux/selectors";
+import {
+  getIncompleteProjects,
+  getSettings,
+  getSortedDeadlines,
+  getTheme,
+} from "../../redux/selectors";
 import {
   pauseFirebaseTodo,
   startFirebaseTodo,
   resetFirebaseTodo,
 } from "../../redux/actions/todos/thunks";
 import { AppThunk } from "../../redux/store";
-import HeadingDropDown from "../layout/HeadingDropDown";
 import { ScrollView } from "react-native-gesture-handler";
-import { compareDeadlines } from "../../models/Deadline";
 import DeadlineDisplay from "./DeadlineDisplay";
+import { globalStyles } from "../../../styles";
+import { toggleFilter } from "../../redux/actions/workSettings/actions";
 
 const styles = StyleSheet.create({
   positionedLogo: {
@@ -31,6 +36,7 @@ const styles = StyleSheet.create({
     height: "40%",
     width: Dimensions.get("window").width,
     alignSelf: "stretch",
+    alignItems: "center",
   },
   timerTextContainer: {
     flexDirection: "row",
@@ -43,16 +49,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "black",
   },
-  img: {
-    flex: 3,
-    margin: 20,
-    resizeMode: "contain",
-  },
-  modalHeaderText: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: 18,
-  },
 });
 
 type DisplayProps = {
@@ -60,30 +56,37 @@ type DisplayProps = {
 };
 
 const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
+  const projects = useAppSelector(getIncompleteProjects);
   const deadlines = useAppSelector(getSortedDeadlines);
+  const theme = useAppSelector(getTheme);
   const windowDimensions = useWindowDimensions();
   const dispatch = useAppDispatch();
-  if (selectedTask) {
-    return (
-      <TodoTimer selectedTask={selectedTask} dispatch={dispatch}></TodoTimer>
-    );
-  } else {
-    return (
-      // TODO: Replicated code here and on TodoHome
-      <View style={styles.positionedLogo}>
-        <HeadingDropDown
-          header="Deadlines"
-          headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
-        >
-          <ScrollView style={{ width: windowDimensions.width * 0.9 }}>
-            {deadlines.map((deadline) => (
-              <DeadlineDisplay key={deadline.id} deadline={deadline} />
-            ))}
-          </ScrollView>
-        </HeadingDropDown>
+
+  return selectedTask ? (
+    <TodoTimer selectedTask={selectedTask} dispatch={dispatch} />
+  ) : (
+    <View style={styles.positionedLogo}>
+      <View style={globalStyles.row}>
+        {projects.map((project) => (
+          <Chip
+            key={project.id}
+            title={project.name}
+            type="outline"
+            titleStyle={{ color: theme.text.primary }}
+          />
+        ))}
       </View>
-    );
-  }
+      <ScrollView style={{ width: windowDimensions.width * 0.9 }}>
+        {deadlines.slice(0, 3).map((deadline) => (
+          <DeadlineDisplay
+            key={deadline.id}
+            deadline={deadline}
+            onPress={() => dispatch(toggleFilter(deadline.id))}
+          />
+        ))}
+      </ScrollView>
+    </View>
+  );
 };
 
 type TimerProps = {

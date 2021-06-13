@@ -4,12 +4,17 @@ import { TodoEntity } from "../models/Todo";
 import { RootState } from "../redux/store";
 import { SAGE_THEME_LIST, Theme } from "../util/constants";
 
-export const getSelected = (state: RootState): string => state.selected;
-export const getSettings = (state: RootState) => state.settings;
+export const getSettings = (state: RootState) => state.appSettings;
+export const getSelected = (state: RootState): string =>
+  state.workSettings.selected;
+export const getFilters = (state: RootState): string[] =>
+  state.workSettings.filters;
 
 export const getProjects = (state: RootState) => state.projects;
 export const getCompletedProjects = (state: RootState) =>
   state.projects.filter((proj) => proj.completed);
+export const getIncompleteProjects = (state: RootState) =>
+  state.projects.filter((proj) => !proj.completed);
 
 export const getSortedDeadlines = (state: RootState): DeadlineEntity[] =>
   state.projects
@@ -37,15 +42,13 @@ export const getAllTodos = (state: RootState): TodoEntity[] =>
   state.projects
     .map((proj) => proj.todos)
     .reduce((agg, projTodos) => agg.concat(projTodos), <TodoEntity[]>[]);
-
 export const getCompletedTodos = (state: RootState): TodoEntity[] =>
   getAllTodos(state).filter((todo) => todo.completed);
-
 export const getIncompleteTodos = (state: RootState): TodoEntity[] =>
   getAllTodos(state).filter((todo) => !todo.completed);
 
 export const getTheme = (state: RootState): Theme =>
-  SAGE_THEME_LIST[state.settings.theme];
+  SAGE_THEME_LIST[state.appSettings.theme];
 
 export const getRunning = (state: RootState): TodoEntity | undefined =>
   getAllTodos(state).find((todo) => todo.finishingTime);

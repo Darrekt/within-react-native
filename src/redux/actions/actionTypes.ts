@@ -1,8 +1,9 @@
 import { ProjectEntity } from "../../models/Project";
 import { DeadlineEntity } from "../../models/Deadline";
 import { TodoEntity } from "../../models/Todo";
-import { FirestoreSageSettings } from "../reducers/settings";
+import { FirestoreAppSettings } from "../reducers/appSettings";
 import { SageTheme } from "../../util/constants";
+import { FirestoreWorkSettings } from "../reducers/workSettings";
 
 export enum Actions {
   Reset = "REPO_FLUSH",
@@ -18,7 +19,6 @@ export enum Actions {
   TodoAdd = "TODO_ADD",
   TodoDelete = "TODO_DELETE",
   TodoUpdate = "TODO_UPDATE",
-  TodoSelect = "TODO_SELECT",
   TodoToggleComplete = "TODO_TOGGLECOMPLETE",
   TodoAssignDeadline = "TODO_ASSIGN_DEADLINE",
   TodoDeassignDeadline = "TODO_DEASSIGN_DEADLINE",
@@ -32,13 +32,20 @@ export enum Actions {
   SettingsToggleOnboarding = "SETTINGS_TOGGLE_ONBOARDING",
   SettingsChangeTheme = "SETTINGS_CHANGE_THEME",
   SettingsChangeWorkParams = "SETTINGS_CHANGE_PARAMS",
+  SelectTodo = "SELECT_TODO",
+  ToggleFilter = "FILTER_TOGGLE",
 }
 
 export type Action =
   | ProjectAction
   | DeadlineAction
   | TodoAction
-  | SettingsAction;
+  | SettingsAction
+  | FilterAction;
+
+export type FilterAction =
+  | { type: Actions.SelectTodo; payload: string }
+  | { type: Actions.ToggleFilter; payload: string };
 
 export type ProjectAction =
   | {
@@ -51,7 +58,7 @@ export type ProjectAction =
     }
   | {
       type: Actions.ProjectDelete | Actions.ProjectComplete;
-      target: string;
+      payload: string;
     };
 
 export type DeadlineAction = {
@@ -69,7 +76,6 @@ export type TodoAction =
         | Actions.TodoAdd
         | Actions.TodoUpdate
         | Actions.TodoDelete
-        | Actions.TodoSelect
         | Actions.TodoDeassignDeadline
         | Actions.TodoToggleComplete
         | Actions.TodoPause
@@ -79,26 +85,27 @@ export type TodoAction =
     }
   | {
       type: Actions.TodoStart;
-      payload: TodoEntity;
-      interval: number;
+      payload: { todo: TodoEntity; interval: number };
     }
   | {
       type: Actions.TodoAssignDeadline;
-      payload: TodoEntity;
-      deadline: string;
+      payload: { todo: TodoEntity; deadline: string };
     };
 
 export type SettingsAction =
   | {
       type: Actions.SettingsHydrate;
-      payload: FirestoreSageSettings;
+      payload: {
+        appSettings: FirestoreAppSettings;
+        workSettings: FirestoreWorkSettings;
+      };
     }
   | {
       type: Actions.SettingsReset;
     }
   | {
       type: Actions.SettingsAuth;
-      user: string | null;
+      payload: string | null;
     }
   | {
       type: Actions.SettingsToggleOnboarding;
@@ -109,5 +116,5 @@ export type SettingsAction =
     }
   | {
       type: Actions.SettingsChangeWorkParams;
-      value: [number, number, number];
+      payload: [number, number, number];
     };

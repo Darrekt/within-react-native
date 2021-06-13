@@ -123,7 +123,6 @@ export const SignUpScreen = () => {
             <SubmitButton
               text="Sign up!"
               onPress={() => formik.handleSubmit()}
-              width="70%"
             />
           </View>
         )}

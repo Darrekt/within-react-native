@@ -24,7 +24,7 @@ export const writeToProjectsCollection =
 export const sanitiseFirebaseProjects =
   (loginUser?: string): AppThunk =>
   async (dispatch, getState) => {
-    const user = getState().settings.user;
+    const user = getState().appSettings.user;
 
     if (user)
       await writeToProjectsCollection(loginUser ?? user)(defaultProject, [
@@ -43,7 +43,7 @@ export const sanitiseFirebaseProjects =
 export const addFirebaseProject =
   (project: Project): AppThunk =>
   async (dispatch, getState) => {
-    const settings = getState().settings;
+    const settings = getState().appSettings;
 
     if (
       getState().projects.filter(
@@ -72,7 +72,7 @@ export const addFirebaseProject =
 export const updateFirebaseProject =
   (project: Project): AppThunk =>
   async (dispatch, getState) => {
-    const user = getState().settings.user;
+    const user = getState().appSettings.user;
     if (user) await writeToProjectsCollection(user)(project.toEntity());
     else dispatch(ActionCreators.updateProject(project.toEntity()));
     Toast.show({
@@ -86,7 +86,7 @@ export const updateFirebaseProject =
 export const deleteFirebaseProject =
   (projectID: string): AppThunk =>
   async (dispatch, getState) => {
-    const user = getState().settings.user;
+    const user = getState().appSettings.user;
     if (user) await projectsCollection(user).doc(projectID).delete();
     else dispatch(ActionCreators.deleteProject(projectID));
     Toast.show({
@@ -100,7 +100,7 @@ export const deleteFirebaseProject =
 export const completeFirebaseProject =
   (projectID: string): AppThunk =>
   async (dispatch, getState) => {
-    const user = getState().settings.user;
+    const user = getState().appSettings.user;
     const project = findProject(getState().projects, projectID);
     if (user)
       await projectsCollection(user)

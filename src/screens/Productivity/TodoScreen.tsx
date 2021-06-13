@@ -14,7 +14,6 @@ import {
 } from "../../redux/selectors";
 import { DeadlineEntity } from "../../models/Deadline";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { selectTodo } from "../../redux/actions/todos/actions";
 import SurveyButton from "../../components/settings/SurveyButton";
 import { useNavigation } from "@react-navigation/core";
 import { Icon } from "react-native-elements/dist/icons/Icon";
@@ -23,6 +22,7 @@ import {
   completeFirebaseTodo,
   deleteFirebaseTodo,
 } from "../../redux/actions/todos/thunks";
+import { selectTodo } from "../../redux/actions/workSettings/actions";
 
 const TodoScreen = () => {
   const todos = useAppSelector(getIncompleteTodos);
@@ -122,7 +122,7 @@ const TodoScreen = () => {
               disabled={running ? true : false}
               onPress={() => dispatch(selectTodo(item))}
               onLongPress={() =>
-                navigation.navigate(Screens.ViewTodo, { id: item.id })
+                navigation.navigate(Screens.ViewTodo, { todoID: item.id })
               }
               deleteAction={() => dispatch(deleteFirebaseTodo(item))}
               checkAction={() => dispatch(completeFirebaseTodo(item))}

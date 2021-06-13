@@ -56,14 +56,14 @@ export const todoReducer = (
       finishAt = new Date(
         new Date().getTime() +
           500 +
-          (action.payload.remaining
-            ? action.payload.remaining
-            : action.interval) *
+          (action.payload.todo.remaining
+            ? action.payload.todo.remaining
+            : action.payload.interval) *
             1000
       );
       Platform.OS === "android" && DnDMode.setDNDMode(true);
       return setTodo(state, {
-        ...action.payload,
+        ...action.payload.todo,
         remaining: null,
         finishingTime: finishAt.getTime(),
       });
@@ -117,9 +117,9 @@ export const todoReducer = (
             ({
               ...todo,
               deadline:
-                todo.id === action.payload.id
+                todo.id === action.payload.todo.id
                   ? action.payload.deadline
-                  : todo.deadline === action.deadline
+                  : todo.deadline === action.payload.deadline
                   ? null
                   : todo.deadline,
             } as TodoEntity)

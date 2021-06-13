@@ -1,7 +1,7 @@
 import firestore from "@react-native-firebase/firestore";
 import { ActionCreator } from "redux";
 import { SageTheme } from "../../../util/constants";
-import { SageSettings, SAGE_DEFAULT_SETTINGS } from "../../reducers/settings";
+import { SageSettings, SAGE_DEFAULT_SETTINGS } from "../../reducers/appSettings";
 import { AppThunk } from "../../store";
 import { Actions } from "../actionTypes";
 import * as ActionCreators from "./actions";
@@ -11,7 +11,7 @@ const settingsDoc = (userID: string) =>
 
 export const resetSettings: ActionCreator<AppThunk> =
   () => async (dispatch, getState) => {
-    const loggedInUser = getState().settings.user;
+    const loggedInUser = getState().appSettings.user;
     const { user, ...settingsWithoutUser } = SAGE_DEFAULT_SETTINGS;
     if (loggedInUser)
       await settingsDoc(loggedInUser).set(
@@ -25,7 +25,7 @@ export const resetSettings: ActionCreator<AppThunk> =
   };
 
 export const toggleOnboarding = (): AppThunk => async (dispatch, getState) => {
-  const settings = getState().settings;
+  const settings = getState().appSettings;
   if (settings.user)
     await settingsDoc(settings.user).set(
       { onboarding: !settings.onboarding },
@@ -37,7 +37,7 @@ export const toggleOnboarding = (): AppThunk => async (dispatch, getState) => {
 export const changeFirebaseTheme =
   (newTheme: SageTheme): AppThunk =>
   async (dispatch, getState) => {
-    const settings = getState().settings;
+    const settings = getState().appSettings;
     if (settings.user)
       await settingsDoc(settings.user).set(
         { theme: newTheme },
@@ -49,7 +49,7 @@ export const changeFirebaseTheme =
 export const changeWorkParams =
   (maxProjects: number, maxTasks: number, defaultInterval: number): AppThunk =>
   async (dispatch, getState) => {
-    const settings: SageSettings = getState().settings;
+    const settings: SageSettings = getState().appSettings;
     if (settings.user)
       await settingsDoc(settings.user).set(
         { maxProjects, maxTasks, defaultInterval },

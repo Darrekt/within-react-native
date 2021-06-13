@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import projects from "./projects";
-import selected from "./selected";
-import settings from "./settings";
+import workSettings from "./workSettings";
+import appSettings from "./appSettings";
 
-export default combineReducers({ projects, selected, settings });
+export default combineReducers({ projects, workSettings, appSettings });

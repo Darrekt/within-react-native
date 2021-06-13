@@ -18,10 +18,10 @@ export const updateProject = (project: ProjectEntity): ProjectAction => ({
 
 export const deleteProject = (target: string): ProjectAction => ({
   type: Actions.ProjectDelete,
-  target: target,
+  payload: target,
 });
 
 export const completeProject = (target: string): ProjectAction => ({
   type: Actions.ProjectComplete,
-  target: target,
+  payload: target,
 });
