@@ -11,6 +11,7 @@ import {
   getRunning,
   getTheme,
   getIncompleteTodos,
+  getFilters,
 } from "../../redux/selectors";
 import { DeadlineEntity } from "../../models/Deadline";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -27,6 +28,7 @@ import { selectTodo } from "../../redux/actions/workSettings/actions";
 const TodoScreen = () => {
   const todos = useAppSelector(getIncompleteTodos);
   const selected = useAppSelector(getSelected);
+  const filters = useAppSelector(getFilters);
   const running = useAppSelector(getRunning);
   const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();
@@ -110,7 +112,13 @@ const TodoScreen = () => {
           ListHeaderComponent: (
             <TodoComponents.ListHeader todos={todos} isOpen={isOpen} />
           ),
-          data: isOpen ? todos.filter((todo) => !todo.completed) : [],
+          data: isOpen
+            ? todos.filter((todo) =>
+                filters.length
+                  ? filters.some((filter) => filter === todo.deadline)
+                  : true
+              )
+            : [],
           keyExtractor: (item: Todo) => item.id,
           renderItem: ({ item }: { item: TodoEntity }) => (
             <TodoComponents.ItemTile

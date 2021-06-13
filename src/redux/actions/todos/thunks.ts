@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { Alert, Vibration } from "react-native";
+import { Vibration } from "react-native";
 import Toast from "react-native-toast-message";
 import { ProjectFromEntity, ProjectEntity } from "../../../models/Project";
 import { TodoEntity } from "../../../models/Todo";
@@ -48,7 +48,7 @@ const genTodoWriteFunc = (
 ):
   | [TodoEntity[], (todos: TodoEntity[]) => Promise<void>]
   | [TodoEntity[], undefined] => {
-  const user = state.settings.user;
+  const user = state.appSettings.user;
   const todos = findProject(state.projects, todo.project).todos;
   if (user) return [todos, writeTodosInProject(user)(todo.project)];
   else return [todos, undefined];
@@ -102,9 +102,9 @@ export const updateFirebaseTodo =
     const state = getState();
     const action = ActionCreators.updateTodo(todo);
 
-    if (state.settings.user) {
+    if (state.appSettings.user) {
       const newState = projectReducer(state.projects, action);
-      diffAndWriteProjects(state.settings.user, state.projects, newState);
+      diffAndWriteProjects(state.appSettings.user, state.projects, newState);
     } else dispatch(action);
     Toast.show({
       type: "info",
@@ -133,12 +133,14 @@ export const startFirebaseTodo =
   (todo: TodoEntity): AppThunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const selected = findTodoInState(getState().projects, getState().selected);
+    const selected = findTodoInState(
+      getState().projects,
+      getState().workSettings.selected
+    );
     if (selected.id !== todo.id) throw new Error("Incorrectly selected todo!");
     const action: TodoAction = {
       type: Actions.TodoStart,
-      payload: selected,
-      interval: state.settings.defaultInterval,
+      payload: { todo: selected, interval: state.appSettings.defaultInterval },
     };
     const [todos, writeTodos] = genTodoWriteFunc(state, todo);
 
@@ -150,7 +152,10 @@ export const pauseFirebaseTodo =
   (todo: TodoEntity): AppThunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const selected = findTodoInState(getState().projects, getState().selected);
+    const selected = findTodoInState(
+      getState().projects,
+      getState().workSettings.selected
+    );
     if (selected.id !== todo.id) throw new Error("Incorrectly selected todo!");
     const action: TodoAction = ActionCreators.pauseTodo(selected);
     const [todos, writeTodos] = genTodoWriteFunc(state, todo);
@@ -162,7 +167,10 @@ export const resetFirebaseTodo =
   (todo: TodoEntity): AppThunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const selected = findTodoInState(getState().projects, getState().selected);
+    const selected = findTodoInState(
+      getState().projects,
+      getState().workSettings.selected
+    );
     if (selected.id !== todo.id) throw new Error("Incorrectly selected todo!");
     const action: TodoAction = ActionCreators.resetTodo(selected);
     const [todos, writeTodos] = genTodoWriteFunc(state, todo);
@@ -174,7 +182,10 @@ export const finishFirebaseTodo =
   (todo: TodoEntity): AppThunk =>
   async (dispatch, getState) => {
     const state = getState();
-    const selected = findTodoInState(getState().projects, getState().selected);
+    const selected = findTodoInState(
+      getState().projects,
+      getState().workSettings.selected
+    );
     if (selected.id !== todo.id) throw new Error("Incorrectly selected todo!");
     const action: TodoAction = ActionCreators.finishTodoInterval(selected);
     const [todos, writeTodos] = genTodoWriteFunc(state, todo);
