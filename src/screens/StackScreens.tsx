@@ -143,7 +143,7 @@ function StackScreens() {
           const { filters, ...appSettings } =
             documentSnapshot.data() as FirestoreSageSettings &
               FirestoreWorkSettings;
-          if (appSettings) {
+          if (appSettings && filters) {
             dispatch(
               hydrateSettings(appSettings as FirestoreSageSettings, { filters })
             );

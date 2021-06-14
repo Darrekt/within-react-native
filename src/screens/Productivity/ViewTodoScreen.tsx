@@ -10,7 +10,11 @@ import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import ModalSelector from "react-native-modal-selector";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { getAllTodos, getProjects, getTheme } from "../../redux/selectors";
+import {
+  getAllTodos,
+  getIncompleteProjects,
+  getTheme,
+} from "../../redux/selectors";
 import {
   addFirebaseTodo,
   updateFirebaseTodo,
@@ -40,7 +44,7 @@ const styles = StyleSheet.create({
 });
 
 const ViewTodoScreen = ({ route, navigation }: Props) => {
-  const projects = useAppSelector(getProjects);
+  const projects = useAppSelector(getIncompleteProjects);
   const todos = useAppSelector(getAllTodos);
   const theme = useAppSelector(getTheme);
   const dispatch = useAppDispatch();

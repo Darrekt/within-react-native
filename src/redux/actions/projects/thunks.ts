@@ -1,7 +1,6 @@
 import { AppThunk } from "../../store";
 import firestore from "@react-native-firebase/firestore";
 import Project, { ProjectEntity } from "../../../models/Project";
-import { defaultProject } from "../../reducers/projects";
 import * as ActionCreators from "./actions";
 import { findProject } from "../../selectors";
 import Toast from "react-native-toast-message";
@@ -20,25 +19,6 @@ export const writeToProjectsCollection =
       .set(project, {
         mergeFields: mergeFields?.length ? mergeFields : undefined,
       });
-
-export const sanitiseFirebaseProjects =
-  (loginUser?: string): AppThunk =>
-  async (dispatch, getState) => {
-    const user = getState().appSettings.user;
-
-    if (user)
-      await writeToProjectsCollection(loginUser ?? user)(defaultProject, [
-        "id",
-        "name",
-        "completed",
-      ]);
-    else if (loginUser)
-      await writeToProjectsCollection(loginUser)(defaultProject, [
-        "id",
-        "name",
-        "completed",
-      ]);
-  };
 
 export const addFirebaseProject =
   (project: Project): AppThunk =>

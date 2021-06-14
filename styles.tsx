@@ -22,7 +22,6 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
   },
   form: {
-    height: "100%",
     width: "100%",
     paddingVertical: Dimensions.get("window").height * 0.02,
     paddingHorizontal: Dimensions.get("window").width * 0.1,
@@ -106,7 +105,7 @@ export const textStyles = StyleSheet.create({
     fontSize: 15,
   },
   validationMessage: {
-    marginVertical: 3,
+    marginVertical: 5,
     textAlign: "left",
     alignSelf: "flex-start",
     color: ERROR_COLOR,

@@ -14,11 +14,17 @@ import { addShadow } from "../../util/styleDecorators";
 
 type SubmitButtonProps = {
   text: string;
+  alwaysShow?: boolean;
   onPress: () => void;
   style?: ViewStyle;
 };
 
-function SubmitButton({ text, onPress, style }: SubmitButtonProps) {
+function SubmitButton({
+  text,
+  alwaysShow = false,
+  onPress,
+  style,
+}: SubmitButtonProps) {
   const theme = useAppSelector(getTheme);
   const windowDimensions = useWindowDimensions();
 
@@ -44,7 +50,7 @@ function SubmitButton({ text, onPress, style }: SubmitButtonProps) {
     };
   }, []);
 
-  return !isKeyboardVisible ? (
+  return alwaysShow || !isKeyboardVisible ? (
     <TouchableOpacity
       activeOpacity={0.5}
       onPress={onPress}

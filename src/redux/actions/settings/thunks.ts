@@ -1,13 +1,30 @@
 import firestore from "@react-native-firebase/firestore";
 import { ActionCreator } from "redux";
 import { SageTheme } from "../../../util/constants";
-import { SageSettings, SAGE_DEFAULT_SETTINGS } from "../../reducers/appSettings";
+import {
+  SageSettings,
+  SAGE_DEFAULT_SETTINGS,
+} from "../../reducers/appSettings";
+import { defaultProject } from "../../reducers/projects";
 import { AppThunk } from "../../store";
 import { Actions } from "../actionTypes";
+import { writeToProjectsCollection } from "../projects/thunks";
 import * as ActionCreators from "./actions";
 
 const settingsDoc = (userID: string) =>
   firestore().collection("Users").doc(userID);
+
+export const initUserData =
+  (loginUser: string): AppThunk =>
+  async (dispatch, getState) => {
+    const state = getState();
+    const { user, selected, ...syncData } = {
+      ...state.appSettings,
+      ...state.workSettings,
+    };
+    await settingsDoc(loginUser).set(syncData);
+    await writeToProjectsCollection(loginUser)(defaultProject);
+  };
 
 export const resetSettings: ActionCreator<AppThunk> =
   () => async (dispatch, getState) => {
