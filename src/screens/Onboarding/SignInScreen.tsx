@@ -4,7 +4,7 @@ import { SocialIcon } from "react-native-elements";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
 import { globalStyles, textStyles } from "../../../styles";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import SubmitButton from "../../components/util/SubmitButton";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../navConstants";
@@ -33,36 +33,27 @@ export const SignInScreen = () => {
       onSubmit={(values) => {
         auth()
           .signInWithEmailAndPassword(values.email, values.password)
-          .catch((error) => {
-            if (error.code === "auth/user-disabled") {
-              Alert.alert(
-                "User disabled!",
-                "This user has been disabled. Please contact us for help!",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                  },
-                ]
-              );
-            } else {
-              Alert.alert(
-                "Sign-in error",
-                "The user either does not exist, or you have entered an invalid sign-in.",
-                [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                  },
-                ]
-              );
+          .catch((error: FirebaseAuthTypes.NativeFirebaseAuthError) => {
+            let title: string = "";
+            let message: string = "";
+            switch (error.code) {
+              case "auth/invalid-email":
+                title = "Invalid email";
+                message = "Please enter a valid email.";
+                break;
+              case "auth/user-disabled":
+                title = "User disabled!";
+                message =
+                  "This user has been disabled. Please contact us for help!";
+                break;
+              case "auth/user-not-found":
+              case "auth/wrong-password":
+                title = "Sign-in error";
+                message =
+                  "The user either does not exist, or you have entered an invalid password.";
+                break;
             }
+            Alert.alert(title, message, [{ text: "OK" }]);
           });
       }}
     >
