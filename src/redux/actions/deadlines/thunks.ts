@@ -30,7 +30,7 @@ const genDeadlineWriteFunc = (
     ]
   | [DeadlineEntity[], TodoEntity[], undefined] => {
   // try {
-  const user = state.settings.user;
+  const user = state.appSettings.user;
   const project = findProject(state.projects, deadline.project);
   if (user)
     return [

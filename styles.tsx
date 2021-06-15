@@ -78,7 +78,7 @@ export const textStyles = StyleSheet.create({
   header: {
     flex: 4,
     marginVertical: 5,
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: "500",
     color: "black",
   },
@@ -90,7 +90,12 @@ export const textStyles = StyleSheet.create({
     fontWeight: "400",
     color: "black",
   },
-  avatarName: { fontSize: 24, fontWeight: "400", marginVertical: 15, color: "black" },
+  avatarName: {
+    fontSize: 24,
+    fontWeight: "400",
+    marginVertical: 15,
+    color: "black",
+  },
   infoText: {
     color: "black",
   },
@@ -100,9 +105,6 @@ export const textStyles = StyleSheet.create({
     alignSelf: "stretch",
     color: "black",
     fontSize: 16,
-  },
-  buttonText: {
-    fontSize: 15,
   },
   validationMessage: {
     marginVertical: 5,

@@ -9,7 +9,6 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import { sanitiseFirebaseProjects } from "../../redux/actions/projects/thunks";
 import {
   resetSettings,
   toggleOnboarding,
@@ -62,7 +61,7 @@ const SettingsScreen = () => {
         contentContainerStyle={{
           ...globalStyles.column,
           justifyContent: "flex-start",
-          paddingHorizontal: 0.03 * windowDimensions.width,
+          paddingHorizontal: 0.075 * windowDimensions.width,
         }}
       >
         <AuthStateDisplay />

@@ -70,12 +70,10 @@ function SubmitButton({
           marginBottom: windowDimensions.height * 0.02,
           justifyContent: "center",
           alignItems: "center",
-          borderRadius: 10,
+          borderRadius: 6,
         })}
       >
-        <Text style={{ ...textStyles.buttonText, color: theme.text.primary }}>
-          {text.toUpperCase()}
-        </Text>
+        <Text style={{ color: theme.text.primary }}>{text.toUpperCase()}</Text>
       </LinearGradient>
     </TouchableOpacity>
   ) : null;

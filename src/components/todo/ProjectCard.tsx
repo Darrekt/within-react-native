@@ -35,21 +35,21 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
   return project.id === UNCATEGORISED_TODO_PROJID ? (
     <Card
       style={{
-        width: windowDimensions.width * 0.7,
+        width: windowDimensions.width * 0.6,
         marginHorizontal: 15,
         paddingVertical: windowDimensions.width * 0.02,
         paddingHorizontal: 25,
       }}
       onPress={() => navigation.navigate(Screens.AddProject)}
     >
-      <Text>Get started by adding a project!</Text>
+      <Text style={{ fontSize: 16 }}>Add a project!</Text>
       <Foundation name="pencil" size={35} color="grey" />
     </Card>
   ) : (
     <Card
       elevation={16}
       style={{
-        width: windowDimensions.width * 0.7,
+        width: windowDimensions.width * 0.6,
         marginBottom: windowDimensions.height * 0.03,
         paddingVertical: windowDimensions.height * 0.02,
         marginHorizontal: windowDimensions.width * 0.04,
@@ -104,7 +104,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
             <Text style={textStyles.infoText}>
               {`${remainingTodos} task` +
                 (remainingTodos !== 1 ? "s" : "") +
-                " remaining"}
+                " left"}
             </Text>
           </View>
         </View>

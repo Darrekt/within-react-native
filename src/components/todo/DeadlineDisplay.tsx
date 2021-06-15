@@ -31,7 +31,7 @@ export default function DeadlineDisplay({
         borderWidth: selected ? 1.5 : 0,
         borderColor: theme.dark,
       }}
-      elevation={2}
+      elevation={4}
       opacity={0.05}
       onPress={onPress}
       onLongPress={() =>
