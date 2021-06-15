@@ -1,0 +1,36 @@
+name: "release draft apk"
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  pre-release:
+    name: "Pre Release"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js v12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Decrypt secrets
+        run: |
+          mkdir $HOME/private
+          gpg --quiet --batch --yes --decrypt --passphrase="$SERVICES_SECRET" \
+          --output $HOME/private/services.tar services.tar.gpg
+          tar xvf $HOME/private/services.tar
+        env:
+          SERVICES_SECRET: ${{ secrets.SERVICES_SECRET }}
+      - run: rm -rf node_modules && yarn install --frozen-lockfile
+      - run: yarn release-apk
+      - name: Automatic release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Draft testing Build"
+          files: |
+            android/app/build/outputs/apk/release/app-release.apk
