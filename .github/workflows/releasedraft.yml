@@ -25,10 +25,10 @@ jobs:
           SERVICES_SECRET: ${{ secrets.SERVICES_SECRET }}
       - name: Decrypt keystore
         run: |
-          touch release.keystore.asc
           echo ${{ secrets.ANDROID_APP_SIGNING_KEYSTORE }} > release.keystore.asc
           gpg -d --passphrase "${{ secrets.ANDROID_APP_SIGNING_KEYSTORE_PASSPHRASE }}" \
-          --batch release.keystore.asc > android/app/within-android-upload-key.keystore
+          --batch release.keystore.asc > within-android-upload-key.keystore
+        working-directory: android/app
       - run: rm -rf node_modules && yarn install --frozen-lockfile
       - run: yarn release-apk
       - name: Automatic release
