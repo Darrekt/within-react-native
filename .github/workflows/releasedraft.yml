@@ -1,4 +1,4 @@
-name: "release draft apk"
+name: "Release draft apk"
 
 on:
   push:
@@ -23,6 +23,9 @@ jobs:
           tar xvf $HOME/private/services.tar
         env:
           SERVICES_SECRET: ${{ secrets.SERVICES_SECRET }}
+      - run: |
+          echo ${{ secrets.ANDROID_APP_SIGNING_KEYSTORE }} > release.keystore.asc
+          gpg -d --passphrase "${{ secrets.ANDROID_APP_SIGNING_KEYSTORE_PASSPHRASE }}" --batch release.keystore.asc > android/app/within-android-upload-key.keystore
       - run: rm -rf node_modules && yarn install --frozen-lockfile
       - run: yarn release-apk
       - name: Automatic release
