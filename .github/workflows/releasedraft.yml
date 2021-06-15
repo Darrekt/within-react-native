@@ -25,7 +25,7 @@ jobs:
           SERVICES_SECRET: ${{ secrets.SERVICES_SECRET }}
       - name: Decrypt keystore
         run: |
-          echo $RELEASE_KEYSTORE > within-android-upload-key.keystore.asc
+          echo "$RELEASE_KEYSTORE" > within-android-upload-key.keystore.asc
           gpg --batch --passphrase "$KEYSTORE_PASSPHRASE" \
           -d within-android-upload-key.keystore.asc > within-android-upload-key.keystore
         env:
