@@ -9,7 +9,7 @@ import { getTheme } from "../redux/selectors";
 export type Props = {
   question: string;
   rating: number;
-  setRating: (val: string | React.ChangeEvent) => void;
+  setRating: (val: number | React.ChangeEvent) => void;
 };
 
 export default function QuestionWithSlider({
@@ -35,7 +35,7 @@ export default function QuestionWithSlider({
       >
         <Slider
           value={rating}
-          onValueChange={(val) => setRating(val.toString())}
+          onValueChange={(val) => setRating(val)}
           minimumValue={1}
           maximumValue={5}
           step={1}

@@ -109,7 +109,11 @@ const TodoScreen = () => {
         HeaderComponent={<View style={globalStyles.spacer}></View>}
         flatListProps={{
           ListHeaderComponent: (
-            <TodoComponents.ListHeader todos={todos} isOpen={isOpen} />
+            <TodoComponents.ListHeader
+              todos={todos}
+              isOpen={isOpen}
+              running={running ? true : false}
+            />
           ),
           data: isOpen
             ? todos.filter((todo) =>

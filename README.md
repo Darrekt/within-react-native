@@ -2,29 +2,29 @@
 
 A well-being app that helps users focus and remain productive. Shipped as a PWA on web, with React Native implementations for iOS and Android.
 
-## KNOWN ISSUES
+## Future Work
 
-- Timer shifts oddly at the 11th second of single digit minutes
 - Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
+- Remove password-based sign-ins
+  - Email link
+  - Providers (Google, Facebook, Apple, etc)
+- Prod notifications when they leave the app
+- Add snapshot testing
+- Browser extension
+  - Block blacklisted sites during interval
+- Release on iOS and Android Play stores
+  - Privacy policy
+  - Store page listing
+  - Assets (Hire a designer)
 
-## TODOS
+## Todos and bugs
 
-- Features
-
-  - Fix CSS
-  - ~~Deadlines~~
-    - Add Todos to deadlines
-      - Add todos modal on deadlineAdd page
-      - firebase implementation
-    - Dropdown deadlines with todos (nativebase accordion)
-  - Deploy on Android
-  - Deploy PWA
-  - Passwordless Sign in
-
-- Styling
-
-  - GLASS / NEUMORPHIC STYLING
-  - DARK MODE
+- Alert for asking permissions, pre-empt the user that the app needs to restart
+- Back button should minimise modal, not close app
+- Filters should be per-session
+- Todo completion should be per-session so multiple devices dont give it more laps
+- Dropdown deadlines with todos (RNE accordion)
+- Password reset
 
 ## Proposed Features
 

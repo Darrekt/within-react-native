@@ -22,7 +22,7 @@ const AuthStateDisplay = () => {
 
   return (
     <Card
-      style={{ width: "100%" }}
+      style={{ width: "100%", marginVertical: "10%" }}
       elevation={16}
       onPress={() => navigation.navigate(Screens.AuthManagement)}
     >

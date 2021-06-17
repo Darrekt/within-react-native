@@ -1,8 +1,8 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import { globalStyles } from "../../../styles";
-import Todo, { TodoEntity } from "../../models/Todo";
+import { TodoEntity } from "../../models/Todo";
 import { useNavigation } from "@react-navigation/native";
 import { Screens } from "../../screens/navConstants";
 
@@ -34,9 +34,10 @@ const styles = StyleSheet.create({
 type IProps = {
   todos: TodoEntity[];
   isOpen: boolean;
+  running: boolean;
 };
 
-const TodoListHeader = ({ todos, isOpen }: IProps) => {
+const TodoListHeader = ({ todos, isOpen, running }: IProps) => {
   const navigation = useNavigation();
   return (
     <View style={isOpen ? styles.openHeader : globalStyles.centered}>
@@ -52,6 +53,7 @@ const TodoListHeader = ({ todos, isOpen }: IProps) => {
       {isOpen && (
         <View style={styles.openHeaderButtonRow}>
           <Pressable
+            disabled={running}
             onPress={() => {
               navigation.navigate(Screens.AddTodo);
             }}

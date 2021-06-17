@@ -1,4 +1,4 @@
-name: "Release draft apk"
+name: "Release draft APK"
 
 on:
   push:
@@ -40,6 +40,6 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
-          title: "Draft testing Build"
+          title: "Latest testing Build"
           files: |
             android/app/build/outputs/apk/release/app-release.apk

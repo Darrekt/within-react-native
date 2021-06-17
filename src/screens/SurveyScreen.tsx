@@ -2,9 +2,8 @@ import firestore from "@react-native-firebase/firestore";
 import { useNavigation } from "@react-navigation/core";
 import { Formik } from "formik";
 import React from "react";
-import { View, Text, KeyboardAvoidingView, Dimensions } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { globalStyles, textStyles } from "../../styles";
 import OneButtonForm from "../components/layout/OneButtonForm";
@@ -55,16 +54,16 @@ export default function SurveyScreen() {
           <QuestionWithSlider
             question={"How would you rate the app?"}
             rating={formik.values.appReview}
-            setRating={formik.handleChange("appReview")}
+            setRating={(val) => formik.setFieldValue("appReview", val)}
           />
           <QuestionWithSlider
             question={"Did the app improve your focus and productivity?"}
             rating={formik.values.productivityRating}
-            setRating={formik.handleChange("productivityRating")}
+            setRating={(val) => formik.setFieldValue("productivityRating", val)}
           />
           <Text style={textStyles.questionText}>
             Tell us what you would like to see improved:
-              </Text>
+          </Text>
           <TextInput
             style={{
               ...globalStyles.largeInputBox,
@@ -79,7 +78,7 @@ export default function SurveyScreen() {
           />
           <Text style={textStyles.questionText}>
             Please let us know of any bugs!
-              </Text>
+          </Text>
           <TextInput
             style={{
               ...globalStyles.largeInputBox,
