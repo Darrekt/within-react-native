@@ -1,41 +1,30 @@
 import React from "react";
 import { View, Text, useWindowDimensions } from "react-native";
-import { Header, withBadge } from "react-native-elements";
+import { withBadge } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
 import LinearGradient from "react-native-linear-gradient";
 import * as TodoComponents from "../../components/todo/TodoComponents";
 import Todo, { TodoEntity } from "../../models/Todo";
-import {
-  getSelected,
-  getRunning,
-  getTheme,
-  getIncompleteTodos,
-  getFilters,
-} from "../../redux/selectors";
+import * as AppSelectors from "../../redux/selectors";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import SurveyButton from "../../components/settings/SurveyButton";
 import { useNavigation } from "@react-navigation/core";
-import { Icon } from "react-native-elements/dist/icons/Icon";
 import { Screens } from "../navConstants";
-import {
-  completeFirebaseTodo,
-  deleteFirebaseTodo,
-} from "../../redux/actions/todos/thunks";
+import * as TodoThunks from "../../redux/actions/todos/thunks";
 import { selectTodo } from "../../redux/actions/workSettings/actions";
+import AppHeader from "../../components/settings/AppHeader";
 
 const TodoScreen = () => {
-  const todos = useAppSelector(getIncompleteTodos);
-  const selected = useAppSelector(getSelected);
-  const filters = useAppSelector(getFilters);
-  const running = useAppSelector(getRunning);
-  const theme = useAppSelector(getTheme);
-  const dispatch = useAppDispatch();
+  const todos = useAppSelector(AppSelectors.getIncompleteTodos);
+  const selected = useAppSelector(AppSelectors.getSelected);
+  const filters = useAppSelector(AppSelectors.getFilters);
+  const running = useAppSelector(AppSelectors.getRunning);
+  const theme = useAppSelector(AppSelectors.getTheme);
   const navigation = useNavigation();
-
+  const windowHeight = useWindowDimensions().height;
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = React.useState(false);
   const modalizeRef = React.useRef<Modalize>(null);
-  const windowHeight = useWindowDimensions().height;
 
   return (
     <View
@@ -45,47 +34,27 @@ const TodoScreen = () => {
         justifyContent: "flex-start",
       }}
     >
-      {!isOpen && (
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0.5 }}
-          colors={[theme.primary, theme.gradientFade]}
-          style={{
-            position: "absolute",
-            height: "35%",
-            width: "100%",
-            top: 0,
-          }}
-        />
-      )}
-      {!isOpen && (
-        <Header
-          backgroundColor="transparent"
-          leftComponent={SurveyButton()}
-          rightComponent={
-            <View style={globalStyles.row}>
-              <Icon
-                name="history"
-                type="fontawesome5"
-                onPress={() => navigation.navigate(Screens.TodoHistory)}
-              />
-              <Icon
-                name="settings"
-                type="materialicons"
-                onPress={() => navigation.navigate(Screens.Settings)}
-              />
-            </View>
-          }
-          containerStyle={{ borderBottomWidth: 0 }}
-        />
-      )}
-      {isOpen ? (
+      {!isOpen ? (
+        [
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0.5 }}
+            colors={[theme.primary, theme.gradientFade]}
+            style={{
+              position: "absolute",
+              height: "35%",
+              width: "100%",
+              top: 0,
+            }}
+          />,
+          <AppHeader />,
+          <TodoComponents.HomeDisplay
+            openModal={() => modalizeRef.current?.open("top")}
+          />,
+        ]
+      ) : (
         <TodoComponents.TimerDisplay
           selectedTask={todos.find((todo) => todo.id === selected)}
-        />
-      ) : (
-        <TodoComponents.HomeDisplay
-          openModal={() => modalizeRef.current?.open("top")}
         />
       )}
       <Modalize
@@ -133,8 +102,10 @@ const TodoScreen = () => {
               onLongPress={() =>
                 navigation.navigate(Screens.ViewTodo, { todoID: item.id })
               }
-              deleteAction={() => dispatch(deleteFirebaseTodo(item))}
-              checkAction={() => dispatch(completeFirebaseTodo(item))}
+              deleteAction={() => dispatch(TodoThunks.deleteFirebaseTodo(item))}
+              checkAction={() =>
+                dispatch(TodoThunks.completeFirebaseTodo(item))
+              }
               BadgedText={withBadge(item.laps, {
                 badgeStyle: {
                   backgroundColor: theme.dark,
