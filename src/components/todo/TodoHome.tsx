@@ -57,13 +57,11 @@ const HomeDisplay = ({ openModal }: Props) => {
             ))}
         </ScrollView>
       </HeadingDropDown>
-      {/* TODO: Hacky fix */}
-      <View style={{ height: 15 }}></View>
       <HeadingDropDown
         header="Deadlines"
         headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
       >
-        <ScrollView style={{ width: windowDimensions.width * 0.9 }}>
+        <ScrollView style={{ width: windowDimensions.width }}>
           {deadlines.sort(compareDeadlines).map((deadline) => (
             <DeadlineDisplay
               key={deadline.id}

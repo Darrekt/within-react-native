@@ -9,15 +9,13 @@ import {
 import { getTimeLeft, printTimeLeft } from "../../util/timer";
 import { TodoEntity } from "../../models/Todo";
 import CircleButtonGroup from "../util/CircleButtonGroup";
-import { Chip, Icon } from "react-native-elements";
+import { Icon } from "react-native-elements";
 import { Actions, TodoAction } from "../../redux/actions/actionTypes";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   getFilters,
-  getIncompleteProjects,
   getSettings,
   getSortedDeadlines,
-  getTheme,
 } from "../../redux/selectors";
 import {
   pauseFirebaseTodo,
@@ -27,24 +25,17 @@ import {
 import { AppThunk } from "../../redux/store";
 import { ScrollView } from "react-native-gesture-handler";
 import DeadlineDisplay from "./DeadlineDisplay";
-import { globalStyles } from "../../../styles";
-import { toggleFilter } from "../../redux/actions/workSettings/actions";
 import { toggleFilterFirebase } from "../../redux/actions/workSettings/thunks";
+import { globalStyles } from "../../../styles";
 
 const styles = StyleSheet.create({
   positionedLogo: {
     position: "absolute",
-    top: "15%",
-    height: "40%",
+    top: 0,
+    height: "45%",
     width: Dimensions.get("window").width,
     alignSelf: "stretch",
     alignItems: "center",
-  },
-  timerTextContainer: {
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    alignItems: "center",
-    justifyContent: "center",
   },
   timerFont: {
     fontSize: 64,
@@ -63,20 +54,24 @@ const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
   const windowDimensions = useWindowDimensions();
   const dispatch = useAppDispatch();
 
-  return selectedTask ? (
-    <TodoTimer selectedTask={selectedTask} dispatch={dispatch} />
-  ) : (
+  return (
     <View style={styles.positionedLogo}>
-      <ScrollView style={{ width: windowDimensions.width * 0.9 }}>
-        {deadlines.slice(0, 3).map((deadline) => (
-          <DeadlineDisplay
-            key={deadline.id}
-            selected={filters.some((filterID) => filterID === deadline.id)}
-            deadline={deadline}
-            onPress={() => dispatch(toggleFilterFirebase(deadline.id))}
-          />
-        ))}
-      </ScrollView>
+      <View style={{ flex: 1 }} />
+      {selectedTask ? (
+        <TodoTimer selectedTask={selectedTask} dispatch={dispatch} />
+      ) : (
+        <ScrollView style={{ width: windowDimensions.width }}>
+          {deadlines.slice(0, 3).map((deadline) => (
+            <DeadlineDisplay
+              key={deadline.id}
+              selected={filters.some((filterID) => filterID === deadline.id)}
+              deadline={deadline}
+              onPress={() => dispatch(toggleFilterFirebase(deadline.id))}
+            />
+          ))}
+        </ScrollView>
+      )}
+      <View style={{ flex: 1 }} />
     </View>
   );
 };
@@ -141,10 +136,8 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
     },
   ];
   return (
-    <View style={styles.positionedLogo}>
-      <View style={styles.timerTextContainer}>
-        <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
-      </View>
+    <View style={globalStyles.column}>
+      <Text style={styles.timerFont}>{printTimeLeft(timeLeft)}</Text>
       <CircleButtonGroup actions={timerActions} active />
     </View>
   );

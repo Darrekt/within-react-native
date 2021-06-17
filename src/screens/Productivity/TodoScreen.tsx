@@ -73,7 +73,7 @@ const TodoScreen = () => {
       )}
       <Modalize
         ref={modalizeRef}
-        modalHeight={windowHeight * 0.45}
+        modalHeight={windowHeight * 0.5}
         alwaysOpen={80}
         handlePosition="inside"
         withOverlay={false}

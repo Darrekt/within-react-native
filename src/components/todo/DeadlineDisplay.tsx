@@ -7,7 +7,6 @@ import { useAppSelector } from "../../redux/hooks";
 import { getProjects, findProject, getTheme } from "../../redux/selectors";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../../screens/navConstants";
-import { getType } from "@reduxjs/toolkit";
 
 export type Props = {
   deadline: DeadlineEntity;
@@ -27,7 +26,8 @@ export default function DeadlineDisplay({
     <Card
       style={{
         height: windowDimensions.height * 0.07,
-        width: "100%",
+        width: "90%",
+        marginHorizontal: "5%",
         borderWidth: selected ? 1.5 : 0,
         borderColor: theme.dark,
       }}
