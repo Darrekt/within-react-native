@@ -1,8 +1,21 @@
-# Sage
+# Within
 
-A well-being app that helps users focus and remain productive. Shipped as a PWA on web, with React Native implementations for iOS and Android.
+## About the app
 
-## Future Work
+Modern smart devices offer too many distractions for us to remain productive for extended periods. Within is a suite of well-being apps that helps users focus and remain productive. The apps in this family aim to remove the aspects of popular apps which tether themselves into your lifestyle with attention-grabbing "hooks".
+
+The detrimental effects of social media and gaming apps on mental health and self-esteem are well known. The Social Dilemma on Netflix also serves as an adequate digest of the issue. However, the effects of such apps on attention and productivity are not as well-researched. For those interested in reading more, have a look at these resources:
+
+- [Hooked by Nir Eyal](https://www.amazon.co.uk/Hooked-How-Build-Habit-Forming-Products/dp/B00HZOBOUO/ref=sr_1_1?adgrpid=54037409435&dchild=1&gclid=Cj0KCQjw5auGBhDEARIsAFyNm9E4n4qyIkApBRehhLcNnxiFWQnnJD3ueIBBKH7LjBRvsnV6p6F_zCMaAsIPEALw_wcB&hvadid=259043076936&hvdev=c&hvlocphy=9072504&hvnetw=g&hvqmt=e&hvrand=13303443007801974394&hvtargid=kwd-299801729894&hydadcr=18461_1817222&keywords=hooked+nir+eyal&qid=1623964716&s=books&sr=1-1)
+- [Attention Enhancing Technology: A New Dimension in the Design of Effective Wellbeing Apps](https://ieeexplore.ieee.org/abstract/document/9392016)
+
+## Currently offered
+
+- React Native implementations for iOS and Android.
+
+## Contributing
+
+### Future work
 
 - Margins are all hardcoded, need to use [responsive library](https://github.com/marudy/react-native-responsive-screen#example)
 - Remove password-based sign-ins
@@ -17,16 +30,16 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
   - Store page listing
   - Assets (Hire a designer)
 
-## Todos and bugs
+### Todos and bugs
 
+- Password reset
+- Loading spinner and initial state instead of onboarding
 - Alert for asking permissions, pre-empt the user that the app needs to restart
-- Back button should minimise modal, not close app
 - Filters should be per-session
 - Todo completion should be per-session so multiple devices dont give it more laps
 - Dropdown deadlines with todos (RNE accordion)
-- Password reset
 
-## Proposed Features
+### Miscellaneous proposed features
 
 - Fitting to individual users maximum attention
 - Breaking down large tasks (by time) into smaller periods
@@ -37,9 +50,6 @@ A well-being app that helps users focus and remain productive. Shipped as a PWA 
   - Usability
   - Retention
   - Efficacy
-
-## Misc
-
 - Goal and progress visualised right away
 - Consistent and timed reinforcement
 - "Source" Trigger

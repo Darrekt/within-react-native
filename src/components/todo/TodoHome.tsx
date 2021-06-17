@@ -10,7 +10,7 @@ import { List } from "immutable";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../../screens/navConstants";
 import DeadlineDisplay from "./DeadlineDisplay";
-import { compareDeadlines, DeadlineEntity } from "../../models/Deadline";
+import { compareDeadlines } from "../../models/Deadline";
 import { compareProjectsByDeadline } from "../../models/Project";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { toggleFilterFirebase } from "../../redux/actions/workSettings/thunks";

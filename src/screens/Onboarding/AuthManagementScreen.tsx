@@ -7,9 +7,7 @@ import { globalStyles, textStyles } from "../../../styles";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Screens } from "../navConstants";
-import ThemedTextInput from "../../components/ThemedTextInput";
 import { useAppSelector } from "../../redux/hooks";
-import { getType } from "@reduxjs/toolkit";
 import { getTheme } from "../../redux/selectors";
 
 const AuthManagementScreen = () => {
@@ -35,7 +33,7 @@ const AuthManagementScreen = () => {
           titleStyle={{ color: theme.text.primary }}
         />
         <Text style={textStyles.avatarName}>
-          {user?.displayName ?? "Add a display name!"}
+          {user?.displayName ?? "Add a display name below!"}
         </Text>
       </View>
       <View style={globalStyles.column}>
