@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { textStyles } from "../../../styles";
 import {
   Keyboard,
   Text,

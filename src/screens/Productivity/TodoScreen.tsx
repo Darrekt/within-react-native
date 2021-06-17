@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, useWindowDimensions } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, useWindowDimensions, BackHandler } from "react-native";
 import { withBadge } from "react-native-elements";
 import { Modalize } from "react-native-modalize";
 import { globalStyles } from "../../../styles";
@@ -25,6 +25,20 @@ const TodoScreen = () => {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = React.useState(false);
   const modalizeRef = React.useRef<Modalize>(null);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (isOpen && !running) {
+          modalizeRef.current?.open("default");
+          setIsOpen(false);
+          return true;
+        } else return false;
+      }
+    );
+    return backHandler.remove;
+  });
 
   return (
     <View
@@ -64,7 +78,6 @@ const TodoScreen = () => {
         handlePosition="inside"
         withOverlay={false}
         onOpen={() => setIsOpen(true)}
-        onClose={() => setIsOpen(false)}
         onPositionChange={(position) => {
           if (position === "top") {
             setIsOpen(true);
