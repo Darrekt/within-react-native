@@ -191,7 +191,7 @@ export const finishFirebaseTodo =
     const [todos, writeTodos] = genTodoWriteFunc(state, todo);
     if (writeTodos) writeTodos(todoReducer(todos, action));
     else dispatch(action);
-    Vibration.vibrate(500);
+    Vibration.vibrate(1500);
     Toast.show({
       type: "success",
       position: "bottom",

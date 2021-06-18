@@ -62,16 +62,18 @@ const HomeDisplay = ({ openModal }: Props) => {
         headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
       >
         <ScrollView style={{ width: windowDimensions.width }}>
-          {deadlines.sort(compareDeadlines).map((deadline) => (
-            <DeadlineDisplay
-              key={deadline.id}
-              deadline={deadline}
-              onPress={() => {
-                openModal();
-                dispatch(toggleFilterFirebase(deadline.id));
-              }}
-            />
-          ))}
+          {deadlines
+            .filter((ddl) => !ddl.completed)
+            .map((deadline) => (
+              <DeadlineDisplay
+                key={deadline.id}
+                deadline={deadline}
+                onPress={() => {
+                  openModal();
+                  dispatch(toggleFilterFirebase(deadline.id));
+                }}
+              />
+            ))}
         </ScrollView>
       </HeadingDropDown>
     </View>
