@@ -28,6 +28,7 @@ import { Screens } from "./navConstants";
 import SignUpScreen from "./Onboarding/SignUpScreen";
 import ChangeThemeScreen from "./Settings/ChangeThemeScreen";
 import { FirestoreWorkSettings } from "../redux/reducers/workSettings";
+import ResetPasswordScreen from "./Onboarding/ResetPasswordScreen";
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,22 @@ function ChooseScreens(settings: SageSettings) {
           component={SignUpScreen}
           options={{
             title: "Create an account",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.ResetPassword}
+          component={ResetPasswordScreen}
+          options={{
+            title: "Reset Password",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.VerifyEmail}
+          component={SignUpScreen}
+          options={{
+            title: "Verify Email",
             headerBackTitleVisible: false,
           }}
         />

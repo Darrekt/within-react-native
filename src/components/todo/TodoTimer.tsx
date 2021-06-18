@@ -61,14 +61,17 @@ const TodoTimerDisplay = ({ selectedTask }: DisplayProps) => {
         <TodoTimer selectedTask={selectedTask} dispatch={dispatch} />
       ) : (
         <ScrollView style={{ width: windowDimensions.width }}>
-          {deadlines.slice(0, 3).map((deadline) => (
-            <DeadlineDisplay
-              key={deadline.id}
-              selected={filters.some((filterID) => filterID === deadline.id)}
-              deadline={deadline}
-              onPress={() => dispatch(toggleFilterFirebase(deadline.id))}
-            />
-          ))}
+          {deadlines
+            .filter((ddl) => !ddl.completed)
+            .slice(0, 3)
+            .map((deadline) => (
+              <DeadlineDisplay
+                key={deadline.id}
+                selected={filters.some((filterID) => filterID === deadline.id)}
+                deadline={deadline}
+                onPress={() => dispatch(toggleFilterFirebase(deadline.id))}
+              />
+            ))}
         </ScrollView>
       )}
       <View style={{ flex: 1 }} />

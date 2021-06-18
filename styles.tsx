@@ -106,6 +106,14 @@ export const textStyles = StyleSheet.create({
     color: "black",
     fontSize: 16,
   },
+  link: {
+    marginVertical: 5,
+    fontSize: 16,
+    fontWeight: "400",
+    color: "teal",
+    textDecorationLine: "underline",
+    textAlign: "center",
+  },
   validationMessage: {
     marginVertical: 5,
     textAlign: "left",

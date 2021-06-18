@@ -10,7 +10,8 @@
     "release-apk": "cd android && ./gradlew assembleRelease && cd ..",
     "release-aab": "cd android && ./gradlew bundleRelease && cd ..",
     "packservices": "tar cvf services.tar android/app/google-services.json ios/GoogleService-Info.plist && gpg -c services.tar",
-    "unpackservices": "gpg --quiet --batch --yes --decrypt --output services.tar services.tar.gpg && tar xvf services.tar"
+    "unpackservices": "gpg --quiet --batch --yes --decrypt --output services.tar services.tar.gpg && tar xvf services.tar",
+    "countlines": " cd src && git ls-files | xargs wc -l && cd .."
   },
   "jest": {
     "preset": "jest-expo",

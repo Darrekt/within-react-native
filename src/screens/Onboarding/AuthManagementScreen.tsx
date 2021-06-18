@@ -7,10 +7,9 @@ import { globalStyles, textStyles } from "../../../styles";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 import { Screens } from "../navConstants";
-import ThemedTextInput from "../../components/ThemedTextInput";
 import { useAppSelector } from "../../redux/hooks";
-import { getType } from "@reduxjs/toolkit";
 import { getTheme } from "../../redux/selectors";
+import OneButtonForm from "../../components/layout/OneButtonForm";
 
 const AuthManagementScreen = () => {
   const user = auth().currentUser;
@@ -18,14 +17,7 @@ const AuthManagementScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <View
-      style={{
-        ...globalStyles.column,
-        height: "100%",
-        justifyContent: "center",
-        margin: 20,
-      }}
-    >
+    <OneButtonForm centerFields={false} nakedPage>
       <View style={{ ...globalStyles.column, marginVertical: 30 }}>
         <Avatar
           rounded
@@ -35,7 +27,7 @@ const AuthManagementScreen = () => {
           titleStyle={{ color: theme.text.primary }}
         />
         <Text style={textStyles.avatarName}>
-          {user?.displayName ?? "Add a display name!"}
+          {user?.displayName ?? "Add a display name below!"}
         </Text>
       </View>
       <View style={globalStyles.column}>
@@ -68,7 +60,7 @@ const AuthManagementScreen = () => {
           text="Sign Out"
         />
       </View>
-    </View>
+    </OneButtonForm>
   );
 };
 

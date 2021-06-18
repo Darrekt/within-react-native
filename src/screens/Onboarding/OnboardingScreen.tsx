@@ -1,7 +1,13 @@
 import React from "react";
-import { Dimensions, Image, StyleSheet, Text } from "react-native";
+import {
+  Dimensions,
+  Image,
+  NativeModules,
+  Platform,
+  StyleSheet,
+  Text,
+} from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import { Actions } from "../../redux/actions/actionTypes";
 import { toggleOnboarding } from "../../redux/actions/settings/thunks";
 import { useAppDispatch } from "../../redux/hooks";
 
@@ -11,20 +17,26 @@ const styles = StyleSheet.create({
     paddingTop: 0.2 * Dimensions.get("screen").height,
   },
   img: {
-    height: 0.6 * Dimensions.get("screen").width,
+    height: 0.5 * Dimensions.get("screen").width,
     width: 0.7 * Dimensions.get("screen").width,
     resizeMode: "contain",
   },
   subtitleText: { marginHorizontal: 30, fontSize: 16, textAlign: "justify" },
 });
 
+const { DnDMode } = NativeModules;
+
 const OnboardingScreen = () => {
   const dispatch = useAppDispatch();
+  const completeOnboarding = () => {
+    dispatch(toggleOnboarding());
+    Platform.OS === "android" && DnDMode.getDnDPermission();
+  };
   return (
     <Onboarding
       containerStyles={styles.container}
-      onSkip={() => dispatch(toggleOnboarding())}
-      onDone={() => dispatch(toggleOnboarding())}
+      onSkip={completeOnboarding}
+      onDone={completeOnboarding}
       pages={[
         {
           backgroundColor: "#ffffff",
@@ -37,9 +49,9 @@ const OnboardingScreen = () => {
           title: "Let's get started!",
           subtitle: (
             <Text style={styles.subtitleText}>
-              Welcome to the alpha release of Sage. This is heavily under
-              re-development, so we'd greatly appreciate any feedback you have
-              to offer!
+              Welcome to the alpha release of Within. This is heavily under
+              development, so we'd greatly appreciate any feedback you have to
+              offer!
             </Text>
           ),
         },
@@ -54,7 +66,7 @@ const OnboardingScreen = () => {
           title: "What are we doing?",
           subtitle: (
             <Text style={styles.subtitleText}>
-              Sage is meant to help you work in a more productive,
+              Within is meant to help you work in a more productive,
               less-distracted manner by managing your planning and workflow,
               while teaching you how to keep yourself more focused!
             </Text>

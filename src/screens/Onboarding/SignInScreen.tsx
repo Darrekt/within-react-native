@@ -68,7 +68,7 @@ export const SignInScreen = () => {
               color: "black",
             }}
           >
-            Sign in with email credentials:
+            Sign in with an email:
           </Text>
           <TextInput
             style={{ ...globalStyles.inputBox, borderColor: theme.dark }}
@@ -105,23 +105,30 @@ export const SignInScreen = () => {
             text="Sign In"
             onPress={() => formik.handleSubmit()}
           />
-          <Text
+          <View
             style={{
               marginVertical: 20,
-              fontSize: 16,
-              fontWeight: "400",
-              color: "teal",
-              textDecorationLine: "underline",
             }}
-            onPress={() => navigation.navigate(Screens.SignUp)}
           >
-            No account? Sign up here!
-          </Text>
+            <Text
+              style={textStyles.link}
+              onPress={() => navigation.navigate(Screens.SignUp)}
+            >
+              No account? Sign up here!
+            </Text>
+            <Text
+              style={textStyles.link}
+              onPress={() => navigation.navigate(Screens.ResetPassword)}
+            >
+              Forgot Password?
+            </Text>
+          </View>
           <Text
             style={{
-              marginTop: 30,
+              marginTop: 20,
               marginBottom: 10,
               fontSize: 16,
+              color: "black",
             }}
           >
             Or sign in with a provider:

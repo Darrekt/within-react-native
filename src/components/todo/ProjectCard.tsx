@@ -8,6 +8,7 @@ import { List } from "immutable";
 import { Screens } from "../../screens/navConstants";
 import { AntDesign, Foundation } from "@expo/vector-icons";
 import { UNCATEGORISED_TODO_PROJID } from "../../util/constants";
+import { compareDeadlines } from "../../models/Deadline";
 
 const styles = StyleSheet.create({
   emojiFont: { fontSize: 25, margin: 5, color: "black" },
@@ -28,7 +29,7 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
 
   const remainingTodos = project.todos.filter((todo) => !todo.completed).length;
   const dueDateFont =
-    List(project.deadlines).first(0).valueOf() > now
+    List(project.deadlines).sort(compareDeadlines).first(0).valueOf() < now
       ? textStyles.infoText
       : styles.redFont;
 

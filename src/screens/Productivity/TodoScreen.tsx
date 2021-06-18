@@ -49,7 +49,7 @@ const TodoScreen = () => {
       }}
     >
       {!isOpen ? (
-        [
+        <>
           <LinearGradient
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0.5 }}
@@ -60,12 +60,12 @@ const TodoScreen = () => {
               width: "100%",
               top: 0,
             }}
-          />,
-          <AppHeader />,
+          />
+          <AppHeader />
           <TodoComponents.HomeDisplay
             openModal={() => modalizeRef.current?.open("top")}
-          />,
-        ]
+          />
+        </>
       ) : (
         <TodoComponents.TimerDisplay
           selectedTask={todos.find((todo) => todo.id === selected)}

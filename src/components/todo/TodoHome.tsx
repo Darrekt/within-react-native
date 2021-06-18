@@ -10,7 +10,7 @@ import { List } from "immutable";
 import { useNavigation } from "@react-navigation/core";
 import { Screens } from "../../screens/navConstants";
 import DeadlineDisplay from "./DeadlineDisplay";
-import { compareDeadlines, DeadlineEntity } from "../../models/Deadline";
+import { compareDeadlines } from "../../models/Deadline";
 import { compareProjectsByDeadline } from "../../models/Project";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { toggleFilterFirebase } from "../../redux/actions/workSettings/thunks";
@@ -62,16 +62,18 @@ const HomeDisplay = ({ openModal }: Props) => {
         headerStyle={{ marginLeft: windowDimensions.width * 0.04 }}
       >
         <ScrollView style={{ width: windowDimensions.width }}>
-          {deadlines.sort(compareDeadlines).map((deadline) => (
-            <DeadlineDisplay
-              key={deadline.id}
-              deadline={deadline}
-              onPress={() => {
-                openModal();
-                dispatch(toggleFilterFirebase(deadline.id));
-              }}
-            />
-          ))}
+          {deadlines
+            .filter((ddl) => !ddl.completed)
+            .map((deadline) => (
+              <DeadlineDisplay
+                key={deadline.id}
+                deadline={deadline}
+                onPress={() => {
+                  openModal();
+                  dispatch(toggleFilterFirebase(deadline.id));
+                }}
+              />
+            ))}
         </ScrollView>
       </HeadingDropDown>
     </View>
