@@ -9,6 +9,7 @@ import SubmitButton from "../../components/util/SubmitButton";
 import { Screens } from "../navConstants";
 import { useAppSelector } from "../../redux/hooks";
 import { getTheme } from "../../redux/selectors";
+import OneButtonForm from "../../components/layout/OneButtonForm";
 
 const AuthManagementScreen = () => {
   const user = auth().currentUser;
@@ -16,14 +17,7 @@ const AuthManagementScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <View
-      style={{
-        ...globalStyles.column,
-        height: "100%",
-        justifyContent: "center",
-        margin: 20,
-      }}
-    >
+    <OneButtonForm centerFields={false} nakedPage>
       <View style={{ ...globalStyles.column, marginVertical: 30 }}>
         <Avatar
           rounded
@@ -66,7 +60,7 @@ const AuthManagementScreen = () => {
           text="Sign Out"
         />
       </View>
-    </View>
+    </OneButtonForm>
   );
 };
 
