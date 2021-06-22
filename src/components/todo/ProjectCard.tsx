@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
 export default function ProjectCard({ project }: { project: ProjectEntity }) {
   const navigation = useNavigation();
   const windowDimensions = useWindowDimensions();
-  const now = new Date().valueOf();
 
   const deadlineNumber = ProjectFromEntity(project).closestDeadline()?.due;
   const ddlString = deadlineNumber
@@ -28,10 +27,14 @@ export default function ProjectCard({ project }: { project: ProjectEntity }) {
     : undefined;
 
   const remainingTodos = project.todos.filter((todo) => !todo.completed).length;
+  const firstDeadline = List(project.deadlines)
+    .sort(compareDeadlines)
+    .map((ddl) => ddl.due)
+    .first(null);
   const dueDateFont =
-    List(project.deadlines).sort(compareDeadlines).first(0).valueOf() < now
-      ? textStyles.infoText
-      : styles.redFont;
+    firstDeadline && firstDeadline.valueOf() < new Date().getTime()
+      ? styles.redFont
+      : textStyles.infoText;
 
   return project.id === UNCATEGORISED_TODO_PROJID ? (
     <Card
