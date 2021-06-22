@@ -32,7 +32,7 @@ export const resetSettings: ActionCreator<AppThunk> =
     const { user, ...settingsWithoutUser } = SAGE_DEFAULT_SETTINGS;
     if (loggedInUser)
       await settingsDoc(loggedInUser).set(
-        { ...settingsWithoutUser, onboarding: true },
+        { ...settingsWithoutUser },
         { merge: true }
       );
     else

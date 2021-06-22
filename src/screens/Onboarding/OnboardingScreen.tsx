@@ -1,4 +1,5 @@
 import React from "react";
+import { useContext } from "react";
 import {
   Dimensions,
   Image,
@@ -8,8 +9,7 @@ import {
   Text,
 } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ONBOARDING_STATUS_KEY } from "../../util/constants";
+import { OnboardingContext } from "../../redux/hooks";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,18 +25,11 @@ const styles = StyleSheet.create({
 });
 
 const { DnDMode } = NativeModules;
-interface Props {
-  onFinish: () => void;
-}
 
-const OnboardingScreen = ({ onFinish }: Props) => {
+const OnboardingScreen = () => {
+  const { setOnboarded } = useContext(OnboardingContext);
   const completeOnboarding = async () => {
-    try {
-      await AsyncStorage.setItem(ONBOARDING_STATUS_KEY, JSON.stringify(true));
-    } catch (e) {
-      console.log("Issue with Async storage onboarding completion");
-    }
-    onFinish();
+    setOnboarded && setOnboarded(true);
     Platform.OS === "android" && DnDMode.getDnDPermission();
   };
   return (

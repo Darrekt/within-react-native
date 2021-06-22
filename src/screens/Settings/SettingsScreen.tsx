@@ -4,21 +4,18 @@ import { View, Alert, useWindowDimensions } from "react-native";
 import { Icon } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { OnboardingContext } from "../../../App";
 import { globalStyles } from "../../../styles";
 import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
 import { resetSettings } from "../../redux/actions/settings/thunks";
-import { useAppDispatch } from "../../redux/hooks";
+import { OnboardingContext, useAppDispatch } from "../../redux/hooks";
 import { Screens } from "../navConstants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ONBOARDING_STATUS_KEY } from "../../util/constants";
 
 const SettingsScreen = () => {
   const dispatch = useAppDispatch();
-  const setOnboarding = useContext(OnboardingContext);
+  const { setOnboarded } = useContext(OnboardingContext);
   const navigation = useNavigation();
   const windowDimensions = useWindowDimensions();
 
@@ -27,17 +24,7 @@ const SettingsScreen = () => {
       name: "Onboarding",
       subtitle: "Reset your onboarding status",
       icon: <Icon name="handshake-o" type="font-awesome" />,
-      action: async () => {
-        try {
-          await AsyncStorage.setItem(
-            ONBOARDING_STATUS_KEY,
-            JSON.stringify(false)
-          );
-        } catch (e) {
-          console.log("Issue with Async storage onboarding completion");
-        }
-        setOnboarding && setOnboarding(false);
-      },
+      action: () => setOnboarded && setOnboarded(false),
     },
     {
       name: "Theme",

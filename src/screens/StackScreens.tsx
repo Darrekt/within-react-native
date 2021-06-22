@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -29,6 +29,8 @@ import SignInScreen from "./Onboarding/SignInScreen";
 import SignUpScreen from "./Onboarding/SignUpScreen";
 import ChangeThemeScreen from "./Settings/ChangeThemeScreen";
 import ResetPasswordScreen from "./Onboarding/ResetPasswordScreen";
+import { globalStyles } from "../../styles";
+import { ActivityIndicator, View } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -142,11 +144,7 @@ function ChooseScreens(settings: SageSettings) {
 function StackScreens() {
   const settings = useAppSelector(getSettings);
   const dispatch = useAppDispatch();
-
-  useEffect(
-    () => auth().onAuthStateChanged((user) => dispatch(authStateChanged(user))),
-    []
-  );
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (settings.user) {
@@ -176,6 +174,7 @@ function StackScreens() {
                   ProjectFromEntity(doc.data()).toEntity()
                 );
           dispatch(hydrateProjects(storedData));
+          setLoaded(true);
         });
       return () => {
         cleanupSettingsListener();
@@ -184,9 +183,24 @@ function StackScreens() {
     }
   }, [settings.user]);
 
+  useEffect(() => {
+    const authListener = auth().onAuthStateChanged((user) =>
+      dispatch(authStateChanged(user))
+    );
+    // A little hacky, but it works.
+    setTimeout(() => setLoaded(true), 700);
+    return authListener;
+  }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
+      {loaded ? (
+        <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
+      ) : (
+        <View style={globalStyles.centered}>
+          <ActivityIndicator size="large" />
+        </View>
+      )}
     </NavigationContainer>
   );
 }
