@@ -1,3 +1,4 @@
+export const ONBOARDING_STATUS_KEY = "onboarding";
 export const UNCATEGORISED_TODO_PROJID = "uncategorised";
 
 export type ShadowHeight = 1 | 2 | 4 | 6 | 8 | 9 | 12 | 16 | 24;
@@ -11,11 +12,10 @@ export type Theme = {
 
 export enum SageTheme {
   Mint = "Mint",
-  //   Orange = "ORANGE",
   Lilac = "Lilac",
 }
 
-const Mint: Theme = {
+const THEME_MINT: Theme = {
   primary: "#64FFDA",
   light: "#9effff",
   dark: "#14cba8",
@@ -23,7 +23,7 @@ const Mint: Theme = {
   text: { primary: "black", light: "black", dark: "black" },
 };
 
-const Lilac: Theme = {
+const THEME_LILAC: Theme = {
   primary: "#b388ff",
   light: "#e7b9ff",
   dark: "#805acb",
@@ -31,5 +31,5 @@ const Lilac: Theme = {
   text: { primary: "black", light: "black", dark: "white" },
 };
 
-export const SAGE_THEME_LIST = { Mint, Lilac };
+export const SAGE_THEME_LIST = { Mint: THEME_MINT, Lilac: THEME_LILAC };
 export const ERROR_COLOR = "#B00020";

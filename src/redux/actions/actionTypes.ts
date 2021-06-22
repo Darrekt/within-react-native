@@ -29,7 +29,6 @@ export enum Actions {
   SettingsHydrate = "SETTINGS_HYDRATE",
   SettingsAuth = "SETTINGS_AUTH",
   SettingsReset = "SETTINGS_RESET",
-  SettingsToggleOnboarding = "SETTINGS_TOGGLE_ONBOARDING",
   SettingsChangeTheme = "SETTINGS_CHANGE_THEME",
   SettingsChangeWorkParams = "SETTINGS_CHANGE_PARAMS",
   SelectTodo = "SELECT_TODO",
@@ -108,9 +107,6 @@ export type SettingsAction =
   | {
       type: Actions.SettingsAuth;
       payload: string | null;
-    }
-  | {
-      type: Actions.SettingsToggleOnboarding;
     }
   | {
       type: Actions.SettingsChangeTheme;

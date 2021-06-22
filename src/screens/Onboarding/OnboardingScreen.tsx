@@ -8,8 +8,8 @@ import {
   Text,
 } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import { toggleOnboarding } from "../../redux/actions/settings/thunks";
-import { useAppDispatch } from "../../redux/hooks";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ONBOARDING_STATUS_KEY } from "../../util/constants";
 
 const styles = StyleSheet.create({
   container: {
@@ -25,11 +25,18 @@ const styles = StyleSheet.create({
 });
 
 const { DnDMode } = NativeModules;
+interface Props {
+  onFinish: () => void;
+}
 
-const OnboardingScreen = () => {
-  const dispatch = useAppDispatch();
-  const completeOnboarding = () => {
-    dispatch(toggleOnboarding());
+const OnboardingScreen = ({ onFinish }: Props) => {
+  const completeOnboarding = async () => {
+    try {
+      await AsyncStorage.setItem(ONBOARDING_STATUS_KEY, JSON.stringify(true));
+    } catch (e) {
+      console.log("Issue with Async storage onboarding completion");
+    }
+    onFinish();
     Platform.OS === "android" && DnDMode.getDnDPermission();
   };
   return (

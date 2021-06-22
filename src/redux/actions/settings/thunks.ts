@@ -41,16 +41,6 @@ export const resetSettings: ActionCreator<AppThunk> =
       });
   };
 
-export const toggleOnboarding = (): AppThunk => async (dispatch, getState) => {
-  const settings = getState().appSettings;
-  if (settings.user)
-    await settingsDoc(settings.user).set(
-      { onboarding: !settings.onboarding },
-      { mergeFields: ["onboarding"] }
-    );
-  else dispatch({ type: Actions.SettingsToggleOnboarding });
-};
-
 export const changeFirebaseTheme =
   (newTheme: SageTheme): AppThunk =>
   async (dispatch, getState) => {

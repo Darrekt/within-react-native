@@ -8,7 +8,16 @@ import {
   SageSettings,
 } from "../redux/reducers/appSettings";
 import { getSettings } from "../redux/selectors";
-import OnboardingScreen from "./Onboarding/OnboardingScreen";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { ProjectFromEntity } from "../models/Project";
+import { hydrateProjects } from "../redux/actions/projects/actions";
+import {
+  authStateChanged,
+  hydrateSettings,
+} from "../redux/actions/settings/actions";
+import { FirestoreWorkSettings } from "../redux/reducers/workSettings";
+
+import { Screens } from "./navConstants";
 import SettingsScreen from "./Settings/SettingsScreen";
 import AuthManagementScreen from "./Onboarding/AuthManagementScreen";
 import EditEmailScreen from "./Settings/EditEmailScreen";
@@ -17,25 +26,13 @@ import EditNameScreen from "./Settings/EditNameScreen";
 import EditProductivitySettingScreen from "./Settings/EditSettingScreen";
 import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { ProjectFromEntity } from "../models/Project";
-import { hydrateProjects } from "../redux/actions/projects/actions";
-import {
-  authStateChanged,
-  hydrateSettings,
-} from "../redux/actions/settings/actions";
-import { Screens } from "./navConstants";
 import SignUpScreen from "./Onboarding/SignUpScreen";
 import ChangeThemeScreen from "./Settings/ChangeThemeScreen";
-import { FirestoreWorkSettings } from "../redux/reducers/workSettings";
 import ResetPasswordScreen from "./Onboarding/ResetPasswordScreen";
 
 const Stack = createStackNavigator();
 
 function ChooseScreens(settings: SageSettings) {
-  if (!settings.onboarding) {
-    return <Stack.Screen name="Onboarding" component={OnboardingScreen} />;
-  }
   if (!settings.user) {
     return (
       <>
@@ -180,7 +177,6 @@ function StackScreens() {
                 );
           dispatch(hydrateProjects(storedData));
         });
-
       return () => {
         cleanupSettingsListener();
         cleanupProjectListener();
