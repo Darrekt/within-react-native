@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, useWindowDimensions } from "react-native";
 import { SocialIcon } from "react-native-elements";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
@@ -11,10 +11,12 @@ import { Screens } from "../navConstants";
 import { useAppSelector } from "../../redux/hooks";
 import { getTheme } from "../../redux/selectors";
 import OneButtonForm from "../../components/layout/OneButtonForm";
+import { Image } from "react-native-elements/dist/image/Image";
 
 export const SignInScreen = () => {
   const navigation = useNavigation();
   const theme = useAppSelector(getTheme);
+  const windowLayout = useWindowDimensions();
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -59,6 +61,14 @@ export const SignInScreen = () => {
     >
       {(formik) => (
         <OneButtonForm behaviour="height">
+          <Image
+            style={{
+              height: windowLayout.width * 0.3,
+              width: windowLayout.width * 0.3,
+              margin: windowLayout.height * 0.05,
+            }}
+            source={require("../../../assets/old_mascot/onboarding/within_appicon.png")}
+          ></Image>
           <Text
             style={{
               width: "100%",
