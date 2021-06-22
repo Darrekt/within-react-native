@@ -1,11 +1,15 @@
-import { Actions, FilterAction } from "../actionTypes";
+import { Actions, WorkAction } from "../actionTypes";
 
-export const toggleFilter = (filter: string): FilterAction => ({
+export const clearWorkSession = (): WorkAction => ({
+  type: Actions.ClearWorkSession,
+});
+
+export const toggleFilter = (filter: string): WorkAction => ({
   type: Actions.ToggleFilter,
   payload: filter,
 });
 
-export const selectTodo = (todoID: string): FilterAction => ({
+export const selectTodo = (todoID: string): WorkAction => ({
   type: Actions.SelectTodo,
   payload: todoID,
 });

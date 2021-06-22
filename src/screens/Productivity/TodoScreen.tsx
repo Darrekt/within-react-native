@@ -13,6 +13,7 @@ import { Screens } from "../navConstants";
 import * as TodoThunks from "../../redux/actions/todos/thunks";
 import { selectTodo } from "../../redux/actions/workSettings/actions";
 import AppHeader from "../../components/settings/AppHeader";
+import { clearFirebaseWorkSession } from "../../redux/actions/workSettings/thunks";
 
 const TodoScreen = () => {
   const todos = useAppSelector(AppSelectors.getIncompleteTodos);
@@ -84,7 +85,7 @@ const TodoScreen = () => {
             running && dispatch(selectTodo(running.id));
           } else {
             setIsOpen(false);
-            dispatch(selectTodo(selected));
+            dispatch(clearFirebaseWorkSession());
           }
         }}
         panGestureEnabled={!running || !isOpen}
