@@ -32,7 +32,7 @@ export const resetSettings: ActionCreator<AppThunk> =
     const { user, ...settingsWithoutUser } = SAGE_DEFAULT_SETTINGS;
     if (loggedInUser)
       await settingsDoc(loggedInUser).set(
-        { ...settingsWithoutUser, onboarding: true },
+        { ...settingsWithoutUser },
         { merge: true }
       );
     else
@@ -40,16 +40,6 @@ export const resetSettings: ActionCreator<AppThunk> =
         type: Actions.SettingsReset,
       });
   };
-
-export const toggleOnboarding = (): AppThunk => async (dispatch, getState) => {
-  const settings = getState().appSettings;
-  if (settings.user)
-    await settingsDoc(settings.user).set(
-      { onboarding: !settings.onboarding },
-      { mergeFields: ["onboarding"] }
-    );
-  else dispatch({ type: Actions.SettingsToggleOnboarding });
-};
 
 export const changeFirebaseTheme =
   (newTheme: SageTheme): AppThunk =>

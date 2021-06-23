@@ -106,9 +106,11 @@ export const todoReducer = (
     case Actions.DeadlineComplete:
       return state.map((todo) => ({
         ...todo,
-        completed: action.payload.todos.find((item) => item === todo.id)
-          ? new Date().getTime()
-          : null,
+        completed:
+          !todo.completed &&
+          action.payload.todos.find((item) => item === todo.id)
+            ? new Date().getTime()
+            : todo.completed,
       }));
     case Actions.TodoAssignDeadline:
       return List(state)

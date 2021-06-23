@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useContext } from "react";
 import { View, Alert, useWindowDimensions } from "react-native";
 import { Icon } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -9,15 +9,13 @@ import HeadingDropDown from "../../components/layout/HeadingDropDown";
 import AuthStateDisplay from "../../components/settings/AuthStateDisplay";
 import SettingsGroup from "../../components/settings/SettingsGroup";
 import SubmitButton from "../../components/util/SubmitButton";
-import {
-  resetSettings,
-  toggleOnboarding,
-} from "../../redux/actions/settings/thunks";
-import { useAppDispatch } from "../../redux/hooks";
+import { resetSettings } from "../../redux/actions/settings/thunks";
+import { OnboardingContext, useAppDispatch } from "../../redux/hooks";
 import { Screens } from "../navConstants";
 
 const SettingsScreen = () => {
   const dispatch = useAppDispatch();
+  const { setOnboarded } = useContext(OnboardingContext);
   const navigation = useNavigation();
   const windowDimensions = useWindowDimensions();
 
@@ -26,7 +24,7 @@ const SettingsScreen = () => {
       name: "Onboarding",
       subtitle: "Reset your onboarding status",
       icon: <Icon name="handshake-o" type="font-awesome" />,
-      action: () => dispatch(toggleOnboarding()),
+      action: () => setOnboarded && setOnboarded(false),
     },
     {
       name: "Theme",

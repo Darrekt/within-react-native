@@ -1,4 +1,5 @@
 import React from "react";
+import { useContext } from "react";
 import {
   Dimensions,
   Image,
@@ -8,8 +9,7 @@ import {
   Text,
 } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
-import { toggleOnboarding } from "../../redux/actions/settings/thunks";
-import { useAppDispatch } from "../../redux/hooks";
+import { OnboardingContext } from "../../redux/hooks";
 
 const styles = StyleSheet.create({
   container: {
@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
 const { DnDMode } = NativeModules;
 
 const OnboardingScreen = () => {
-  const dispatch = useAppDispatch();
-  const completeOnboarding = () => {
-    dispatch(toggleOnboarding());
+  const { setOnboarded } = useContext(OnboardingContext);
+  const completeOnboarding = async () => {
+    setOnboarded && setOnboarded(true);
     Platform.OS === "android" && DnDMode.getDnDPermission();
   };
   return (

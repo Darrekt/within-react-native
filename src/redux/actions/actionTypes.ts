@@ -29,11 +29,11 @@ export enum Actions {
   SettingsHydrate = "SETTINGS_HYDRATE",
   SettingsAuth = "SETTINGS_AUTH",
   SettingsReset = "SETTINGS_RESET",
-  SettingsToggleOnboarding = "SETTINGS_TOGGLE_ONBOARDING",
   SettingsChangeTheme = "SETTINGS_CHANGE_THEME",
   SettingsChangeWorkParams = "SETTINGS_CHANGE_PARAMS",
   SelectTodo = "SELECT_TODO",
   ToggleFilter = "FILTER_TOGGLE",
+  ClearWorkSession = "CLEAR_WORK_SESSION",
 }
 
 export type Action =
@@ -41,11 +41,12 @@ export type Action =
   | DeadlineAction
   | TodoAction
   | SettingsAction
-  | FilterAction;
+  | WorkAction;
 
-export type FilterAction =
+export type WorkAction =
   | { type: Actions.SelectTodo; payload: string }
-  | { type: Actions.ToggleFilter; payload: string };
+  | { type: Actions.ToggleFilter; payload: string }
+  | { type: Actions.ClearWorkSession };
 
 export type ProjectAction =
   | {
@@ -106,9 +107,6 @@ export type SettingsAction =
   | {
       type: Actions.SettingsAuth;
       payload: string | null;
-    }
-  | {
-      type: Actions.SettingsToggleOnboarding;
     }
   | {
       type: Actions.SettingsChangeTheme;

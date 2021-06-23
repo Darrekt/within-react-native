@@ -2,7 +2,6 @@ import { SageTheme } from "../../util/constants";
 import { Action, Actions } from "../actions/actionTypes";
 
 export interface SageSettings {
-  onboarding: boolean;
   user: string | null;
   theme: SageTheme;
   maxProjects: number;
@@ -15,7 +14,6 @@ export type FirestoreSageSettings = Omit<SageSettings, "user">;
 export type FirestoreAppSettings = Omit<FirestoreSageSettings, "filters">;
 
 export const SAGE_DEFAULT_SETTINGS: SageSettings = {
-  onboarding: false,
   user: null,
   theme: SageTheme.Mint,
   maxProjects: 4,
@@ -37,8 +35,6 @@ const appSettingsReducer = (
       return { ...state, user: action.payload };
     case Actions.SettingsReset:
       return SAGE_DEFAULT_SETTINGS;
-    case Actions.SettingsToggleOnboarding:
-      return { ...state, onboarding: !state.onboarding };
     case Actions.SettingsChangeTheme:
       return { ...state, theme: action.payload };
     case Actions.SettingsChangeWorkParams:

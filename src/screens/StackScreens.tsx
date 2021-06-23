@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -8,7 +8,16 @@ import {
   SageSettings,
 } from "../redux/reducers/appSettings";
 import { getSettings } from "../redux/selectors";
-import OnboardingScreen from "./Onboarding/OnboardingScreen";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { ProjectFromEntity } from "../models/Project";
+import { hydrateProjects } from "../redux/actions/projects/actions";
+import {
+  authStateChanged,
+  hydrateSettings,
+} from "../redux/actions/settings/actions";
+import { FirestoreWorkSettings } from "../redux/reducers/workSettings";
+
+import { Screens } from "./navConstants";
 import SettingsScreen from "./Settings/SettingsScreen";
 import AuthManagementScreen from "./Onboarding/AuthManagementScreen";
 import EditEmailScreen from "./Settings/EditEmailScreen";
@@ -17,25 +26,15 @@ import EditNameScreen from "./Settings/EditNameScreen";
 import EditProductivitySettingScreen from "./Settings/EditSettingScreen";
 import TabNavigationBar from "./TabNavigationBar";
 import SignInScreen from "./Onboarding/SignInScreen";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { ProjectFromEntity } from "../models/Project";
-import { hydrateProjects } from "../redux/actions/projects/actions";
-import {
-  authStateChanged,
-  hydrateSettings,
-} from "../redux/actions/settings/actions";
-import { Screens } from "./navConstants";
 import SignUpScreen from "./Onboarding/SignUpScreen";
 import ChangeThemeScreen from "./Settings/ChangeThemeScreen";
-import { FirestoreWorkSettings } from "../redux/reducers/workSettings";
 import ResetPasswordScreen from "./Onboarding/ResetPasswordScreen";
+import { globalStyles } from "../../styles";
+import { ActivityIndicator, View } from "react-native";
 
 const Stack = createStackNavigator();
 
 function ChooseScreens(settings: SageSettings) {
-  if (!settings.onboarding) {
-    return <Stack.Screen name="Onboarding" component={OnboardingScreen} />;
-  }
   if (!settings.user) {
     return (
       <>
@@ -145,11 +144,7 @@ function ChooseScreens(settings: SageSettings) {
 function StackScreens() {
   const settings = useAppSelector(getSettings);
   const dispatch = useAppDispatch();
-
-  useEffect(
-    () => auth().onAuthStateChanged((user) => dispatch(authStateChanged(user))),
-    []
-  );
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (settings.user) {
@@ -179,8 +174,8 @@ function StackScreens() {
                   ProjectFromEntity(doc.data()).toEntity()
                 );
           dispatch(hydrateProjects(storedData));
+          setLoaded(true);
         });
-
       return () => {
         cleanupSettingsListener();
         cleanupProjectListener();
@@ -188,9 +183,24 @@ function StackScreens() {
     }
   }, [settings.user]);
 
+  useEffect(() => {
+    const authListener = auth().onAuthStateChanged((user) =>
+      dispatch(authStateChanged(user))
+    );
+    // A little hacky, but it works.
+    setTimeout(() => setLoaded(true), 700);
+    return authListener;
+  }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
+      {loaded ? (
+        <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
+      ) : (
+        <View style={globalStyles.centered}>
+          <ActivityIndicator size="large" />
+        </View>
+      )}
     </NavigationContainer>
   );
 }

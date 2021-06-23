@@ -26,11 +26,14 @@ const workSettingsReducer = (
       };
     case Actions.SettingsHydrate:
       return { ...state, ...action.payload.workSettings };
+    case Actions.ClearWorkSession:
+      return defaultState;
     case Actions.SelectTodo:
       return {
         ...state,
         selected: state.selected === action.payload ? "" : action.payload,
       };
+
     case Actions.ToggleFilter:
       return {
         ...state,
