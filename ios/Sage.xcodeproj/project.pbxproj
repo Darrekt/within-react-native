@@ -74,6 +74,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6D2D820D8E184F4B98D5808E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,14 +129,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		6D2D820D8E184F4B98D5808E /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -361,7 +360,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.darrektdev.sage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.darrektdev.within;
 				PRODUCT_NAME = Sage;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -387,7 +386,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.darrektdev.sage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.darrektdev.within;
 				PRODUCT_NAME = Sage;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
