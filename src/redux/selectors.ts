@@ -5,8 +5,6 @@ import { RootState } from "../redux/store";
 import { SAGE_THEME_LIST, Theme } from "../util/constants";
 
 export const getSettings = (state: RootState) => state.appSettings;
-export const getSelected = (state: RootState): string =>
-  state.workSettings.selected;
 export const getFilters = (state: RootState): string[] =>
   state.workSettings.filters;
 
@@ -46,6 +44,10 @@ export const getCompletedTodos = (state: RootState): TodoEntity[] =>
   getAllTodos(state).filter((todo) => todo.completed);
 export const getIncompleteTodos = (state: RootState): TodoEntity[] =>
   getAllTodos(state).filter((todo) => !todo.completed);
+export const getSelectedTodo = (state: RootState): TodoEntity | null =>
+  getIncompleteTodos(state).find(
+    (todo) => todo.id === state.workSettings.selected
+  ) ?? null;
 
 export const getTheme = (state: RootState): Theme =>
   SAGE_THEME_LIST[state.appSettings.theme];

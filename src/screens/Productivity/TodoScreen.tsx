@@ -17,7 +17,7 @@ import { clearFirebaseWorkSession } from "../../redux/actions/workSettings/thunk
 
 const TodoScreen = () => {
   const todos = useAppSelector(AppSelectors.getIncompleteTodos);
-  const selected = useAppSelector(AppSelectors.getSelected);
+  const selected = useAppSelector(AppSelectors.getSelectedTodo);
   const filters = useAppSelector(AppSelectors.getFilters);
   const running = useAppSelector(AppSelectors.getRunning);
   const theme = useAppSelector(AppSelectors.getTheme);
@@ -68,9 +68,7 @@ const TodoScreen = () => {
           />
         </>
       ) : (
-        <TodoComponents.TimerDisplay
-          selectedTask={todos.find((todo) => todo.id === selected)}
-        />
+        <TodoComponents.TimerDisplay />
       )}
       <Modalize
         ref={modalizeRef}
@@ -110,7 +108,7 @@ const TodoScreen = () => {
             <TodoComponents.ItemTile
               key={item.id}
               item={item}
-              selected={item.id === selected}
+              selected={item.id === selected?.id}
               disabled={running ? true : false}
               onPress={() => dispatch(selectTodo(item.id))}
               onLongPress={() =>

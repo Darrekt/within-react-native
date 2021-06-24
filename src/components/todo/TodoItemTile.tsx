@@ -11,7 +11,7 @@ import { useAppSelector } from "../../redux/hooks";
 type Props = {
   item: ProjectEntity | TodoEntity;
   disabled?: boolean;
-  selected?: boolean;
+  selected: boolean;
   onPress: () => void;
   onLongPress?: () => void;
   deleteAction: () => void;
