@@ -188,8 +188,11 @@ function StackScreens() {
       dispatch(authStateChanged(user))
     );
     // A little hacky, but it works.
-    setTimeout(() => setLoaded(true), 700);
-    return authListener;
+    const timeout = setTimeout(() => setLoaded(true), 700);
+    return () => {
+      authListener();
+      clearTimeout(timeout);
+    };
   }, []);
 
   return (
