@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.darrektdev.sage">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.mindmymind.within">
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -37,7 +37,7 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="com.darrekt.Sage"/>
+        <data android:scheme="com.darrekt.within"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
@@ -45,7 +45,7 @@
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
         <!-- Change the resource name to your App's accent color - or any other color you want -->
         <!-- or @android:color/{name} to use a standard color -->
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/> 
+        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@android:color/white"/> 
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">

@@ -29,6 +29,6 @@ jobs:
         name: Install pod dependencies
       - name: Build iOS (debug)
         run: "xcodebuild \
-          -workspace ios/Sage.xcworkspace \
-          -scheme Sage \
+          -workspace ios/Within.xcworkspace \
+          -scheme Within \
           CODE_SIGNING_ALLOWED=NO"

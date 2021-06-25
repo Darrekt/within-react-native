@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Sage",
-    "slug": "Sage",
+    "name": "Within",
+    "slug": "Within",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,14 +18,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.darrekt.Sage"
+      "bundleIdentifier": "com.mindmymind.Within"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.darrekt.Sage"
+      "package": "com.mindmymind.Within"
     },
     "web": {
       "favicon": "./assets/favicon.png"

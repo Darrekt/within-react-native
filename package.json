@@ -92,6 +92,6 @@
     "typescript": "~4.3.2"
   },
   "private": true,
-  "name": "sage-react-native",
+  "name": "within-react-native",
   "version": "1.0.0"
 }

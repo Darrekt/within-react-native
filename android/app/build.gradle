@@ -134,7 +134,7 @@ android {
        javaMaxHeapSize "3g"
     }
     defaultConfig {
-        applicationId 'com.darrektdev.sage'
+        applicationId 'com.mindmymind.within'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
