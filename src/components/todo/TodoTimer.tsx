@@ -101,10 +101,12 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
   useEffect(() => {
     const _handleAppStateChange = (nextState: AppStateStatus) => {
       if (selectedTask.finishingTime && appState.current === "active") {
-        // TODO: Push a notification telling the user to come back
         pushNotification({
-          title: "Don't leave the app!", // (optional)
           message: "Come back and stay focused!", // (required)
+          title: "Don't leave the app!",
+          bigText:
+            "It seems that you've left the app. Hang in there and finish this interval before taking a break!",
+          subText: "Distraction detected!",
         });
       } else if (selectedTask.finishingTime && nextState === "active") {
         // TODO: Replace this with confetti or a heart flood after 500ms

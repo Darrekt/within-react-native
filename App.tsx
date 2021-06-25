@@ -8,6 +8,8 @@ import OnboardingScreen from "./src/screens/Onboarding/OnboardingScreen";
 import { OnboardingContext, useOnboardingState } from "./src/redux/hooks";
 import PushNotification, { Importance } from "react-native-push-notification";
 
+export const WITHIN_CHANNEL_ID = "within-react-native";
+
 export default function App() {
   const [onboarded, setOnboarded] = useOnboardingState();
 
@@ -15,7 +17,7 @@ export default function App() {
     () =>
       PushNotification.createChannel(
         {
-          channelId: "within_react_native", // (required)
+          channelId: WITHIN_CHANNEL_ID, // (required)
           channelName: "Within", // (required)
           channelDescription:
             "Notification channel to detect and prevent user distractions", // (optional) default: undefined.
