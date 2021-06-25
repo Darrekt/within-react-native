@@ -5,10 +5,10 @@ import PushNotification, {
 export const pushNotification = (props: PushNotificationObject) =>
   PushNotification.localNotification({
     /* Android Only Properties */
-    channelId: "your-channel-id", // (required) channelId, if the channel doesn't exist, notification will not trigger.
+    channelId: "within-react-native", // (required) channelId, if the channel doesn't exist, notification will not trigger.
     ticker: "My Notification Ticker", // (optional)
     showWhen: true, // (optional) default: true
-    autoCancel: true, // (optional) default: true
+    autoCancel: false, // (optional) default: true
     largeIcon: "ic_launcher", // (optional) default: "ic_launcher". Use "" for no large icon.
     largeIconUrl: "https://www.example.tld/picture.jpg", // (optional) default: undefined
     smallIcon: "ic_notification", // (optional) default: "ic_notification" with fallback for "ic_launcher". Use "" for default small icon.

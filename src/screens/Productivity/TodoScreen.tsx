@@ -28,6 +28,7 @@ const TodoScreen = () => {
   const modalizeRef = React.useRef<Modalize>(null);
 
   useEffect(() => {
+    running && modalizeRef.current?.open("top");
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       () => {
@@ -80,7 +81,6 @@ const TodoScreen = () => {
         onPositionChange={(position) => {
           if (position === "top") {
             setIsOpen(true);
-            running && dispatch(selectTodo(running.id));
           } else {
             setIsOpen(false);
             dispatch(clearFirebaseWorkSession());
