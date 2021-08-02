@@ -103,7 +103,7 @@ const TodoTimer = ({ selectedTask, dispatch }: TimerProps) => {
       if (selectedTask.finishingTime && appState.current === "active") {
         pushNotification({
           message: "Come back and stay focused!", // (required)
-          title: "Don't leave the app!",
+          title: "Can you afford this interruption?",
           bigText:
             "It seems that you've left the app. Hang in there and finish this interval before taking a break!",
           subText: "Distraction detected!",
