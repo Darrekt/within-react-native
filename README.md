@@ -15,6 +15,10 @@ The detrimental effects of social media and gaming apps on mental health and sel
 
 ## Contributing
 
+### Pod install on M1 Macbooks
+
+https://github.com/CocoaPods/CocoaPods/issues/10518
+
 ### Basic workflow
 
 1. Fork and clone the repository.
