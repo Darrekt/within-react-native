@@ -44,6 +44,7 @@ const validateProjects = (setVal?: number) => {
   if (!setVal) return "Please input a value";
   if (setVal < 1) return "Must be positive!";
   if (setVal > 5) return "Too many!";
+  if((setVal - Math.floor(setVal)) !== 0) return "Must be an integer!";
 };
 
 const EditProductivitySettingScreen = () => {
