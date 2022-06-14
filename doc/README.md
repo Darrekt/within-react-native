@@ -26,13 +26,19 @@ A strong understanding of the React ecosystem is required. In particular, this p
 
 A great benefit of React Native is its user-friendliness to people who already know React. Lots of components are available out-of-the-box, and the full documentation will be a very useful point of reference.
 
+## Navigating the navigation
+
 ## Redux
+
+Redux is a state management paradigm in which the entire app's state is controlled by an immutable, single source of truth at the root level. In this particular app, we use the `react-redux` bindings. Before proceeding further, you should **thoroughly read through all the pages** in the documentation for the relevant libraries provided below. If you find that you are confused while working on this project's state, you should refer back to the documentation, as you have missed something.
+
+- [Redux essentials](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)
+- The [Redux-toolkit opinion](https://redux.js.org/introduction/why-rtk-is-redux-today)
+- [React-redux](https://react-redux.js.org): the official React bindings package
 
 ### A note on TypeScript usage with Redux
 
-In the context of a Redux app, which works off of a global store which is just a complex JavaScript `Object`, it is therefore important to specify and adhere to the shape of the store, as well as to have well-defined types and values for all of its attributes such that it will not take a form that is not expected by the app and cause unexpected errors.
-
-## Navigating the navigation
+In the context of a Redux app, which works off of a global store which is just a complex JavaScript `Object`, it is important to specify and adhere to the shape of the store, as well as to have well-defined types and values for all of its attributes such that it will not take a form that is not expected by the app and cause unexpected errors.
 
 ### Usage of functional syntaxes
 
