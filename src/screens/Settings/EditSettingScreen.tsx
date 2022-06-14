@@ -6,6 +6,7 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  useWindowDimensions,
 } from "react-native";
 import { Formik } from "formik";
 import { TextInput } from "react-native-gesture-handler";
@@ -41,15 +42,17 @@ const styles = StyleSheet.create({
 });
 
 const validateProjects = (setVal?: number) => {
-  if (!setVal) return "Please input a value";
-  if (setVal < 1) return "Must be positive!";
+  if (!setVal) return "Input a value";
+  if (setVal < 1) return "Take at least one";
   if (setVal > 5) return "Too many!";
+  if((setVal - Math.floor(setVal)) !== 0) return "Input an integer";
 };
 
 const EditProductivitySettingScreen = () => {
   const settings = useAppSelector(getSettings);
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const windowDimensions = useWindowDimensions();
 
   return (
     <KeyboardAvoidingView
@@ -98,7 +101,12 @@ const EditProductivitySettingScreen = () => {
               />
             }
           >
-            <Card elevation={2}>
+            
+            <Card 
+            style={{
+              height: windowDimensions.height * 0.26,
+             }}
+            elevation={2}>
               <Text style={styles.headerStyle}>Maximum Projects</Text>
               <View style={globalStyles.row}>
                 <Text style={styles.bodyStyle}>
@@ -121,7 +129,11 @@ const EditProductivitySettingScreen = () => {
                 )}
               </View>
             </Card>
-            <Card elevation={2}>
+            <Card 
+            style={{
+              height: windowDimensions.height * 0.26,
+             }}
+            elevation={2}>
               <Text style={styles.headerStyle}>Maximum Tasks</Text>
               <View style={globalStyles.row}>
                 <Text style={styles.bodyStyle}>
