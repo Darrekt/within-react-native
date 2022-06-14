@@ -32,6 +32,8 @@ A great benefit of React Native is its user-friendliness to people who already k
 
 In the context of a Redux app, which works off of a global store which is just a complex JavaScript `Object`, it is therefore important to specify and adhere to the shape of the store, as well as to have well-defined types and values for all of its attributes such that it will not take a form that is not expected by the app and cause unexpected errors.
 
+## Navigating the navigation
+
 ### Usage of functional syntaxes
 
 Functional programming motivates the use of immutable data structures which transform from value to value, instead of mutating the original value in memory of the original. If you have read the Redux docs, you should already understand the benefits of using such a paradigm in state management.
@@ -107,5 +109,3 @@ More examples of how to use the global Redux state to create stateful components
 In this project, data models often take the form of an `Entity`. An `Entity` is defined as a serial representation of a model, with no unserializable members (such as functions) which are not straightforward to store in a database. It therefore stands to reason that every piece of relevant app state should be converted to its respective `Entity` type before being stored in FireStore.
 
 ## Deployment and CI with [Github Actions](https://docs.github.com/en/actions)
-
-Currently, there are 3

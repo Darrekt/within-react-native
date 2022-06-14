@@ -18,15 +18,15 @@ The detrimental effects of social media and gaming apps on mental health and sel
 ### Basic workflow
 
 1. Fork and clone the repository.
-2. Refer to the documentation to get orientated with the codebase.
+2. Refer to the tutorials in the `doc` folder to get orientated with the codebase.
 3. Request firebase config files from the current maintainers.
 4. Develop a feature on an appropriately named branch, and make a pull request to the `development-staging` branch.
-5. Your pull request will be merged in after code review, subject to all tests passing.
+5. Your pull request will be merged in after code review.
+6. Once merged, your changes are automatically folded in to the release process.
 
-All automations are currently implemented through Github actions. Android and iOS binaries are built on every push, and the test suite is run. Whenever a change to `main` is effected, a release is built and uploaded as a build artefact for testers to download. Once we hit the App stores, this action will be edited to use the App store push APIs.
+All automations are currently implemented through Github actions. Android and iOS binaries are built on every push to relevant branches, and the test suite is run. Whenever a change to `main` is effected, a release is built and uploaded as a build artefact for testers to download. Once we hit the App stores, this action will be edited to use the App store push APIs.
 
 ### Guidelines
 
-- Do follow appropriate file and variable naming conventions.
+- Do follow appropriate file and variable naming conventions. If you are unsure about where something should go, ask.
 - Use an auto-formatter often and fix linter errors to the best of your ability.
-- Many things are currently untested, try to break this convention and develop in a test-driven manner, especially where stateful changes are involved.

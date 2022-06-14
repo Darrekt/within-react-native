@@ -1,6 +1,6 @@
-# Pod install on M1 Macbooks
+# Creating a local development environment
 
-https://github.com/CocoaPods/CocoaPods/issues/10518
+Visit [this issue](https://github.com/CocoaPods/CocoaPods/issues/10518) if you are on an M1 MacBook.
 
 ## Setting up a React Native Environment
 
