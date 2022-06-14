@@ -80,16 +80,32 @@ Anyone else writing code can simply use your code with much greater confidence, 
 
 ## Data Model
 
-TBC
-
 ### Redux Implementation
 
-TBC
+Redux suffers from being a long-standing library with a very open interface that leaves many implementation choices to its users. Depending on the order in which one may have read the Redux docs, they may have different opinions on how exactly to create a store and provide it down the component tree.
+
+In the context of this React Native app, we use the paradigms recommended by [`react-redux`](https://react-redux.js.org/introduction/getting-started).
+
+All store creation logic is handled through the `store.ts` file, while in turn uses the `combineReducers` utility to allow us to think of our app state in 3 separate reducer slices: `projects`, `workSettings` and `appSettings`. The entire app's state is therefore a JSON object with the following structure:
+
+```TypeScript
+{
+  projects: ProjectEntity[],
+  workSettings: WorkSettings,
+  appSettings: SageSettings,
+}
+```
+
+The types and their interfaces are defined in either the `models` directory in their respective files, or directly in the same file as the reducer itself.
+
+Since this representation of the app's state is rather simple (as desired), we define a number of `selectors` to make the information usable for direct use in the front-end state. All selectors are defined in `selectors.ts` and are used in conjunction with the `useSelector` hook provided by the react-redux bindings. Note that in this case, we wrap the `useSelector` hook into a new hook, `useAppSelector`, adding a type annotation along the way so that TypeScript is able to derive the shape of our app's data, no matter which way we choose to slice it using a `selector`.
+
+More examples of how to use the global Redux state to create stateful components are available in the [cookbook].
 
 ### [Firebase](https://firebase.google.com/docs)
 
-TBC
+In this project, data models often take the form of an `Entity`. An `Entity` is defined as a serial representation of a model, with no unserializable members (such as functions) which are not straightforward to store in a database. It therefore stands to reason that every piece of relevant app state should be converted to its respective `Entity` type before being stored in FireStore.
 
 ## Deployment and CI with [Github Actions](https://docs.github.com/en/actions)
 
-TBC
+Currently, there are 3
