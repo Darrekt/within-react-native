@@ -154,7 +154,7 @@ function StackScreens() {
         .onSnapshot((documentSnapshot) => {
           const { filters, ...appSettings } =
             documentSnapshot.data() as FirestoreSageSettings &
-              FirestoreWorkSettings;
+            FirestoreWorkSettings;
           if (appSettings && filters) {
             dispatch(
               hydrateSettings(appSettings as FirestoreSageSettings, { filters })
@@ -171,8 +171,8 @@ function StackScreens() {
             querySnapshot && querySnapshot.empty
               ? []
               : querySnapshot.docs.map((doc) =>
-                  ProjectFromEntity(doc.data()).toEntity()
-                );
+                ProjectFromEntity(doc.data()).toEntity()
+              );
           dispatch(hydrateProjects(storedData));
           setLoaded(true);
         });
@@ -197,13 +197,11 @@ function StackScreens() {
 
   return (
     <NavigationContainer>
-      {loaded ? (
-        <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
-      ) : (
-        <View style={globalStyles.centered}>
+      {loaded
+        ? <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
+        : <View style={globalStyles.centered}>
           <ActivityIndicator size="large" />
-        </View>
-      )}
+        </View>}
     </NavigationContainer>
   );
 }

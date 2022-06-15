@@ -23,8 +23,8 @@ const HomeDisplay = ({ openModal }: Props) => {
   const projects = useAppSelector(getProjects);
   const deadlines = useAppSelector(getSortedDeadlines);
   const windowDimensions = useWindowDimensions();
-  const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const headerButton = (
     <Icon
       name={"plus"}

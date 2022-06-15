@@ -14,9 +14,9 @@ Especially in large production apps, where code takes a long time to build and r
 
 Learning how to use the tooling of a given ecosystem is a fundamental cornerstone of your productivity as a developer. Another reason why TypeScript has gained so much popularity is the tooling which it offers developers. As long as one takes the effort to properly name and type everything, all interfaces will be exposed naturally by the in-editor tooling, which allows for better abstraction and use of code. Instead of having to read code, one should simply be able to use it based on its interface, trusting that as long as the input is well-formed, the code should do what it says it does. See the [example](#example) below.
 
-## [React](https://reactjs.org)
+## React
 
-A strong understanding of the React ecosystem is required. In particular, this project employs the use of the additional advanced features:
+A strong understanding of the [React](https://reactjs.org) ecosystem is required. In particular, this project employs the use of the additional advanced features:
 
 - [React context](https://reactjs.org/docs/context.html)
 - [Higher order components](https://reactjs.org/docs/higher-order-components.html)
@@ -27,6 +27,107 @@ A strong understanding of the React ecosystem is required. In particular, this p
 A great benefit of React Native is its user-friendliness to people who already know React. Lots of components are available out-of-the-box, and the full documentation will be a very useful point of reference.
 
 ## Navigating the navigation
+
+This app uses [React-navigation](https://reactnavigation.org/) as its primary paging and routing utility. Be sure to thoroughly reference these docs before and during the reading of this section.
+
+The navigation code effectively begins at the main component of `StackScreens.tsx`, where we see the following in the render:
+
+```TypeScript
+  // ...
+  return (
+    <NavigationContainer>
+      {loaded
+        ? <Stack.Navigator>{ChooseScreens(settings)}</Stack.Navigator>
+        : <View style={globalStyles.centered}>
+          <ActivityIndicator size="large" />
+        </View>}
+    </NavigationContainer>
+  );
+```
+
+Inspecting the `ChooseScreens` shows that we return a set of pages in a StackNavigator depending on whether the user is currently logged in. For this walkthrough, we shall assume the user is not logged in. From the `ChooseScreens` function, we see that in this case we return the following:
+
+```TypeScript
+  if (!settings.user) {
+    return (
+      <>
+        <Stack.Screen
+          name={Screens.SignIn}
+          component={SignInScreen}
+          options={{
+            headerShown: false,
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.SignUp}
+          component={SignUpScreen}
+          options={{
+            title: "Create an account",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.ResetPassword}
+          component={ResetPasswordScreen}
+          options={{
+            title: "Reset Password",
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.VerifyEmail}
+          component={SignUpScreen}
+          options={{
+            title: "Verify Email",
+            headerBackTitleVisible: false,
+          }}
+        />
+      </>
+    )
+  }
+```
+
+The first and default root in this case is the first `Stack.Screen`, which in this case is the `SignInScreen`. Each page is associated with a `name`, which is a simple string. To avoid human error, we defined all possible `name`s that a given page can take as a constant `enum` member in `navConstants.ts` under the `Screens` enum.
+
+Experienced developers will have noticed by this point that the entire subtree of nodes enclosed by `<NavigationContainer>` is given a `context` containing some state which determines the current stack of pages to display. To navigate to a new page (on top of the current one), we therefore have to access this state somehow. Fortunately, react-navigation provides us with the `useNavigation` hook to do exactly this:
+
+```TypeScript
+// TodoHome.tsx
+const HomeDisplay = ({ openModal }: Props) => {
+  // ...
+  const navigation = useNavigation();
+  const headerButton = (
+    <Icon
+      name={"plus"}
+      type={"entypo"}
+      size={20}
+      color="black"
+      onPress={() => {
+        navigation.navigate(Screens.AddProject);
+      }}
+    />
+  );
+  //...
+}
+```
+
+Clicking on this `headerButton`, wherever it is rendered, results in the screen associated with `Screens.AddProject` being pushed on top of the navigation stack.
+
+### Passing parameters to a page
+
+The react-navigation docs adequately address how to perform this. However, since we are using TypeScript, we would like to be type-safe when we pass parameters into a given route. Therefore, we define a `RootStackParamList` type in `navConstants.ts`:
+
+```TypeScript
+export type RootStackParamList = {
+  [Screens.ViewProject]: { projID: string };
+  [Screens.ViewDeadline]: { projID: undefined; deadlineID?: string };
+  [Screens.AddDeadline]: { projID: string; deadlineID: undefined };
+  [Screens.ViewTodo]: { todoID: string };
+};
+```
+
+(TBC)
 
 ## Redux
 
@@ -117,3 +218,5 @@ More examples of how to use the global Redux state to create stateful components
 In this project, data models often take the form of an `Entity`. An `Entity` is defined as a serial representation of a model, with no unserializable members (such as functions) which are not straightforward to store in a database. It therefore stands to reason that every piece of relevant app state should be converted to its respective `Entity` type before being stored in FireStore.
 
 ## Deployment and CI with [Github Actions](https://docs.github.com/en/actions)
+
+(TBC)
