@@ -32,13 +32,9 @@ A great benefit of React Native is its user-friendliness to people who already k
 
 Redux is a state management paradigm in which the entire app's state is controlled by an immutable, single source of truth at the root level. In this particular app, we use the `react-redux` bindings. Before proceeding further, you should **thoroughly read through all the pages** in the documentation for the relevant libraries provided below. If you find that you are confused while working on this project's state, you should refer back to the documentation, as you have missed something.
 
-- [Redux essentials](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)
-- The [Redux-toolkit opinion](https://redux.js.org/introduction/why-rtk-is-redux-today)
+- [Redux introduction](https://redux.js.org/tutorials/essentials/part-1-overview-concepts)
+- [Redux Motivation](https://redux.js.org/understanding/thinking-in-redux/motivation)
 - [React-redux](https://react-redux.js.org): the official React bindings package
-
-### A note on TypeScript usage with Redux
-
-In the context of a Redux app, which works off of a global store which is just a complex JavaScript `Object`, it is important to specify and adhere to the shape of the store, as well as to have well-defined types and values for all of its attributes such that it will not take a form that is not expected by the app and cause unexpected errors.
 
 ### Usage of functional syntaxes
 
@@ -92,9 +88,15 @@ Anyone else writing code can simply use your code with much greater confidence, 
 
 Redux suffers from being a long-standing library with a very open interface that leaves many implementation choices to its users. Depending on the order in which one may have read the Redux docs, they may have different opinions on how exactly to create a store and provide it down the component tree.
 
-In the context of this React Native app, we use the paradigms recommended by [`react-redux`](https://react-redux.js.org/introduction/getting-started).
+As mentioned before, this App uses the official [`react-redux`](https://react-redux.js.org/introduction/getting-started) bindings.
 
-All store creation logic is handled through the `store.ts` file, while in turn uses the `combineReducers` utility to allow us to think of our app state in 3 separate reducer slices: `projects`, `workSettings` and `appSettings`. The entire app's state is therefore a JSON object with the following structure:
+#### A note on TypeScript usage with Redux
+
+In the context of a Redux app, which works off of a global store which is just a complex JavaScript `Object`, it is important to specify and adhere to the shape of the store, as well as to have well-defined types and values for all of its attributes such that it will not take a form that is not expected by the app and cause unexpected errors.
+
+#### Show me the code
+
+All store creation logic is handled through the `store.ts` file, while in turn uses the [`combineReducers`](https://redux.js.org/api/combinereducers) utility to allow us to think of our app state in 3 separate reducer slices: `projects`, `workSettings` and `appSettings`. The entire app's state is therefore a JSON object with the following structure:
 
 ```TypeScript
 {
