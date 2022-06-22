@@ -5,6 +5,7 @@ import StatScreen from "./StatScreen";
 import TodoNavigator from "./Productivity/TodoNavigator";
 import { useAppSelector } from "../redux/hooks";
 import { getTheme } from "../redux/selectors";
+import SettingsScreen from "./Settings/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +44,15 @@ const TabNavigationBar = () => {
                   color={color}
                 />
               );
+            case "Settings":
+              return (
+                <Icon
+                name="settings"
+                type="materialicons"
+                size={size}
+                color={color}
+                />
+              )
           }
         },
       })}
@@ -53,6 +63,7 @@ const TabNavigationBar = () => {
     >
       <Tab.Screen name="Todos" component={TodoNavigator} />
       <Tab.Screen name="Stats" component={StatScreen} />
+      <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
 };

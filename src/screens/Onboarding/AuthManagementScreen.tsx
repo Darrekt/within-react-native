@@ -51,6 +51,12 @@ const AuthManagementScreen = () => {
               subtitle: user?.emailVerified ? "Verified!" : "Not yet verified!",
               action: () => navigation.navigate(Screens.ChangeEmail),
             },
+           // {
+           //   name: "Picture",
+           //   subtitle: "Change your profile picture",
+           //   icon: <Icon name="portrait" type="material"/>,
+           //   action: () => navigation.navigate(Screens.ChangeEmail),
+           // },
           ]}
         />
         <SubmitButton
