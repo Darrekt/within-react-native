@@ -27,4 +27,6 @@ export enum Screens {
   ViewDeadline = "TODO_VIEW_DEADLINE",
   AddTodo = "TODO_ADD_TODO",
   ViewTodo = "TODO_VIEW_TODO",
+  RateDay = "RATE_DAY",
+  SeeDay = "SEE_DAY",
 }

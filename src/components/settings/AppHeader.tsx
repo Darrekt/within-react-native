@@ -28,9 +28,14 @@ const AppHeader = () => {
             onPress={() => navigation.navigate(Screens.TodoHistory)}
           />
           <Icon
-            name="settings"
+            name="grading"
             type="materialicons"
-            onPress={() => navigation.navigate(Screens.Settings)}
+            onPress={() => navigation.navigate(Screens.RateDay)}
+          />
+          <Icon
+          name="segment"
+          type="materialicons"
+          onPress={() => navigation.navigate(Screens.SeeDay)}
           />
         </View>
       }
