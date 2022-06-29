@@ -84,23 +84,6 @@ export const AchievementsScreen = ({ openModal }: Props) => {
         totalCount += count
     }
   }
- 
-//   if (!statusData) {
-//     return (
-
-//         <SafeAreaView style={styles.container}>
-//         <View style={styles.navigation}>
-//         <Text style={styles.navigationTitle}>Achievements</Text>
-        
-//       </View>
-//       <View style={globalStyles.centered}>
-//         <Text style={{ color: "black" }}>You have no Achievements!</Text>
-//       </View>
-//       </SafeAreaView>
-
-     
-//     );
-//   }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -153,50 +136,7 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     textAlign: "center",
     paddingTop: 5,
-  },
-  image: {
-    height: 50,
-    width: 50,
-    backgroundColor: "red",
-    borderRadius: 25,
-  },
-  btnImage: {
-    height: 50,
-    width: 50,
-    backgroundColor: "yellow",
-    borderRadius: 25,
-  },
-  title: {
-    fontSize: 16,
-    marginLeft: 20,
-  },
-  item: {
-    // backgroundColor: '#f9c2ff',
-    // marginVertical: 8,
-    // marginHorizontal: 16,
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    padding: 10,
-  },
-  imageItem: {
-    width: 50,
-    height: 50,
-  },
-  textItem: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    flexGrow: 1,
-    // borderWidth: 1,
-    // alignSelf:'auto'
-  },
-  buttonItem: {
-    width: 50,
-    height: 50,
-    backgroundColor: "#f8c4ef",
-  },
+  }
 });
 
 export function isIphoneX() {
