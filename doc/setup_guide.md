@@ -4,13 +4,23 @@ Visit [this issue](https://github.com/CocoaPods/CocoaPods/issues/10518) if you a
 
 ## Setting up a React Native Environment
 
+Follow the instructions on the [React Native environment setup](https://reactnative.dev/docs/environment-setup) page which provides two different options to set up the environment. Follow the React Native CLI Quickstart option as this will allow you to work on your project locally and see your changes on a virtual phone on your computer.
+
 ## Setting up Firebase
 
 ### Create an account
 
+Create an account from the [Firebase homepage](https://firebase.google.com).
+
 ### Set up an app
 
+After you have successfully created your Firebase account you would have the set up the app in Firebase. Go to console at Firebase and create a new project. After you have created a project, you will need to add an app to your project which can be done on the main page of your project.
+
+Assuming that the app would run on an virtual Android phone, first step is to register the app which will be done by using Android package name. This can be found in `within-react-native/android/app/build.gradle`. It is under `defaultConfig` used along `applicationID`. The package name is `com.mindmymind.within`.
+
 ### Connect your development instance to it
+
+After registering the app, the config file needs to be downloaded. Firebase generates the `google-services.json` file which should be added to the project files under `within-react-native/android/app`. Now your development instance is connected to your Firebase.
 
 ### Using the Firebase Emulator Suite
 
