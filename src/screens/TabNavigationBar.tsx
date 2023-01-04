@@ -6,6 +6,7 @@ import TodoNavigator from "./Productivity/TodoNavigator";
 import { useAppSelector } from "../redux/hooks";
 import { getTheme } from "../redux/selectors";
 import AchievementsScreen from "../components/todo/AchievementsScreen";
+
 const Tab = createBottomTabNavigator();
 
 const TabNavigationBar = () => {
@@ -52,6 +53,15 @@ const TabNavigationBar = () => {
                   color={color}
                 />
               );
+            case "Settings":
+              return (
+                <Icon
+                name="settings"
+                type="materialicons"
+                size={size}
+                color={color}
+                />
+              )
           }
         },
       })}

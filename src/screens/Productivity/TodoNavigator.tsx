@@ -9,6 +9,8 @@ import ViewDeadlineScreen from "./ViewDeadlineScreen";
 import { Screens } from "../navConstants";
 import SurveyScreen from "../SurveyScreen";
 import TodoHistory from "./TodoHistory";
+import RateDay from "../RateDay"
+import SeeDay from "./SeeDay";
 
 const TodoNavigator = () => {
   return (
@@ -27,6 +29,15 @@ const TodoNavigator = () => {
         }}
       />
       <Stack.Screen
+      name={Screens.RateDay}
+      component={RateDay}
+      options={{
+        title: "Rate your day",
+        headerBackTitleVisible: false,
+      }}
+      />
+      
+      <Stack.Screen
         name={Screens.TodoHistory}
         component={TodoHistory}
         options={{
@@ -34,6 +45,14 @@ const TodoNavigator = () => {
           headerBackTitleVisible: false,
         }}
       />
+      <Stack.Screen
+        name={Screens.SeeDay}
+        component={SeeDay}
+        options={{
+          title: "History of reviews",
+          headerBackTitleVisible: false,
+        }}
+        />
       <Stack.Screen
         name={Screens.ViewProject}
         component={ViewProjectScreen}
