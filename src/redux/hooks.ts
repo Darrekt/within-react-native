@@ -4,7 +4,19 @@ import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ONBOARDING_STATUS_KEY } from "../util/constants";
 
+/** 
+ * Use this hook anywhere in the app where an `Action` needs to be dispatched to the store.
+ * `useAppDispatch` is simply a wrapping of `useDispatch` with the provided type annotation allows the 
+ * shape of the store to display through the in-editor tooling.  See this 
+ * [link](https://react-redux.js.org/tutorials/typescript-quick-start) for more information. */
 export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+/** 
+ * Use this hook in conjunction with a `selector` to slice a part of the App's state for use in a component.
+ * The resultant data slice will be stateful and will trigger re-renders if updated.
+ * `useAppSelector` is simply a wrapping of `useSelector` with the provided type annotation allows the 
+ * shape of the store to display through the in-editor tooling.  See this 
+ * [link](https://react-redux.js.org/tutorials/typescript-quick-start) for more information. */
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export const OnboardingContext = React.createContext<{
